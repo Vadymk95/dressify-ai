@@ -6,6 +6,7 @@ import { App } from '@root/App.tsx';
 import { ErrorBoundary } from '@root/components/ErrorBoundary';
 
 import './assets/styles/index.css';
+import './i18n';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
