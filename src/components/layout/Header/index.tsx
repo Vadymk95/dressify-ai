@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
-import { AuthNavigation } from '@root/components/common/AuthNavigation';
-import { Logo } from '@root/components/ui/Logo';
+import { AuthNavigation, Logo } from '@/components/common';
 
 export const Header: FC = () => {
     return (

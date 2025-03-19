@@ -1,16 +1,9 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { WithSuspense } from '@root/hocs/WithSuspense';
-import {
-    Home,
-    Login,
-    NotFound,
-    Register,
-    Wardrobe,
-    WhatToWear
-} from '@root/pages';
-import { routes } from '@root/router/routes';
+import { WithSuspense } from '@/hocs/WithSuspense';
+import { Home, Login, NotFound, Register, Wardrobe, WhatToWear } from '@/pages';
+import { routes } from '@/router/routes';
 
 export const AppRouter: FC = () => {
     return (

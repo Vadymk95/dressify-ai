@@ -1,8 +1,11 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Button } from '@/components/ui/button';
+
 const NotFound: FC = () => {
     const { t } = useTranslation();
+    const handleBack = () => {};
 
     return (
         <div className="px-8 py-4 flex flex-col gap-4 justify-center items-center">
@@ -15,7 +18,13 @@ const NotFound: FC = () => {
             </p>
 
             <div>
-                <button>{t('General.goBack')}</button>
+                <Button
+                    onClick={handleBack}
+                    className="cursor-pointer text-xl"
+                    size="lg"
+                >
+                    {t('General.goBack')}
+                </Button>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import { routes } from '@root/router/routes';
+import { routes } from '@/router/routes';
 import { useTranslation } from 'react-i18next';
 
 export const AuthNavigation: FC = () => {
