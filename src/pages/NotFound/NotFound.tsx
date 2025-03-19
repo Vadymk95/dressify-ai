@@ -8,7 +8,7 @@ const NotFound: FC = () => {
     const handleBack = () => {};
 
     return (
-        <div className="px-8 py-4 flex flex-col gap-4 justify-center items-center">
+        <div className="py-4 px-4 md:px-8 flex flex-col gap-4 justify-center items-center">
             <h1 className="text-center text-7xl">
                 {t('Pages.NotFound.title')}
             </h1>
