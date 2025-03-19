@@ -8,6 +8,15 @@ export const ru = {
                         register: 'Регистрация'
                     }
                 }
+            },
+            Pages: {
+                NotFound: {
+                    title: '404 Страница не найдена',
+                    description: 'Страница, которую вы ищете, не существует.'
+                }
+            },
+            General: {
+                goBack: 'Назад'
             }
         }
     }
