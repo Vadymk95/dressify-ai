@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
-export const WhatToWear: FC = () => {
+const WhatToWear: FC = () => {
     return <div>What to Wear</div>;
 };
+
+export default WhatToWear;

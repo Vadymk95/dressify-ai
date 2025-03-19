@@ -1,4 +1,2 @@
-/* reset */
-@import './reset.css';
-
+/* tailwind */
 @import 'tailwindcss';
