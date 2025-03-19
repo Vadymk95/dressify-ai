@@ -1,4 +1,3 @@
-export { ErrorBoundary } from './ErrorBoundary';
-export { Footer } from './Footer';
-export { Header } from './Header';
-export { Main } from './Main';
+export * from './common';
+export * from './layout';
+export * from './ui';

@@ -1,8 +1,14 @@
 export const en = {
     en: {
         translation: {
-            Hello: 'Hello',
-            World: 'World'
+            Components: {
+                Common: {
+                    AuthNavigation: {
+                        login: 'Login',
+                        register: 'Register'
+                    }
+                }
+            }
         }
     }
 };

@@ -1,8 +1,14 @@
 export const ru = {
     ru: {
         translation: {
-            Hello: 'Привет',
-            World: 'Мир'
+            Components: {
+                Common: {
+                    AuthNavigation: {
+                        login: 'Войти',
+                        register: 'Регистрация'
+                    }
+                }
+            }
         }
     }
 };

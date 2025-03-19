@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { App } from '@root/App.tsx';
-import { ErrorBoundary } from '@root/components/ErrorBoundary';
+import { ErrorBoundary } from '@root/components/common/ErrorBoundary';
 
-import './assets/styles/index.css';
-import './i18n';
+import '@root/assets/styles/index.css';
+import '@root/i18n';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
