@@ -5,7 +5,8 @@ export const ru = {
                 Common: {
                     AuthNavigation: {
                         login: 'Войти',
-                        register: 'Регистрация'
+                        register: 'Регистрация',
+                        logout: 'Выйти'
                     }
                 }
             },

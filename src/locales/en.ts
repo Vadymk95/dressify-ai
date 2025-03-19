@@ -5,7 +5,8 @@ export const en = {
                 Common: {
                     AuthNavigation: {
                         login: 'Login',
-                        register: 'Register'
+                        register: 'Register',
+                        logout: 'Logout'
                     }
                 }
             },
