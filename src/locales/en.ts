@@ -6,7 +6,7 @@ export const en = {
                     AuthNavigation: {
                         login: 'Sign In',
                         register: 'Sign Up',
-                        logout: 'Logout'
+                        logout: 'Sign Out'
                     }
                 }
             },
