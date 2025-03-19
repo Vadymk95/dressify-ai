@@ -3,5 +3,5 @@ import { ru } from '@root/locales/ru';
 
 export const resources = {
     ...ru,
-    ...en,
+    ...en
 };

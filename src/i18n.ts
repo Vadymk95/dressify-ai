@@ -9,8 +9,8 @@ i18n.use(LanguageDetector)
         resources,
         fallbackLng: 'en',
         interpolation: {
-            escapeValue: false,
-        },
+            escapeValue: false
+        }
     });
 
 export default i18n;

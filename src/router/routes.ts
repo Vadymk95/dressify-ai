@@ -5,5 +5,5 @@ export const routes = {
     whatToWear: '/what-to-wear',
     wardrobe: '/wardrobe',
 
-    notFound: '*',
+    notFound: '*'
 };
