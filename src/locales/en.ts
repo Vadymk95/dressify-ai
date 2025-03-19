@@ -4,8 +4,8 @@ export const en = {
             Components: {
                 Common: {
                     AuthNavigation: {
-                        login: 'Login',
-                        register: 'Register',
+                        login: 'Sign In',
+                        register: 'Sign Up',
                         logout: 'Logout'
                     }
                 }
