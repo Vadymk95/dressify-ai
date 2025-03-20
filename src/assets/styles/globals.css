@@ -1,7 +1,12 @@
+:root {
+    --primary-background: #f8f4e3;
+    --primary-textColor: #323438;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f8f4e3;
-    color: #323438;
+    background-color: var(--primary-background);
+    color: var(--primary-textColor);
 }
 
 @keyframes fadeInUp {
@@ -16,4 +21,12 @@ body {
 }
 .animate-fadeInUp {
     animation: fadeInUp 0.8s ease-out;
+}
+
+.main-bg {
+    background-color: var(--primary-background);
+}
+
+.main-text {
+    color: var(--primary-textColor);
 }
