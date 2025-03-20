@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -24,8 +24,11 @@ const Register: FC = () => {
         register,
         handleSubmit,
         watch,
+        control,
         formState: { errors }
-    } = useForm<RegisterForm>();
+    } = useForm<RegisterForm>({
+        mode: 'onChange'
+    });
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -133,41 +136,49 @@ const Register: FC = () => {
                     )}
                 </div>
 
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        className="bg-gray-200"
-                        id="terms"
-                        {...register('agree', { required: true })}
-                    />
-                    <label htmlFor="terms" className="text-sm">
-                        {t('Pages.Register.text1')}{' '}
-                        <a
-                            href={routes.privacyPolicy}
-                            target="_blank"
-                            className="text-red-500 hover:underline"
-                        >
-                            {t('Pages.Register.text2')}
-                        </a>{' '}
-                        {t('Pages.Register.text3')}{' '}
-                        <a
-                            href={routes.termsOfUse}
-                            target="_blank"
-                            className="text-red-500 hover:underline"
-                        >
-                            {t('Pages.Register.text4')}
-                        </a>
-                    </label>
-                </div>
-
+                <Controller
+                    control={control}
+                    name="agree"
+                    rules={{
+                        required: t('Pages.Register.errors.agreeRequired')
+                    }}
+                    render={({ field }) => (
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="agree"
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                            />
+                            <label htmlFor="agree" className="text-sm">
+                                {t('Pages.Register.text1')}{' '}
+                                <a
+                                    href={routes.privacyPolicy}
+                                    target="_blank"
+                                    className="text-red-500 hover:underline"
+                                >
+                                    {t('Pages.Register.text2')}
+                                </a>{' '}
+                                {t('Pages.Register.text3')}{' '}
+                                <a
+                                    href={routes.termsOfUse}
+                                    target="_blank"
+                                    className="text-red-500 hover:underline"
+                                >
+                                    {t('Pages.Register.text4')}
+                                </a>
+                            </label>
+                        </div>
+                    )}
+                />
                 {errors.agree && (
                     <p className="text-sm text-red-500 mt-1">
-                        {t('Pages.Register.errors.agreeRequired')}
+                        {errors.agree.message}
                     </p>
                 )}
 
                 <Button
                     type="submit"
-                    className="w-full bg-red-500 hover:bg-red-600 py-5 text-white"
+                    className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-300 py-5 text-white"
                 >
                     {t('Pages.Register.title')}
                 </Button>
