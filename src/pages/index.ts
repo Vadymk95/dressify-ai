@@ -1,6 +1,9 @@
+export { ContactUs } from './ContactUs';
 export { Home } from './Home';
 export { Login } from './Login';
 export { NotFound } from './NotFound';
+export { PrivacyPolicy } from './PrivacyPolicy';
 export { Register } from './Register';
+export { TermsOfUse } from './TermsOfUse';
 export { Wardrobe } from './Wardrobe';
 export { WhatToWear } from './WhatToWear';

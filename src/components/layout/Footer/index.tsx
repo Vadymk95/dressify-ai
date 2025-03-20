@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { routes } from '../../../router';
 
 export const Footer: FC = () => {
     const { t } = useTranslation();
@@ -14,16 +15,19 @@ export const Footer: FC = () => {
 
                 <nav className="flex gap-4 mb-4 md:mb-0">
                     <Link
-                        to="/privacy"
+                        to={routes.privacyPolicy}
                         className="hover:text-red-400 transition"
                     >
                         {t('Components.Footer.privacy')}
                     </Link>
-                    <Link to="/terms" className="hover:text-red-400 transition">
+                    <Link
+                        to={routes.termsOfUse}
+                        className="hover:text-red-400 transition"
+                    >
                         {t('Components.Footer.terms')}
                     </Link>
                     <Link
-                        to="/contact"
+                        to={routes.contactUs}
                         className="hover:text-red-400 transition"
                     >
                         {t('Components.Footer.contact')}

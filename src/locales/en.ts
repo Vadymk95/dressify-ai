@@ -55,6 +55,39 @@ export const en = {
                 NotFound: {
                     title: '404 Not Found',
                     description: 'The page you are looking for does not exist.'
+                },
+                PrivacyPolicy: {
+                    title: 'Privacy Policy',
+                    intro: 'We respect your privacy and do not share your personal data.',
+                    data: {
+                        title: 'What data we collect',
+                        description:
+                            'Your location, age, gender, and preferences for accurate clothing recommendations.'
+                    },
+                    security: {
+                        title: 'Data security',
+                        description:
+                            'Your data is securely stored and never shared without your consent.'
+                    }
+                },
+                TermsOfUse: {
+                    title: 'Terms of Use',
+                    intro: 'By using our app, you agree to the following terms.',
+                    usage: {
+                        title: 'Proper usage',
+                        description:
+                            'You agree to provide accurate information for personalized recommendations.'
+                    },
+                    responsibility: {
+                        title: 'Our Responsibility',
+                        description:
+                            'We are not liable for incorrect clothing recommendations due to incorrect data provided.'
+                    }
+                },
+                ContactUs: {
+                    title: 'Contact Us',
+                    description:
+                        "Have questions or feedback? Please leave a message below, and we'll get back to you shortly."
                 }
             },
             General: {

@@ -2,7 +2,17 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { WithSuspense } from '@/hocs/WithSuspense';
-import { Home, Login, NotFound, Register, Wardrobe, WhatToWear } from '@/pages';
+import {
+    ContactUs,
+    Home,
+    Login,
+    NotFound,
+    PrivacyPolicy,
+    Register,
+    TermsOfUse,
+    Wardrobe,
+    WhatToWear
+} from '@/pages';
 import { routes } from '@/router/routes';
 
 export const AppRouter: FC = () => {
@@ -30,6 +40,21 @@ export const AppRouter: FC = () => {
             <Route
                 path={routes.register}
                 element={WithSuspense(<Register />)}
+            />
+
+            <Route
+                path={routes.privacyPolicy}
+                element={WithSuspense(<PrivacyPolicy />)}
+            />
+
+            <Route
+                path={routes.termsOfUse}
+                element={WithSuspense(<TermsOfUse />)}
+            />
+
+            <Route
+                path={routes.contactUs}
+                element={WithSuspense(<ContactUs />)}
             />
         </Routes>
     );
