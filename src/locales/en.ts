@@ -13,7 +13,15 @@ export const en = {
                     Feedback: {
                         title: 'Help us become better!',
                         placeholder: 'Leave your feedback here...',
-                        send: 'Send Feedback'
+                        emailPlaceholder: 'Email',
+                        send: 'Send Feedback',
+                        sending: 'Sending...',
+                        errors: {
+                            emailRequired: 'Email is required',
+                            invalidEmail: 'Invalid email address',
+                            messageRequired: 'Feedback message is required'
+                        },
+                        successMessage: 'Feedback sent successfully!'
                     }
                 },
                 Footer: {
