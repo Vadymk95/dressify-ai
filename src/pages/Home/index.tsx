@@ -1,15 +1,28 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { Feedback } from '@/components/features/Feedback';
 import { routes } from '@/router/routes';
 
 export const Home: FC = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    const siteTitle = t('Pages.Home.meta.title');
+    const siteDescription = t('Pages.Home.meta.description');
 
     return (
         <div className="flex flex-col items-center w-full animate-fadeInUp">
+            <Helmet>
+                <html lang={i18n.language} />
+                <title>{siteTitle}</title>
+                <meta name="description" content={siteDescription} />
+                <meta property="og:title" content={siteTitle} />
+                <meta property="og:description" content={siteDescription} />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
             <section className="w-full bg-gradient-to-r from-red-400 to-orange-400 text-white py-16 px-6 text-center rounded-b-3xl shadow-md">
                 <h1 className="text-3xl md:text-5xl font-bold mb-4">
                     {t('Pages.Home.title')}

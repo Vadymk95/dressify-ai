@@ -50,6 +50,11 @@ export const en = {
                     ctaBlock: {
                         cta: 'Start now',
                         description: 'Free sign-up in just 1 minute'
+                    },
+                    meta: {
+                        title: 'DressifyAI - AI Clothing Recommendations',
+                        description:
+                            'Get personalized clothing suggestions based on weather, age, gender, and occasion.'
                     }
                 },
                 NotFound: {
