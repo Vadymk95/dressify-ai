@@ -79,30 +79,34 @@ const Login: FC = () => {
                     )}
                 </div>
 
-                <div className="relative">
-                    <Input
-                        className="bg-gray-100 py-5"
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder={t('Pages.Login.password')}
-                        {...register('password', {
-                            required: t('Pages.Login.errors.passwordRequired'),
-                            minLength: {
-                                value: 8,
-                                message: t(
-                                    'Pages.Login.errors.passwordMinLength'
-                                )
-                            }
-                        })}
-                    />
-                    <button
-                        type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                        <FontAwesomeIcon
-                            icon={showPassword ? faEye : faEyeSlash}
+                <div>
+                    <div className="relative">
+                        <Input
+                            className="bg-gray-100 py-5"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder={t('Pages.Login.password')}
+                            {...register('password', {
+                                required: t(
+                                    'Pages.Login.errors.passwordRequired'
+                                ),
+                                minLength: {
+                                    value: 8,
+                                    message: t(
+                                        'Pages.Login.errors.passwordMinLength'
+                                    )
+                                }
+                            })}
                         />
-                    </button>
+                        <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                            <FontAwesomeIcon
+                                icon={showPassword ? faEye : faEyeSlash}
+                            />
+                        </button>
+                    </div>
                     {errors.password && (
                         <p className="text-sm text-red-500 mt-1">
                             {errors.password.message}
