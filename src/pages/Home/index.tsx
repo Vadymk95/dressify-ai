@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { Feedback } from '@/components/features/Feedback';
-import { Button } from '@/components/ui/button';
+import { routes } from '@/router/routes';
 
 export const Home: FC = () => {
     const { t } = useTranslation();
@@ -16,9 +17,12 @@ export const Home: FC = () => {
                 <p className="text-lg md:text-xl max-w-2xl mx-auto mb-6">
                     {t('Pages.Home.description')}
                 </p>
-                <Button className="bg-white text-red-500 font-semibold px-6 py-3 text-lg rounded-lg shadow-lg transition hover:bg-gray-100 cursor-pointer">
+                <Link
+                    to={routes.login}
+                    className="bg-white text-red-500 font-semibold px-6 py-3 text-lg rounded-lg shadow-lg transition hover:bg-gray-100 cursor-pointer"
+                >
                     {t('Pages.Home.tryForFree')}
-                </Button>
+                </Link>
             </section>
 
             <section className="mt-12 px-6 max-w-3xl text-center">
@@ -83,9 +87,12 @@ export const Home: FC = () => {
                 <p className="mb-6 text-lg opacity-90">
                     {t('Pages.Home.ctaBlock.description')}
                 </p>
-                <Button className="bg-white text-red-500 font-semibold px-8 py-3 text-lg rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer">
+                <Link
+                    to={routes.register}
+                    className="block bg-white text-red-500 font-semibold px-8 py-3 text-lg rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer"
+                >
                     {t('Pages.Home.tryForFree')}
-                </Button>
+                </Link>
             </section>
 
             <section className="mt-16 w-full px-6">
