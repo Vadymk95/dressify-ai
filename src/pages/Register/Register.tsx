@@ -43,12 +43,14 @@ const Register: FC = () => {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <Input
+                    className="bg-gray-100"
                     placeholder={t('Pages.Register.email')}
                     {...register('email', { required: true })}
                 />
 
                 <div className="relative">
                     <Input
+                        className="bg-gray-100"
                         type={showPassword ? 'text' : 'password'}
                         placeholder={t('Pages.Register.password')}
                         {...register('password', { required: true })}
@@ -66,6 +68,7 @@ const Register: FC = () => {
 
                 <div className="relative">
                     <Input
+                        className="bg-gray-100"
                         type={showConfirmPassword ? 'text' : 'password'}
                         placeholder={t('Pages.Register.confirmPassword')}
                         {...register('confirmPassword', { required: true })}
@@ -109,7 +112,7 @@ const Register: FC = () => {
 
                 <Button
                     type="submit"
-                    className="w-full bg-red-500 hover:bg-red-600 text-white"
+                    className="w-full bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                 >
                     {t('Pages.Register.title')}
                 </Button>

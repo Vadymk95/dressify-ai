@@ -31,12 +31,14 @@ const Login: FC = () => {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <Input
+                    className="bg-gray-100"
                     placeholder={t('Pages.Login.email')}
                     {...register('email', { required: true })}
                 />
 
                 <div className="relative">
                     <Input
+                        className="bg-gray-100"
                         type={showPassword ? 'text' : 'password'}
                         placeholder={t('Pages.Login.password')}
                         {...register('password', {
