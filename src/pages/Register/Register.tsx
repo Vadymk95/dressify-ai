@@ -11,30 +11,30 @@ import { routes } from '@/router/routes';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-type RegisterForm = {
+interface RegisterForm {
     email: string;
     password: string;
     confirmPassword: string;
     agree: boolean;
-};
+}
 
 const Register: FC = () => {
     const { t } = useTranslation();
-    const { register, handleSubmit } = useForm<RegisterForm>();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors }
+    } = useForm<RegisterForm>();
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const onSubmit = (data: RegisterForm) => {
-        if (data.password !== data.confirmPassword) {
-            alert('Passwords do not match!');
-            return;
-        }
-        if (!data.agree) {
-            alert('You must agree to the terms!');
-            return;
-        }
-        console.log(data); // Здесь будет логика регистрации
+        console.log(data); // Здесь логика регистрации
     };
+
+    const password = watch('password');
 
     return (
         <div className="max-w-md mx-auto py-12 px-6">
@@ -42,46 +42,95 @@ const Register: FC = () => {
                 {t('Pages.Register.title')}
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <Input
-                    className="bg-gray-100 py-5"
-                    placeholder={t('Pages.Register.email')}
-                    {...register('email', { required: true })}
-                />
-
-                <div className="relative">
+                <div>
                     <Input
                         className="bg-gray-100 py-5"
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder={t('Pages.Register.password')}
-                        {...register('password', { required: true })}
+                        placeholder={t('Pages.Register.email')}
+                        {...register('email', {
+                            required: t('Pages.Register.errors.emailRequired'),
+                            pattern: {
+                                value: /^\S+@\S+\.\S+$/,
+                                message: t('Pages.Register.errors.invalidEmail')
+                            }
+                        })}
                     />
-                    <button
-                        type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                        <FontAwesomeIcon
-                            icon={showPassword ? faEye : faEyeSlash}
-                        />
-                    </button>
+                    {errors.email && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.email.message}
+                        </p>
+                    )}
                 </div>
 
-                <div className="relative">
-                    <Input
-                        className="bg-gray-100 py-5"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        placeholder={t('Pages.Register.confirmPassword')}
-                        {...register('confirmPassword', { required: true })}
-                    />
-                    <button
-                        type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    >
-                        <FontAwesomeIcon
-                            icon={showConfirmPassword ? faEye : faEyeSlash}
+                <div>
+                    <div className="relative">
+                        <Input
+                            className="bg-gray-100 py-5"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder={t('Pages.Register.password')}
+                            {...register('password', {
+                                required: t(
+                                    'Pages.Register.errors.passwordRequired'
+                                ),
+                                minLength: {
+                                    value: 8,
+                                    message: t(
+                                        'Pages.Register.errors.passwordMinLength'
+                                    )
+                                },
+                                pattern: {
+                                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                    message: t(
+                                        'Pages.Register.errors.passwordPattern'
+                                    )
+                                }
+                            })}
                         />
-                    </button>
+                        <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                            <FontAwesomeIcon
+                                icon={showPassword ? faEye : faEyeSlash}
+                            />
+                        </button>
+                    </div>
+                    {errors.password && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.password.message}
+                        </p>
+                    )}
+                </div>
+
+                <div>
+                    <div className="relative">
+                        <Input
+                            className="bg-gray-100 py-5"
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder={t('Pages.Register.confirmPassword')}
+                            {...register('confirmPassword', {
+                                validate: (value) =>
+                                    value === password ||
+                                    t('Pages.Register.errors.passwordsMismatch')
+                            })}
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            onClick={() =>
+                                setShowConfirmPassword((prev) => !prev)
+                            }
+                        >
+                            <FontAwesomeIcon
+                                icon={showConfirmPassword ? faEye : faEyeSlash}
+                            />
+                        </button>
+                    </div>
+                    {errors.confirmPassword && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.confirmPassword.message}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -110,9 +159,15 @@ const Register: FC = () => {
                     </label>
                 </div>
 
+                {errors.agree && (
+                    <p className="text-sm text-red-500 mt-1">
+                        {t('Pages.Register.errors.agreeRequired')}
+                    </p>
+                )}
+
                 <Button
                     type="submit"
-                    className="w-full bg-red-500 hover:bg-red-600 py-5 text-white cursor-pointer"
+                    className="w-full bg-red-500 hover:bg-red-600 py-5 text-white"
                 >
                     {t('Pages.Register.title')}
                 </Button>

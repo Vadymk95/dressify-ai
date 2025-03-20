@@ -119,7 +119,19 @@ export const en = {
                     text3: ' and ',
                     text4: 'Terms of Use',
                     haveAccount: 'Already have an account?',
-                    login: 'Sign In'
+                    login: 'Sign In',
+                    errors: {
+                        emailRequired: 'Email is required',
+                        invalidEmail: 'Invalid email address',
+                        passwordRequired: 'Password is required',
+                        passwordMinLength:
+                            'Password must be at least 8 characters',
+                        passwordPattern:
+                            'Password must contain letters and numbers',
+                        passwordsMismatch: 'Passwords do not match',
+                        agreeRequired:
+                            'You must agree with Privacy Policy and Terms of Use'
+                    }
                 }
             },
             General: {

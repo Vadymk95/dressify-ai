@@ -121,7 +121,19 @@ export const ru = {
                     text3: ' и ',
                     text4: 'Условиями использования',
                     haveAccount: 'Уже есть аккаунт?',
-                    login: 'Войти'
+                    login: 'Войти',
+                    errors: {
+                        emailRequired: 'Укажите электронную почту',
+                        invalidEmail: 'Некорректный формат электронной почты',
+                        passwordRequired: 'Введите пароль',
+                        passwordMinLength:
+                            'Пароль должен быть не менее 8 символов',
+                        passwordPattern:
+                            'Пароль должен содержать буквы и цифры',
+                        passwordsMismatch: 'Пароли не совпадают',
+                        agreeRequired:
+                            'Вы должны принять условия Политики конфиденциальности и Условия использования'
+                    }
                 }
             },
             General: {
