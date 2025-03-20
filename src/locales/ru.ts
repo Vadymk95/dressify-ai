@@ -8,6 +8,21 @@ export const ru = {
                         register: 'Регистрация',
                         logout: 'Выйти'
                     }
+                },
+                Features: {
+                    Feedback: {
+                        title: 'Помогите нам стать лучше!',
+                        placeholder: 'Оставьте ваш отзыв здесь...',
+                        send: 'Отправить отзыв'
+                    }
+                },
+                Layout: {
+                    Footer: {
+                        privacy: 'Политика конфиденциальности',
+                        terms: 'Условия использования',
+                        contact: 'Связаться с нами',
+                        copyright: 'Все права защищены.'
+                    }
                 }
             },
             Pages: {
@@ -45,6 +60,7 @@ export const ru = {
                 }
             },
             General: {
+                brandName: 'DressifyAI',
                 goBack: 'Назад'
             }
         }

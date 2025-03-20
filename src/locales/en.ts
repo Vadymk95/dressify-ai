@@ -8,6 +8,19 @@ export const en = {
                         register: 'Sign Up',
                         logout: 'Sign Out'
                     }
+                },
+                Features: {
+                    Feedback: {
+                        title: 'Help us become better!',
+                        placeholder: 'Leave your feedback here...',
+                        send: 'Send Feedback'
+                    }
+                },
+                Footer: {
+                    privacy: 'Privacy Policy',
+                    terms: 'Terms of Use',
+                    contact: 'Contact Us',
+                    copyright: 'All rights reserved.'
                 }
             },
             Pages: {
@@ -45,6 +58,7 @@ export const en = {
                 }
             },
             General: {
+                brandName: 'DressifyAI',
                 goBack: 'Go back'
             }
         }
