@@ -99,7 +99,15 @@ export const en = {
                     email: 'Email',
                     password: 'Password',
                     register: 'Sign Up',
-                    noAccount: "Don't have an account?"
+                    noAccount: "Don't have an account?",
+                    errors: {
+                        emailRequired: 'Email is required',
+                        invalidEmail: 'Invalid email address',
+                        passwordRequired: 'Password is required',
+                        passwordMinLength:
+                            'Password must be at least 8 characters',
+                        invalidCredentials: 'Invalid email or password'
+                    }
                 },
                 Register: {
                     title: 'Sign Up',

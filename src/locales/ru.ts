@@ -101,7 +101,15 @@ export const ru = {
                     email: 'Email',
                     password: 'Пароль',
                     register: 'Зарегистрироваться',
-                    noAccount: 'Нет аккаунта?'
+                    noAccount: 'Нет аккаунта?',
+                    errors: {
+                        emailRequired: 'Укажите электронную почту',
+                        invalidEmail: 'Некорректный формат электронной почты',
+                        passwordRequired: 'Введите пароль',
+                        passwordMinLength:
+                            'Пароль должен быть не менее 8 символов',
+                        invalidCredentials: 'Неверный логин или пароль'
+                    }
                 },
                 Register: {
                     title: 'Регистрация',

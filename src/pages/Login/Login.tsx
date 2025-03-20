@@ -17,24 +17,67 @@ type LoginForm = {
 
 const Login: FC = () => {
     const { t } = useTranslation();
-    const { register, handleSubmit } = useForm<LoginForm>();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError,
+        clearErrors
+    } = useForm<LoginForm>();
+
     const [showPassword, setShowPassword] = useState(false);
 
     const onSubmit = (data: LoginForm) => {
-        console.log(data); // Здесь будет логика авторизации
+        clearErrors();
+
+        // Эмуляция запроса на сервер
+        fakeLoginRequest(data)
+            .then(() => {
+                console.log('Success login');
+            })
+            .catch(() => {
+                setError('root', {
+                    type: 'server',
+                    message: t('Pages.Login.errors.invalidCredentials')
+                });
+            });
     };
+
+    // фейковый запрос для демонстрации
+    const fakeLoginRequest = ({ email, password }: LoginForm) =>
+        new Promise((resolve, reject) => {
+            if (email === 'user@example.com' && password === 'password123') {
+                resolve('ok');
+            } else {
+                reject('Invalid credentials');
+            }
+        });
 
     return (
         <div className="max-w-md mx-auto py-12 px-6">
             <h2 className="text-2xl font-semibold text-center mb-6">
                 {t('Pages.Login.title')}
             </h2>
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <Input
-                    className="bg-gray-100 py-5"
-                    placeholder={t('Pages.Login.email')}
-                    {...register('email', { required: true })}
-                />
+                <div>
+                    <Input
+                        className="bg-gray-100 py-5"
+                        placeholder={t('Pages.Login.email')}
+                        {...register('email', {
+                            required: t('Pages.Login.errors.emailRequired'),
+                            pattern: {
+                                value: /^\S+@\S+\.\S+$/,
+                                message: t('Pages.Login.errors.invalidEmail')
+                            }
+                        })}
+                    />
+                    {errors.email && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.email.message}
+                        </p>
+                    )}
+                </div>
 
                 <div className="relative">
                     <Input
@@ -42,8 +85,13 @@ const Login: FC = () => {
                         type={showPassword ? 'text' : 'password'}
                         placeholder={t('Pages.Login.password')}
                         {...register('password', {
-                            required: true,
-                            minLength: 8
+                            required: t('Pages.Login.errors.passwordRequired'),
+                            minLength: {
+                                value: 8,
+                                message: t(
+                                    'Pages.Login.errors.passwordMinLength'
+                                )
+                            }
                         })}
                     />
                     <button
@@ -55,7 +103,18 @@ const Login: FC = () => {
                             icon={showPassword ? faEye : faEyeSlash}
                         />
                     </button>
+                    {errors.password && (
+                        <p className="text-sm text-red-500 mt-1">
+                            {errors.password.message}
+                        </p>
+                    )}
                 </div>
+
+                {errors.root && (
+                    <p className="text-sm text-red-500 text-center">
+                        {errors.root.message}
+                    </p>
+                )}
 
                 <Button
                     type="submit"
