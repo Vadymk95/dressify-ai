@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -10,10 +10,6 @@ export const Home: FC = () => {
 
     const siteTitle = t('Pages.Home.meta.title');
     const siteDescription = t('Pages.Home.meta.description');
-
-    useEffect(() => {
-        console.log(document);
-    }, []);
 
     return (
         <div className="flex flex-col items-center w-full animate-fadeInUp">

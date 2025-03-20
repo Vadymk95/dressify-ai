@@ -93,6 +93,25 @@ export const en = {
                     title: 'Contact Us',
                     description:
                         "Have questions or feedback? Please leave a message below, and we'll get back to you shortly."
+                },
+                Login: {
+                    title: 'Sign In',
+                    email: 'Email',
+                    password: 'Password',
+                    register: 'Sign Up',
+                    noAccount: "Don't have an account?"
+                },
+                Register: {
+                    title: 'Sign Up',
+                    email: 'Email',
+                    password: 'Password',
+                    confirmPassword: 'Confirm Password',
+                    text1: 'I agree with ',
+                    text2: 'Privacy Policy',
+                    text3: ' and ',
+                    text4: 'Terms of Use',
+                    haveAccount: 'Already have an account?',
+                    login: 'Sign In'
                 }
             },
             General: {

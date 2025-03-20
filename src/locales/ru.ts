@@ -95,6 +95,25 @@ export const ru = {
                     title: 'Связаться с нами',
                     description:
                         'Есть вопросы или предложения? Оставьте сообщение ниже, и мы вскоре вам ответим.'
+                },
+                Login: {
+                    title: 'Войти',
+                    email: 'Email',
+                    password: 'Пароль',
+                    register: 'Зарегистрироваться',
+                    noAccount: 'Нет аккаунта?'
+                },
+                Register: {
+                    title: 'Регистрация',
+                    email: 'Email',
+                    password: 'Пароль',
+                    confirmPassword: 'Подтвердите пароль',
+                    text1: 'Я согласен с ',
+                    text2: 'Политикой конфиденциальности',
+                    text3: ' и ',
+                    text4: 'Условиями использования',
+                    haveAccount: 'Уже есть аккаунт?',
+                    login: 'Войти'
                 }
             },
             General: {
