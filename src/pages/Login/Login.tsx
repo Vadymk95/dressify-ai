@@ -25,20 +25,20 @@ const Login: FC = () => {
     };
 
     return (
-        <div className="max-w-sm mx-auto py-12 px-6">
+        <div className="max-w-md mx-auto py-12 px-6">
             <h2 className="text-2xl font-semibold text-center mb-6">
                 {t('Pages.Login.title')}
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <Input
-                    className="bg-gray-100"
+                    className="bg-gray-100 py-5"
                     placeholder={t('Pages.Login.email')}
                     {...register('email', { required: true })}
                 />
 
                 <div className="relative">
                     <Input
-                        className="bg-gray-100"
+                        className="bg-gray-100 py-5"
                         type={showPassword ? 'text' : 'password'}
                         placeholder={t('Pages.Login.password')}
                         {...register('password', {
@@ -59,7 +59,7 @@ const Login: FC = () => {
 
                 <Button
                     type="submit"
-                    className="w-full bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                    className="w-full bg-red-500 hover:bg-red-600 text-white cursor-pointer py-5"
                 >
                     {t('Pages.Login.title')}
                 </Button>
