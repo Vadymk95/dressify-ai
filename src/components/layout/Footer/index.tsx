@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { routes } from '../../../router';
+
+import { Logo } from '@/components/common/Logo';
+import { routes } from '@/router/routes';
 
 export const Footer: FC = () => {
     const { t } = useTranslation();
@@ -9,9 +11,7 @@ export const Footer: FC = () => {
     return (
         <footer className="bg-gray-100 py-8 px-4 md:px-8 mt-12 text-gray-600">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
-                <div className="text-xl font-semibold text-red-500 mb-4 md:mb-0">
-                    {t('General.brandName')}
-                </div>
+                <Logo variant="secondary" />
 
                 <nav className="flex gap-4 mb-4 md:mb-0">
                     <Link
