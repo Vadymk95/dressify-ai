@@ -72,22 +72,13 @@ export const useAuthStore = create<AuthState>((set) => ({
             let errorMessage = '';
             switch (error.code) {
                 case 'auth/user-not-found':
-                    errorMessage = t(
-                        'Pages.Login.errors.userNotFound',
-                        'Пользователь не найден.'
-                    );
+                    errorMessage = t('Pages.Login.errors.userNotFound');
                     break;
                 case 'auth/wrong-password':
-                    errorMessage = t(
-                        'Pages.Login.errors.wrongPassword',
-                        'Неверный пароль.'
-                    );
+                    errorMessage = t('Pages.Login.errors.wrongPassword');
                     break;
                 default:
-                    errorMessage = t(
-                        'Pages.Login.errors.genericError',
-                        'Произошла ошибка. Попробуйте позже.'
-                    );
+                    errorMessage = t('Pages.Login.errors.genericError');
                     break;
             }
             set({ error: errorMessage, loading: false });
