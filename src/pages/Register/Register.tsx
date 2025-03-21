@@ -1,12 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { Loader } from '@/components/common/Loader';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { routes } from '@/router/routes';
+import { useAuthStore } from '@/store/authStore';
 
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,6 +22,13 @@ interface RegisterForm {
 
 const Register: FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const {
+        register: registerUser,
+        loading,
+        error,
+        clearError
+    } = useAuthStore();
     const {
         register,
         handleSubmit,
@@ -33,11 +42,28 @@ const Register: FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const onSubmit = (data: RegisterForm) => {
-        console.log(data); // Здесь логика регистрации
+    const onSubmit = async (data: RegisterForm) => {
+        if (data.password !== data.confirmPassword) return;
+
+        const success = await registerUser(data.email, data.password);
+
+        if (success) {
+            navigate(routes.whatToWear);
+        }
     };
 
     const password = watch('password');
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => clearError(), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error, clearError]);
+
+    if (loading) {
+        <Loader />;
+    }
 
     return (
         <div className="max-w-md mx-auto py-12 px-6">
@@ -175,6 +201,8 @@ const Register: FC = () => {
                         {errors.agree.message}
                     </p>
                 )}
+
+                {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
 
                 <Button
                     type="submit"

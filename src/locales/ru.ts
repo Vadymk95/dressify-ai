@@ -129,7 +129,10 @@ export const ru = {
                         passwordRequired: 'Введите пароль',
                         passwordMinLength:
                             'Пароль должен быть не менее 8 символов',
-                        invalidCredentials: 'Неверный логин или пароль'
+                        invalidCredentials: 'Неверный логин или пароль',
+                        userNotFound: 'Пользователь не найден.',
+                        wrongPassword: 'Неверный пароль.',
+                        genericError: 'Произошла ошибка. Попробуйте позже.'
                     }
                 },
                 Register: {
@@ -144,6 +147,10 @@ export const ru = {
                     haveAccount: 'Уже есть аккаунт?',
                     login: 'Войти',
                     errors: {
+                        invalidApiKey:
+                            'Неверный API ключ. Проверьте конфигурацию.',
+                        emailAlreadyInUse: 'Этот email уже используется.',
+                        genericError: 'Произошла ошибка. Попробуйте позже.',
                         emailRequired: 'Укажите электронную почту',
                         invalidEmail: 'Некорректный формат электронной почты',
                         passwordRequired: 'Введите пароль',

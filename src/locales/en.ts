@@ -126,7 +126,11 @@ export const en = {
                         passwordRequired: 'Password is required',
                         passwordMinLength:
                             'Password must be at least 8 characters',
-                        invalidCredentials: 'Invalid email or password'
+                        invalidCredentials: 'Invalid email or password',
+                        userNotFound: 'User not found.',
+                        wrongPassword: 'Wrong password.',
+                        genericError:
+                            'An error occurred. Please try again later.'
                     }
                 },
                 Register: {
@@ -141,6 +145,11 @@ export const en = {
                     haveAccount: 'Already have an account?',
                     login: 'Sign In',
                     errors: {
+                        invalidApiKey:
+                            'Invalid API key. Please check your configuration.',
+                        emailAlreadyInUse: 'This email is already in use.',
+                        genericError:
+                            'An error occurred. Please try again later.',
                         emailRequired: 'Email is required',
                         invalidEmail: 'Invalid email address',
                         passwordRequired: 'Password is required',
