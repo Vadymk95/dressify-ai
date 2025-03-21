@@ -1,11 +1,11 @@
+import { FC } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { db } from '@/firebase/firebaseConfig'; // ваш файл конфигурации firebase
-import { addDoc, collection } from 'firebase/firestore';
-import { FC, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { useFeedbackStore } from '@/store/feedbackStore';
 
 type FeedbackFormData = {
     email: string;
@@ -20,22 +20,15 @@ export const Feedback: FC = () => {
         reset,
         formState: { errors }
     } = useForm<FeedbackFormData>();
-
-    const [loading, setLoading] = useState(false);
-    const [feedbackSent, setFeedbackSent] = useState(false);
+    const { loading, error, feedbackSent, sendFeedback, resetFeedbackStatus } =
+        useFeedbackStore();
 
     const onSubmit: SubmitHandler<FeedbackFormData> = async (data) => {
-        setLoading(true);
-        try {
-            await addDoc(collection(db, 'feedback'), data);
-            setFeedbackSent(true);
+        await sendFeedback(data);
+
+        if (!error) {
             reset();
-            setTimeout(() => setFeedbackSent(false), 3000);
-        } catch (error) {
-            console.error('Error sending feedback:', error);
-            // Можно добавить вывод ошибки пользователю
-        } finally {
-            setLoading(false);
+            setTimeout(() => resetFeedbackStatus(), 3000);
         }
     };
 
@@ -51,22 +44,18 @@ export const Feedback: FC = () => {
             >
                 <div>
                     <Input
-                        placeholder={
-                            t(
-                                'Components.Features.Feedback.emailPlaceholder'
-                            ) || 'Email'
-                        }
+                        placeholder={t(
+                            'Components.Features.Feedback.emailPlaceholder'
+                        )}
                         {...register('email', {
-                            required:
-                                t(
-                                    'Components.Features.Feedback.errors.emailRequired'
-                                ) || 'Email is required',
+                            required: t(
+                                'Components.Features.Feedback.errors.emailRequired'
+                            ),
                             pattern: {
                                 value: /^\S+@\S+\.\S+$/,
-                                message:
-                                    t(
-                                        'Components.Features.Feedback.errors.invalidEmail'
-                                    ) || 'Invalid email address'
+                                message: t(
+                                    'Components.Features.Feedback.errors.invalidEmail'
+                                )
                             }
                         })}
                         className="bg-gray-100 py-5"
@@ -84,10 +73,9 @@ export const Feedback: FC = () => {
                             'Components.Features.Feedback.placeholder'
                         )}
                         {...register('message', {
-                            required:
-                                t(
-                                    'Components.Features.Feedback.errors.messageRequired'
-                                ) || 'Message is required'
+                            required: t(
+                                'Components.Features.Feedback.errors.messageRequired'
+                            )
                         })}
                         name="message"
                         required
@@ -102,8 +90,7 @@ export const Feedback: FC = () => {
 
                 {feedbackSent && (
                     <p className="text-green-500 text-center">
-                        {t('Components.Features.Feedback.successMessage') ||
-                            'Feedback sent successfully!'}
+                        {t('Components.Features.Feedback.successMessage')}
                     </p>
                 )}
 
@@ -113,8 +100,7 @@ export const Feedback: FC = () => {
                     disabled={loading}
                 >
                     {loading
-                        ? t('Components.Features.Feedback.sending') ||
-                          'Sending...'
+                        ? t('Components.Features.Feedback.sending')
                         : t('Components.Features.Feedback.send')}
                 </Button>
             </form>

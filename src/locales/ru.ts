@@ -147,7 +147,8 @@ export const ru = {
             },
             General: {
                 brandName: 'DressifyAI',
-                goBack: 'Назад'
+                goBack: 'Назад',
+                sending: 'Отправка...'
             }
         }
     }
