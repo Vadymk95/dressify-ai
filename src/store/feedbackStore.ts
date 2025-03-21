@@ -1,4 +1,3 @@
-// src/store/useFeedbackStore.ts
 import { db } from '@/firebase/firebaseConfig';
 import { addDoc, collection } from 'firebase/firestore';
 import { create } from 'zustand';

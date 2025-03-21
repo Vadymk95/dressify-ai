@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { Feedback } from '@/components/features/Feedback';
 import { routes } from '@/router/routes';
 
 export const Home: FC = () => {
@@ -104,8 +103,37 @@ export const Home: FC = () => {
                 </Link>
             </section>
 
-            <section className="mt-16 w-full px-6">
-                <Feedback />
+            <section className="mt-16 px-6 max-w-3xl text-center">
+                {' '}
+                <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+                    {t('Pages.Home.hookBlock.title')}
+                </h2>
+                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <li className="p-4 bg-white shadow-md rounded-lg transition-transform hover:scale-105">
+                        <h3 className="text-lg font-semibold">
+                            {t('Pages.Home.hookBlock.title1')}
+                        </h3>
+                        <p className="text-gray-600">
+                            {t('Pages.Home.hookBlock.description1')}
+                        </p>
+                    </li>
+                    <li className="p-4 bg-white shadow-md rounded-lg transition-transform hover:scale-105">
+                        <h3 className="text-lg font-semibold">
+                            {t('Pages.Home.hookBlock.title2')}
+                        </h3>
+                        <p className="text-gray-600">
+                            {t('Pages.Home.hookBlock.description2')}
+                        </p>
+                    </li>
+                    <li className="p-4 bg-white shadow-md rounded-lg transition-transform hover:scale-105">
+                        <h3 className="text-lg font-semibold">
+                            {t('Pages.Home.hookBlock.title3')}
+                        </h3>
+                        <p className="text-gray-600">
+                            {t('Pages.Home.hookBlock.description3')}
+                        </p>
+                    </li>
+                </ul>
             </section>
         </div>
     );

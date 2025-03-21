@@ -59,6 +59,18 @@ export const en = {
                         cta: 'Start now',
                         description: 'Free sign-up in just 1 minute'
                     },
+                    hookBlock: {
+                        title: 'Why try us?',
+                        title1: '☀️ Peaceful Mornings',
+                        description1:
+                            'Forget the chaos of choosing your outfit every morning. Our service eliminates morning stress so you can start your day confidently.',
+                        title2: '⏰ Time-saving',
+                        description2:
+                            'Save precious minutes in the morning for the things that really matter. Your perfect outfit is already ready!',
+                        title3: '😎 Personal Style',
+                        description3:
+                            "Receive recommendations perfectly tailored to your wardrobe and the weather. It's not just an outfit—it's your unique style."
+                    },
                     meta: {
                         title: 'DressifyAI - AI Clothing Recommendations',
                         description:
