@@ -11,6 +11,8 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { t } from 'i18next';
 import { create } from 'zustand';
 
+import { useLanguageStore } from '@/store/languageStore';
+
 interface AuthState {
     user: User | null;
     loading: boolean;
@@ -41,12 +43,15 @@ export const useAuthStore = create<AuthState>((set) => ({
             // Отправляем письмо с подтверждением
             await sendEmailVerification(user);
 
+            const lang = useLanguageStore.getState().language || 'en';
+
             // Создаем документ в коллекции "users"
             await setDoc(doc(db, 'users', user.uid), {
                 uid: user.uid,
                 email: user.email,
                 createdAt: serverTimestamp(),
-                emailVerified: user.emailVerified
+                emailVerified: user.emailVerified,
+                lang
             });
 
             set({ user, loading: false });

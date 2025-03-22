@@ -1,5 +1,5 @@
-import { db } from '@/firebase/firebaseConfig';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { auth, db } from '@/firebase/firebaseConfig';
+import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
 export interface UserProfile {
@@ -7,6 +7,7 @@ export interface UserProfile {
     email: string | null;
     createdAt: Date | null;
     emailVerified: boolean;
+    lang: string;
 }
 
 interface UserProfileStore {
@@ -16,9 +17,10 @@ interface UserProfileStore {
     fetchUserProfile: (uid: string) => Promise<void>;
     subscribeToUserProfile: (uid: string) => () => void;
     clearProfile: () => void;
+    updateLanguage: (lang: string) => Promise<void>;
 }
 
-export const useUserProfileStore = create<UserProfileStore>((set) => ({
+export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
     profile: null,
     loading: false,
     error: null,
@@ -58,5 +60,29 @@ export const useUserProfileStore = create<UserProfileStore>((set) => ({
         return unsubscribe;
     },
 
-    clearProfile: () => set({ profile: null })
+    clearProfile: () => set({ profile: null }),
+
+    updateLanguage: async (lang: string) => {
+        set({ loading: true, error: null });
+        try {
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
+
+            // Обновляем поле lang в Firestore
+            await updateDoc(doc(db, 'users', currentUser.uid), { lang });
+
+            // Обновляем локальное состояние профиля
+            const currentProfile = get().profile;
+            if (currentProfile) {
+                set({
+                    profile: { ...currentProfile, lang },
+                    loading: false
+                });
+            } else {
+                set({ loading: false });
+            }
+        } catch (err: any) {
+            set({ error: err.message, loading: false });
+        }
+    }
 }));

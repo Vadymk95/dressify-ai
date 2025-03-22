@@ -1,3 +1,6 @@
+import { changeLanguage } from 'i18next';
+import { FC } from 'react';
+
 import {
     Select,
     SelectContent,
@@ -5,18 +8,21 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { FC, useState } from 'react';
-
-const languages = [
-    { code: 'en', label: 'Eng' },
-    { code: 'ru', label: 'Рус' }
-];
+import { languages } from '@/constants/languages';
+import { useLanguageStore } from '@/store/languageStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const LanguageSelect: FC = () => {
-    const [language, setLanguage] = useState('en');
+    const { updateLanguage, profile } = useUserProfileStore();
+    const { language, setLanguage } = useLanguageStore();
 
-    const handleChange = (value: string) => {
+    const handleChange = async (value: string) => {
         setLanguage(value);
+        changeLanguage(value);
+
+        if (profile) {
+            await updateLanguage(value);
+        }
     };
 
     return (
