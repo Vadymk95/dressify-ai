@@ -112,8 +112,10 @@ export const en = {
                 },
                 ContactUs: {
                     title: 'Contact Us',
-                    description:
-                        "Have questions or feedback? Please leave a message below, and we'll get back to you shortly."
+                    descriptionAuth:
+                        "Have questions or feedback? Please leave a message below, and we'll get back to you shortly.",
+                    descriptionNonAuth:
+                        "Have questions or feedback? Please send an email to this address, and we'll get back to you shortly."
                 },
                 Login: {
                     title: 'Sign In',
