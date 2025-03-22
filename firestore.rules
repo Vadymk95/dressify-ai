@@ -2,6 +2,15 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /users/{userId} {
+      // Разрешаем создание документа только если пользователь авторизован и его UID соответствует id документа
+      allow create: if request.auth != null && request.auth.uid == userId;
+      // Разрешаем обновление документа, если авторизованный пользователь обновляет свои данные
+      allow update: if request.auth != null && request.auth.uid == userId;
+      // Можно разрешить чтение, если нужно
+      allow read: if request.auth != null;
+    }
+    // Правила для отзывов остаются как есть
     match /feedback/{docId} {
       allow create: if request.auth != null;
       allow read, update, delete: if false;
