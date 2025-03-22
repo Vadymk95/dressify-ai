@@ -7,6 +7,7 @@ import {
     Home,
     Login,
     NotFound,
+    Pricing,
     PrivacyPolicy,
     Register,
     TermsOfUse,
@@ -57,11 +58,6 @@ export const AppRouter: FC = () => {
 
             {/* always available routes*/}
             <Route
-                path={routes.notFound}
-                element={WithSuspense(<NotFound />)}
-            />
-
-            <Route
                 path={routes.privacyPolicy}
                 element={WithSuspense(<PrivacyPolicy />)}
             />
@@ -74,6 +70,14 @@ export const AppRouter: FC = () => {
             <Route
                 path={routes.contactUs}
                 element={WithSuspense(<ContactUs />)}
+            />
+
+            <Route path={routes.pricing} element={WithSuspense(<Pricing />)} />
+
+            {/* not found */}
+            <Route
+                path={routes.notFound}
+                element={WithSuspense(<NotFound />)}
             />
         </Routes>
     );

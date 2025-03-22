@@ -24,6 +24,9 @@ export const en = {
                     }
                 },
                 Layout: {
+                    Header: {
+                        pricing: 'Pricing'
+                    },
                     Footer: {
                         privacy: 'Privacy Policy',
                         terms: 'Terms of Use',
@@ -161,6 +164,38 @@ export const en = {
                         passwordsMismatch: 'Passwords do not match',
                         agreeRequired:
                             'You must agree with Privacy Policy and Terms of Use'
+                    }
+                },
+                Pricing: {
+                    title: 'Choose Your Plan',
+                    subtitle: 'Find the perfect plan for your needs.',
+                    plans: {
+                        free: {
+                            title: 'Free',
+                            price: '$0 / month',
+                            feature1:
+                                'View weather for different cities and countries',
+                            feature2: 'Basic usage only',
+                            cta: 'Get Started'
+                        },
+                        monthly: {
+                            title: 'Standard',
+                            price: '$3 / month',
+                            feature1:
+                                'All Free features + AI outfit recommendations',
+                            feature2: 'Personalized settings for your wardrobe',
+                            cta: 'Choose Plan'
+                        },
+                        semiAnnual: {
+                            title: 'Best Value',
+                            oldPrice: '$18',
+                            price: '$15 / 6 months',
+                            save: 'You save $3',
+                            feature1: 'All Standard features for 6 months',
+                            feature2: 'One-time discounted payment',
+                            cta: 'Choose Plan',
+                            ribbon: 'Best Deal'
+                        }
                     }
                 }
             },

@@ -2,6 +2,7 @@ export { ContactUs } from './ContactUs';
 export { Home } from './Home';
 export { Login } from './Login';
 export { NotFound } from './NotFound';
+export { Pricing } from './Pricing';
 export { PrivacyPolicy } from './PrivacyPolicy';
 export { Register } from './Register';
 export { TermsOfUse } from './TermsOfUse';
