@@ -176,7 +176,7 @@ export const en = {
                             feature1:
                                 'View weather for different cities and countries',
                             feature2: 'Basic usage only',
-                            cta: 'Get Started'
+                            cta: 'Basic'
                         },
                         monthly: {
                             title: 'Standard',
@@ -184,7 +184,8 @@ export const en = {
                             feature1:
                                 'All Free features + AI outfit recommendations',
                             feature2: 'Personalized settings for your wardrobe',
-                            cta: 'Choose Plan'
+                            cta: 'Choose Plan',
+                            currentPlan: 'Current Plan'
                         },
                         semiAnnual: {
                             title: 'Best Value',
@@ -194,7 +195,8 @@ export const en = {
                             feature1: 'All Standard features for 6 months',
                             feature2: 'One-time discounted payment',
                             cta: 'Choose Plan',
-                            ribbon: 'Best Deal'
+                            ribbon: 'Best Deal',
+                            currentPlan: 'Current Plan'
                         }
                     }
                 }

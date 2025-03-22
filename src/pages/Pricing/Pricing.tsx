@@ -8,6 +8,9 @@ const Pricing: FC = () => {
     const { t } = useTranslation();
     const { profile } = useUserProfileStore();
     const userPlan = profile ? profile.plan : 'free';
+    const free = userPlan === 'free';
+    const monthly = userPlan === 'monthly';
+    const semiAnnual = userPlan === 'semiAnnual';
 
     return (
         <div className="max-w-6xl mx-auto py-12 px-6">
@@ -28,7 +31,7 @@ const Pricing: FC = () => {
                         t('Pages.Pricing.plans.free.feature2')
                     ]}
                     cta={t('Pages.Pricing.plans.free.cta')}
-                    isActive={userPlan === 'free'}
+                    isActive={free}
                 />
 
                 {/* MONTHLY PLAN */}
@@ -39,8 +42,10 @@ const Pricing: FC = () => {
                         t('Pages.Pricing.plans.monthly.feature1'),
                         t('Pages.Pricing.plans.monthly.feature2')
                     ]}
-                    cta={t('Pages.Pricing.plans.monthly.cta')}
-                    isActive={userPlan === 'monthly'}
+                    cta={t(
+                        `Pages.Pricing.plans.monthly.${monthly ? 'currentPlan' : 'cta'}`
+                    )}
+                    isActive={monthly}
                 />
 
                 {/* SEMI-ANNUAL PLAN */}
@@ -53,9 +58,11 @@ const Pricing: FC = () => {
                         t('Pages.Pricing.plans.semiAnnual.feature1'),
                         t('Pages.Pricing.plans.semiAnnual.feature2')
                     ]}
-                    cta={t('Pages.Pricing.plans.semiAnnual.cta')}
+                    cta={t(
+                        `Pages.Pricing.plans.semiAnnual.${semiAnnual ? 'currentPlan' : 'cta'}`
+                    )}
                     ribbonText={t('Pages.Pricing.plans.semiAnnual.ribbon')}
-                    isActive={userPlan === 'semiAnnual'}
+                    isActive={semiAnnual}
                 />
             </div>
         </div>

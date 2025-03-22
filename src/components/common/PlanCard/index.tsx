@@ -9,9 +9,9 @@ interface PlanCardProps {
     save?: string;
     features: string[];
     cta: string;
-    isActive: boolean; // Активный план или нет
-    ribbonText?: string; // Текст ленты ("Выгодно", "Best Deal" и т.д.)
-    onClick?: () => void; // Обработчик клика (если нужен)
+    isActive: boolean;
+    ribbonText?: string;
+    onClick?: () => void;
 }
 
 export const PlanCard: FC<PlanCardProps> = ({
@@ -34,7 +34,7 @@ export const PlanCard: FC<PlanCardProps> = ({
         >
             {/* Если есть ribbonText, показываем ленту */}
             {ribbonText && (
-                <div className="absolute top-0 right-0 bg-gradient-to-r from-red-400 to-orange-400 text-white text-xs px-3 py-1 transform rotate-45 translate-x-7 shadow rounded-3xl">
+                <div className="absolute top-0 right-0 bg-gradient-to-r from-red-400 to-orange-400 text-white text-xs px-3 py-1 transform rotate-45 translate-x-8 shadow rounded-3xl">
                     {ribbonText}
                 </div>
             )}
@@ -65,6 +65,7 @@ export const PlanCard: FC<PlanCardProps> = ({
             <Button
                 className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
                 onClick={onClick}
+                disabled={isActive}
             >
                 {cta}
             </Button>
