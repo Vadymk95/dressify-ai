@@ -17,7 +17,6 @@ export const LanguageSelect: FC = () => {
 
     const handleChange = (value: string) => {
         setLanguage(value);
-        console.log('Выбранный язык:', value);
     };
 
     return (

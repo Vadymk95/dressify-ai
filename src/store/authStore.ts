@@ -1,4 +1,4 @@
-import { auth } from '@/firebase/firebaseConfig';
+import { auth, db } from '@/firebase/firebaseConfig';
 import {
     User,
     createUserWithEmailAndPassword,
@@ -7,6 +7,7 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { t } from 'i18next';
 import { create } from 'zustand';
 
@@ -30,13 +31,24 @@ export const useAuthStore = create<AuthState>((set) => ({
     register: async (email, password) => {
         set({ loading: true, error: null });
         try {
+            // Создаем пользователя
             const { user } = await createUserWithEmailAndPassword(
                 auth,
                 email,
                 password
             );
-            // Отправляем письмо с подтверждением email
+
+            // Отправляем письмо с подтверждением
             await sendEmailVerification(user);
+
+            // Создаем документ в коллекции "users"
+            await setDoc(doc(db, 'users', user.uid), {
+                uid: user.uid,
+                email: user.email,
+                createdAt: serverTimestamp(),
+                emailVerified: user.emailVerified
+            });
+
             set({ user, loading: false });
             return true;
         } catch (error: any) {

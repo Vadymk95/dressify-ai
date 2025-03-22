@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { routes } from '@/router/routes';
 import { useAuthStore } from '@/store/authStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 import {
     faDoorOpen,
@@ -15,6 +16,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export const AuthNavigation: FC = () => {
     const { t } = useTranslation();
     const { user, logout } = useAuthStore();
+    const { clearProfile } = useUserProfileStore();
+    const handleLogout = () => {
+        logout();
+        clearProfile();
+    };
 
     return (
         <nav>
@@ -22,7 +28,7 @@ export const AuthNavigation: FC = () => {
                 {user ? (
                     <li>
                         <Link
-                            onClick={logout}
+                            onClick={handleLogout}
                             className="hover:underline hover:text-orange-400"
                             to={routes.home}
                         >
