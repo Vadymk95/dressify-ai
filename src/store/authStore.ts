@@ -17,6 +17,7 @@ interface AuthState {
     user: User | null;
     loading: boolean;
     error: string | null;
+    initialized: boolean;
     register: (email: string, password: string) => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
@@ -28,6 +29,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     loading: false,
     error: null,
+    initialized: false,
 
     // Регистрация пользователя
     register: async (email, password) => {
@@ -112,7 +114,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     },
 
     // Отслеживание изменений статуса авторизации
-    checkAuth: () => onAuthStateChanged(auth, (user) => set({ user })),
+    checkAuth: () =>
+        onAuthStateChanged(auth, (user) => set({ user, initialized: true })),
 
     // Функция для сброса ошибки
     clearError: () => set({ error: null })
