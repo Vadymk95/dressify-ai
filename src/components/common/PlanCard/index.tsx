@@ -28,14 +28,14 @@ export const PlanCard: FC<PlanCardProps> = ({
     return (
         <div
             className={[
-                'relative border p-6 rounded-xl flex flex-col text-center shadow-sm h-full',
+                'relative border p-8 rounded-xl flex flex-col text-center shadow-sm h-full',
                 isActive ? 'border-2 border-red-500' : ''
             ].join(' ')}
         >
             {/* Если есть ribbonText, показываем ленту */}
             {ribbonText && (
-                <div className="absolute top-0 right-0 bg-gradient-to-r from-red-400 to-orange-400 text-white text-xs px-3 py-1 transform rotate-45 translate-x-8 shadow rounded-3xl">
-                    {ribbonText}
+                <div className="absolute top-2 right-10 bg-gradient-to-r from-red-400 to-orange-400 text-white text-xs px-3 py-1 transform translate-x-8 shadow rounded-3xl">
+                    🔥 {ribbonText}
                 </div>
             )}
 
