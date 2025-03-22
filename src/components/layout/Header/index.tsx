@@ -29,7 +29,7 @@ export const Header: FC = () => {
                                 icon={faTags}
                             />
                         </div>
-                        <span className="hidden md:inline">
+                        <span className="hidden md:inline text-sm md:text-lg">
                             {t('Components.Layout.Header.pricing')}
                         </span>
                     </Link>
