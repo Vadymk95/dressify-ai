@@ -1,11 +1,13 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { Loader } from '@/components/common/Loader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { routes } from '@/router/routes';
+import { useAuthStore } from '@/store/authStore';
 
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,41 +19,34 @@ type LoginForm = {
 
 const Login: FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { login, loading, error, clearError } = useAuthStore();
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        setError,
-        clearErrors
+        formState: { errors }
     } = useForm<LoginForm>();
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const onSubmit = (data: LoginForm) => {
-        clearErrors();
+    const onSubmit = async (data: LoginForm) => {
+        const success = await login(data.email, data.password);
 
-        // Эмуляция запроса на сервер
-        fakeLoginRequest(data)
-            .then(() => {
-                console.log('Success login');
-            })
-            .catch(() => {
-                setError('root', {
-                    type: 'server',
-                    message: t('Pages.Login.errors.invalidCredentials')
-                });
-            });
+        if (success) {
+            navigate(routes.whatToWear);
+        }
     };
 
-    // фейковый запрос для демонстрации
-    const fakeLoginRequest = ({ email, password }: LoginForm) =>
-        new Promise((resolve, reject) => {
-            if (email === 'user@example.com' && password === 'password123') {
-                resolve('ok');
-            } else {
-                reject('Invalid credentials');
-            }
-        });
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => clearError(), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error, clearError]);
+
+    if (loading) {
+        <Loader />;
+    }
 
     return (
         <div className="max-w-md mx-auto py-12 px-6">
@@ -119,6 +114,8 @@ const Login: FC = () => {
                         {errors.root.message}
                     </p>
                 )}
+
+                {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
 
                 <Button
                     type="submit"

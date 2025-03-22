@@ -127,8 +127,6 @@ export const en = {
                         passwordMinLength:
                             'Password must be at least 8 characters',
                         invalidCredentials: 'Invalid email or password',
-                        userNotFound: 'User not found.',
-                        wrongPassword: 'Wrong password.',
                         genericError:
                             'An error occurred. Please try again later.'
                     }

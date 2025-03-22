@@ -71,11 +71,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         } catch (error: any) {
             let errorMessage = '';
             switch (error.code) {
-                case 'auth/user-not-found':
-                    errorMessage = t('Pages.Login.errors.userNotFound');
-                    break;
-                case 'auth/wrong-password':
-                    errorMessage = t('Pages.Login.errors.wrongPassword');
+                case 'auth/invalid-credential':
+                    errorMessage = t('Pages.Login.errors.invalidCredentials');
                     break;
                 default:
                     errorMessage = t('Pages.Login.errors.genericError');

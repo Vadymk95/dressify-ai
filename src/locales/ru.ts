@@ -130,8 +130,6 @@ export const ru = {
                         passwordMinLength:
                             'Пароль должен быть не менее 8 символов',
                         invalidCredentials: 'Неверный логин или пароль',
-                        userNotFound: 'Пользователь не найден.',
-                        wrongPassword: 'Неверный пароль.',
                         genericError: 'Произошла ошибка. Попробуйте позже.'
                     }
                 },
