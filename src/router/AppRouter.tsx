@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { WithSuspense } from '@/hocs/WithSuspense';
+import { PrivateRoute, PublicRoute, WithSuspense } from '@/hocs';
 import {
     ContactUs,
     Home,
@@ -18,28 +18,47 @@ import { routes } from '@/router/routes';
 export const AppRouter: FC = () => {
     return (
         <Routes>
-            <Route path={routes.home} element={<Home />} />
-
+            {/* public routes */}
             <Route
-                path={routes.notFound}
-                element={WithSuspense(<NotFound />)}
+                path={routes.home}
+                element={
+                    <PublicRoute>
+                        <Home />
+                    </PublicRoute>
+                }
             />
 
             <Route
+                path={routes.login}
+                element={<PublicRoute>{WithSuspense(<Login />)}</PublicRoute>}
+            />
+
+            <Route
+                path={routes.register}
+                element={
+                    <PublicRoute>{WithSuspense(<Register />)}</PublicRoute>
+                }
+            />
+
+            {/* private routes */}
+            <Route
                 path={routes.whatToWear}
-                element={WithSuspense(<WhatToWear />)}
+                element={
+                    <PrivateRoute>{WithSuspense(<WhatToWear />)}</PrivateRoute>
+                }
             />
 
             <Route
                 path={routes.wardrobe}
-                element={WithSuspense(<Wardrobe />)}
+                element={
+                    <PrivateRoute>{WithSuspense(<Wardrobe />)}</PrivateRoute>
+                }
             />
 
-            <Route path={routes.login} element={WithSuspense(<Login />)} />
-
+            {/* always available routes*/}
             <Route
-                path={routes.register}
-                element={WithSuspense(<Register />)}
+                path={routes.notFound}
+                element={WithSuspense(<NotFound />)}
             />
 
             <Route
