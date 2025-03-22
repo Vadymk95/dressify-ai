@@ -6,7 +6,8 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const App: FC = () => {
     const { checkAuth, user } = useAuthStore();
-    const { fetchUserProfile, clearProfile } = useUserProfileStore();
+    const { fetchUserProfile, clearProfile, checkSubscriptionExpiry } =
+        useUserProfileStore();
 
     useEffect(() => {
         checkAuth();
@@ -15,10 +16,11 @@ export const App: FC = () => {
     useEffect(() => {
         if (user) {
             fetchUserProfile(user.uid);
+            checkSubscriptionExpiry();
         } else {
             clearProfile();
         }
-    }, [user, fetchUserProfile, clearProfile]);
+    }, [user, fetchUserProfile, clearProfile, checkSubscriptionExpiry]);
 
     return (
         <div className="flex flex-col min-h-screen">

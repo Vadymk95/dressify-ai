@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { FC } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 // Описываем интерфейс пропсов
 interface PlanCardProps {
@@ -25,11 +27,13 @@ export const PlanCard: FC<PlanCardProps> = ({
     ribbonText,
     onClick
 }) => {
+    const { profile } = useUserProfileStore();
+
     return (
         <div
             className={[
                 'relative border p-8 rounded-xl flex flex-col text-center shadow-sm h-full',
-                isActive ? 'border-2 border-red-500' : ''
+                isActive ? 'outline-2 outline-red-500' : ''
             ].join(' ')}
         >
             {/* Если есть ribbonText, показываем ленту */}
@@ -62,13 +66,15 @@ export const PlanCard: FC<PlanCardProps> = ({
                 ))}
             </ul>
 
-            <Button
-                className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
-                onClick={onClick}
-                disabled={isActive}
-            >
-                {cta}
-            </Button>
+            {profile && profile.emailVerified && (
+                <Button
+                    className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
+                    onClick={onClick}
+                    disabled={isActive}
+                >
+                    {cta}
+                </Button>
+            )}
         </div>
     );
 };

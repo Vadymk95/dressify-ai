@@ -1,16 +1,21 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Loader } from '@/components/common/Loader';
 import { PlanCard } from '@/components/common/PlanCard';
 import { useUserProfileStore } from '@/store/userProfileStore';
 
 const Pricing: FC = () => {
     const { t } = useTranslation();
-    const { profile } = useUserProfileStore();
+    const { profile, updatePlan, loading } = useUserProfileStore();
     const userPlan = profile ? profile.plan : 'free';
     const free = userPlan === 'free';
     const monthly = userPlan === 'monthly';
     const semiAnnual = userPlan === 'semiAnnual';
+
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <div className="max-w-6xl mx-auto py-12 px-6">
@@ -32,6 +37,7 @@ const Pricing: FC = () => {
                     ]}
                     cta={t('Pages.Pricing.plans.free.cta')}
                     isActive={free}
+                    onClick={() => updatePlan('free')}
                 />
 
                 {/* MONTHLY PLAN */}
@@ -46,6 +52,7 @@ const Pricing: FC = () => {
                         `Pages.Pricing.plans.monthly.${monthly ? 'currentPlan' : 'cta'}`
                     )}
                     isActive={monthly}
+                    onClick={() => updatePlan('monthly')}
                 />
 
                 {/* SEMI-ANNUAL PLAN */}
@@ -63,6 +70,7 @@ const Pricing: FC = () => {
                     )}
                     ribbonText={t('Pages.Pricing.plans.semiAnnual.ribbon')}
                     isActive={semiAnnual}
+                    onClick={() => updatePlan('semiAnnual')}
                 />
             </div>
         </div>
