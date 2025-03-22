@@ -53,7 +53,8 @@ export const useAuthStore = create<AuthState>((set) => ({
                 email: user.email,
                 createdAt: serverTimestamp(),
                 emailVerified: user.emailVerified,
-                lang
+                lang,
+                plan: 'free'
             });
 
             set({ user, loading: false });

@@ -8,6 +8,7 @@ export interface UserProfile {
     createdAt: Date | null;
     emailVerified: boolean;
     lang: string;
+    plan: 'free' | 'monthly' | 'semiAnnual';
 }
 
 interface UserProfileStore {
