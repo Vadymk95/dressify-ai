@@ -1,5 +1,5 @@
 import { changeLanguage } from 'i18next';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import {
     Select,
@@ -24,6 +24,13 @@ export const LanguageSelect: FC = () => {
             await updateLanguage(value);
         }
     };
+
+    useEffect(() => {
+        if (profile && profile.lang && profile.lang !== language) {
+            setLanguage(profile.lang);
+            changeLanguage(profile.lang);
+        }
+    }, [profile, language, setLanguage]);
 
     return (
         <Select value={language} onValueChange={handleChange}>
