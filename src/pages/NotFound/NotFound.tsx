@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-import { Button } from '@/components/ui/button';
+import { routes } from '@/router/routes';
+import { useAuthStore } from '@/store/authStore';
 
 const NotFound: FC = () => {
     const { t } = useTranslation();
-    const handleBack = () => {};
+    const { user } = useAuthStore();
 
     return (
         <div className="py-4 px-4 md:px-8 flex flex-col gap-4 justify-center items-center">
@@ -18,13 +20,12 @@ const NotFound: FC = () => {
             </p>
 
             <div>
-                <Button
-                    onClick={handleBack}
-                    className="cursor-pointer text-xl"
-                    size="lg"
+                <Link
+                    to={user ? routes.whatToWear : routes.home}
+                    className="inline-block bg-gradient-to-r from-red-400 to-orange-400 font-semibold px-6 py-3 hover:scale-105 text-xl rounded-lg shadow-lg transition hover:bg-gray-100 cursor-pointer"
                 >
                     {t('General.goBack')}
-                </Button>
+                </Link>
             </div>
         </div>
     );
