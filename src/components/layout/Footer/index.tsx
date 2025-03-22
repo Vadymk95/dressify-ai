@@ -11,9 +11,11 @@ export const Footer: FC = () => {
     return (
         <footer className="bg-gray-100 py-8 px-4 md:px-8 mt-12 text-gray-600">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
-                <Logo variant="secondary" />
+                <div className="mb-4 md:mb-0 text-2xl">
+                    <Logo variant="secondary" />
+                </div>
 
-                <nav className="flex gap-4 mb-4 md:mb-0">
+                <nav className="flex flex-col gap-2 mb-4 md:mb-0 items-center md:items-start">
                     <Link
                         to={routes.privacyPolicy}
                         className="hover:text-red-400 transition"
