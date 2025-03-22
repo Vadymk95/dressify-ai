@@ -30,3 +30,22 @@ body {
 .main-text {
     color: var(--primary-textColor);
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right, #f87171, #fb923c);
+    border-radius: 5px;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #fb923c transparent;
+}
