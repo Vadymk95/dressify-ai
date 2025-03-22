@@ -1,9 +1,9 @@
-import { db } from '@/firebase/firebaseConfig';
+import { auth, db } from '@/firebase/firebaseConfig';
 import { addDoc, collection } from 'firebase/firestore';
+import { t } from 'i18next';
 import { create } from 'zustand';
 
 type FeedbackData = {
-    email: string;
     message: string;
 };
 
@@ -23,11 +23,26 @@ export const useFeedbackStore = create<FeedbackStore>((set) => ({
     sendFeedback: async (data) => {
         set({ loading: true, error: null, feedbackSent: false });
         try {
-            await addDoc(collection(db, 'feedback'), data);
+            // Если пользователь залогинен, добавляем его ID и email
+            const currentUser = auth.currentUser;
+            const feedbackData = currentUser
+                ? {
+                      ...data,
+                      userId: currentUser.uid,
+                      userEmail: currentUser.email
+                  }
+                : data;
+
+            await addDoc(collection(db, 'feedback'), feedbackData);
             set({ feedbackSent: true });
         } catch (err) {
             console.error('Error sending feedback:', err);
-            set({ error: 'Error sending feedback. Please try again later.' });
+            set({
+                error: t(
+                    'Components.Features.Feedback.errors.messageSendingError'
+                ),
+                feedbackSent: false
+            });
         } finally {
             set({ loading: false });
         }

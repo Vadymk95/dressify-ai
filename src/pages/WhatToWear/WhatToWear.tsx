@@ -1,7 +1,13 @@
 import { FC } from 'react';
 
+import { Feedback } from '@/components/features/Feedback';
+
 const WhatToWear: FC = () => {
-    return <div>What to Wear</div>;
+    return (
+        <div>
+            <Feedback />
+        </div>
+    );
 };
 
 export default WhatToWear;

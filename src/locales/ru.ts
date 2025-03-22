@@ -13,14 +13,12 @@ export const ru = {
                     Feedback: {
                         title: 'Помогите нам стать лучше!',
                         placeholder: 'Оставьте ваш отзыв здесь...',
-                        emailPlaceholder: 'Email',
                         send: 'Отправить отзыв',
                         sending: 'Отправка...',
                         errors: {
-                            emailRequired: 'Email обязателен',
-                            invalidEmail:
-                                'Некорректный адрес электронной почты',
-                            messageRequired: 'Текст отзыва обязателен'
+                            messageRequired: 'Текст отзыва обязателен',
+                            messageSendingError:
+                                'Ошибка отправки отзыва. Попробуйте позже.'
                         },
                         successMessage: 'Отзыв успешно отправлен!'
                     }

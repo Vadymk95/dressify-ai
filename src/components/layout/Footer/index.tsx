@@ -18,25 +18,26 @@ export const Footer: FC = () => {
                         to={routes.privacyPolicy}
                         className="hover:text-red-400 transition"
                     >
-                        {t('Components.Footer.privacy')}
+                        {t('Components.Layout.Footer.privacy')}
                     </Link>
                     <Link
                         to={routes.termsOfUse}
                         className="hover:text-red-400 transition"
                     >
-                        {t('Components.Footer.terms')}
+                        {t('Components.Layout.Footer.terms')}
                     </Link>
                     <Link
                         to={routes.contactUs}
                         className="hover:text-red-400 transition"
                     >
-                        {t('Components.Footer.contact')}
+                        {t('Components.Layout.Footer.contact')}
                     </Link>
                 </nav>
             </div>
 
             <div className="text-center mt-6 text-sm text-gray-500">
-                © {new Date().getFullYear()} {t('Components.Footer.copyright')}
+                © {new Date().getFullYear()}{' '}
+                {t('Components.Layout.Footer.copyright')}
             </div>
         </footer>
     );

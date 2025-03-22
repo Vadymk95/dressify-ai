@@ -3,12 +3,6 @@
     --primary-textColor: #323438;
 }
 
-@layer base {
-    html {
-        overflow-y: scroll;
-    }
-}
-
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--primary-background);

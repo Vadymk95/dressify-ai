@@ -8,8 +8,8 @@ import {
 import { FC, useState } from 'react';
 
 const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'ru', label: 'Русский' }
+    { code: 'en', label: 'Eng' },
+    { code: 'ru', label: 'Рус' }
 ];
 
 export const LanguageSelect: FC = () => {

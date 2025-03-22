@@ -13,22 +13,23 @@ export const en = {
                     Feedback: {
                         title: 'Help us become better!',
                         placeholder: 'Leave your feedback here...',
-                        emailPlaceholder: 'Email',
                         send: 'Send Feedback',
                         sending: 'Sending...',
                         errors: {
-                            emailRequired: 'Email is required',
-                            invalidEmail: 'Invalid email address',
-                            messageRequired: 'Feedback message is required'
+                            messageRequired: 'Feedback message is required',
+                            messageSendingError:
+                                'Error sending feedback. Please try again later.'
                         },
                         successMessage: 'Feedback sent successfully!'
                     }
                 },
-                Footer: {
-                    privacy: 'Privacy Policy',
-                    terms: 'Terms of Use',
-                    contact: 'Contact Us',
-                    copyright: 'All rights reserved.'
+                Layout: {
+                    Footer: {
+                        privacy: 'Privacy Policy',
+                        terms: 'Terms of Use',
+                        contact: 'Contact Us',
+                        copyright: 'All rights reserved.'
+                    }
                 }
             },
             Pages: {
