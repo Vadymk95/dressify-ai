@@ -1,12 +1,12 @@
 import { db } from '@/firebase/firebaseConfig';
-import { doc, getDoc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { create } from 'zustand';
 
 export interface UserProfile {
     uid: string;
     email: string | null;
-    createdAt?: Timestamp;
-    emailVerified?: boolean;
+    createdAt: Date | null;
+    emailVerified: boolean;
 }
 
 interface UserProfileStore {
@@ -30,7 +30,16 @@ export const useUserProfileStore = create<UserProfileStore>((set) => ({
             const docRef = doc(db, 'users', uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                set({ profile: docSnap.data() as UserProfile, loading: false });
+                const data = docSnap.data();
+                set({
+                    profile: {
+                        ...data,
+                        createdAt: data.createdAt
+                            ? data.createdAt.toDate()
+                            : null
+                    } as UserProfile,
+                    loading: false
+                });
             } else {
                 set({ error: 'Profile not found', loading: false });
             }
