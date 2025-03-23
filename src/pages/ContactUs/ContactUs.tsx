@@ -3,16 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Feedback } from '@/components/features/Feedback';
-import { useAuthStore } from '@/store/authStore';
+import { email } from '@/constants/emails';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const email = 'vadymk95@gmail.com';
-
 const ContactUs: FC = () => {
     const { t } = useTranslation();
-    const { user } = useAuthStore();
+    const { profile } = useUserProfileStore();
 
     return (
         <section className="max-w-3xl mx-auto px-6 py-12">
@@ -21,13 +20,13 @@ const ContactUs: FC = () => {
             </h1>
             <p className="mb-8">
                 {t(
-                    user
+                    profile
                         ? 'Pages.ContactUs.descriptionAuth'
                         : 'Pages.ContactUs.descriptionNonAuth'
                 )}
             </p>
 
-            {user ? (
+            {profile ? (
                 <Feedback />
             ) : (
                 <div className="w-full flex justify-center">
