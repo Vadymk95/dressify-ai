@@ -9,17 +9,18 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 export const EmailVerificationPanel: FC = () => {
     const { t } = useTranslation();
     const { updateEmailVerified, profile } = useUserProfileStore();
-    const isVerified = profile?.emailVerified;
-    const [isVisible, setIsVisible] = useState(true);
+    const isVerified = profile && profile?.emailVerified;
+    const [isVisible, setIsVisible] = useState(false);
     const [resendCountdown, setResendCountdown] = useState(0);
     const [isResending, setIsResending] = useState(false);
     const [localError, setLocalError] = useState('');
 
     const handleCheckStatus = async () => {
         try {
-            await updateEmailVerified();
-            if (profile && profile.emailVerified) {
+            const verified = await updateEmailVerified();
+            if (verified) {
                 setLocalError('');
+                setIsVisible(true);
             } else {
                 setLocalError(
                     t('Components.Common.EmailVerification.notVerified')
@@ -62,21 +63,19 @@ export const EmailVerificationPanel: FC = () => {
 
     // Если email подтверждён, скрываем панель через 2 секунды
     useEffect(() => {
-        if (isVerified) {
+        if (isVerified && isVisible) {
             const timer = setTimeout(() => {
                 setIsVisible(false);
             }, 2000);
             return () => clearTimeout(timer);
         }
-    }, [isVerified]);
+    }, [isVerified, isVisible]);
 
-    if (!isVisible) return null;
-
-    if (profile?.emailVerified) return null;
+    if (profile === null || (isVerified && !isVisible)) return null;
 
     return (
         <div className="w-full main-gradient p-4 rounded-md text-white flex flex-col items-center">
-            {isVerified ? (
+            {profile?.emailVerified ? (
                 <div className="text-lg font-semibold flex items-center gap-2">
                     <span role="img" aria-label="verified">
                         ✅🔥

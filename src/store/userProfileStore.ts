@@ -24,7 +24,7 @@ interface UserProfileStore {
     updateLanguage: (lang: string) => Promise<void>;
     updatePlan: (plan: Plan) => Promise<void>;
     checkSubscriptionExpiry: () => Promise<void>;
-    updateEmailVerified: () => Promise<void>;
+    updateEmailVerified: () => Promise<boolean>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -173,17 +173,25 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const updatedUser = auth.currentUser;
 
             if (updatedUser && updatedUser.emailVerified) {
+                // Обновляем Firestore: устанавливаем emailVerified в true
                 await updateDoc(doc(db, 'users', updatedUser.uid), {
                     emailVerified: true
                 });
+                // Перезапрашиваем профиль, чтобы обновить локальное состояние
+                await get().fetchUserProfile(updatedUser.uid);
+                return true;
+            } else {
+                // Если не подтвержден, можно обновить локальное состояние (опционально)
                 set((state) => ({
                     profile: state.profile
-                        ? { ...state.profile, emailVerified: true }
+                        ? { ...state.profile, emailVerified: false }
                         : null
                 }));
+                return false;
             }
         } catch (error: any) {
             set({ error: error.message });
+            return false;
         }
     }
 }));
