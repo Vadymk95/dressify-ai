@@ -87,6 +87,11 @@ export const EmailVerificationPanel: FC = () => {
                     <p className="mb-2 text-center text-lg">
                         {t('Components.Common.EmailVerification.info')}
                     </p>
+                    <p className="mb-2 text-center text-base font-medium">
+                        {t(
+                            'Components.Common.EmailVerification.useFullFunctionality'
+                        )}
+                    </p>
                     {localError && (
                         <p className="mb-2 text-red-700 text-sm">
                             {localError}

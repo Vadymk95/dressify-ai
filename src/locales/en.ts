@@ -15,6 +15,8 @@ export const en = {
                         resend: 'Resend Email',
                         resendCountdown: 'Resend in {{seconds}}s',
                         info: 'Please check your inbox and click the verification link.',
+                        useFullFunctionality:
+                            'To use the full functionality of the app, please verify your email.',
                         notVerified: 'Email not verified',
                         genericError:
                             'An error occurred. Please try again later.'
