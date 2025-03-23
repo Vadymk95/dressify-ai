@@ -74,7 +74,7 @@ export const EmailVerificationPanel: FC = () => {
     if (profile === null || (isVerified && !isVisible)) return null;
 
     return (
-        <div className="w-full main-gradient p-4 rounded-md text-white flex flex-col items-center">
+        <section className="w-full main-gradient p-4 rounded-md text-white flex flex-col items-center">
             {profile?.emailVerified ? (
                 <div className="text-lg font-semibold flex items-center gap-2">
                     <span role="img" aria-label="verified">
@@ -122,6 +122,6 @@ export const EmailVerificationPanel: FC = () => {
                     </div>
                 </>
             )}
-        </div>
+        </section>
     );
 };

@@ -11,9 +11,8 @@ const WhatToWear: FC = () => {
 
     return (
         <div>
-            <section className="mt-10">
-                <EmailVerificationPanel />
-            </section>
+            <EmailVerificationPanel />
+
             <section className="mt-10 px-6 ">
                 <Feedback />
             </section>
