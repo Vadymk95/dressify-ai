@@ -49,3 +49,7 @@ body {
     scrollbar-width: thin;
     scrollbar-color: #fb923c transparent;
 }
+
+.main-gradient {
+    @apply bg-gradient-to-r from-red-400 to-orange-400;
+}

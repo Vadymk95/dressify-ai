@@ -7,6 +7,14 @@ export const en = {
                         login: 'Sign In',
                         register: 'Sign Up',
                         logout: 'Sign Out'
+                    },
+                    EmailVerification: {
+                        checkStatus: 'Check Status',
+                        verified: 'Email verified!',
+                        notReceived: "Didn't receive the email?",
+                        resend: 'Resend Email',
+                        resendCountdown: 'Resend in {{seconds}}s',
+                        info: 'Please check your inbox and click the verification link.'
                     }
                 },
                 Features: {

@@ -22,7 +22,7 @@ const NotFound: FC = () => {
             <div>
                 <Link
                     to={user ? routes.whatToWear : routes.home}
-                    className="inline-block bg-gradient-to-r from-red-400 to-orange-400 font-semibold px-6 py-3 hover:scale-105 text-xl rounded-lg shadow-lg transition hover:bg-gray-100 cursor-pointer"
+                    className="inline-block main-gradient font-semibold px-6 py-3 hover:scale-105 text-xl rounded-lg shadow-lg transition hover:bg-gray-100 cursor-pointer"
                 >
                     {t('General.goBack')}
                 </Link>

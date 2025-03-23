@@ -18,7 +18,7 @@ export const Home: FC = () => {
             <meta property="og:description" content={siteDescription} />
             <meta property="og:type" content="website" />
 
-            <section className="w-full bg-gradient-to-r from-red-400 to-orange-400 text-white py-16 px-6 text-center rounded-b-3xl shadow-md">
+            <section className="w-full main-gradient text-white py-16 px-6 text-center rounded-b-3xl shadow-md">
                 <h1 className="text-3xl md:text-5xl font-bold mb-4">
                     {t('Pages.Home.title')}
                 </h1>
@@ -88,7 +88,7 @@ export const Home: FC = () => {
                 </ul>
             </section>
 
-            <section className="mt-12 bg-gradient-to-r from-red-400 to-orange-400 py-12 px-6 rounded-2xl shadow-xl text-center text-white">
+            <section className="mt-12 main-gradient py-12 px-6 rounded-2xl shadow-xl text-center text-white">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
                     {t('Pages.Home.ctaBlock.cta')}
                 </h2>

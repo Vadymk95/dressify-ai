@@ -7,6 +7,15 @@ export const ru = {
                         login: 'Войти',
                         register: 'Регистрация',
                         logout: 'Выйти'
+                    },
+                    EmailVerification: {
+                        checkStatus: 'Проверить статус',
+                        verified: 'Email подтвержден!',
+                        notReceived: 'Не получили письмо?',
+                        resend: 'Отправить повторно',
+                        resendCountdown:
+                            'Отправка повторно через {{seconds}} с',
+                        info: 'Пожалуйста, проверьте почту и перейдите по ссылке для подтверждения.'
                     }
                 },
                 Features: {
