@@ -24,6 +24,7 @@ interface UserProfileStore {
     updateLanguage: (lang: string) => Promise<void>;
     updatePlan: (plan: Plan) => Promise<void>;
     checkSubscriptionExpiry: () => Promise<void>;
+    updateEmailVerified: () => Promise<void>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -158,6 +159,31 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             }
         } catch (error: any) {
             set({ error: error.message, loading: false });
+        }
+    },
+
+    // Новый экшен для обновления emailVerified
+    updateEmailVerified: async () => {
+        try {
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
+
+            // Обновляем данные пользователя (reload)
+            await currentUser.reload();
+            const updatedUser = auth.currentUser;
+
+            if (updatedUser && updatedUser.emailVerified) {
+                await updateDoc(doc(db, 'users', updatedUser.uid), {
+                    emailVerified: true
+                });
+                set((state) => ({
+                    profile: state.profile
+                        ? { ...state.profile, emailVerified: true }
+                        : null
+                }));
+            }
+        } catch (error: any) {
+            set({ error: error.message });
         }
     }
 }));

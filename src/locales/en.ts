@@ -14,7 +14,10 @@ export const en = {
                         notReceived: "Didn't receive the email?",
                         resend: 'Resend Email',
                         resendCountdown: 'Resend in {{seconds}}s',
-                        info: 'Please check your inbox and click the verification link.'
+                        info: 'Please check your inbox and click the verification link.',
+                        notVerified: 'Email not verified',
+                        genericError:
+                            'An error occurred. Please try again later.'
                     }
                 },
                 Features: {
