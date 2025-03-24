@@ -35,7 +35,8 @@ export const ru = {
                                 'Ошибка отправки отзыва. Попробуйте позже.'
                         },
                         successMessage: 'Отзыв успешно отправлен!'
-                    }
+                    },
+                    WeatherPanel: {}
                 },
                 Layout: {
                     Header: {

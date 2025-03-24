@@ -34,7 +34,8 @@ export const en = {
                                 'Error sending feedback. Please try again later.'
                         },
                         successMessage: 'Feedback sent successfully!'
-                    }
+                    },
+                    WeatherPanel: {}
                 },
                 Layout: {
                     Header: {
