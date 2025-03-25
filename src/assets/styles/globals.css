@@ -52,4 +52,8 @@ body {
 
 .main-gradient {
     @apply bg-gradient-to-r from-red-400 to-orange-400;
+
+    button:hover {
+        @apply from-red-500 to-orange-500;
+    }
 }

@@ -2,8 +2,8 @@ import { FC } from 'react';
 
 import { EmailVerificationPanel } from '@/components/common/EmailVerificationPanel';
 import { Feedback } from '@/components/features/Feedback';
-import { useUserProfileStore } from '@/store/userProfileStore';
 import { WeatherPanel } from '@/components/features/WeatherPanel';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 const WhatToWear: FC = () => {
     const { profile } = useUserProfileStore();
@@ -11,12 +11,14 @@ const WhatToWear: FC = () => {
     console.log(profile);
 
     return (
-        <div>
+        <div className="w-full max-w-2xl mx-auto px-6">
             <EmailVerificationPanel />
 
-            <WeatherPanel />
+            <section className="mt-5">
+                <WeatherPanel />
+            </section>
 
-            <section className="mt-10 px-6 ">
+            <section className="mt-5">
                 <Feedback />
             </section>
         </div>

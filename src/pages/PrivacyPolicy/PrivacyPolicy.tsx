@@ -5,7 +5,7 @@ const PrivacyPolicy: FC = () => {
     const { t } = useTranslation();
 
     return (
-        <section className="max-w-3xl mx-auto px-6 py-12">
+        <section className="max-w-2xl mx-auto px-6 py-12">
             <h1 className="text-3xl font-bold mb-6">
                 {t('Pages.PrivacyPolicy.title')}
             </h1>

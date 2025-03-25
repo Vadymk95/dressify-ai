@@ -41,7 +41,7 @@ export const Feedback: FC = () => {
     return (
         <>
             {loading && <Loader />}
-            <section className="max-w-xl w-full mx-auto p-6 bg-white shadow-md rounded-xl">
+            <section className="max-w-2xl w-full mx-auto p-6 bg-white shadow-md rounded-xl">
                 <h2 className="text-2xl font-semibold text-center mb-4">
                     {t('Components.Features.Feedback.title')}
                 </h2>
@@ -61,7 +61,7 @@ export const Feedback: FC = () => {
                         })}
                         name="message"
                         required
-                        className="min-h-32 resize-none bg-gray-100 py-5"
+                        className="min-h-32 resize-none bg-gray-100 py-5 w-full"
                     />
                     {errors.message && (
                         <p className="text-sm text-red-500 mt-1">

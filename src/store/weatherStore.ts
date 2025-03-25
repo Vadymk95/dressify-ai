@@ -34,16 +34,23 @@ export const useWeatherStore = create<WeatherState>()(
                     if (!isTomorrow) {
                         set({
                             weatherToday: `Sunny in ${city}`,
-                            loading: false
+                            loading: false,
+                            weatherTomorrow: null
                         });
                     } else {
                         set({
                             weatherTomorrow: `Cloudy in ${city}`,
-                            loading: false
+                            loading: false,
+                            weatherToday: null
                         });
                     }
                 } catch (error: any) {
-                    set({ error: error.message, loading: false });
+                    set({
+                        error: error.message,
+                        loading: false,
+                        weatherTomorrow: null,
+                        weatherToday: null
+                    });
                 }
             }
         }),

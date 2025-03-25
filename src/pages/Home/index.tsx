@@ -33,7 +33,7 @@ export const Home: FC = () => {
                 </Link>
             </section>
 
-            <section className="mt-12 px-6 max-w-3xl text-center">
+            <section className="mt-12 px-6 max-w-2xl text-center">
                 <h2 className="text-2xl md:text-3xl font-semibold mb-6">
                     {t('Pages.Home.advantages.title')}
                 </h2>
@@ -65,7 +65,7 @@ export const Home: FC = () => {
                 </ul>
             </section>
 
-            <section className="mt-16 px-6 max-w-3xl text-center">
+            <section className="mt-16 px-6 max-w-2xl text-center">
                 <h2 className="text-2xl md:text-3xl font-semibold mb-6">
                     {t('Pages.Home.howDoesItWorks.title')}
                 </h2>
@@ -103,7 +103,7 @@ export const Home: FC = () => {
                 </Link>
             </section>
 
-            <section className="mt-16 px-6 max-w-3xl text-center">
+            <section className="mt-16 px-6 max-w-2xl text-center">
                 {' '}
                 <h2 className="text-2xl md:text-3xl font-semibold mb-6">
                     {t('Pages.Home.hookBlock.title')}

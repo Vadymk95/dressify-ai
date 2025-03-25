@@ -14,7 +14,7 @@ const ContactUs: FC = () => {
     const { profile } = useUserProfileStore();
 
     return (
-        <section className="max-w-3xl mx-auto px-6 py-12">
+        <section className="max-w-2xl mx-auto px-6 py-12">
             <h1 className="text-3xl font-bold mb-4">
                 {t('Pages.ContactUs.title')}
             </h1>
