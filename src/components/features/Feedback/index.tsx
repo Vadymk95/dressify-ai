@@ -41,7 +41,7 @@ export const Feedback: FC = () => {
     return (
         <>
             {loading && <Loader />}
-            <section className="max-w-2xl w-full mx-auto p-6 bg-white shadow-md rounded-xl">
+            <section className="max-w-4xl w-full mx-auto p-6 bg-white shadow-md rounded-xl">
                 <h2 className="text-2xl font-semibold text-center mb-4">
                     {t('Components.Features.Feedback.title')}
                 </h2>

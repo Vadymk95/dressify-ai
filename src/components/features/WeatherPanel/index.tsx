@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -21,8 +21,15 @@ const cityOptions: ComboboxOption[] = [{ value: 'KH', label: 'Харьков' }]
 
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
-    const { weatherToday, weatherTomorrow, loading, error, fetchWeather } =
-        useWeatherStore();
+    const {
+        weatherToday,
+        weatherTomorrow,
+        loading,
+        error,
+        fetchWeather,
+        checkWeatherStaleness,
+        clearWeather
+    } = useWeatherStore();
     const [country, setCountry] = useState('');
     const [city, setCity] = useState('');
 
@@ -32,11 +39,17 @@ export const WeatherPanel: FC = () => {
 
     const handleSetCountry = (value: string) => {
         setCountry(value);
+        clearWeather();
     };
 
     const handleSetCity = (value: string) => {
         setCity(value);
+        clearWeather();
     };
+
+    useEffect(() => {
+        checkWeatherStaleness();
+    }, [checkWeatherStaleness]);
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
