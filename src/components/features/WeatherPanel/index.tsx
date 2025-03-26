@@ -9,13 +9,8 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Combobox, ComboboxOption } from '@/components/ui/combobox';
+import { useCountryOptions } from '@/hooks/useCountryOptions';
 import { useWeatherStore } from '@/store/weatherStore';
-
-const countryOptions: ComboboxOption[] = [
-    { value: 'UA', label: 'Украина' },
-    { value: 'US', label: 'United States' }
-    // ...другие страны
-];
 
 const cityOptions: ComboboxOption[] = [{ value: 'KH', label: 'Харьков' }];
 
@@ -30,6 +25,7 @@ export const WeatherPanel: FC = () => {
         checkWeatherStaleness,
         clearWeather
     } = useWeatherStore();
+    const countryOptions = useCountryOptions();
     const [country, setCountry] = useState('');
     const [city, setCity] = useState('');
 

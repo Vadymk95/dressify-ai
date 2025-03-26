@@ -1,3 +1,5 @@
+import { en_codes } from '@/locales/countries/en_codes';
+
 export const en = {
     en: {
         translation: {
@@ -219,7 +221,8 @@ export const en = {
                 brandName: 'DressifyAI',
                 goBack: 'Go back',
                 sending: 'Sending...'
-            }
+            },
+            ...en_codes
         }
     }
 };

@@ -1,3 +1,5 @@
+import { ru_codes } from '@/locales/countries/ru_codes';
+
 export const ru = {
     ru: {
         translation: {
@@ -218,7 +220,8 @@ export const ru = {
                 brandName: 'DressifyAI',
                 goBack: 'Назад',
                 sending: 'Отправка...'
-            }
+            },
+            ...ru_codes
         }
     }
 };
