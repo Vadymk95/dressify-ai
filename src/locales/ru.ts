@@ -38,7 +38,19 @@ export const ru = {
                         },
                         successMessage: 'Отзыв успешно отправлен!'
                     },
-                    WeatherPanel: {}
+                    WeatherPanel: {
+                        title: 'Обзор погоды',
+                        loading: 'Загрузка погоды...',
+                        currentWeather: 'Текущая погода:',
+                        tomorrowWeather: 'Погода на завтра:',
+                        selectYourLocation: 'Выберите ваше местоположение',
+                        selectCountry: 'Выберите страну...',
+                        selectCity: 'Выберите город...',
+                        noCountryFound: 'Страна не найдена',
+                        noCityFound: 'Город не найден',
+                        fetchWeather: 'Получить текущую погоду',
+                        fetchTomorrow: 'Получить погоду на завтра'
+                    }
                 },
                 Layout: {
                     Header: {

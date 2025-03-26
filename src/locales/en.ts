@@ -37,7 +37,19 @@ export const en = {
                         },
                         successMessage: 'Feedback sent successfully!'
                     },
-                    WeatherPanel: {}
+                    WeatherPanel: {
+                        title: 'Weather Overview',
+                        loading: 'Loading weather...',
+                        currentWeather: 'Current weather:',
+                        tomorrowWeather: "Tomorrow's weather:",
+                        selectYourLocation: 'Select your location',
+                        selectCountry: 'Select country...',
+                        selectCity: 'Select city...',
+                        noCountryFound: 'Country not found',
+                        noCityFound: 'City not found',
+                        fetchWeather: 'Get current weather',
+                        fetchTomorrow: "Get tomorrow's weather"
+                    }
                 },
                 Layout: {
                     Header: {

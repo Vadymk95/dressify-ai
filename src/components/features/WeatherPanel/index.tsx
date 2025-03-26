@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -17,29 +17,30 @@ const cityOptions: ComboboxOption[] = [{ value: 'KH', label: 'Харьков' }]
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
     const {
+        country,
+        city,
         weatherToday,
         weatherTomorrow,
         loading,
         error,
         fetchWeather,
         checkWeatherStaleness,
-        clearWeather
+        clearWeather,
+        setLocation
     } = useWeatherStore();
     const countryOptions = useCountryOptions();
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
 
     const handleFetchWeather = async (tomorrow = false) => {
         await fetchWeather(tomorrow);
     };
 
     const handleSetCountry = (value: string) => {
-        setCountry(value);
+        setLocation(value, '');
         clearWeather();
     };
 
     const handleSetCity = (value: string) => {
-        setCity(value);
+        setLocation(country, value);
         clearWeather();
     };
 
@@ -50,12 +51,12 @@ export const WeatherPanel: FC = () => {
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
             <h2 className="text-2xl font-semibold mb-4 text-white">
-                {t('Components.WeatherPanel.title', 'Weather Overview')}
+                {t('Components.Features.WeatherPanel.title')}
             </h2>
 
             {loading ? (
                 <p className="mb-4 text-white">
-                    {t('Components.WeatherPanel.loading', 'Loading weather...')}
+                    {t('Components.Features.WeatherPanel.loading')}
                 </p>
             ) : (
                 <>
@@ -63,8 +64,7 @@ export const WeatherPanel: FC = () => {
                     {weatherToday && (
                         <p className="mb-4 text-white">
                             {t(
-                                'Components.WeatherPanel.currentWeather',
-                                'Current weather:'
+                                'Components.Features.WeatherPanel.currentWeather'
                             )}{' '}
                             {weatherToday}
                         </p>
@@ -72,8 +72,7 @@ export const WeatherPanel: FC = () => {
                     {weatherTomorrow && (
                         <p className="mb-4 text-white">
                             {t(
-                                'Components.WeatherPanel.tomorrowWeather',
-                                "Tomorrow's weather:"
+                                'Components.Features.WeatherPanel.tomorrowWeather'
                             )}{' '}
                             {weatherTomorrow}
                         </p>
@@ -88,7 +87,11 @@ export const WeatherPanel: FC = () => {
             >
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="cursor-pointer">
-                        Select your location
+                        {country && city
+                            ? `${t(`Countries.${country}`)}, ${t(`Countries.${city}`)}`
+                            : t(
+                                  'Components.Features.WeatherPanel.selectYourLocation'
+                              )}
                     </AccordionTrigger>
                     <AccordionContent>
                         <div className="grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-8 w-full mb-8">
@@ -98,18 +101,27 @@ export const WeatherPanel: FC = () => {
                                     options={countryOptions}
                                     value={country}
                                     onValueChange={handleSetCountry}
-                                    placeholder="Select country..."
-                                    emptyMessage="No countries found"
+                                    placeholder={t(
+                                        'Components.Features.WeatherPanel.selectCountry'
+                                    )}
+                                    emptyMessage={t(
+                                        'Components.Features.WeatherPanel.noCountryFound'
+                                    )}
                                 />
                             </div>
                             <div className="w-full">
                                 <Combobox
                                     className="cursor-pointer md:p-4 p-6"
+                                    disabled={!country}
                                     options={cityOptions}
                                     value={city}
                                     onValueChange={handleSetCity}
-                                    placeholder="Select city..."
-                                    emptyMessage="No cities found"
+                                    placeholder={t(
+                                        'Components.Features.WeatherPanel.selectCity'
+                                    )}
+                                    emptyMessage={t(
+                                        'Components.Features.WeatherPanel.noCityFound'
+                                    )}
                                 />
                             </div>
                         </div>
@@ -117,22 +129,22 @@ export const WeatherPanel: FC = () => {
                         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                             <Button
                                 onClick={() => handleFetchWeather()}
+                                disabled={!country || !city}
                                 className="main-gradient text-white cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
                             >
                                 {t(
-                                    'Components.WeatherPanel.fetchWeather',
-                                    'Get Current Weather'
+                                    'Components.Features.WeatherPanel.fetchWeather'
                                 )}
                             </Button>
 
                             <Button
                                 onClick={() => handleFetchWeather(true)}
+                                disabled={!country || !city}
                                 variant="outline"
                                 className="cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
                             >
                                 {t(
-                                    'Components.WeatherPanel.fetchTomorrow',
-                                    "Get Tomorrow's Weather"
+                                    'Components.Features.WeatherPanel.fetchTomorrow'
                                 )}
                             </Button>
                         </div>

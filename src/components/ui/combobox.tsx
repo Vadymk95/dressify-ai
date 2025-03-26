@@ -31,6 +31,7 @@ export interface ComboboxProps {
     placeholder?: string;
     emptyMessage?: string;
     className?: string;
+    disabled?: boolean;
 }
 
 export function Combobox({
@@ -39,6 +40,7 @@ export function Combobox({
     onValueChange,
     placeholder = 'Select an option...',
     emptyMessage = 'No option found.',
+    disabled,
     className
 }: ComboboxProps) {
     const [open, setOpen] = React.useState(false);
@@ -54,6 +56,7 @@ export function Combobox({
                 <Button
                     variant="outline"
                     role="combobox"
+                    disabled={disabled}
                     aria-expanded={open}
                     className={cn(
                         'w-full justify-between shadow-sm',
