@@ -49,7 +49,13 @@ export const ru = {
                         noCountryFound: 'Страна не найдена',
                         noCityFound: 'Город не найден',
                         fetchWeather: 'Получить текущую погоду',
-                        fetchTomorrow: 'Получить погоду на завтра'
+                        fetchTomorrow: 'Получить погоду на завтра',
+                        errors: {
+                            fetchWeatherError:
+                                'Ошибка получения погоды. Попробуйте позже.',
+                            fetchCitiesError:
+                                'Ошибка получения городов. Попробуйте позже.'
+                        }
                     }
                 },
                 Layout: {

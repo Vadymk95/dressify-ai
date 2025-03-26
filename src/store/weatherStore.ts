@@ -1,9 +1,16 @@
+import { t } from 'i18next';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
+import { ComboboxOption } from '@/components/ui/combobox';
+import { useLanguageStore } from '@/store/languageStore';
+
+const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
 interface WeatherState {
     country: string;
     city: string;
+    cities: ComboboxOption[];
     weatherToday: string | null;
     weatherTomorrow: string | null;
     lastUpdated: number | null;
@@ -11,6 +18,7 @@ interface WeatherState {
     error: string | null;
     setLocation: (country: string, city: string) => void;
     fetchWeather: (isTomorrow?: boolean) => Promise<void>;
+    fetchCities: (country: string) => Promise<void>;
     setWeather: (weatherToday: string, weatherTomorrow?: string) => void;
     clearWeather: () => void;
     checkWeatherStaleness: () => void;
@@ -21,6 +29,7 @@ export const useWeatherStore = create<WeatherState>()(
         (set, get) => ({
             country: '',
             city: '',
+            cities: [],
             weatherToday: null,
             weatherTomorrow: null,
             lastUpdated: null,
@@ -52,11 +61,55 @@ export const useWeatherStore = create<WeatherState>()(
                         });
                     }
                 } catch (error: any) {
+                    console.error(error);
                     set({
-                        error: error.message,
+                        error: t(
+                            'Components.Features.WeatherPanel.errors.fetchWeatherError'
+                        ),
                         loading: false,
                         weatherTomorrow: null,
                         weatherToday: null
+                    });
+                }
+            },
+
+            fetchCities: async (country: string) => {
+                if (!country) {
+                    set({ cities: [] });
+                    return;
+                }
+
+                set({ loading: true, error: null });
+                try {
+                    // Получаем текущий язык из useLanguageStore
+                    const language = useLanguageStore.getState().language;
+
+                    // Запрос к OpenWeatherMap Geocoding API
+                    const response = await fetch(
+                        `http://api.openweathermap.org/geo/1.0/direct?q=,${country}&limit=50&appid=${API_KEY}&lang=${language}`
+                    );
+                    if (!response.ok)
+                        throw new Error(
+                            t(
+                                'Components.Features.WeatherPanel.errors.fetchCitiesError'
+                            )
+                        );
+
+                    const data = await response.json();
+                    console.log('CITIES', data);
+                    const cities = data.map((item: any) => ({
+                        value: item.name,
+                        label: item.name
+                    }));
+                    set({ cities, loading: false });
+                } catch (error: any) {
+                    console.error(error);
+                    set({
+                        error: t(
+                            'Components.Features.WeatherPanel.errors.fetchCitiesError'
+                        ),
+                        loading: false,
+                        cities: []
                     });
                 }
             },

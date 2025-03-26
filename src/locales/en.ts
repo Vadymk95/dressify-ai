@@ -48,7 +48,13 @@ export const en = {
                         noCountryFound: 'Country not found',
                         noCityFound: 'City not found',
                         fetchWeather: 'Get current weather',
-                        fetchTomorrow: "Get tomorrow's weather"
+                        fetchTomorrow: "Get tomorrow's weather",
+                        errors: {
+                            fetchWeatherError:
+                                'Error fetching weather. Please try again later.',
+                            fetchCitiesError:
+                                'Error fetching cities. Please try again later.'
+                        }
                     }
                 },
                 Layout: {

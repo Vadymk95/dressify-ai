@@ -8,17 +8,18 @@ import {
     AccordionTrigger
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Combobox, ComboboxOption } from '@/components/ui/combobox';
+import { Combobox } from '@/components/ui/combobox';
 import { useCountryOptions } from '@/hooks/useCountryOptions';
+import { useLanguageStore } from '@/store/languageStore';
 import { useWeatherStore } from '@/store/weatherStore';
-
-const cityOptions: ComboboxOption[] = [{ value: 'KH', label: 'Харьков' }];
 
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
+    const { language } = useLanguageStore();
     const {
         country,
         city,
+        cities,
         weatherToday,
         weatherTomorrow,
         loading,
@@ -26,9 +27,10 @@ export const WeatherPanel: FC = () => {
         fetchWeather,
         checkWeatherStaleness,
         clearWeather,
-        setLocation
+        setLocation,
+        fetchCities
     } = useWeatherStore();
-    const countryOptions = useCountryOptions();
+    const countries = useCountryOptions();
 
     const handleFetchWeather = async (tomorrow = false) => {
         await fetchWeather(tomorrow);
@@ -47,6 +49,12 @@ export const WeatherPanel: FC = () => {
     useEffect(() => {
         checkWeatherStaleness();
     }, [checkWeatherStaleness]);
+
+    useEffect(() => {
+        if (country && !city) {
+            fetchCities(country);
+        }
+    }, [country, language, fetchCities, city]);
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
@@ -102,7 +110,7 @@ export const WeatherPanel: FC = () => {
                             <div className="w-full">
                                 <Combobox
                                     className="cursor-pointer md:p-4 p-6"
-                                    options={countryOptions}
+                                    options={countries}
                                     value={country}
                                     onValueChange={handleSetCountry}
                                     placeholder={t(
@@ -117,7 +125,7 @@ export const WeatherPanel: FC = () => {
                                 <Combobox
                                     className="cursor-pointer md:p-4 p-6"
                                     disabled={!country}
-                                    options={cityOptions}
+                                    options={cities}
                                     value={city}
                                     onValueChange={handleSetCity}
                                     placeholder={t(
