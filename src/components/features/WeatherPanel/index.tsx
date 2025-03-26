@@ -55,14 +55,13 @@ export const WeatherPanel: FC = () => {
             </h2>
 
             {loading ? (
-                <p className="mb-4 text-white">
+                <p className="mb-4 text-white p-4 text-semibold">
                     {t('Components.Features.WeatherPanel.loading')}
                 </p>
             ) : (
                 <>
-                    {error && <p className="mb-4 text-red-600">{error}</p>}
                     {weatherToday && (
-                        <p className="mb-4 text-white">
+                        <p className="mb-4 text-white p-4 text-semibold bg-gray-100/30 rounded-lg">
                             {t(
                                 'Components.Features.WeatherPanel.currentWeather'
                             )}{' '}
@@ -70,11 +69,16 @@ export const WeatherPanel: FC = () => {
                         </p>
                     )}
                     {weatherTomorrow && (
-                        <p className="mb-4 text-white">
+                        <p className="mb-4 text-white p-4 text-semibold bg-gray-100/30 rounded-lg">
                             {t(
                                 'Components.Features.WeatherPanel.tomorrowWeather'
                             )}{' '}
                             {weatherTomorrow}
+                        </p>
+                    )}
+                    {error && (
+                        <p className="mb-4 text-red-600 text-semibold">
+                            {error}
                         </p>
                     )}
                 </>
