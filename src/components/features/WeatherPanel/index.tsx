@@ -13,6 +13,9 @@ import { useCountryOptions } from '@/hooks/useCountryOptions';
 import { useLanguageStore } from '@/store/languageStore';
 import { useWeatherStore } from '@/store/weatherStore';
 
+import admin1Translations from '@/data/admin1Translations.json';
+import citiesData from '@/data/cities.json';
+
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
     const { language } = useLanguageStore();
@@ -46,15 +49,38 @@ export const WeatherPanel: FC = () => {
         clearWeather();
     };
 
+    const getCityDisplayName = () => {
+        if (!country || !city) {
+            return t('Components.Features.WeatherPanel.selectYourLocation');
+        }
+
+        const cityName = city.split('|')[0];
+
+        const cityData = (citiesData as any[]).find(
+            (c: any) => c.country === country && c.name === cityName
+        );
+
+        if (!cityData) {
+            return `${t(`Countries.${country}`)}, ${cityName}`;
+        }
+
+        const translatedCityName = cityData.translations[language] || cityName;
+        const translatedStateName =
+            // @ts-expect-error admin1Code is not in the type
+            admin1Translations[cityData.admin1Code]?.[language] || '';
+
+        return `${t(`Countries.${country}`)}, ${translatedStateName ? `${translatedCityName}, ${translatedStateName}` : translatedCityName}`;
+    };
+
     useEffect(() => {
         checkWeatherStaleness();
     }, [checkWeatherStaleness]);
 
     useEffect(() => {
-        if (country && !city) {
-            fetchCities(country);
+        if (country) {
+            fetchCities(country, language);
         }
-    }, [country, language, fetchCities, city]);
+    }, [country, language, fetchCities]);
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
@@ -100,7 +126,7 @@ export const WeatherPanel: FC = () => {
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="cursor-pointer">
                         {country && city
-                            ? `${t(`Countries.${country}`)}, ${t(`Countries.${city}`)}`
+                            ? getCityDisplayName()
                             : t(
                                   'Components.Features.WeatherPanel.selectYourLocation'
                               )}

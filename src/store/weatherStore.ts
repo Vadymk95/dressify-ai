@@ -3,9 +3,11 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ComboboxOption } from '@/components/ui/combobox';
-import { useLanguageStore } from '@/store/languageStore';
 
-const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
+import admin1Translations from '@/data/admin1Translations.json';
+import citiesData from '@/data/cities.json';
+
+// const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
 interface WeatherState {
     country: string;
@@ -18,7 +20,7 @@ interface WeatherState {
     error: string | null;
     setLocation: (country: string, city: string) => void;
     fetchWeather: (isTomorrow?: boolean) => Promise<void>;
-    fetchCities: (country: string) => Promise<void>;
+    fetchCities: (country: string, language: string) => Promise<void>;
     setWeather: (weatherToday: string, weatherTomorrow?: string) => void;
     clearWeather: () => void;
     checkWeatherStaleness: () => void;
@@ -73,7 +75,7 @@ export const useWeatherStore = create<WeatherState>()(
                 }
             },
 
-            fetchCities: async (country: string) => {
+            fetchCities: async (country: string, language: string) => {
                 if (!country) {
                     set({ cities: [] });
                     return;
@@ -81,26 +83,27 @@ export const useWeatherStore = create<WeatherState>()(
 
                 set({ loading: true, error: null });
                 try {
-                    // Получаем текущий язык из useLanguageStore
-                    const language = useLanguageStore.getState().language;
-
-                    // Запрос к OpenWeatherMap Geocoding API
-                    const response = await fetch(
-                        `http://api.openweathermap.org/geo/1.0/direct?q=,${country}&limit=50&appid=${API_KEY}&lang=${language}`
+                    const filteredCities = (citiesData as any[]).filter(
+                        (city) => city.country === country
                     );
-                    if (!response.ok)
-                        throw new Error(
-                            t(
-                                'Components.Features.WeatherPanel.errors.fetchCitiesError'
-                            )
-                        );
 
-                    const data = await response.json();
-                    console.log('CITIES', data);
-                    const cities = data.map((item: any) => ({
-                        value: item.name,
-                        label: item.name
-                    }));
+                    // Формируем список городов с переводами
+                    const cities = filteredCities.map((city: any) => {
+                        const cityName =
+                            city.translations[language] || city.name;
+                        const stateName =
+                            // @ts-expect-error admin1Code is not in the type
+                            admin1Translations[city.admin1Code]?.[language] ||
+                            '';
+
+                        return {
+                            value: `${city.name}|${city.latitude}|${city.longitude}`,
+                            label: stateName
+                                ? `${cityName}, ${stateName}`
+                                : cityName
+                        };
+                    });
+
                     set({ cities, loading: false });
                 } catch (error: any) {
                     console.error(error);
