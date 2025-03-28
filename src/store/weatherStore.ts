@@ -3,8 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ComboboxOption } from '@/components/ui/combobox';
-
-import admin1Translations from '@/data/admin1Translations.json';
+import { loadCities } from '@/helpers/cityLoader';
 
 // const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
@@ -12,6 +11,7 @@ interface WeatherState {
     country: string;
     city: string;
     cities: ComboboxOption[];
+    cachedCities: { [country: string]: any[] };
     weatherToday: string | null;
     weatherTomorrow: string | null;
     lastUpdated: number | null;
@@ -31,6 +31,7 @@ export const useWeatherStore = create<WeatherState>()(
             country: '',
             city: '',
             cities: [],
+            cachedCities: {},
             weatherToday: null,
             weatherTomorrow: null,
             lastUpdated: null,
@@ -82,28 +83,12 @@ export const useWeatherStore = create<WeatherState>()(
 
                 set({ loading: true, error: null });
                 try {
-                    const citiesData = await import(
-                        `@/data/cities/cities_${country}.min.json`
+                    const cities = await loadCities(
+                        country,
+                        language,
+                        get().cachedCities,
+                        set
                     );
-                    const filteredCities = citiesData.default;
-
-                    // Формируем список городов с переводами
-                    const cities = filteredCities.map((city: any) => {
-                        const cityName =
-                            city.translations[language] || city.name;
-                        const stateName =
-                            // @ts-expect-error admin1Code is not in the type
-                            admin1Translations[city.admin1Code]?.[language] ||
-                            '';
-
-                        return {
-                            value: `${city.name}|${city.latitude}|${city.longitude}`,
-                            label: stateName
-                                ? `${cityName}, ${stateName}`
-                                : cityName
-                        };
-                    });
-
                     set({ cities, loading: false });
                 } catch (error: any) {
                     console.error(error);

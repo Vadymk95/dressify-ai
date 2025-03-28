@@ -14,7 +14,6 @@ import { useLanguageStore } from '@/store/languageStore';
 import { useWeatherStore } from '@/store/weatherStore';
 
 import admin1Translations from '@/data/admin1Translations.json';
-import citiesData from '@/data/cities.json';
 
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
@@ -23,6 +22,7 @@ export const WeatherPanel: FC = () => {
         country,
         city,
         cities,
+        cachedCities,
         weatherToday,
         weatherTomorrow,
         loading,
@@ -56,8 +56,8 @@ export const WeatherPanel: FC = () => {
 
         const cityName = city.split('|')[0];
 
-        const cityData = (citiesData as any[]).find(
-            (c: any) => c.country === country && c.name === cityName
+        const cityData = cachedCities[country]?.find(
+            (c: any) => c.name === cityName
         );
 
         if (!cityData) {
