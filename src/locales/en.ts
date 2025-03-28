@@ -237,6 +237,17 @@ export const en = {
                             currentPlan: 'Current Plan'
                         }
                     }
+                },
+                WhatToWear: {
+                    title: "Let's find out what to wear today!",
+                    title2: '🚀 Just 4 steps to your perfect outfit',
+                    steps: {
+                        step1: 'Choose a city to check the weather',
+                        step2: 'Tell us a bit about yourself',
+                        step3: 'Add clothes to your wardrobe',
+                        step4: 'Choose an event or occasion'
+                    },
+                    yourOutfit: 'Your perfect outfit is ready!'
                 }
             },
             General: {

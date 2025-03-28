@@ -57,3 +57,11 @@ body {
         @apply from-red-500 to-orange-500;
     }
 }
+
+.main-gradient-reverse {
+    @apply bg-gradient-to-r from-orange-400 to-red-400;
+
+    button:hover {
+        @apply from-orange-500 to-red-500;
+    }
+}

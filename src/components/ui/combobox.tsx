@@ -70,7 +70,8 @@ export function Combobox({
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0">
+            {/* z-index less than header(z-50) */}
+            <PopoverContent className="p-0 z-[49]">
                 <Command>
                     <CommandInput placeholder={placeholder} className="h-9" />
                     <CommandList>
