@@ -24,7 +24,6 @@ export const WeatherPanel: FC = () => {
         cities,
         cachedCities,
         fetchWeather,
-        checkWeatherStaleness,
         clearWeather,
         setLocation,
         fetchCities
@@ -60,10 +59,6 @@ export const WeatherPanel: FC = () => {
 
         return `${t(`Countries.${country}`)}, ${cleanCityName}`;
     };
-
-    useEffect(() => {
-        checkWeatherStaleness(language);
-    }, [checkWeatherStaleness, language]);
 
     useEffect(() => {
         if (country) {
