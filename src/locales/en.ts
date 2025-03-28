@@ -22,6 +22,15 @@ export const en = {
                         notVerified: 'Email not verified',
                         genericError:
                             'An error occurred. Please try again later.'
+                    },
+                    WeatherWidget: {
+                        loading: 'Loading weather...',
+                        currentWeather: 'Current weather:',
+                        tomorrowWeather: "Tomorrow's weather:",
+                        errors: {
+                            fetchWeatherError:
+                                'Error fetching weather. Please try again later.'
+                        }
                     }
                 },
                 Features: {
@@ -39,9 +48,6 @@ export const en = {
                     },
                     WeatherPanel: {
                         title: 'Weather Overview',
-                        loading: 'Loading weather...',
-                        currentWeather: 'Current weather:',
-                        tomorrowWeather: "Tomorrow's weather:",
                         selectYourLocation: 'Select your location',
                         selectCountry: 'Select country...',
                         selectCity: 'Select city...',
@@ -50,8 +56,6 @@ export const en = {
                         fetchWeather: 'Get current weather',
                         fetchTomorrow: "Get tomorrow's weather",
                         errors: {
-                            fetchWeatherError:
-                                'Error fetching weather. Please try again later.',
                             fetchCitiesError:
                                 'Error fetching cities. Please try again later.'
                         }

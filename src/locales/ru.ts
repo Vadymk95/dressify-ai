@@ -23,6 +23,15 @@ export const ru = {
                         notVerified: 'Email не подтвержден',
                         genericError:
                             'Произошла ошибка при проверке статуса. Попробуйте позже.'
+                    },
+                    WeatherWidget: {
+                        loading: 'Загрузка погоды...',
+                        currentWeather: 'Текущая погода:',
+                        tomorrowWeather: 'Погода на завтра:',
+                        errors: {
+                            fetchWeatherError:
+                                'Ошибка получения погоды. Попробуйте позже.'
+                        }
                     }
                 },
                 Features: {
@@ -40,9 +49,6 @@ export const ru = {
                     },
                     WeatherPanel: {
                         title: 'Обзор погоды',
-                        loading: 'Загрузка погоды...',
-                        currentWeather: 'Текущая погода:',
-                        tomorrowWeather: 'Погода на завтра:',
                         selectYourLocation: 'Выберите ваше местоположение',
                         selectCountry: 'Выберите страну...',
                         selectCity: 'Выберите город...',
@@ -51,8 +57,6 @@ export const ru = {
                         fetchWeather: 'Получить текущую погоду',
                         fetchTomorrow: 'Получить погоду на завтра',
                         errors: {
-                            fetchWeatherError:
-                                'Ошибка получения погоды. Попробуйте позже.',
                             fetchCitiesError:
                                 'Ошибка получения городов. Попробуйте позже.'
                         }

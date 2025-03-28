@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { WeatherWidget } from '@/components/common/WeatherWidget';
 import {
     Accordion,
     AccordionContent,
@@ -22,10 +23,6 @@ export const WeatherPanel: FC = () => {
         city,
         cities,
         cachedCities,
-        weatherToday,
-        weatherTomorrow,
-        loading,
-        error,
         fetchWeather,
         checkWeatherStaleness,
         clearWeather,
@@ -80,35 +77,7 @@ export const WeatherPanel: FC = () => {
                 {t('Components.Features.WeatherPanel.title')}
             </h2>
 
-            {loading ? (
-                <p className="mb-4 text-white p-4 text-semibold">
-                    {t('Components.Features.WeatherPanel.loading')}
-                </p>
-            ) : (
-                <>
-                    {weatherToday && (
-                        <p className="mb-4 text-white p-4 text-semibold bg-gray-100/30 rounded-lg">
-                            {t(
-                                'Components.Features.WeatherPanel.currentWeather'
-                            )}{' '}
-                            {weatherToday}
-                        </p>
-                    )}
-                    {weatherTomorrow && (
-                        <p className="mb-4 text-white p-4 text-semibold bg-gray-100/30 rounded-lg">
-                            {t(
-                                'Components.Features.WeatherPanel.tomorrowWeather'
-                            )}{' '}
-                            {weatherTomorrow}
-                        </p>
-                    )}
-                    {error && (
-                        <p className="mb-4 text-red-600 text-semibold">
-                            {error}
-                        </p>
-                    )}
-                </>
-            )}
+            <WeatherWidget />
 
             <Accordion
                 type="single"

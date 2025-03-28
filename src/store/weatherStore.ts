@@ -16,7 +16,8 @@ interface WeatherState {
     weatherToday: string | null;
     weatherTomorrow: string | null;
     lastUpdated: number | null;
-    loading: boolean;
+    loadingWeather: boolean;
+    loadingCities: boolean;
     error: string | null;
     setLocation: (country: string, city: string) => void;
     fetchWeather: (language: string, isTomorrow?: boolean) => Promise<void>;
@@ -36,13 +37,14 @@ export const useWeatherStore = create<WeatherState>()(
             weatherToday: null,
             weatherTomorrow: null,
             lastUpdated: null,
-            loading: false,
+            loadingWeather: false,
+            loadingCities: false,
             error: null,
             setLocation: (country, city) => set({ country, city }),
             setWeather: (weatherToday, weatherTomorrow) =>
                 set({ weatherToday, weatherTomorrow: weatherTomorrow || null }),
             fetchWeather: async (language, isTomorrow = false) => {
-                set({ loading: true, error: null });
+                set({ loadingWeather: true, error: null });
                 try {
                     // Здесь вместо API-вызываем задержку и возвращаем пример данных.
                     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -58,14 +60,14 @@ export const useWeatherStore = create<WeatherState>()(
                     if (!isTomorrow) {
                         set({
                             weatherToday: `Sunny in ${cleanCityName}`,
-                            loading: false,
+                            loadingWeather: false,
                             weatherTomorrow: null,
                             lastUpdated: now
                         });
                     } else {
                         set({
                             weatherTomorrow: `Cloudy in ${cleanCityName}`,
-                            loading: false,
+                            loadingWeather: false,
                             weatherToday: null,
                             lastUpdated: now
                         });
@@ -76,7 +78,7 @@ export const useWeatherStore = create<WeatherState>()(
                         error: t(
                             'Components.Features.WeatherPanel.errors.fetchWeatherError'
                         ),
-                        loading: false,
+                        loadingWeather: false,
                         weatherTomorrow: null,
                         weatherToday: null
                     });
@@ -89,7 +91,7 @@ export const useWeatherStore = create<WeatherState>()(
                     return;
                 }
 
-                set({ loading: true, error: null });
+                set({ loadingCities: true, error: null });
                 try {
                     const cities = await loadCities(
                         country,
@@ -97,14 +99,14 @@ export const useWeatherStore = create<WeatherState>()(
                         get().cachedCities,
                         set
                     );
-                    set({ cities, loading: false });
+                    set({ cities, loadingCities: false });
                 } catch (error: any) {
                     console.error(error);
                     set({
                         error: t(
                             'Components.Features.WeatherPanel.errors.fetchCitiesError'
                         ),
-                        loading: false,
+                        loadingCities: false,
                         cities: []
                     });
                 }
