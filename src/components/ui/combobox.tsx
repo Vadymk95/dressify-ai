@@ -70,7 +70,7 @@ export function Combobox({
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
+            <PopoverContent className="p-0">
                 <Command>
                     <CommandInput placeholder={placeholder} className="h-9" />
                     <CommandList>
