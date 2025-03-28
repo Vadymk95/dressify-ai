@@ -5,7 +5,6 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { ComboboxOption } from '@/components/ui/combobox';
 
 import admin1Translations from '@/data/admin1Translations.json';
-import citiesData from '@/data/cities.json';
 
 // const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
@@ -83,9 +82,10 @@ export const useWeatherStore = create<WeatherState>()(
 
                 set({ loading: true, error: null });
                 try {
-                    const filteredCities = (citiesData as any[]).filter(
-                        (city) => city.country === country
+                    const citiesData = await import(
+                        `@/data/cities/cities_${country}.min.json`
                     );
+                    const filteredCities = citiesData.default;
 
                     // Формируем список городов с переводами
                     const cities = filteredCities.map((city: any) => {
