@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ComboboxOption } from '@/components/ui/combobox';
 import { loadCities } from '@/helpers/cityLoader';
+import { getCityName } from '@/helpers/cityNameParser';
 
 // const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
@@ -18,11 +19,11 @@ interface WeatherState {
     loading: boolean;
     error: string | null;
     setLocation: (country: string, city: string) => void;
-    fetchWeather: (isTomorrow?: boolean) => Promise<void>;
+    fetchWeather: (language: string, isTomorrow?: boolean) => Promise<void>;
     fetchCities: (country: string, language: string) => Promise<void>;
     setWeather: (weatherToday: string, weatherTomorrow?: string) => void;
     clearWeather: () => void;
-    checkWeatherStaleness: () => void;
+    checkWeatherStaleness: (language: string) => void;
 }
 
 export const useWeatherStore = create<WeatherState>()(
@@ -40,23 +41,30 @@ export const useWeatherStore = create<WeatherState>()(
             setLocation: (country, city) => set({ country, city }),
             setWeather: (weatherToday, weatherTomorrow) =>
                 set({ weatherToday, weatherTomorrow: weatherTomorrow || null }),
-            fetchWeather: async (isTomorrow = false) => {
+            fetchWeather: async (language, isTomorrow = false) => {
                 set({ loading: true, error: null });
                 try {
                     // Здесь вместо API-вызываем задержку и возвращаем пример данных.
                     await new Promise((resolve) => setTimeout(resolve, 1000));
-                    const { city } = get();
+                    const { city, country, cachedCities } = get();
+                    const cleanCityName = getCityName(
+                        city,
+                        cachedCities,
+                        country,
+                        language,
+                        false
+                    );
                     const now = Date.now();
                     if (!isTomorrow) {
                         set({
-                            weatherToday: `Sunny in ${city}`,
+                            weatherToday: `Sunny in ${cleanCityName}`,
                             loading: false,
                             weatherTomorrow: null,
                             lastUpdated: now
                         });
                     } else {
                         set({
-                            weatherTomorrow: `Cloudy in ${city}`,
+                            weatherTomorrow: `Cloudy in ${cleanCityName}`,
                             loading: false,
                             weatherToday: null,
                             lastUpdated: now
@@ -110,7 +118,7 @@ export const useWeatherStore = create<WeatherState>()(
                 }),
 
             // Проверка, актуальны ли данные погоды (сравниваем дату обновления с сегодняшней)
-            checkWeatherStaleness: () => {
+            checkWeatherStaleness: (language) => {
                 const { lastUpdated, fetchWeather, city, country } = get();
                 if (lastUpdated) {
                     const lastDate = new Date(lastUpdated);
@@ -127,12 +135,12 @@ export const useWeatherStore = create<WeatherState>()(
                             lastUpdated: null
                         });
                         if (city && country) {
-                            fetchWeather();
+                            fetchWeather(language);
                         }
                     }
                 } else {
                     if (city && country) {
-                        fetchWeather();
+                        fetchWeather(language);
                     }
                 }
             }

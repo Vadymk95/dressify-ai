@@ -9,11 +9,10 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
+import { getCityName } from '@/helpers/cityNameParser';
 import { useCountryOptions } from '@/hooks/useCountryOptions';
 import { useLanguageStore } from '@/store/languageStore';
 import { useWeatherStore } from '@/store/weatherStore';
-
-import admin1Translations from '@/data/admin1Translations.json';
 
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
@@ -36,7 +35,7 @@ export const WeatherPanel: FC = () => {
     const countries = useCountryOptions();
 
     const handleFetchWeather = async (tomorrow = false) => {
-        await fetchWeather(tomorrow);
+        await fetchWeather(language, tomorrow);
     };
 
     const handleSetCountry = (value: string) => {
@@ -54,27 +53,20 @@ export const WeatherPanel: FC = () => {
             return t('Components.Features.WeatherPanel.selectYourLocation');
         }
 
-        const cityName = city.split('|')[0];
-
-        const cityData = cachedCities[country]?.find(
-            (c: any) => c.name === cityName
+        const cleanCityName = getCityName(
+            city,
+            cachedCities,
+            country,
+            language,
+            false
         );
 
-        if (!cityData) {
-            return `${t(`Countries.${country}`)}, ${cityName}`;
-        }
-
-        const translatedCityName = cityData.translations[language] || cityName;
-        const translatedStateName =
-            // @ts-expect-error admin1Code is not in the type
-            admin1Translations[cityData.admin1Code]?.[language] || '';
-
-        return `${t(`Countries.${country}`)}, ${translatedStateName ? `${translatedCityName}, ${translatedStateName}` : translatedCityName}`;
+        return `${t(`Countries.${country}`)}, ${cleanCityName}`;
     };
 
     useEffect(() => {
-        checkWeatherStaleness();
-    }, [checkWeatherStaleness]);
+        checkWeatherStaleness(language);
+    }, [checkWeatherStaleness, language]);
 
     useEffect(() => {
         if (country) {
