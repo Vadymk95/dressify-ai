@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 import { ComboboxOption } from '@/components/ui/combobox';
 import { loadCities } from '@/helpers/cityLoader';
@@ -64,7 +64,8 @@ export const useWeatherStore = create<WeatherState>()(
                         set({
                             loadingWeather: false,
                             weatherTomorrow: null,
-                            weatherToday: null
+                            weatherToday: null,
+                            lastUpdated: null
                         });
                         return;
                     }
@@ -115,7 +116,8 @@ export const useWeatherStore = create<WeatherState>()(
                         ),
                         loadingWeather: false,
                         weatherTomorrow: null,
-                        weatherToday: null
+                        weatherToday: null,
+                        lastUpdated: null
                     });
                 }
             },
@@ -164,8 +166,7 @@ export const useWeatherStore = create<WeatherState>()(
             }
         }),
         {
-            name: 'weather-store',
-            storage: createJSONStorage(() => sessionStorage)
+            name: 'weather-store'
         }
     )
 );
