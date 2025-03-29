@@ -3,6 +3,10 @@ import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
 type Plan = 'free' | 'monthly' | 'semiAnnual';
+type Location = {
+    country: string;
+    city: string;
+};
 
 export interface UserProfile {
     uid: string;
@@ -12,6 +16,7 @@ export interface UserProfile {
     lang: string;
     plan: Plan;
     subscriptionExpiry?: Date | null;
+    location?: Location | null;
 }
 
 interface UserProfileStore {
@@ -25,6 +30,8 @@ interface UserProfileStore {
     updatePlan: (plan: Plan) => Promise<void>;
     checkSubscriptionExpiry: () => Promise<void>;
     updateEmailVerified: () => Promise<boolean>;
+    updateLocation: (country: string, city: string) => Promise<void>;
+    clearLocation: () => Promise<void>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -53,6 +60,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 set({ error: 'Profile not found', loading: false });
             }
         } catch (error: any) {
+            console.error(error);
             set({ error: error.message, loading: false });
         }
     },
@@ -88,8 +96,9 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             } else {
                 set({ loading: false });
             }
-        } catch (err: any) {
-            set({ error: err.message, loading: false });
+        } catch (error: any) {
+            console.error(error);
+            set({ error: error.message, loading: false });
         }
     },
 
@@ -126,6 +135,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 set({ loading: false });
             }
         } catch (error: any) {
+            console.error(error);
             set({ error: error.message, loading: false });
         }
     },
@@ -158,6 +168,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 }
             }
         } catch (error: any) {
+            console.error(error);
             set({ error: error.message, loading: false });
         }
     },
@@ -190,8 +201,59 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 return false;
             }
         } catch (error: any) {
+            console.error(error);
             set({ error: error.message });
             return false;
+        }
+    },
+
+    updateLocation: async (country: string, city: string) => {
+        set({ loading: true, error: null });
+        try {
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
+
+            const location = { country, city };
+
+            await updateDoc(doc(db, 'users', currentUser.uid), { location });
+
+            const currentProfile = get().profile;
+            if (currentProfile) {
+                set({
+                    profile: { ...currentProfile, location },
+                    loading: false
+                });
+            } else {
+                set({ loading: false });
+            }
+        } catch (error: any) {
+            console.error(error);
+            set({ error: error.message, loading: false });
+        }
+    },
+
+    clearLocation: async () => {
+        set({ loading: true, error: null });
+        try {
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
+
+            await updateDoc(doc(db, 'users', currentUser.uid), {
+                location: null
+            });
+
+            const currentProfile = get().profile;
+            if (currentProfile) {
+                set({
+                    profile: { ...currentProfile, location: null },
+                    loading: false
+                });
+            } else {
+                set({ loading: false });
+            }
+        } catch (error: any) {
+            console.error(error);
+            set({ error: error.message, loading: false });
         }
     }
 }));

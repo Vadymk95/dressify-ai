@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { ComboboxOption } from '@/components/ui/combobox';
 import { loadCities } from '@/helpers/cityLoader';
 import { getCityName } from '@/helpers/cityNameParser';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 // const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
 
@@ -48,7 +49,22 @@ export const useWeatherStore = create<WeatherState>()(
                 try {
                     // Здесь вместо API-вызываем задержку и возвращаем пример данных.
                     await new Promise((resolve) => setTimeout(resolve, 1000));
-                    const { city, country, cachedCities } = get();
+                    const city =
+                        useUserProfileStore.getState().profile?.location
+                            ?.city || '';
+                    const country =
+                        useUserProfileStore.getState().profile?.location
+                            ?.country || '';
+
+                    if (!city || !country) {
+                        set({
+                            loadingWeather: false,
+                            weatherTomorrow: null,
+                            weatherToday: null
+                        });
+                        return;
+                    }
+                    const { cachedCities } = get();
                     const cleanCityName = getCityName(
                         city,
                         cachedCities,

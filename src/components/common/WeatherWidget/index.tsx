@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next';
 
 import { useLanguageStore } from '@/store/languageStore';
 import { useWeatherStore } from '@/store/weatherStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const WeatherWidget: FC = () => {
     const { t } = useTranslation();
     const { language } = useLanguageStore();
+    const { profile } = useUserProfileStore();
     const {
         loadingWeather,
         weatherToday,
         weatherTomorrow,
         error,
-        city,
-        country,
         fetchWeather,
         checkWeatherStaleness
     } = useWeatherStore();
@@ -23,10 +23,10 @@ export const WeatherWidget: FC = () => {
     }, [checkWeatherStaleness, language]);
 
     useEffect(() => {
-        if (city && country) {
+        if (profile?.location) {
             fetchWeather(language);
         }
-    }, [language, city, country, fetchWeather]);
+    }, [language, profile?.location, fetchWeather]);
 
     return loadingWeather ? (
         <p className="mb-4 text-white p-4 text-semibold">

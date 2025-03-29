@@ -13,11 +13,13 @@ import { Combobox } from '@/components/ui/combobox';
 import { getCityName } from '@/helpers/cityNameParser';
 import { useCountryOptions } from '@/hooks/useCountryOptions';
 import { useLanguageStore } from '@/store/languageStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 
 export const WeatherPanel: FC = () => {
     const { t } = useTranslation();
     const { language } = useLanguageStore();
+    const { profile, updateLocation, clearLocation } = useUserProfileStore();
     const {
         country,
         city,
@@ -31,17 +33,26 @@ export const WeatherPanel: FC = () => {
     const countries = useCountryOptions();
 
     const handleFetchWeather = async (tomorrow = false) => {
+        await updateLocation(country, city);
         await fetchWeather(language, tomorrow);
     };
 
     const handleSetCountry = (value: string) => {
         setLocation(value, '');
         clearWeather();
+
+        if (profile?.location) {
+            clearLocation();
+        }
     };
 
     const handleSetCity = (value: string) => {
         setLocation(country, value);
         clearWeather();
+
+        if (profile?.location && !value) {
+            clearLocation();
+        }
     };
 
     const getCityDisplayName = () => {
@@ -65,6 +76,12 @@ export const WeatherPanel: FC = () => {
             fetchCities(country, language);
         }
     }, [country, language, fetchCities]);
+
+    useEffect(() => {
+        if (profile?.location) {
+            setLocation(profile.location.country, profile.location.city);
+        }
+    }, [profile?.location, setLocation]);
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
