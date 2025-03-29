@@ -84,10 +84,10 @@ export const EmailVerificationPanel: FC = () => {
                 </div>
             ) : (
                 <>
-                    <p className="mb-2 text-center text-lg">
+                    <p className="mb-4 text-center text-lg">
                         {t('Components.Common.EmailVerification.info')}
                     </p>
-                    <p className="mb-2 text-center text-base font-medium">
+                    <p className="mb-4 text-center text-base font-medium">
                         {t(
                             'Components.Common.EmailVerification.useFullFunctionality'
                         )}
