@@ -71,10 +71,10 @@ export const EmailVerificationPanel: FC = () => {
         }
     }, [isVerified, isVisible]);
 
-    if (profile === null || (isVerified && !isVisible)) return null;
+    if (profile === null || isVerified) return null;
 
     return (
-        <section className="w-full main-gradient p-4 rounded-md text-white flex flex-col items-center">
+        <section className="w-full main-gradient p-4 rounded-md text-white flex flex-col items-center mt-5">
             {profile?.emailVerified ? (
                 <div className="text-lg font-semibold flex items-center gap-2">
                     <span role="img" aria-label="verified">
@@ -91,6 +91,7 @@ export const EmailVerificationPanel: FC = () => {
                         {t(
                             'Components.Common.EmailVerification.useFullFunctionality'
                         )}
+                        <span className="font-bold">({profile?.email})</span>
                     </p>
                     {localError && (
                         <p className="mb-2 text-red-700 text-sm">
