@@ -36,7 +36,7 @@ const Register: FC = () => {
         control,
         formState: { errors }
     } = useForm<RegisterForm>({
-        mode: 'onChange'
+        mode: 'onBlur'
     });
 
     const [showPassword, setShowPassword] = useState(false);
