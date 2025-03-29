@@ -52,7 +52,7 @@ const WhatToWear: FC = () => {
                         ))}
                     </ol>
 
-                    <div className="mt-6 md:mt-10 flex items-center justify-center gap-4">
+                    <div className="mt-6 md:mt-10 flex items-center md:justify-center gap-4">
                         <FontAwesomeIcon
                             className="text-[40px] text-green-400"
                             icon={faCircleCheck}
