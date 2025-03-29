@@ -1,4 +1,5 @@
 import { auth, db } from '@/firebase/firebaseConfig';
+import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
@@ -6,6 +7,8 @@ type Plan = 'free' | 'monthly' | 'semiAnnual';
 type Location = {
     country: string;
     city: string;
+    latitude: string;
+    longitude: string;
 };
 
 export interface UserProfile {
@@ -213,14 +216,37 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const currentUser = auth.currentUser;
             if (!currentUser) throw new Error('User not logged in');
 
-            const location = { country, city };
+            if (!country || !city) {
+                set({ loading: false, error: 'Country and city are required' });
+                return;
+            }
 
-            await updateDoc(doc(db, 'users', currentUser.uid), { location });
+            const location = { country, city };
+            const parsedCoordinates = parseCityCoordinates(city);
+
+            if (!parsedCoordinates) {
+                set({
+                    loading: false,
+                    error: 'Failed to parse city coordinates'
+                });
+                return;
+            }
+
+            const { latitude, longitude } = parsedCoordinates;
+            const locationData = {
+                ...location,
+                latitude,
+                longitude
+            };
+
+            await updateDoc(doc(db, 'users', currentUser.uid), {
+                location: locationData
+            });
 
             const currentProfile = get().profile;
             if (currentProfile) {
                 set({
-                    profile: { ...currentProfile, location },
+                    profile: { ...currentProfile, location: locationData },
                     loading: false
                 });
             } else {
