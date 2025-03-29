@@ -4,18 +4,25 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ComboboxOption } from '@/components/ui/combobox';
 import { loadCities } from '@/helpers/cityLoader';
-import { getCityName } from '@/helpers/cityNameParser';
 import { useUserProfileStore } from '@/store/userProfileStore';
 
-// const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
+const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_KEY;
+const WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5';
+
+export interface Weather {
+    temp: number;
+    feels_like: number;
+    description: string;
+    icon: string;
+}
 
 interface WeatherState {
     country: string;
     city: string;
     cities: ComboboxOption[];
     cachedCities: { [country: string]: any[] };
-    weatherToday: string | null;
-    weatherTomorrow: string | null;
+    weatherToday: Weather | null;
+    weatherTomorrow: Weather | null;
     lastUpdated: number | null;
     loadingWeather: boolean;
     loadingCities: boolean;
@@ -23,7 +30,6 @@ interface WeatherState {
     setLocation: (country: string, city: string) => void;
     fetchWeather: (language: string, isTomorrow?: boolean) => Promise<void>;
     fetchCities: (country: string, language: string) => Promise<void>;
-    setWeather: (weatherToday: string, weatherTomorrow?: string) => void;
     clearWeather: () => void;
     checkWeatherStaleness: (language: string) => void;
 }
@@ -42,8 +48,6 @@ export const useWeatherStore = create<WeatherState>()(
             loadingCities: false,
             error: null,
             setLocation: (country, city) => set({ country, city }),
-            setWeather: (weatherToday, weatherTomorrow) =>
-                set({ weatherToday, weatherTomorrow: weatherTomorrow || null }),
             fetchWeather: async (language, isTomorrow = false) => {
                 set({ loadingWeather: true, error: null });
                 try {
@@ -64,25 +68,40 @@ export const useWeatherStore = create<WeatherState>()(
                         });
                         return;
                     }
-                    const { cachedCities } = get();
-                    const cleanCityName = getCityName(
-                        city,
-                        cachedCities,
-                        country,
-                        language,
-                        false
+
+                    const latitude =
+                        useUserProfileStore.getState().profile?.location
+                            ?.latitude || '';
+                    const longitude =
+                        useUserProfileStore.getState().profile?.location
+                            ?.longitude || '';
+
+                    const response = await fetch(
+                        `${WEATHER_BASE_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${language}`
                     );
+                    const data = await response.json();
+
                     const now = Date.now();
                     if (!isTomorrow) {
                         set({
-                            weatherToday: `Sunny in ${cleanCityName}`,
+                            weatherToday: {
+                                temp: Math.round(data.main.temp),
+                                feels_like: Math.round(data.main.feels_like),
+                                description: data.weather[0].description,
+                                icon: data.weather[0].icon
+                            },
                             loadingWeather: false,
                             weatherTomorrow: null,
                             lastUpdated: now
                         });
                     } else {
                         set({
-                            weatherTomorrow: `Cloudy in ${cleanCityName}`,
+                            weatherTomorrow: {
+                                temp: Math.round(data.main.temp),
+                                feels_like: Math.round(data.main.feels_like),
+                                description: data.weather[0].description,
+                                icon: data.weather[0].icon
+                            },
                             loadingWeather: false,
                             weatherToday: null,
                             lastUpdated: now
@@ -135,7 +154,6 @@ export const useWeatherStore = create<WeatherState>()(
                     lastUpdated: null
                 }),
 
-            // Проверка, актуальны ли данные погоды (сравниваем дату обновления с сегодняшней)
             checkWeatherStaleness: (language) => {
                 const { lastUpdated, fetchWeather } = get();
                 const THREE_HOURS = 3 * 60 * 60 * 1000;

@@ -28,6 +28,7 @@ export const ru = {
                         loading: 'Загрузка погоды...',
                         currentWeather: 'Текущая погода:',
                         tomorrowWeather: 'Погода на завтра:',
+                        feelsLike: 'Ощущается как: ',
                         errors: {
                             fetchWeatherError:
                                 'Ошибка получения погоды. Попробуйте позже.'

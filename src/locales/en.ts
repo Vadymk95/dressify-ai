@@ -27,6 +27,7 @@ export const en = {
                         loading: 'Loading weather...',
                         currentWeather: 'Current weather:',
                         tomorrowWeather: "Tomorrow's weather:",
+                        feelsLike: 'Feels like: ',
                         errors: {
                             fetchWeatherError:
                                 'Error fetching weather. Please try again later.'
