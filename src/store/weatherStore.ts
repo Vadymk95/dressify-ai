@@ -137,29 +137,11 @@ export const useWeatherStore = create<WeatherState>()(
 
             // Проверка, актуальны ли данные погоды (сравниваем дату обновления с сегодняшней)
             checkWeatherStaleness: (language) => {
-                const { lastUpdated, fetchWeather, city, country } = get();
-                if (lastUpdated) {
-                    const lastDate = new Date(lastUpdated);
-                    const now = new Date();
-                    if (
-                        lastDate.getDate() !== now.getDate() ||
-                        lastDate.getMonth() !== now.getMonth() ||
-                        lastDate.getFullYear() !== now.getFullYear()
-                    ) {
-                        // Если данные устарели, очищаем и запускаем новый запрос
-                        set({
-                            weatherToday: null,
-                            weatherTomorrow: null,
-                            lastUpdated: null
-                        });
-                        if (city && country) {
-                            fetchWeather(language);
-                        }
-                    }
-                } else {
-                    if (city && country) {
-                        fetchWeather(language);
-                    }
+                const { lastUpdated, fetchWeather } = get();
+                const THREE_HOURS = 3 * 60 * 60 * 1000;
+
+                if (!lastUpdated || Date.now() - lastUpdated > THREE_HOURS) {
+                    fetchWeather(language);
                 }
             }
         }),
