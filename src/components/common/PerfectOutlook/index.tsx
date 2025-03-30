@@ -26,7 +26,7 @@ export const PerfectOutlook: FC = () => {
                         key={step.id}
                         className="flex md:flex-col items-center md:text-center gap-4 flex-1 basis-0 justify-start"
                     >
-                        <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full main-gradient-reverse text-white font-semibold shadow-md">
+                        <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full main-gradient-reverse text-amber-50 font-semibold shadow-md">
                             {index + 1}
                         </div>
                         <span className="text-gray-700 font-semibold min-h-[56px] flex items-center justify-center max-w-xs">

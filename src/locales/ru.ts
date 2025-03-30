@@ -71,7 +71,10 @@ export const ru = {
                             fetchCitiesError:
                                 'Ошибка получения городов. Попробуйте позже.'
                         }
-                    }
+                    },
+                    PersonalDetails: {},
+                    WardrobePanel: {},
+                    EventPanel: {}
                 },
                 Layout: {
                     Header: {

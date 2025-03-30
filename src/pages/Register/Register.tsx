@@ -216,7 +216,7 @@ const Register: FC = () => {
 
                     <Button
                         type="submit"
-                        className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-300 py-5 text-white"
+                        className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-300 py-5 text-amber-50"
                     >
                         {t('Pages.Register.title')}
                     </Button>

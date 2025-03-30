@@ -33,7 +33,7 @@ export const WeatherWidget: FC = () => {
     if (!weather) return null;
 
     return (
-        <div className="w-full flex flex-col items-center gap-2 py-4 px-6 mb-4 bg-gray-100/30 text-white rounded-xl shadow-lg">
+        <div className="w-full flex flex-col items-center gap-2 py-4 px-6 mb-4 bg-gray-100/30 text-amber-50 rounded-xl shadow-lg">
             <p className="mt-2 opacity-75">
                 {weatherToday
                     ? t('Components.Common.WeatherWidget.currentWeather')

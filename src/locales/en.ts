@@ -70,7 +70,10 @@ export const en = {
                             fetchCitiesError:
                                 'Error fetching cities. Please try again later.'
                         }
-                    }
+                    },
+                    PersonalDetails: {},
+                    WardrobePanel: {},
+                    EventPanel: {}
                 },
                 Layout: {
                     Header: {

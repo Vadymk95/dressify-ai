@@ -37,7 +37,7 @@ class ErrorBoundaryComponent extends Component<
                         Что-то пошло не так.
                     </h1>
                     <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                        className="px-4 py-2 bg-blue-500 text-amber-50 rounded-md"
                         onClick={() => window.location.reload()}
                     >
                         Перезагрузить

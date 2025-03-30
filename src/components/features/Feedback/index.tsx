@@ -81,7 +81,7 @@ export const Feedback: FC = () => {
 
                     <Button
                         type="submit"
-                        className="bg-red-500 text-white hover:bg-red-600 transition cursor-pointer py-5"
+                        className="bg-red-500 text-amber-50 hover:bg-red-600 transition cursor-pointer py-5"
                         disabled={loading}
                     >
                         {loading

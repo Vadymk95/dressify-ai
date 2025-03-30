@@ -38,7 +38,7 @@ export const PlanCard: FC<PlanCardProps> = ({
         >
             {/* Если есть ribbonText, показываем ленту */}
             {ribbonText && (
-                <div className="absolute top-2 right-10 main-gradient text-white text-xs px-3 py-1 transform translate-x-8 shadow rounded-3xl">
+                <div className="absolute top-2 right-10 main-gradient text-amber-50 text-xs px-3 py-1 transform translate-x-8 shadow rounded-3xl">
                     🔥 {ribbonText}
                 </div>
             )}
@@ -68,7 +68,7 @@ export const PlanCard: FC<PlanCardProps> = ({
 
             {profile && profile.emailVerified && (
                 <Button
-                    className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
+                    className="bg-red-500 text-amber-50 px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
                     onClick={onClick}
                     disabled={isActive}
                 >

@@ -85,7 +85,7 @@ export const WeatherPanel: FC = () => {
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
-            <h2 className="text-2xl font-semibold mb-4 text-white">
+            <h2 className="text-2xl font-semibold mb-4 text-amber-50">
                 {t('Components.Features.WeatherPanel.title')}
             </h2>
 
@@ -141,7 +141,7 @@ export const WeatherPanel: FC = () => {
                             <Button
                                 onClick={() => handleFetchWeather()}
                                 disabled={!country || !city}
-                                className="main-gradient text-white cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
+                                className="main-gradient text-amber-50 cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
                             >
                                 {t(
                                     'Components.Features.WeatherPanel.fetchWeather'

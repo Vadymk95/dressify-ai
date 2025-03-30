@@ -121,7 +121,7 @@ const Login: FC = () => {
 
                     <Button
                         type="submit"
-                        className="w-full bg-red-500 hover:bg-red-600 text-white cursor-pointer py-5"
+                        className="w-full bg-red-500 hover:bg-red-600 text-amber-50 cursor-pointer py-5"
                     >
                         {t('Pages.Login.title')}
                     </Button>
