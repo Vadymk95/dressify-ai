@@ -28,7 +28,11 @@ export const PersonalDetailsPanel: FC = () => {
                     className="flex flex-col gap-4"
                 >
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="male" id="male" />
+                        <RadioGroupItem
+                            value="male"
+                            id="male"
+                            variant="green"
+                        />
                         <Label htmlFor="male">
                             {t(
                                 'Components.Features.PersonalDetailsPanel.genderOptions.male'
@@ -36,7 +40,11 @@ export const PersonalDetailsPanel: FC = () => {
                         </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="female" id="female" />
+                        <RadioGroupItem
+                            value="female"
+                            id="female"
+                            variant="green"
+                        />
                         <Label htmlFor="female">
                             {t(
                                 'Components.Features.PersonalDetailsPanel.genderOptions.female'
@@ -44,7 +52,11 @@ export const PersonalDetailsPanel: FC = () => {
                         </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="other" id="other" />
+                        <RadioGroupItem
+                            value="other"
+                            id="other"
+                            variant="green"
+                        />
                         <Label htmlFor="other">
                             {t(
                                 'Components.Features.PersonalDetailsPanel.genderOptions.other'
