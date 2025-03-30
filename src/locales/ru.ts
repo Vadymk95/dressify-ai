@@ -72,9 +72,10 @@ export const ru = {
                                 'Ошибка получения городов. Попробуйте позже.'
                         }
                     },
-                    PersonalDetails: {},
+                    PersonalDetailsPanel: {},
                     WardrobePanel: {},
-                    EventPanel: {}
+                    EventPanel: {},
+                    OutfitRequestPanel: {}
                 },
                 Layout: {
                     Header: {

@@ -5,7 +5,8 @@ import { EmailVerificationPanel } from '@/components/common/EmailVerificationPan
 import { PerfectOutlook } from '@/components/common/PerfectOutlook';
 import { EventPanel } from '@/components/features/EventPanel';
 import { Feedback } from '@/components/features/Feedback';
-import { PersonalDetails } from '@/components/features/PersonalDetails';
+import { OutfitRequestPanel } from '@/components/features/OutfitRequestPanel';
+import { PersonalDetailsPanel } from '@/components/features/PersonalDetailsPanel';
 import { WardrobePanel } from '@/components/features/WardrobePanel';
 import { WeatherPanel } from '@/components/features/WeatherPanel';
 import { useUserProfileStore } from '@/store/userProfileStore';
@@ -32,26 +33,22 @@ const WhatToWear: FC = () => {
                 <WeatherPanel />
             </section>
 
-            <div className="flex flex-col md:flex-row gap-5">
-                <section className="flex-1 p-4 secondary-gradient shadow-md rounded-xl flex flex-col">
-                    <PersonalDetails />
-                </section>
+            <section className="flex flex-col md:flex-row gap-5">
+                <div className="flex-1 p-4 secondary-gradient shadow-md rounded-xl flex flex-col">
+                    <PersonalDetailsPanel />
+                </div>
 
-                <section className="flex-1 p-4 main-gradient-reverse shadow-md rounded-xl flex flex-col">
+                <div className="flex-1 p-4 main-gradient-reverse shadow-md rounded-xl flex flex-col">
                     <WardrobePanel />
-                </section>
+                </div>
 
-                <section className="flex-1 third-gradient p-4 rounded-lg shadow-md flex flex-col">
+                <div className="flex-1 third-gradient p-4 rounded-lg shadow-md flex flex-col">
                     <EventPanel />
-                </section>
-            </div>
-
-            <section>
-                <div>request</div>
+                </div>
             </section>
 
-            <section>
-                <div>answer</div>
+            <section className="p-4 bg-amber-50 rounded-xl shadow-md text-center">
+                <OutfitRequestPanel />
             </section>
 
             <section>

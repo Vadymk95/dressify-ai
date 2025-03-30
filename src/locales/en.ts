@@ -71,9 +71,10 @@ export const en = {
                                 'Error fetching cities. Please try again later.'
                         }
                     },
-                    PersonalDetails: {},
+                    PersonalDetailsPanel: {},
                     WardrobePanel: {},
-                    EventPanel: {}
+                    EventPanel: {},
+                    OutfitRequestPanel: {}
                 },
                 Layout: {
                     Header: {

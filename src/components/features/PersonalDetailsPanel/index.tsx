@@ -7,7 +7,7 @@ import {
     AccordionTrigger
 } from '@/components/ui/accordion';
 
-export const PersonalDetails: FC = () => {
+export const PersonalDetailsPanel: FC = () => {
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold text-amber-50 text-center">
