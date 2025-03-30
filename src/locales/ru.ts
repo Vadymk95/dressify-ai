@@ -72,7 +72,18 @@ export const ru = {
                                 'Ошибка получения городов. Попробуйте позже.'
                         }
                     },
-                    PersonalDetailsPanel: {},
+                    PersonalDetailsPanel: {
+                        title: 'Личные данные',
+                        gender: 'Пол:',
+                        genderOptions: {
+                            male: 'Мужской',
+                            female: 'Женский',
+                            other: 'Другой'
+                        },
+                        optionalNote:
+                            'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
+                        additionalInfo: 'Дополнительная информация'
+                    },
                     WardrobePanel: {},
                     EventPanel: {},
                     OutfitRequestPanel: {}

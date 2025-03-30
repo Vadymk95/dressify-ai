@@ -71,7 +71,18 @@ export const en = {
                                 'Error fetching cities. Please try again later.'
                         }
                     },
-                    PersonalDetailsPanel: {},
+                    PersonalDetailsPanel: {
+                        title: 'Personal Details',
+                        gender: 'Gender:',
+                        genderOptions: {
+                            male: 'Male',
+                            female: 'Female',
+                            other: 'Other'
+                        },
+                        optionalNote:
+                            'Additional information is optional, but it helps us provide more accurate outfit recommendations',
+                        additionalInfo: 'Additional Information'
+                    },
                     WardrobePanel: {},
                     EventPanel: {},
                     OutfitRequestPanel: {}

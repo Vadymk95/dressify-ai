@@ -5,7 +5,7 @@ import { routes } from '@/router/routes';
 export const WardrobePanel: FC = () => {
     return (
         <div className="w-full">
-            <h2 className="text-2xl font-bold text-amber-50 text-center">
+            <h2 className="text-2xl font-bold text-amber-50 text-center mb-4">
                 Your Wardrobe
             </h2>
 
