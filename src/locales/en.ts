@@ -32,6 +32,16 @@ export const en = {
                             fetchWeatherError:
                                 'Error fetching weather. Please try again later.'
                         }
+                    },
+                    PerfectOutlook: {
+                        title: '🚀 Just 4 steps to your perfect outfit',
+                        steps: {
+                            step1: 'Choose a city to check the weather',
+                            step2: 'Tell us a bit about yourself',
+                            step3: 'Add clothes to your wardrobe',
+                            step4: 'Choose an event or occasion'
+                        },
+                        yourOutfit: 'Your perfect outfit is ready!'
                     }
                 },
                 Features: {
@@ -240,15 +250,7 @@ export const en = {
                     }
                 },
                 WhatToWear: {
-                    title: "Let's find out what to wear today!",
-                    title2: '🚀 Just 4 steps to your perfect outfit',
-                    steps: {
-                        step1: 'Choose a city to check the weather',
-                        step2: 'Tell us a bit about yourself',
-                        step3: 'Add clothes to your wardrobe',
-                        step4: 'Choose an event or occasion'
-                    },
-                    yourOutfit: 'Your perfect outfit is ready!'
+                    title: "Let's find out what to wear today!"
                 }
             },
             General: {
