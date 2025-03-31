@@ -2,6 +2,7 @@ import { Check } from 'lucide-react';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Loader } from '@/components/common/Loader';
 import {
     Accordion,
     AccordionContent,
@@ -32,6 +33,8 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import { useCharacteristicsStore } from '@/store/characteristicsStore';
+import { UserCharacteristics } from '@/types/user';
 
 // Опции для селектов
 const BODY_TYPES = {
@@ -83,9 +86,60 @@ const STYLE_PREFERENCES = [
 
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
-    const gender = 'female'; // TODO: добавить состояние для пола
+    const { characteristics, updateCharacteristics, updateGender, loading } =
+        useCharacteristicsStore();
     const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+
+    const getBodyTypesList = () => {
+        const gender = characteristics?.gender;
+        if (!gender) {
+            return BODY_TYPES.common;
+        }
+        return [
+            ...BODY_TYPES.common,
+            ...(BODY_TYPES[gender as keyof typeof BODY_TYPES] || [])
+        ];
+    };
+
+    const handleSaveCharacteristics = async () => {
+        const heightInput = document.getElementById(
+            'height'
+        ) as HTMLInputElement;
+        const weightInput = document.getElementById(
+            'weight'
+        ) as HTMLInputElement;
+        const ageInput = document.getElementById('age') as HTMLInputElement;
+        const skinToneSelect = document.getElementById(
+            'skinTone'
+        ) as HTMLSelectElement;
+        const hairColorSelect = document.getElementById(
+            'hairColor'
+        ) as HTMLSelectElement;
+        const eyeColorSelect = document.getElementById(
+            'eyeColor'
+        ) as HTMLSelectElement;
+        const bodyTypeSelect = document.getElementById(
+            'bodyType'
+        ) as HTMLSelectElement;
+
+        const updatedCharacteristics = {
+            ...characteristics,
+            height: heightInput.value ? Number(heightInput.value) : null,
+            weight: weightInput.value ? Number(weightInput.value) : null,
+            age: ageInput.value ? Number(ageInput.value) : null,
+            skinTone: skinToneSelect?.value || null,
+            hairColor: hairColorSelect?.value || null,
+            eyeColor: eyeColorSelect?.value || null,
+            bodyType: bodyTypeSelect?.value || null,
+            preferredColors: selectedColors,
+            stylePreferences: selectedStyles
+        };
+
+        await updateCharacteristics(
+            updatedCharacteristics as UserCharacteristics
+        );
+    };
 
     return (
         <div className="w-full">
@@ -98,7 +152,8 @@ export const PersonalDetailsPanel: FC = () => {
                     {t('Components.Features.PersonalDetailsPanel.gender')}
                 </div>
                 <RadioGroup
-                    defaultValue="female"
+                    value={characteristics?.gender || ''}
+                    onValueChange={updateGender}
                     className="flex flex-col md:flex-row gap-4"
                 >
                     <div className="flex items-center space-x-3">
@@ -189,7 +244,10 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="100"
                                         max="250"
-                                        className="w-full h-9"
+                                        placeholder={t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.heightPlaceholder'
+                                        )}
+                                        className="w-full h-9 bg-white"
                                     />
                                 </div>
 
@@ -214,7 +272,10 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="30"
                                         max="250"
-                                        className="w-full h-9"
+                                        placeholder={t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.weightPlaceholder'
+                                        )}
+                                        className="w-full h-9 bg-white"
                                     />
                                 </div>
 
@@ -239,7 +300,10 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="13"
                                         max="120"
-                                        className="w-full h-9"
+                                        placeholder={t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.agePlaceholder'
+                                        )}
+                                        className="w-full h-9 bg-white"
                                     />
                                 </div>
                             </div>
@@ -259,7 +323,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         <Select>
                                             <SelectTrigger
                                                 id="skinTone"
-                                                className="w-full cursor-pointer h-9"
+                                                className="w-full cursor-pointer h-9 bg-white"
                                             >
                                                 <SelectValue
                                                     placeholder={t(
@@ -296,7 +360,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         <Select>
                                             <SelectTrigger
                                                 id="hairColor"
-                                                className="w-full cursor-pointer h-9"
+                                                className="w-full cursor-pointer h-9 bg-white"
                                             >
                                                 <SelectValue
                                                     placeholder={t(
@@ -333,7 +397,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         <Select>
                                             <SelectTrigger
                                                 id="eyeColor"
-                                                className="w-full cursor-pointer h-9"
+                                                className="w-full cursor-pointer h-9 bg-white"
                                             >
                                                 <SelectValue
                                                     placeholder={t(
@@ -372,7 +436,7 @@ export const PersonalDetailsPanel: FC = () => {
                                     <Select>
                                         <SelectTrigger
                                             id="bodyType"
-                                            className="w-full cursor-pointer h-9"
+                                            className="w-full cursor-pointer h-9 bg-white"
                                         >
                                             <SelectValue
                                                 placeholder={t(
@@ -381,17 +445,7 @@ export const PersonalDetailsPanel: FC = () => {
                                             />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {[
-                                                ...BODY_TYPES.common,
-                                                ...BODY_TYPES[
-                                                    gender as keyof typeof BODY_TYPES
-                                                ].filter(
-                                                    (type) =>
-                                                        !BODY_TYPES.common.includes(
-                                                            type
-                                                        )
-                                                )
-                                            ].map((type) => (
+                                            {getBodyTypesList().map((type) => (
                                                 <SelectItem
                                                     key={type}
                                                     value={type}
@@ -608,6 +662,25 @@ export const PersonalDetailsPanel: FC = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
+                            </div>
+
+                            <div className="flex justify-center md:justify-end mt-2">
+                                <Button
+                                    onClick={handleSaveCharacteristics}
+                                    disabled={loading}
+                                    className="min-w-[200px] secondary-gradient cursor-pointer font-semibold"
+                                >
+                                    {loading ? (
+                                        <div className="flex items-center gap-2">
+                                            <Loader />
+                                            {t('General.sending')}
+                                        </div>
+                                    ) : (
+                                        t(
+                                            'Components.Features.PersonalDetailsPanel.save'
+                                        )
+                                    )}
+                                </Button>
                             </div>
                         </div>
                     </AccordionContent>

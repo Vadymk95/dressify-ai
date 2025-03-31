@@ -164,7 +164,10 @@ export const en = {
                                 minimalist: 'Minimalist',
                                 vintage: 'Vintage',
                                 streetwear: 'Streetwear'
-                            }
+                            },
+                            heightPlaceholder: 'Enter height',
+                            weightPlaceholder: 'Enter weight',
+                            agePlaceholder: 'Enter age'
                         },
                         search: 'Search...',
                         noResults: 'No results found',

@@ -85,9 +85,11 @@ export const ru = {
                         additionalInfo: 'Дополнительная информация',
                         characteristics: {
                             height: 'Рост',
+                            heightPlaceholder: 'Введите рост',
                             weight: 'Вес',
-                            bodyType: 'Тип фигуры',
+                            weightPlaceholder: 'Введите вес',
                             age: 'Возраст',
+                            agePlaceholder: 'Введите возраст',
                             skinTone: 'Цвет кожи',
                             hairColor: 'Цвет волос',
                             eyeColor: 'Цвет глаз',
