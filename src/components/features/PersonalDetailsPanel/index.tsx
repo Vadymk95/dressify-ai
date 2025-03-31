@@ -7,7 +7,6 @@ import {
     AccordionItem,
     AccordionTrigger
 } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -21,8 +20,9 @@ import {
 
 // Опции для селектов
 const BODY_TYPES = {
+    common: ['slim', 'athletic', 'average', 'curvy', 'muscular'],
     female: ['hourglass', 'pear', 'apple', 'rectangle', 'inverted_triangle'],
-    male: ['trapezoid', 'triangle', 'oval', 'athletic', 'slim']
+    male: ['trapezoid', 'triangle', 'oval']
 };
 
 const SKIN_TONES = ['fair', 'light', 'medium', 'olive', 'brown', 'dark'];
@@ -211,30 +211,32 @@ export const PersonalDetailsPanel: FC = () => {
                                             'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
                                         )}
                                     </Label>
-                                    <Select>
-                                        <SelectTrigger
-                                            id="skinTone"
-                                            className="cursor-pointer h-9"
-                                        >
-                                            <SelectValue
-                                                placeholder={t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
-                                                )}
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {SKIN_TONES.map((tone) => (
-                                                <SelectItem
-                                                    key={tone}
-                                                    value={tone}
-                                                >
-                                                    {t(
-                                                        `Components.Features.PersonalDetailsPanel.characteristics.skinTones.${tone}`
+                                    <div className="w-full">
+                                        <Select>
+                                            <SelectTrigger
+                                                id="skinTone"
+                                                className="w-full cursor-pointer h-9"
+                                            >
+                                                <SelectValue
+                                                    placeholder={t(
+                                                        'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
                                                     )}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                                />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {SKIN_TONES.map((tone) => (
+                                                    <SelectItem
+                                                        key={tone}
+                                                        value={tone}
+                                                    >
+                                                        {t(
+                                                            `Components.Features.PersonalDetailsPanel.characteristics.skinTones.${tone}`
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-1">
@@ -246,30 +248,32 @@ export const PersonalDetailsPanel: FC = () => {
                                             'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
                                         )}
                                     </Label>
-                                    <Select>
-                                        <SelectTrigger
-                                            id="hairColor"
-                                            className="cursor-pointer h-9"
-                                        >
-                                            <SelectValue
-                                                placeholder={t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
-                                                )}
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {HAIR_COLORS.map((color) => (
-                                                <SelectItem
-                                                    key={color}
-                                                    value={color}
-                                                >
-                                                    {t(
-                                                        `Components.Features.PersonalDetailsPanel.characteristics.hairColors.${color}`
+                                    <div className="w-full">
+                                        <Select>
+                                            <SelectTrigger
+                                                id="hairColor"
+                                                className="w-full cursor-pointer h-9"
+                                            >
+                                                <SelectValue
+                                                    placeholder={t(
+                                                        'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
                                                     )}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                                />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {HAIR_COLORS.map((color) => (
+                                                    <SelectItem
+                                                        key={color}
+                                                        value={color}
+                                                    >
+                                                        {t(
+                                                            `Components.Features.PersonalDetailsPanel.characteristics.hairColors.${color}`
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-1">
@@ -281,35 +285,37 @@ export const PersonalDetailsPanel: FC = () => {
                                             'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
                                         )}
                                     </Label>
-                                    <Select>
-                                        <SelectTrigger
-                                            id="eyeColor"
-                                            className="cursor-pointer h-9"
-                                        >
-                                            <SelectValue
-                                                placeholder={t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
-                                                )}
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {EYE_COLORS.map((color) => (
-                                                <SelectItem
-                                                    key={color}
-                                                    value={color}
-                                                >
-                                                    {t(
-                                                        `Components.Features.PersonalDetailsPanel.characteristics.eyeColors.${color}`
+                                    <div className="w-full">
+                                        <Select>
+                                            <SelectTrigger
+                                                id="eyeColor"
+                                                className="w-full cursor-pointer h-9"
+                                            >
+                                                <SelectValue
+                                                    placeholder={t(
+                                                        'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
                                                     )}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                                />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {EYE_COLORS.map((color) => (
+                                                    <SelectItem
+                                                        key={color}
+                                                        value={color}
+                                                    >
+                                                        {t(
+                                                            `Components.Features.PersonalDetailsPanel.characteristics.eyeColors.${color}`
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Тип фигуры */}
-                            <div className="space-y-1">
+                            <div className="space-y-1 md:max-w-[240px]">
                                 <Label
                                     htmlFor="bodyType"
                                     className="text-sm font-medium"
@@ -318,60 +324,43 @@ export const PersonalDetailsPanel: FC = () => {
                                         'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
                                     )}
                                 </Label>
-                                <Select>
-                                    <SelectTrigger
-                                        id="bodyType"
-                                        className="cursor-pointer h-9"
-                                    >
-                                        <SelectValue
-                                            placeholder={t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
-                                            )}
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {BODY_TYPES[
-                                            gender as keyof typeof BODY_TYPES
-                                        ].map((type) => (
-                                            <SelectItem key={type} value={type}>
-                                                {t(
-                                                    `Components.Features.PersonalDetailsPanel.characteristics.bodyTypes.${type}`
+                                <div className="w-full">
+                                    <Select>
+                                        <SelectTrigger
+                                            id="bodyType"
+                                            className="w-full cursor-pointer h-9"
+                                        >
+                                            <SelectValue
+                                                placeholder={t(
+                                                    'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
                                                 )}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Будущие мультиселекты */}
-                            <div className="space-y-4">
-                                <div className="space-y-1">
-                                    <Label className="text-sm font-medium">
-                                        {t(
-                                            'Components.Features.PersonalDetailsPanel.characteristics.preferredColors'
-                                        )}
-                                    </Label>
-                                    {/* Здесь будет мульти-селект с цветами */}
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {[
+                                                ...BODY_TYPES.common,
+                                                ...BODY_TYPES[
+                                                    gender as keyof typeof BODY_TYPES
+                                                ].filter(
+                                                    (type) =>
+                                                        !BODY_TYPES.common.includes(
+                                                            type
+                                                        )
+                                                )
+                                            ].map((type) => (
+                                                <SelectItem
+                                                    key={type}
+                                                    value={type}
+                                                >
+                                                    {t(
+                                                        `Components.Features.PersonalDetailsPanel.characteristics.bodyTypes.${type}`
+                                                    )}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-
-                                <div className="space-y-1">
-                                    <Label className="text-sm font-medium">
-                                        {t(
-                                            'Components.Features.PersonalDetailsPanel.characteristics.stylePreference'
-                                        )}
-                                    </Label>
-                                    {/* Здесь будет мульти-селект со стилями */}
-                                </div>
                             </div>
-
-                            <Button
-                                variant="default"
-                                className="w-full main-gradient text-amber-50 mt-2"
-                            >
-                                {t(
-                                    'Components.Features.PersonalDetailsPanel.save'
-                                )}
-                            </Button>
                         </div>
                     </AccordionContent>
                 </AccordionItem>

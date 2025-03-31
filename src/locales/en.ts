@@ -98,6 +98,12 @@ export const en = {
                                 years: 'years'
                             },
                             bodyTypes: {
+                                // Common body types
+                                slim: 'Slim',
+                                athletic: 'Athletic',
+                                average: 'Average',
+                                curvy: 'Curvy',
+                                muscular: 'Muscular',
                                 // Female body types
                                 hourglass: 'Hourglass',
                                 pear: 'Pear',
@@ -107,9 +113,7 @@ export const en = {
                                 // Male body types
                                 trapezoid: 'Trapezoid',
                                 triangle: 'Triangle',
-                                oval: 'Oval',
-                                athletic: 'Athletic',
-                                slim: 'Slim'
+                                oval: 'Oval'
                             },
                             skinTones: {
                                 fair: 'Fair',

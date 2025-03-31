@@ -99,6 +99,12 @@ export const ru = {
                                 years: 'лет'
                             },
                             bodyTypes: {
+                                // Common body types
+                                slim: 'Стройный',
+                                athletic: 'Атлетический',
+                                average: 'Средний',
+                                curvy: 'Фигуристый',
+                                muscular: 'Мускулистый',
                                 // Female body types
                                 hourglass: 'Песочные часы',
                                 pear: 'Груша',
@@ -108,9 +114,7 @@ export const ru = {
                                 // Male body types
                                 trapezoid: 'Трапеция',
                                 triangle: 'Треугольник',
-                                oval: 'Овал',
-                                athletic: 'Атлетический',
-                                slim: 'Стройный'
+                                oval: 'Овал'
                             },
                             skinTones: {
                                 fair: 'Очень светлый',
