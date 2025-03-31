@@ -81,7 +81,93 @@ export const en = {
                         },
                         optionalNote:
                             'Additional information is optional, but it helps us provide more accurate outfit recommendations',
-                        additionalInfo: 'Additional Information'
+                        additionalInfo: 'Additional Information',
+                        characteristics: {
+                            height: 'Height',
+                            weight: 'Weight',
+                            bodyType: 'Body Type',
+                            age: 'Age',
+                            skinTone: 'Skin Tone',
+                            hairColor: 'Hair Color',
+                            eyeColor: 'Eye Color',
+                            preferredColors: 'Preferred Colors',
+                            stylePreference: 'Style Preference',
+                            units: {
+                                cm: 'cm',
+                                kg: 'kg',
+                                years: 'years'
+                            },
+                            bodyTypes: {
+                                // Female body types
+                                hourglass: 'Hourglass',
+                                pear: 'Pear',
+                                apple: 'Apple',
+                                rectangle: 'Rectangle',
+                                inverted_triangle: 'Inverted Triangle',
+                                // Male body types
+                                trapezoid: 'Trapezoid',
+                                triangle: 'Triangle',
+                                oval: 'Oval',
+                                athletic: 'Athletic',
+                                slim: 'Slim'
+                            },
+                            skinTones: {
+                                fair: 'Fair',
+                                light: 'Light',
+                                medium: 'Medium',
+                                olive: 'Olive',
+                                brown: 'Brown',
+                                dark: 'Dark'
+                            },
+                            hairColors: {
+                                black: 'Black',
+                                brown: 'Brown',
+                                blonde: 'Blonde',
+                                red: 'Red',
+                                gray: 'Gray',
+                                white: 'White',
+                                other: 'Other'
+                            },
+                            eyeColors: {
+                                brown: 'Brown',
+                                blue: 'Blue',
+                                green: 'Green',
+                                hazel: 'Hazel',
+                                gray: 'Gray',
+                                other: 'Other'
+                            },
+                            colors: {
+                                black: 'Black',
+                                white: 'White',
+                                gray: 'Gray',
+                                red: 'Red',
+                                blue: 'Blue',
+                                green: 'Green',
+                                yellow: 'Yellow',
+                                purple: 'Purple',
+                                pink: 'Pink',
+                                orange: 'Orange',
+                                brown: 'Brown',
+                                beige: 'Beige'
+                            },
+                            styles: {
+                                casual: 'Casual',
+                                formal: 'Formal',
+                                business: 'Business',
+                                sporty: 'Sporty',
+                                romantic: 'Romantic',
+                                creative: 'Creative',
+                                minimalist: 'Minimalist',
+                                vintage: 'Vintage',
+                                streetwear: 'Streetwear'
+                            }
+                        },
+                        save: 'Save Changes',
+                        validation: {
+                            height: 'Height should be between 100 and 250 cm',
+                            weight: 'Weight should be between 30 and 250 kg',
+                            age: 'Age should be between 13 and 120 years'
+                        }
                     },
                     WardrobePanel: {},
                     EventPanel: {},

@@ -82,7 +82,93 @@ export const ru = {
                         },
                         optionalNote:
                             'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
-                        additionalInfo: 'Дополнительная информация'
+                        additionalInfo: 'Дополнительная информация',
+                        characteristics: {
+                            height: 'Рост',
+                            weight: 'Вес',
+                            bodyType: 'Тип фигуры',
+                            age: 'Возраст',
+                            skinTone: 'Цвет кожи',
+                            hairColor: 'Цвет волос',
+                            eyeColor: 'Цвет глаз',
+                            preferredColors: 'Предпочитаемые цвета',
+                            stylePreference: 'Предпочитаемый стиль',
+                            units: {
+                                cm: 'см',
+                                kg: 'кг',
+                                years: 'лет'
+                            },
+                            bodyTypes: {
+                                // Female body types
+                                hourglass: 'Песочные часы',
+                                pear: 'Груша',
+                                apple: 'Яблоко',
+                                rectangle: 'Прямоугольник',
+                                inverted_triangle: 'Перевёрнутый треугольник',
+                                // Male body types
+                                trapezoid: 'Трапеция',
+                                triangle: 'Треугольник',
+                                oval: 'Овал',
+                                athletic: 'Атлетический',
+                                slim: 'Стройный'
+                            },
+                            skinTones: {
+                                fair: 'Очень светлый',
+                                light: 'Светлый',
+                                medium: 'Средний',
+                                olive: 'Оливковый',
+                                brown: 'Смуглый',
+                                dark: 'Тёмный'
+                            },
+                            hairColors: {
+                                black: 'Чёрный',
+                                brown: 'Коричневый',
+                                blonde: 'Светлый',
+                                red: 'Рыжий',
+                                gray: 'Седой',
+                                white: 'Белый',
+                                other: 'Другой'
+                            },
+                            eyeColors: {
+                                brown: 'Карий',
+                                blue: 'Голубой',
+                                green: 'Зелёный',
+                                hazel: 'Ореховый',
+                                gray: 'Серый',
+                                other: 'Другой'
+                            },
+                            colors: {
+                                black: 'Чёрный',
+                                white: 'Белый',
+                                gray: 'Серый',
+                                red: 'Красный',
+                                blue: 'Синий',
+                                green: 'Зелёный',
+                                yellow: 'Жёлтый',
+                                purple: 'Фиолетовый',
+                                pink: 'Розовый',
+                                orange: 'Оранжевый',
+                                brown: 'Коричневый',
+                                beige: 'Бежевый'
+                            },
+                            styles: {
+                                casual: 'Повседневный',
+                                formal: 'Формальный',
+                                business: 'Деловой',
+                                sporty: 'Спортивный',
+                                romantic: 'Романтический',
+                                creative: 'Креативный',
+                                minimalist: 'Минималистичный',
+                                vintage: 'Винтажный',
+                                streetwear: 'Уличный'
+                            }
+                        },
+                        save: 'Сохранить изменения',
+                        validation: {
+                            height: 'Рост должен быть от 100 до 250 см',
+                            weight: 'Вес должен быть от 30 до 250 кг',
+                            age: 'Возраст должен быть от 13 до 120 лет'
+                        }
                     },
                     WardrobePanel: {},
                     EventPanel: {},
