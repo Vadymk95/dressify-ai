@@ -45,7 +45,7 @@ export const PersonalDetailsPanel: FC = () => {
 
     return (
         <div className="w-full">
-            <h2 className="text-2xl font-bold text-amber-50 text-center">
+            <h2 className="text-2xl font-bold text-amber-50 text-center mb-4">
                 {t('Components.Features.PersonalDetailsPanel.title')}
             </h2>
 
@@ -121,226 +121,231 @@ export const PersonalDetailsPanel: FC = () => {
                         )}
                     </AccordionTrigger>
                     <AccordionContent>
-                        <div className="flex flex-col gap-6 py-4">
-                            {/* Базовые измерения */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Левая колонка */}
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label
-                                                htmlFor="height"
-                                                className="text-sm font-medium flex items-center gap-1"
-                                            >
-                                                {t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.height'
-                                                )}
-                                                <span className="text-xs text-gray-500">
-                                                    (
-                                                    {t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.units.cm'
-                                                    )}
-                                                    )
-                                                </span>
-                                            </Label>
-                                            <Input
-                                                id="height"
-                                                type="number"
-                                                min="100"
-                                                max="250"
-                                                className="w-full"
-                                            />
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label
-                                                htmlFor="weight"
-                                                className="text-sm font-medium flex items-center gap-1"
-                                            >
-                                                {t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.weight'
-                                                )}
-                                                <span className="text-xs text-gray-500">
-                                                    (
-                                                    {t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.units.kg'
-                                                    )}
-                                                    )
-                                                </span>
-                                            </Label>
-                                            <Input
-                                                id="weight"
-                                                type="number"
-                                                min="30"
-                                                max="250"
-                                                className="w-full"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <Label
-                                            htmlFor="age"
-                                            className="text-sm font-medium flex items-center gap-1"
-                                        >
+                        <div className="flex flex-col gap-4 py-4">
+                            {/* Первый ряд: рост, вес, возраст */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="height"
+                                        className="text-sm font-medium flex items-center gap-1"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.height'
+                                        )}
+                                        <span className="text-xs text-gray-500">
+                                            (
                                             {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.age'
+                                                'Components.Features.PersonalDetailsPanel.characteristics.units.cm'
                                             )}
-                                            <span className="text-xs text-gray-500">
-                                                (
-                                                {t(
-                                                    'Components.Features.PersonalDetailsPanel.characteristics.units.years'
-                                                )}
-                                                )
-                                            </span>
-                                        </Label>
-                                        <Input
-                                            id="age"
-                                            type="number"
-                                            min="13"
-                                            max="120"
-                                            className="w-full"
-                                        />
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <Label
-                                            htmlFor="bodyType"
-                                            className="text-sm font-medium"
-                                        >
-                                            {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
-                                            )}
-                                        </Label>
-                                        <Select>
-                                            <SelectTrigger id="bodyType">
-                                                <SelectValue
-                                                    placeholder={t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
-                                                    )}
-                                                />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {BODY_TYPES[
-                                                    gender as keyof typeof BODY_TYPES
-                                                ].map((type) => (
-                                                    <SelectItem
-                                                        key={type}
-                                                        value={type}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.bodyTypes.${type}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
+                                            )
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id="height"
+                                        type="number"
+                                        min="100"
+                                        max="250"
+                                        className="w-full h-9"
+                                    />
                                 </div>
 
-                                {/* Правая колонка */}
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label
-                                            htmlFor="skinTone"
-                                            className="text-sm font-medium"
-                                        >
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="weight"
+                                        className="text-sm font-medium flex items-center gap-1"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.weight'
+                                        )}
+                                        <span className="text-xs text-gray-500">
+                                            (
                                             {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
+                                                'Components.Features.PersonalDetailsPanel.characteristics.units.kg'
                                             )}
-                                        </Label>
-                                        <Select>
-                                            <SelectTrigger id="skinTone">
-                                                <SelectValue
-                                                    placeholder={t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
-                                                    )}
-                                                />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {SKIN_TONES.map((tone) => (
-                                                    <SelectItem
-                                                        key={tone}
-                                                        value={tone}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.skinTones.${tone}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
+                                            )
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id="weight"
+                                        type="number"
+                                        min="30"
+                                        max="250"
+                                        className="w-full h-9"
+                                    />
+                                </div>
 
-                                    <div className="space-y-2">
-                                        <Label
-                                            htmlFor="hairColor"
-                                            className="text-sm font-medium"
-                                        >
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="age"
+                                        className="text-sm font-medium flex items-center gap-1"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.age'
+                                        )}
+                                        <span className="text-xs text-gray-500">
+                                            (
                                             {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
+                                                'Components.Features.PersonalDetailsPanel.characteristics.units.years'
                                             )}
-                                        </Label>
-                                        <Select>
-                                            <SelectTrigger id="hairColor">
-                                                <SelectValue
-                                                    placeholder={t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
-                                                    )}
-                                                />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {HAIR_COLORS.map((color) => (
-                                                    <SelectItem
-                                                        key={color}
-                                                        value={color}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.hairColors.${color}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <Label
-                                            htmlFor="eyeColor"
-                                            className="text-sm font-medium"
-                                        >
-                                            {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
-                                            )}
-                                        </Label>
-                                        <Select>
-                                            <SelectTrigger id="eyeColor">
-                                                <SelectValue
-                                                    placeholder={t(
-                                                        'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
-                                                    )}
-                                                />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {EYE_COLORS.map((color) => (
-                                                    <SelectItem
-                                                        key={color}
-                                                        value={color}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.eyeColors.${color}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
+                                            )
+                                        </span>
+                                    </Label>
+                                    <Input
+                                        id="age"
+                                        type="number"
+                                        min="13"
+                                        max="120"
+                                        className="w-full h-9"
+                                    />
                                 </div>
                             </div>
 
-                            {/* Нижняя секция на всю ширину */}
+                            {/* Второй ряд: цвет кожи, волос, глаз */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="skinTone"
+                                        className="text-sm font-medium"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
+                                        )}
+                                    </Label>
+                                    <Select>
+                                        <SelectTrigger
+                                            id="skinTone"
+                                            className="cursor-pointer h-9"
+                                        >
+                                            <SelectValue
+                                                placeholder={t(
+                                                    'Components.Features.PersonalDetailsPanel.characteristics.skinTone'
+                                                )}
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {SKIN_TONES.map((tone) => (
+                                                <SelectItem
+                                                    key={tone}
+                                                    value={tone}
+                                                >
+                                                    {t(
+                                                        `Components.Features.PersonalDetailsPanel.characteristics.skinTones.${tone}`
+                                                    )}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="hairColor"
+                                        className="text-sm font-medium"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
+                                        )}
+                                    </Label>
+                                    <Select>
+                                        <SelectTrigger
+                                            id="hairColor"
+                                            className="cursor-pointer h-9"
+                                        >
+                                            <SelectValue
+                                                placeholder={t(
+                                                    'Components.Features.PersonalDetailsPanel.characteristics.hairColor'
+                                                )}
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {HAIR_COLORS.map((color) => (
+                                                <SelectItem
+                                                    key={color}
+                                                    value={color}
+                                                >
+                                                    {t(
+                                                        `Components.Features.PersonalDetailsPanel.characteristics.hairColors.${color}`
+                                                    )}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label
+                                        htmlFor="eyeColor"
+                                        className="text-sm font-medium"
+                                    >
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
+                                        )}
+                                    </Label>
+                                    <Select>
+                                        <SelectTrigger
+                                            id="eyeColor"
+                                            className="cursor-pointer h-9"
+                                        >
+                                            <SelectValue
+                                                placeholder={t(
+                                                    'Components.Features.PersonalDetailsPanel.characteristics.eyeColor'
+                                                )}
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {EYE_COLORS.map((color) => (
+                                                <SelectItem
+                                                    key={color}
+                                                    value={color}
+                                                >
+                                                    {t(
+                                                        `Components.Features.PersonalDetailsPanel.characteristics.eyeColors.${color}`
+                                                    )}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            {/* Тип фигуры */}
+                            <div className="space-y-1">
+                                <Label
+                                    htmlFor="bodyType"
+                                    className="text-sm font-medium"
+                                >
+                                    {t(
+                                        'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
+                                    )}
+                                </Label>
+                                <Select>
+                                    <SelectTrigger
+                                        id="bodyType"
+                                        className="cursor-pointer h-9"
+                                    >
+                                        <SelectValue
+                                            placeholder={t(
+                                                'Components.Features.PersonalDetailsPanel.characteristics.bodyType'
+                                            )}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {BODY_TYPES[
+                                            gender as keyof typeof BODY_TYPES
+                                        ].map((type) => (
+                                            <SelectItem key={type} value={type}>
+                                                {t(
+                                                    `Components.Features.PersonalDetailsPanel.characteristics.bodyTypes.${type}`
+                                                )}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Будущие мультиселекты */}
                             <div className="space-y-4">
-                                <div className="space-y-2">
+                                <div className="space-y-1">
                                     <Label className="text-sm font-medium">
                                         {t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.preferredColors'
@@ -349,7 +354,7 @@ export const PersonalDetailsPanel: FC = () => {
                                     {/* Здесь будет мульти-селект с цветами */}
                                 </div>
 
-                                <div className="space-y-2">
+                                <div className="space-y-1">
                                     <Label className="text-sm font-medium">
                                         {t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.stylePreference'
@@ -357,16 +362,16 @@ export const PersonalDetailsPanel: FC = () => {
                                     </Label>
                                     {/* Здесь будет мульти-селект со стилями */}
                                 </div>
-
-                                <Button
-                                    variant="default"
-                                    className="w-full main-gradient text-amber-50 mt-4"
-                                >
-                                    {t(
-                                        'Components.Features.PersonalDetailsPanel.save'
-                                    )}
-                                </Button>
                             </div>
+
+                            <Button
+                                variant="default"
+                                className="w-full main-gradient text-amber-50 mt-2"
+                            >
+                                {t(
+                                    'Components.Features.PersonalDetailsPanel.save'
+                                )}
+                            </Button>
                         </div>
                     </AccordionContent>
                 </AccordionItem>
