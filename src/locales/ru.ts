@@ -167,6 +167,8 @@ export const ru = {
                                 streetwear: 'Уличный'
                             }
                         },
+                        search: 'Поиск...',
+                        noResults: 'Ничего не найдено',
                         save: 'Сохранить изменения',
                         validation: {
                             height: 'Рост должен быть от 100 до 250 см',

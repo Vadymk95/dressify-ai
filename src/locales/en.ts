@@ -166,6 +166,8 @@ export const en = {
                                 streetwear: 'Streetwear'
                             }
                         },
+                        search: 'Search...',
+                        noResults: 'No results found',
                         save: 'Save Changes',
                         validation: {
                             height: 'Height should be between 100 and 250 cm',

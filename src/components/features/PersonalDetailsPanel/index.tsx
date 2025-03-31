@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { Check } from 'lucide-react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -7,8 +8,22 @@ import {
     AccordionItem,
     AccordionTrigger
 } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem
+} from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
     Select,
@@ -39,9 +54,38 @@ const HAIR_COLORS = [
 
 const EYE_COLORS = ['brown', 'blue', 'green', 'hazel', 'gray', 'other'];
 
+const PREFERRED_COLORS = [
+    'black',
+    'white',
+    'gray',
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'purple',
+    'pink',
+    'orange',
+    'brown',
+    'beige'
+];
+
+const STYLE_PREFERENCES = [
+    'casual',
+    'formal',
+    'business',
+    'sporty',
+    'romantic',
+    'creative',
+    'minimalist',
+    'vintage',
+    'streetwear'
+];
+
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
     const gender = 'female'; // TODO: добавить состояние для пола
+    const [selectedColors, setSelectedColors] = useState<string[]>([]);
+    const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
     return (
         <div className="w-full">
@@ -359,6 +403,210 @@ export const PersonalDetailsPanel: FC = () => {
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                </div>
+                            </div>
+
+                            {/* Мультиселекты */}
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <Label className="text-sm font-medium">
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.preferredColors'
+                                        )}
+                                    </Label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full min-h-[2.25rem] h-auto py-1 justify-start font-normal cursor-pointer"
+                                            >
+                                                {selectedColors.length > 0 ? (
+                                                    <div className="flex gap-1 flex-wrap">
+                                                        {selectedColors.map(
+                                                            (color) => (
+                                                                <Badge
+                                                                    key={color}
+                                                                    variant="secondary"
+                                                                    className="mr-1"
+                                                                >
+                                                                    {t(
+                                                                        `Components.Features.PersonalDetailsPanel.characteristics.colors.${color}`
+                                                                    )}
+                                                                </Badge>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-muted-foreground">
+                                                        {t(
+                                                            'Components.Features.PersonalDetailsPanel.characteristics.preferredColors'
+                                                        )}
+                                                    </span>
+                                                )}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-full p-0 md:min-w-[400px]"
+                                            align="start"
+                                        >
+                                            <Command className="w-full">
+                                                <CommandInput
+                                                    className="w-full"
+                                                    placeholder={t(
+                                                        'Components.Features.PersonalDetailsPanel.search'
+                                                    )}
+                                                />
+                                                <CommandEmpty>
+                                                    {t(
+                                                        'Components.Features.PersonalDetailsPanel.noResults'
+                                                    )}
+                                                </CommandEmpty>
+                                                <CommandGroup className="max-h-[300px] overflow-auto">
+                                                    {PREFERRED_COLORS.map(
+                                                        (color) => (
+                                                            <CommandItem
+                                                                key={color}
+                                                                onSelect={() => {
+                                                                    setSelectedColors(
+                                                                        selectedColors.includes(
+                                                                            color
+                                                                        )
+                                                                            ? selectedColors.filter(
+                                                                                  (
+                                                                                      c
+                                                                                  ) =>
+                                                                                      c !==
+                                                                                      color
+                                                                              )
+                                                                            : [
+                                                                                  ...selectedColors,
+                                                                                  color
+                                                                              ]
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <div className="flex items-center gap-2 cursor-pointer">
+                                                                    <div
+                                                                        className={`w-4 h-4 rounded-full bg-${color}`}
+                                                                    />
+                                                                    {t(
+                                                                        `Components.Features.PersonalDetailsPanel.characteristics.colors.${color}`
+                                                                    )}
+                                                                    <Check
+                                                                        className={`ml-auto h-4 w-4 ${
+                                                                            selectedColors.includes(
+                                                                                color
+                                                                            )
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0'
+                                                                        }`}
+                                                                    />
+                                                                </div>
+                                                            </CommandItem>
+                                                        )
+                                                    )}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label className="text-sm font-medium">
+                                        {t(
+                                            'Components.Features.PersonalDetailsPanel.characteristics.stylePreference'
+                                        )}
+                                    </Label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full min-h-[2.25rem] h-auto py-1 justify-start font-normal cursor-pointer"
+                                            >
+                                                {selectedStyles.length > 0 ? (
+                                                    <div className="flex gap-1 flex-wrap">
+                                                        {selectedStyles.map(
+                                                            (style) => (
+                                                                <Badge
+                                                                    key={style}
+                                                                    variant="secondary"
+                                                                    className="mr-1"
+                                                                >
+                                                                    {t(
+                                                                        `Components.Features.PersonalDetailsPanel.characteristics.styles.${style}`
+                                                                    )}
+                                                                </Badge>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-muted-foreground">
+                                                        {t(
+                                                            'Components.Features.PersonalDetailsPanel.characteristics.stylePreference'
+                                                        )}
+                                                    </span>
+                                                )}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-full p-0 md:min-w-[400px]"
+                                            align="start"
+                                        >
+                                            <Command className="w-full">
+                                                <CommandInput
+                                                    className="w-full"
+                                                    placeholder={t(
+                                                        'Components.Features.PersonalDetailsPanel.search'
+                                                    )}
+                                                />
+                                                <CommandEmpty>
+                                                    {t(
+                                                        'Components.Features.PersonalDetailsPanel.noResults'
+                                                    )}
+                                                </CommandEmpty>
+                                                <CommandGroup className="max-h-[300px] overflow-auto">
+                                                    {STYLE_PREFERENCES.map(
+                                                        (style) => (
+                                                            <CommandItem
+                                                                key={style}
+                                                                onSelect={() => {
+                                                                    setSelectedStyles(
+                                                                        selectedStyles.includes(
+                                                                            style
+                                                                        )
+                                                                            ? selectedStyles.filter(
+                                                                                  (
+                                                                                      s
+                                                                                  ) =>
+                                                                                      s !==
+                                                                                      style
+                                                                              )
+                                                                            : [
+                                                                                  ...selectedStyles,
+                                                                                  style
+                                                                              ]
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {t(
+                                                                    `Components.Features.PersonalDetailsPanel.characteristics.styles.${style}`
+                                                                )}
+                                                                <Check
+                                                                    className={`ml-auto h-4 w-4 ${
+                                                                        selectedStyles.includes(
+                                                                            style
+                                                                        )
+                                                                            ? 'opacity-100'
+                                                                            : 'opacity-0'
+                                                                    }`}
+                                                                />
+                                                            </CommandItem>
+                                                        )
+                                                    )}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                             </div>
                         </div>
