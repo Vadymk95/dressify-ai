@@ -1,5 +1,6 @@
 import { auth, db } from '@/firebase/firebaseConfig';
 import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
+import { UserCharacteristics } from '@/types/user';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
@@ -20,6 +21,7 @@ export interface UserProfile {
     plan: Plan;
     subscriptionExpiry?: Date | null;
     location?: Location | null;
+    characteristics?: UserCharacteristics | null;
 }
 
 interface UserProfileStore {

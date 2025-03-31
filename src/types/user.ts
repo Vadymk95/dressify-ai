@@ -27,7 +27,7 @@ export type HairColor =
 
 export type EyeColor = 'brown' | 'blue' | 'green' | 'hazel' | 'gray' | 'other';
 
-export type StylePreference =
+export type stylePreference =
     | 'casual'
     | 'formal'
     | 'business'
@@ -62,7 +62,7 @@ export interface UserCharacteristics {
     hairColor?: HairColor;
     eyeColor?: EyeColor;
     preferredColors?: PreferredColor[];
-    stylePreference?: StylePreference[];
+    stylePreference?: stylePreference[];
 }
 
 export interface UserProfile {

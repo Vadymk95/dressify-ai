@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Loader } from '@/components/common/Loader';
@@ -34,6 +34,7 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { useCharacteristicsStore } from '@/store/characteristicsStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 import { UserCharacteristics } from '@/types/user';
 
 // Опции для селектов
@@ -88,11 +89,20 @@ export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
     const { characteristics, updateCharacteristics, updateGender, loading } =
         useCharacteristicsStore();
+    const { profile } = useUserProfileStore();
     const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
+    // Инициализируем данные из профиля при его загрузке
+    useEffect(() => {
+        if (profile?.characteristics) {
+            setSelectedColors(profile.characteristics.preferredColors || []);
+            setSelectedStyles(profile.characteristics.stylePreference || []);
+        }
+    }, [profile]);
+
     const getBodyTypesList = () => {
-        const gender = characteristics?.gender;
+        const gender = profile?.characteristics?.gender;
         if (!gender) {
             return BODY_TYPES.common;
         }
@@ -133,7 +143,7 @@ export const PersonalDetailsPanel: FC = () => {
             eyeColor: eyeColorSelect?.value || null,
             bodyType: bodyTypeSelect?.value || null,
             preferredColors: selectedColors,
-            stylePreferences: selectedStyles
+            stylePreference: selectedStyles
         };
 
         await updateCharacteristics(
@@ -152,7 +162,7 @@ export const PersonalDetailsPanel: FC = () => {
                     {t('Components.Features.PersonalDetailsPanel.gender')}
                 </div>
                 <RadioGroup
-                    value={characteristics?.gender || ''}
+                    value={profile?.characteristics?.gender || ''}
                     onValueChange={updateGender}
                     className="flex flex-col md:flex-row gap-4"
                 >
