@@ -418,7 +418,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         <PopoverTrigger asChild>
                                             <Button
                                                 variant="outline"
-                                                className="w-full min-h-[2.25rem] h-auto py-1 justify-start font-normal cursor-pointer"
+                                                className="w-full h-9 justify-start font-normal cursor-pointer"
                                             >
                                                 {selectedColors.length > 0 ? (
                                                     <div className="flex gap-1 flex-wrap">
@@ -521,7 +521,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         <PopoverTrigger asChild>
                                             <Button
                                                 variant="outline"
-                                                className="w-full min-h-[2.25rem] h-auto py-1 justify-start font-normal cursor-pointer"
+                                                className="w-full h-9 justify-start font-normal cursor-pointer"
                                             >
                                                 {selectedStyles.length > 0 ? (
                                                     <div className="flex gap-1 flex-wrap">
