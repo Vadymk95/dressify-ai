@@ -398,6 +398,8 @@ export const ru = {
                     title: 'Мой гардероб',
                     addItemPlaceholder: 'Добавить предмет',
                     noItems: 'Нет предметов',
+                    saveChanges: 'Сохранить изменения',
+                    saving: 'Сохранение...',
                     categories: {
                         headwear: 'Головные уборы',
                         tops: 'Верхняя одежда',

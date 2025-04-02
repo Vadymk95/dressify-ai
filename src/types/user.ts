@@ -70,6 +70,23 @@ export interface UserCharacteristics {
     stylePreference?: stylePreference[];
 }
 
+// Типы для гардероба
+export interface WardrobeItem {
+    id: string;
+    name: string;
+}
+
+export interface WardrobeCategory {
+    id: string;
+    name: string;
+    items: WardrobeItem[];
+}
+
+export interface Wardrobe {
+    categories: WardrobeCategory[];
+    useWardrobeForOutfits: boolean;
+}
+
 export interface UserProfile {
     uid: string;
     email: string;
@@ -80,4 +97,5 @@ export interface UserProfile {
         city: string;
     };
     characteristics?: UserCharacteristics;
+    wardrobe?: Wardrobe;
 }

@@ -399,6 +399,8 @@ export const en = {
                     title: 'My Wardrobe',
                     addItemPlaceholder: 'Add item',
                     noItems: 'No items',
+                    saveChanges: 'Save Changes',
+                    saving: 'Saving...',
                     categories: {
                         headwear: 'Headwear',
                         tops: 'Tops',

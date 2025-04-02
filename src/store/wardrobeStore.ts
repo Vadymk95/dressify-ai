@@ -24,6 +24,7 @@ interface WardrobeStore {
     addItem: (categoryId: string, itemName: string) => Promise<void>;
     removeItem: (categoryId: string, itemId: string) => Promise<void>;
     toggleUseWardrobeForOutfits: () => Promise<void>;
+    saveWardrobe: (updatedWardrobe: Wardrobe) => Promise<void>;
     clearError: () => void;
 }
 
@@ -46,6 +47,9 @@ const DEFAULT_CATEGORIES: WardrobeCategory[] = [
     { id: 'other', name: 'other', items: [] }
 ];
 
+// Флаг для определения, используется ли реальный API или заглушка
+const USE_MOCK_API = true;
+
 export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
     wardrobe: {
         categories: DEFAULT_CATEGORIES,
@@ -57,8 +61,21 @@ export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
     fetchWardrobe: async () => {
         set({ loading: true, error: null });
         try {
-            // Здесь будет API-запрос для получения гардероба пользователя
-            // Пока используем заглушку
+            if (USE_MOCK_API) {
+                // Имитация задержки API
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                // Возвращаем заглушку с предопределенными категориями
+                set({
+                    wardrobe: {
+                        categories: DEFAULT_CATEGORIES,
+                        useWardrobeForOutfits: false
+                    },
+                    loading: false
+                });
+                return;
+            }
+
+            // Реальный API-запрос
             const response = await fetch('/api/wardrobe');
             if (!response.ok) {
                 throw new Error('userNotAuthorized');
@@ -97,8 +114,14 @@ export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
                 categories: updatedCategories
             };
 
-            // Здесь будет API-запрос для сохранения гардероба
-            // Пока используем заглушку
+            if (USE_MOCK_API) {
+                // Имитация задержки API
+                await new Promise((resolve) => setTimeout(resolve, 300));
+                set({ wardrobe: updatedWardrobe, loading: false });
+                return;
+            }
+
+            // Реальный API-запрос
             const response = await fetch('/api/wardrobe', {
                 method: 'PUT',
                 headers: {
@@ -142,8 +165,14 @@ export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
                 categories: updatedCategories
             };
 
-            // Здесь будет API-запрос для сохранения гардероба
-            // Пока используем заглушку
+            if (USE_MOCK_API) {
+                // Имитация задержки API
+                await new Promise((resolve) => setTimeout(resolve, 300));
+                set({ wardrobe: updatedWardrobe, loading: false });
+                return;
+            }
+
+            // Реальный API-запрос
             const response = await fetch('/api/wardrobe', {
                 method: 'PUT',
                 headers: {
@@ -175,8 +204,14 @@ export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
                 useWardrobeForOutfits: !wardrobe.useWardrobeForOutfits
             };
 
-            // Здесь будет API-запрос для сохранения гардероба
-            // Пока используем заглушку
+            if (USE_MOCK_API) {
+                // Имитация задержки API
+                await new Promise((resolve) => setTimeout(resolve, 300));
+                set({ wardrobe: updatedWardrobe, loading: false });
+                return;
+            }
+
+            // Реальный API-запрос
             const response = await fetch('/api/wardrobe', {
                 method: 'PUT',
                 headers: {
@@ -196,6 +231,40 @@ export const useWardrobeStore = create<WardrobeStore>((set, get) => ({
                 error: 'unknownError',
                 loading: false
             });
+        }
+    },
+
+    saveWardrobe: async (updatedWardrobe: Wardrobe) => {
+        set({ loading: true, error: null });
+        try {
+            if (USE_MOCK_API) {
+                // Имитация задержки API
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                set({ wardrobe: updatedWardrobe, loading: false });
+                return;
+            }
+
+            // Реальный API-запрос
+            const response = await fetch('/api/wardrobe', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedWardrobe)
+            });
+
+            if (!response.ok) {
+                throw new Error('userNotAuthorized');
+            }
+
+            set({ wardrobe: updatedWardrobe, loading: false });
+        } catch (error) {
+            console.error('Error saving wardrobe:', error);
+            set({
+                error: 'unknownError',
+                loading: false
+            });
+            throw error; // Пробрасываем ошибку для обработки в компоненте
         }
     },
 

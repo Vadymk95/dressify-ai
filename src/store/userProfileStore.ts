@@ -1,6 +1,6 @@
 import { auth, db } from '@/firebase/firebaseConfig';
 import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
-import { UserCharacteristics } from '@/types/user';
+import { UserCharacteristics, Wardrobe } from '@/types/user';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
@@ -22,6 +22,7 @@ export interface UserProfile {
     subscriptionExpiry?: Date | null;
     location?: Location | null;
     characteristics?: UserCharacteristics | null;
+    wardrobe?: Wardrobe | null;
 }
 
 interface UserProfileStore {
@@ -37,6 +38,7 @@ interface UserProfileStore {
     updateEmailVerified: () => Promise<boolean>;
     updateLocation: (country: string, city: string) => Promise<void>;
     clearLocation: () => Promise<void>;
+    updateWardrobe: (wardrobe: Wardrobe) => Promise<void>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -274,6 +276,34 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             if (currentProfile) {
                 set({
                     profile: { ...currentProfile, location: null },
+                    loading: false
+                });
+            } else {
+                set({ loading: false });
+            }
+        } catch (error: any) {
+            console.error(error);
+            set({ error: error.message, loading: false });
+        }
+    },
+
+    // Новый метод для обновления гардероба пользователя
+    updateWardrobe: async (wardrobe: Wardrobe) => {
+        set({ loading: true, error: null });
+        try {
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
+
+            // Обновляем гардероб в Firestore
+            await updateDoc(doc(db, 'users', currentUser.uid), {
+                wardrobe
+            });
+
+            // Обновляем локальное состояние профиля
+            const currentProfile = get().profile;
+            if (currentProfile) {
+                set({
+                    profile: { ...currentProfile, wardrobe },
                     loading: false
                 });
             } else {
