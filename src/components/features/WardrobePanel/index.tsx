@@ -12,30 +12,19 @@ import { Wardrobe } from '@/types/user';
 
 export const WardrobePanel: FC = () => {
     const { t } = useTranslation();
-    const { profile, loading, error, fetchUserProfile, updateWardrobe } =
+    const { profile, loading, error, updateWardrobe, subscribeToUserProfile } =
         useUserProfileStore();
     const [localError, setLocalError] = useState<string | null>(null);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
         if (currentUser) {
-            fetchUserProfile(currentUser.uid);
+            // Подписываемся на изменения профиля
+            const unsubscribe = subscribeToUserProfile(currentUser.uid);
+            // Отписываемся при размонтировании компонента
+            return () => unsubscribe();
         }
-    }, [fetchUserProfile]);
-
-    useEffect(() => {
-        if (profile?.wardrobe) {
-            const hasItems = profile.wardrobe.categories.some(
-                (category) => category.items.length > 0
-            );
-            if (hasItems && !profile.wardrobe.useWardrobeForOutfits) {
-                updateWardrobe({
-                    ...profile.wardrobe,
-                    useWardrobeForOutfits: true
-                });
-            }
-        }
-    }, [profile, updateWardrobe]);
+    }, [subscribeToUserProfile]);
 
     // Автоматически очищаем ошибку через 5 секунд
     useEffect(() => {
@@ -70,14 +59,6 @@ export const WardrobePanel: FC = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center p-4">
-                <Loader />
-            </div>
-        );
-    }
-
     const totalItems =
         profile?.wardrobe?.categories.reduce(
             (sum, category) => sum + category.items.length,
@@ -86,6 +67,7 @@ export const WardrobePanel: FC = () => {
 
     return (
         <div className="w-full">
+            {loading && <Loader />}
             <h2 className="text-2xl font-bold text-amber-50 text-center mb-4">
                 {t('Components.Features.WardrobePanel.title')}
             </h2>
@@ -110,27 +92,24 @@ export const WardrobePanel: FC = () => {
                     })}
                 </p>
 
-                {totalItems > 0 && (
-                    <div className="flex items-center justify-center space-x-2">
-                        <Checkbox
-                            id="useWardrobe"
-                            checked={
-                                profile?.wardrobe?.useWardrobeForOutfits ||
-                                false
-                            }
-                            onCheckedChange={handleToggleUseWardrobe}
-                            className="border-amber-300 data-[state=checked]:bg-amber-600 data-[state=checked]:border-amber-600 data-[state=unchecked]:bg-transparent"
-                        />
-                        <label
-                            htmlFor="useWardrobe"
-                            className="text-sm text-amber-50 cursor-pointer"
-                        >
-                            {t(
-                                'Components.Features.WardrobePanel.useWardrobeForOutfits'
-                            )}
-                        </label>
-                    </div>
-                )}
+                <div className="flex items-center justify-center space-x-2">
+                    <Checkbox
+                        id="useWardrobe"
+                        checked={
+                            profile?.wardrobe?.useWardrobeForOutfits || false
+                        }
+                        onCheckedChange={handleToggleUseWardrobe}
+                        className="h-5 w-5 border-2 border-amber-300 data-[state=checked]:bg-amber-600 data-[state=checked]:border-amber-600 data-[state=unchecked]:bg-transparent focus:ring-amber-500 focus:ring-offset-0"
+                    />
+                    <label
+                        htmlFor="useWardrobe"
+                        className="text-sm text-amber-50 cursor-pointer"
+                    >
+                        {t(
+                            'Components.Features.WardrobePanel.useWardrobeForOutfits'
+                        )}
+                    </label>
+                </div>
             </div>
         </div>
     );

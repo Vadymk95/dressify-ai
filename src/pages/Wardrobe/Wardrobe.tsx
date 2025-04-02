@@ -1,5 +1,5 @@
 import { ArrowLeft, Plus, Save, X } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,6 +47,8 @@ const WardrobePage: FC = () => {
     );
     const [isSaving, setIsSaving] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
+    const [hasChanges, setHasChanges] = useState(false);
+    const initialWardrobeRef = useRef<Wardrobe | null>(null);
 
     // Инициализация локального гардероба при загрузке данных
     useEffect(() => {
@@ -56,12 +58,15 @@ const WardrobePage: FC = () => {
                 (category) => category.items.length > 0
             );
             if (hasItems && !profile.wardrobe.useWardrobeForOutfits) {
-                setLocalWardrobe({
+                const updatedWardrobe = {
                     ...profile.wardrobe,
                     useWardrobeForOutfits: true
-                });
+                };
+                setLocalWardrobe(updatedWardrobe);
+                initialWardrobeRef.current = updatedWardrobe;
             } else {
                 setLocalWardrobe(profile.wardrobe);
+                initialWardrobeRef.current = profile.wardrobe;
             }
         }
     }, [profile]);
@@ -97,6 +102,27 @@ const WardrobePage: FC = () => {
         }));
     };
 
+    // Проверка на наличие изменений
+    const checkForChanges = (updatedWardrobe: Wardrobe) => {
+        if (!initialWardrobeRef.current) return true;
+
+        // Проверяем, изменилось ли количество предметов в любой категории
+        const hasItemsChanged = updatedWardrobe.categories.some(
+            (category, index) => {
+                const initialCategory =
+                    initialWardrobeRef.current?.categories[index];
+                return category.items.length !== initialCategory?.items.length;
+            }
+        );
+
+        // Проверяем, изменилось ли значение useWardrobeForOutfits
+        const hasUseWardrobeChanged =
+            updatedWardrobe.useWardrobeForOutfits !==
+            initialWardrobeRef.current.useWardrobeForOutfits;
+
+        return hasItemsChanged || hasUseWardrobeChanged;
+    };
+
     // Добавление предмета в локальное состояние
     const handleAddItem = (categoryId: string) => {
         const itemName = newItemInputs[categoryId]?.trim();
@@ -121,12 +147,17 @@ const WardrobePage: FC = () => {
                     (category) => category.items.length > 0
                 );
 
-                return {
+                const updatedWardrobe = {
                     categories: updatedCategories,
                     useWardrobeForOutfits: hasItems
                         ? true
                         : prev.useWardrobeForOutfits
                 };
+
+                // Проверяем, есть ли изменения
+                setHasChanges(checkForChanges(updatedWardrobe));
+
+                return updatedWardrobe;
             });
 
             // Очищаем поле ввода
@@ -152,15 +183,26 @@ const WardrobePage: FC = () => {
                 return category;
             });
 
-            return {
+            const updatedWardrobe = {
                 ...prev,
                 categories: updatedCategories
             };
+
+            // Проверяем, есть ли изменения
+            setHasChanges(checkForChanges(updatedWardrobe));
+
+            return updatedWardrobe;
         });
     };
 
     // Сохранение всех изменений
     const handleSaveWardrobe = async () => {
+        if (!hasChanges) {
+            // Если изменений нет, просто возвращаемся на предыдущую страницу
+            navigate(routes.whatToWear);
+            return;
+        }
+
         setIsSaving(true);
         setLocalError(null);
         try {
@@ -170,6 +212,8 @@ const WardrobePage: FC = () => {
             if (currentUser) {
                 fetchUserProfile(currentUser.uid);
             }
+            // Возвращаемся на предыдущую страницу после успешного сохранения
+            navigate(routes.whatToWear);
         } catch (error: any) {
             console.error('Error saving wardrobe:', error);
             setLocalError(error.message || 'unknownError');
@@ -275,8 +319,12 @@ const WardrobePage: FC = () => {
             <div className="mt-8 flex justify-center">
                 <Button
                     onClick={handleSaveWardrobe}
-                    disabled={isSaving}
-                    className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 cursor-pointer"
+                    disabled={isSaving || !hasChanges}
+                    className={`${
+                        hasChanges
+                            ? 'bg-amber-600 hover:bg-amber-700'
+                            : 'bg-gray-400 hover:bg-gray-500'
+                    } text-white px-6 py-2 cursor-pointer`}
                 >
                     {isSaving ? (
                         <div className="flex items-center">
