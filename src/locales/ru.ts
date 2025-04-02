@@ -189,7 +189,30 @@ export const ru = {
                             saveFailed: 'Не удалось сохранить изменения'
                         }
                     },
-                    WardrobePanel: {},
+                    WardrobePanel: {
+                        title: 'Ваш гардероб',
+                        openWardrobe: 'Открыть гардероб',
+                        useWardrobeForOutfits:
+                            'Использовать ваш гардероб при подборе имиджа',
+                        itemCount: 'Всего предметов: {{count}}',
+                        categories: {
+                            headwear: 'Головные уборы',
+                            tops: 'Верхняя одежда',
+                            bottoms: 'Нижняя одежда',
+                            dresses: 'Платья',
+                            outerwear: 'Верхняя одежда',
+                            shoes: 'Обувь',
+                            accessories: 'Аксессуары',
+                            jewelry: 'Украшения',
+                            bags: 'Сумки',
+                            socks: 'Носки',
+                            underwear: 'Нижнее белье',
+                            swimwear: 'Купальники',
+                            sportswear: 'Спортивная одежда',
+                            suits: 'Костюмы',
+                            other: 'Другое'
+                        }
+                    },
                     EventPanel: {},
                     OutfitRequestPanel: {}
                 },
@@ -370,6 +393,28 @@ export const ru = {
                 },
                 WhatToWear: {
                     title: 'Давай подберём твой идеальный образ!'
+                },
+                Wardrobe: {
+                    title: 'Мой гардероб',
+                    addItemPlaceholder: 'Добавить предмет',
+                    noItems: 'Нет предметов',
+                    categories: {
+                        headwear: 'Головные уборы',
+                        tops: 'Верхняя одежда',
+                        bottoms: 'Нижняя одежда',
+                        dresses: 'Платья',
+                        outerwear: 'Верхняя одежда',
+                        shoes: 'Обувь',
+                        accessories: 'Аксессуары',
+                        jewelry: 'Украшения',
+                        bags: 'Сумки',
+                        socks: 'Носки',
+                        underwear: 'Нижнее белье',
+                        swimwear: 'Купальники',
+                        sportswear: 'Спортивная одежда',
+                        suits: 'Костюмы',
+                        other: 'Другое'
+                    }
                 }
             },
             General: {

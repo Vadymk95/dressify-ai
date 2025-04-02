@@ -188,7 +188,30 @@ export const en = {
                             saveFailed: 'Failed to save changes'
                         }
                     },
-                    WardrobePanel: {},
+                    WardrobePanel: {
+                        title: 'Your Wardrobe',
+                        openWardrobe: 'Open Wardrobe',
+                        useWardrobeForOutfits:
+                            'Use your wardrobe for outfit suggestions',
+                        itemCount: 'Total items: {{count}}',
+                        categories: {
+                            headwear: 'Headwear',
+                            tops: 'Tops',
+                            bottoms: 'Bottoms',
+                            dresses: 'Dresses',
+                            outerwear: 'Outerwear',
+                            shoes: 'Shoes',
+                            accessories: 'Accessories',
+                            jewelry: 'Jewelry',
+                            bags: 'Bags',
+                            socks: 'Socks',
+                            underwear: 'Underwear',
+                            swimwear: 'Swimwear',
+                            sportswear: 'Sportswear',
+                            suits: 'Suits',
+                            other: 'Other'
+                        }
+                    },
                     EventPanel: {},
                     OutfitRequestPanel: {}
                 },
@@ -371,6 +394,28 @@ export const en = {
                 },
                 WhatToWear: {
                     title: "Let's find out what to wear today!"
+                },
+                Wardrobe: {
+                    title: 'My Wardrobe',
+                    addItemPlaceholder: 'Add item',
+                    noItems: 'No items',
+                    categories: {
+                        headwear: 'Headwear',
+                        tops: 'Tops',
+                        bottoms: 'Bottoms',
+                        dresses: 'Dresses',
+                        outerwear: 'Outerwear',
+                        shoes: 'Shoes',
+                        accessories: 'Accessories',
+                        jewelry: 'Jewelry',
+                        bags: 'Bags',
+                        socks: 'Socks',
+                        underwear: 'Underwear',
+                        swimwear: 'Swimwear',
+                        sportswear: 'Sportswear',
+                        suits: 'Suits',
+                        other: 'Other'
+                    }
                 }
             },
             General: {
