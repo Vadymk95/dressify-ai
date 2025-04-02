@@ -176,6 +176,13 @@ export const en = {
                             height: 'Height should be between 100 and 250 cm',
                             weight: 'Weight should be between 30 and 250 kg',
                             age: 'Age should be between 13 and 120 years'
+                        },
+                        errors: {
+                            userNotAuthorized: 'User is not authorized',
+                            unknownError: 'An unknown error occurred',
+                            networkError:
+                                'Network error. Please check your connection',
+                            saveFailed: 'Failed to save changes'
                         }
                     },
                     WardrobePanel: {},

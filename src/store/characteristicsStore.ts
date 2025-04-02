@@ -13,6 +13,7 @@ interface CharacteristicsStore {
         characteristics: UserCharacteristics
     ) => Promise<void>;
     updateGender: (gender: Gender) => Promise<void>;
+    clearError: () => void;
 }
 
 export const useCharacteristicsStore = create<CharacteristicsStore>(
@@ -21,12 +22,13 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
         loading: false,
         error: null,
         setCharacteristics: (characteristics) => set({ characteristics }),
+        clearError: () => set({ error: null }),
         updateCharacteristics: async (characteristics) => {
             set({ loading: true, error: null });
             try {
                 const currentUser = auth.currentUser;
                 if (!currentUser) {
-                    throw new Error('User not authorized');
+                    throw new Error('userNotAuthorized');
                 }
                 const userRef = doc(db, 'users', currentUser.uid);
                 await updateDoc(userRef, { characteristics });
@@ -35,9 +37,7 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
                 console.error('Error updating characteristics:', error);
                 set({
                     error:
-                        error instanceof Error
-                            ? error.message
-                            : 'Unknown error occurred',
+                        error instanceof Error ? error.message : 'unknownError',
                     loading: false
                 });
             }
@@ -47,7 +47,7 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
             try {
                 const currentUser = auth.currentUser;
                 if (!currentUser) {
-                    throw new Error('User not authorized');
+                    throw new Error('userNotAuthorized');
                 }
 
                 const userRef = doc(db, 'users', currentUser.uid);
@@ -67,9 +67,7 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
                 console.error('Error updating gender:', error);
                 set({
                     error:
-                        error instanceof Error
-                            ? error.message
-                            : 'Unknown error occurred',
+                        error instanceof Error ? error.message : 'unknownError',
                     loading: false
                 });
             }

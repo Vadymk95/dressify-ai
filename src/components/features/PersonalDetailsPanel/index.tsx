@@ -92,7 +92,8 @@ export const PersonalDetailsPanel: FC = () => {
         updateCharacteristics,
         updateGender,
         loading,
-        error
+        error,
+        clearError
     } = useCharacteristicsStore();
     const { profile } = useUserProfileStore();
     const [formData, setFormData] = useState({
@@ -125,6 +126,14 @@ export const PersonalDetailsPanel: FC = () => {
             setSelectedStyles(profile.characteristics.stylePreference || []);
         }
     }, [profile?.characteristics]);
+
+    // Автоматически очищаем ошибку через 5 секунд
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(clearError, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error, clearError]);
 
     const handleInputChange =
         (field: keyof typeof formData) =>
@@ -234,7 +243,10 @@ export const PersonalDetailsPanel: FC = () => {
             {/* Сообщение об ошибке */}
             {error && (
                 <div className="mb-4 px-4 py-2 text-red-600 bg-red-100 rounded-md text-center animate-fade-in">
-                    {error}
+                    {t([
+                        `Components.Features.PersonalDetailsPanel.errors.${error}`,
+                        'Components.Features.PersonalDetailsPanel.errors.unknownError'
+                    ])}
                 </div>
             )}
 
