@@ -95,7 +95,10 @@ export const en = {
                             units: {
                                 cm: 'cm',
                                 kg: 'kg',
-                                years: 'years'
+                                years: 'years',
+                                lb: 'lb',
+                                ft: 'ft',
+                                in: 'in'
                             },
                             bodyTypes: {
                                 // Common body types

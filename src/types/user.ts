@@ -52,10 +52,15 @@ export type PreferredColor =
     | 'brown'
     | 'beige';
 
+export type WeightUnit = 'kg' | 'lb';
+export type HeightUnit = 'cm' | 'ft' | 'in';
+
 export interface UserCharacteristics {
     gender?: Gender;
-    height?: number; // in cm
-    weight?: number; // in kg
+    height?: number;
+    weight?: number;
+    heightUnit?: HeightUnit;
+    weightUnit?: WeightUnit;
     bodyType?: BodyType;
     age?: number;
     skinTone?: SkinTone;

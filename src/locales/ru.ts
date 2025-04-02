@@ -99,7 +99,10 @@ export const ru = {
                             units: {
                                 cm: 'см',
                                 kg: 'кг',
-                                years: 'лет'
+                                years: 'лет',
+                                lb: 'фунт',
+                                ft: 'фут',
+                                in: 'дюйм'
                             },
                             bodyTypes: {
                                 // Common body types

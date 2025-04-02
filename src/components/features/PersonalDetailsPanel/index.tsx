@@ -35,7 +35,12 @@ import {
 } from '@/components/ui/select';
 import { useCharacteristicsStore } from '@/store/characteristicsStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
-import { Gender, UserCharacteristics } from '@/types/user';
+import {
+    Gender,
+    HeightUnit,
+    UserCharacteristics,
+    WeightUnit
+} from '@/types/user';
 
 // Опции для селектов
 const BODY_TYPES = {
@@ -85,6 +90,10 @@ const STYLE_PREFERENCES = [
     'streetwear'
 ];
 
+// Единицы измерения
+const HEIGHT_UNITS: HeightUnit[] = ['cm', 'ft', 'in'];
+const WEIGHT_UNITS: WeightUnit[] = ['kg', 'lb'];
+
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
     const {
@@ -104,7 +113,9 @@ export const PersonalDetailsPanel: FC = () => {
         skinTone: '',
         hairColor: '',
         eyeColor: '',
-        bodyType: ''
+        bodyType: '',
+        heightUnit: 'cm' as HeightUnit,
+        weightUnit: 'kg' as WeightUnit
     });
     const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -120,7 +131,9 @@ export const PersonalDetailsPanel: FC = () => {
                 skinTone: profile.characteristics.skinTone || '',
                 hairColor: profile.characteristics.hairColor || '',
                 eyeColor: profile.characteristics.eyeColor || '',
-                bodyType: profile.characteristics.bodyType || ''
+                bodyType: profile.characteristics.bodyType || '',
+                heightUnit: profile.characteristics.heightUnit || 'cm',
+                weightUnit: profile.characteristics.weightUnit || 'kg'
             });
             setSelectedColors(profile.characteristics.preferredColors || []);
             setSelectedStyles(profile.characteristics.stylePreference || []);
@@ -164,6 +177,8 @@ export const PersonalDetailsPanel: FC = () => {
             hairColor: formData.hairColor || null,
             eyeColor: formData.eyeColor || null,
             bodyType: formData.bodyType || null,
+            heightUnit: formData.heightUnit,
+            weightUnit: formData.weightUnit,
             preferredColors: selectedColors,
             stylePreference: selectedStyles
         };
@@ -277,26 +292,50 @@ export const PersonalDetailsPanel: FC = () => {
                                         {t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.height'
                                         )}
-                                        <span className="text-xs text-gray-500">
-                                            (
-                                            {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.units.cm'
-                                            )}
-                                            )
-                                        </span>
                                     </Label>
-                                    <Input
-                                        id="height"
-                                        type="number"
-                                        min="100"
-                                        max="250"
-                                        value={formData.height}
-                                        onChange={handleInputChange('height')}
-                                        placeholder={t(
-                                            'Components.Features.PersonalDetailsPanel.characteristics.heightPlaceholder'
-                                        )}
-                                        className="w-full h-9 bg-white"
-                                    />
+                                    <div className="flex gap-2">
+                                        <Input
+                                            id="height"
+                                            type="number"
+                                            min="100"
+                                            max="250"
+                                            value={formData.height}
+                                            onChange={handleInputChange(
+                                                'height'
+                                            )}
+                                            placeholder={t(
+                                                'Components.Features.PersonalDetailsPanel.characteristics.heightPlaceholder'
+                                            )}
+                                            className="w-full h-9 bg-white"
+                                        />
+                                        <Select
+                                            value={formData.heightUnit}
+                                            onValueChange={(value) =>
+                                                handleInputChange('heightUnit')(
+                                                    value as HeightUnit
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                id="heightUnit"
+                                                className="w-[70px] h-9 bg-white"
+                                            >
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {HEIGHT_UNITS.map((unit) => (
+                                                    <SelectItem
+                                                        key={unit}
+                                                        value={unit}
+                                                    >
+                                                        {t(
+                                                            `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-1">
@@ -307,26 +346,50 @@ export const PersonalDetailsPanel: FC = () => {
                                         {t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.weight'
                                         )}
-                                        <span className="text-xs text-gray-500">
-                                            (
-                                            {t(
-                                                'Components.Features.PersonalDetailsPanel.characteristics.units.kg'
-                                            )}
-                                            )
-                                        </span>
                                     </Label>
-                                    <Input
-                                        id="weight"
-                                        type="number"
-                                        min="30"
-                                        max="250"
-                                        value={formData.weight}
-                                        onChange={handleInputChange('weight')}
-                                        placeholder={t(
-                                            'Components.Features.PersonalDetailsPanel.characteristics.weightPlaceholder'
-                                        )}
-                                        className="w-full h-9 bg-white"
-                                    />
+                                    <div className="flex gap-2">
+                                        <Input
+                                            id="weight"
+                                            type="number"
+                                            min="30"
+                                            max="250"
+                                            value={formData.weight}
+                                            onChange={handleInputChange(
+                                                'weight'
+                                            )}
+                                            placeholder={t(
+                                                'Components.Features.PersonalDetailsPanel.characteristics.weightPlaceholder'
+                                            )}
+                                            className="w-full h-9 bg-white"
+                                        />
+                                        <Select
+                                            value={formData.weightUnit}
+                                            onValueChange={(value) =>
+                                                handleInputChange('weightUnit')(
+                                                    value as WeightUnit
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                id="weightUnit"
+                                                className="w-[70px] h-9 bg-white"
+                                            >
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {WEIGHT_UNITS.map((unit) => (
+                                                    <SelectItem
+                                                        key={unit}
+                                                        value={unit}
+                                                    >
+                                                        {t(
+                                                            `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
+                                                        )}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-1">
