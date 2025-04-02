@@ -87,8 +87,13 @@ const STYLE_PREFERENCES = [
 
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
-    const { characteristics, updateCharacteristics, updateGender, loading } =
-        useCharacteristicsStore();
+    const {
+        characteristics,
+        updateCharacteristics,
+        updateGender,
+        loading,
+        error
+    } = useCharacteristicsStore();
     const { profile } = useUserProfileStore();
     const [formData, setFormData] = useState({
         gender: '',
@@ -225,6 +230,13 @@ export const PersonalDetailsPanel: FC = () => {
                     </div>
                 </RadioGroup>
             </div>
+
+            {/* Сообщение об ошибке */}
+            {error && (
+                <div className="mb-4 px-4 py-2 text-red-600 bg-red-100 rounded-md text-center animate-fade-in">
+                    {error}
+                </div>
+            )}
 
             <p className="text-sm text-gray-400 italic mb-4">
                 * {t('Components.Features.PersonalDetailsPanel.optionalNote')}

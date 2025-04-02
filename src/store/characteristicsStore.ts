@@ -26,7 +26,7 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
             try {
                 const currentUser = auth.currentUser;
                 if (!currentUser) {
-                    throw new Error('Пользователь не авторизован');
+                    throw new Error('User not authorized');
                 }
                 const userRef = doc(db, 'users', currentUser.uid);
                 await updateDoc(userRef, { characteristics });
@@ -47,7 +47,7 @@ export const useCharacteristicsStore = create<CharacteristicsStore>(
             try {
                 const currentUser = auth.currentUser;
                 if (!currentUser) {
-                    throw new Error('Пользователь не авторизован');
+                    throw new Error('User not authorized');
                 }
 
                 const userRef = doc(db, 'users', currentUser.uid);
