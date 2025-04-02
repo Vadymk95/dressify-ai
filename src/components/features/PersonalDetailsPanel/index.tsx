@@ -293,7 +293,7 @@ export const PersonalDetailsPanel: FC = () => {
                                             'Components.Features.PersonalDetailsPanel.characteristics.height'
                                         )}
                                     </Label>
-                                    <div className="flex gap-2">
+                                    <div className="relative w-full">
                                         <Input
                                             id="height"
                                             type="number"
@@ -306,35 +306,39 @@ export const PersonalDetailsPanel: FC = () => {
                                             placeholder={t(
                                                 'Components.Features.PersonalDetailsPanel.characteristics.heightPlaceholder'
                                             )}
-                                            className="w-full h-9 bg-white"
+                                            className="w-full h-9 bg-white pr-[70px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                         />
-                                        <Select
-                                            value={formData.heightUnit}
-                                            onValueChange={(value) =>
-                                                handleInputChange('heightUnit')(
-                                                    value as HeightUnit
-                                                )
-                                            }
-                                        >
-                                            <SelectTrigger
-                                                id="heightUnit"
-                                                className="w-[70px] h-9 bg-white"
+                                        <div className="absolute right-0 top-0 h-9 flex items-center">
+                                            <Select
+                                                value={formData.heightUnit}
+                                                onValueChange={(value) =>
+                                                    handleInputChange(
+                                                        'heightUnit'
+                                                    )(value as HeightUnit)
+                                                }
                                             >
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {HEIGHT_UNITS.map((unit) => (
-                                                    <SelectItem
-                                                        key={unit}
-                                                        value={unit}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                                <SelectTrigger
+                                                    id="heightUnit"
+                                                    className="h-9 bg-transparent border-0 focus:ring-0 px-2 hover:bg-gray-100 rounded-none shadow-none focus:bg-transparent data-[state=open]:bg-transparent cursor-pointer"
+                                                >
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {HEIGHT_UNITS.map(
+                                                        (unit) => (
+                                                            <SelectItem
+                                                                key={unit}
+                                                                value={unit}
+                                                            >
+                                                                {t(
+                                                                    `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
+                                                                )}
+                                                            </SelectItem>
+                                                        )
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -347,7 +351,7 @@ export const PersonalDetailsPanel: FC = () => {
                                             'Components.Features.PersonalDetailsPanel.characteristics.weight'
                                         )}
                                     </Label>
-                                    <div className="flex gap-2">
+                                    <div className="relative w-full">
                                         <Input
                                             id="weight"
                                             type="number"
@@ -360,35 +364,39 @@ export const PersonalDetailsPanel: FC = () => {
                                             placeholder={t(
                                                 'Components.Features.PersonalDetailsPanel.characteristics.weightPlaceholder'
                                             )}
-                                            className="w-full h-9 bg-white"
+                                            className="w-full h-9 bg-white pr-[70px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                         />
-                                        <Select
-                                            value={formData.weightUnit}
-                                            onValueChange={(value) =>
-                                                handleInputChange('weightUnit')(
-                                                    value as WeightUnit
-                                                )
-                                            }
-                                        >
-                                            <SelectTrigger
-                                                id="weightUnit"
-                                                className="w-[70px] h-9 bg-white"
+                                        <div className="absolute right-0 top-0 h-9 flex items-center">
+                                            <Select
+                                                value={formData.weightUnit}
+                                                onValueChange={(value) =>
+                                                    handleInputChange(
+                                                        'weightUnit'
+                                                    )(value as WeightUnit)
+                                                }
                                             >
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {WEIGHT_UNITS.map((unit) => (
-                                                    <SelectItem
-                                                        key={unit}
-                                                        value={unit}
-                                                    >
-                                                        {t(
-                                                            `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
-                                                        )}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                                <SelectTrigger
+                                                    id="weightUnit"
+                                                    className="h-9 bg-transparent border-0 focus:ring-0 px-2 hover:bg-gray-100 rounded-none shadow-none focus:bg-transparent data-[state=open]:bg-transparent cursor-pointer"
+                                                >
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {WEIGHT_UNITS.map(
+                                                        (unit) => (
+                                                            <SelectItem
+                                                                key={unit}
+                                                                value={unit}
+                                                            >
+                                                                {t(
+                                                                    `Components.Features.PersonalDetailsPanel.characteristics.units.${unit}`
+                                                                )}
+                                                            </SelectItem>
+                                                        )
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -418,7 +426,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         placeholder={t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.agePlaceholder'
                                         )}
-                                        className="w-full h-9 bg-white"
+                                        className="w-full h-9 bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     />
                                 </div>
                             </div>
