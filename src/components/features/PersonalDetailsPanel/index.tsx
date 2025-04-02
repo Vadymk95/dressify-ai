@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Loader } from '@/components/common/Loader';
@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/select';
 import { useCharacteristicsStore } from '@/store/characteristicsStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
-import { UserCharacteristics } from '@/types/user';
+import { Gender, UserCharacteristics } from '@/types/user';
 
 // Опции для селектов
 const BODY_TYPES = {
@@ -90,19 +90,46 @@ export const PersonalDetailsPanel: FC = () => {
     const { characteristics, updateCharacteristics, updateGender, loading } =
         useCharacteristicsStore();
     const { profile } = useUserProfileStore();
+    const [formData, setFormData] = useState({
+        gender: '',
+        height: '',
+        weight: '',
+        age: '',
+        skinTone: '',
+        hairColor: '',
+        eyeColor: '',
+        bodyType: ''
+    });
     const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
     // Инициализируем данные из профиля при его загрузке
     useEffect(() => {
         if (profile?.characteristics) {
+            setFormData({
+                gender: profile.characteristics.gender || '',
+                height: profile.characteristics.height?.toString() || '',
+                weight: profile.characteristics.weight?.toString() || '',
+                age: profile.characteristics.age?.toString() || '',
+                skinTone: profile.characteristics.skinTone || '',
+                hairColor: profile.characteristics.hairColor || '',
+                eyeColor: profile.characteristics.eyeColor || '',
+                bodyType: profile.characteristics.bodyType || ''
+            });
             setSelectedColors(profile.characteristics.preferredColors || []);
             setSelectedStyles(profile.characteristics.stylePreference || []);
         }
-    }, [profile]);
+    }, [profile?.characteristics]);
+
+    const handleInputChange =
+        (field: keyof typeof formData) =>
+        (e: ChangeEvent<HTMLInputElement> | string) => {
+            const value = typeof e === 'string' ? e : e.target.value;
+            setFormData((prev) => ({ ...prev, [field]: value }));
+        };
 
     const getBodyTypesList = () => {
-        const gender = profile?.characteristics?.gender;
+        const gender = formData.gender;
         if (!gender) {
             return BODY_TYPES.common;
         }
@@ -113,35 +140,16 @@ export const PersonalDetailsPanel: FC = () => {
     };
 
     const handleSaveCharacteristics = async () => {
-        const heightInput = document.getElementById(
-            'height'
-        ) as HTMLInputElement;
-        const weightInput = document.getElementById(
-            'weight'
-        ) as HTMLInputElement;
-        const ageInput = document.getElementById('age') as HTMLInputElement;
-        const skinToneSelect = document.getElementById(
-            'skinTone'
-        ) as HTMLSelectElement;
-        const hairColorSelect = document.getElementById(
-            'hairColor'
-        ) as HTMLSelectElement;
-        const eyeColorSelect = document.getElementById(
-            'eyeColor'
-        ) as HTMLSelectElement;
-        const bodyTypeSelect = document.getElementById(
-            'bodyType'
-        ) as HTMLSelectElement;
-
         const updatedCharacteristics = {
             ...characteristics,
-            height: heightInput.value ? Number(heightInput.value) : null,
-            weight: weightInput.value ? Number(weightInput.value) : null,
-            age: ageInput.value ? Number(ageInput.value) : null,
-            skinTone: skinToneSelect?.value || null,
-            hairColor: hairColorSelect?.value || null,
-            eyeColor: eyeColorSelect?.value || null,
-            bodyType: bodyTypeSelect?.value || null,
+            gender: formData.gender,
+            height: formData.height ? Number(formData.height) : null,
+            weight: formData.weight ? Number(formData.weight) : null,
+            age: formData.age ? Number(formData.age) : null,
+            skinTone: formData.skinTone || null,
+            hairColor: formData.hairColor || null,
+            eyeColor: formData.eyeColor || null,
+            bodyType: formData.bodyType || null,
             preferredColors: selectedColors,
             stylePreference: selectedStyles
         };
@@ -163,12 +171,11 @@ export const PersonalDetailsPanel: FC = () => {
                     {t('Components.Features.PersonalDetailsPanel.gender')}
                 </div>
                 <RadioGroup
-                    value={
-                        characteristics?.gender ||
-                        profile?.characteristics?.gender ||
-                        ''
-                    }
-                    onValueChange={updateGender}
+                    value={formData.gender}
+                    onValueChange={(value) => {
+                        setFormData((prev) => ({ ...prev, gender: value }));
+                        updateGender(value as Gender);
+                    }}
                     className="flex flex-col md:flex-row gap-4"
                 >
                     <div className="flex items-center space-x-3">
@@ -259,6 +266,8 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="100"
                                         max="250"
+                                        value={formData.height}
+                                        onChange={handleInputChange('height')}
                                         placeholder={t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.heightPlaceholder'
                                         )}
@@ -287,6 +296,8 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="30"
                                         max="250"
+                                        value={formData.weight}
+                                        onChange={handleInputChange('weight')}
                                         placeholder={t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.weightPlaceholder'
                                         )}
@@ -315,6 +326,8 @@ export const PersonalDetailsPanel: FC = () => {
                                         type="number"
                                         min="13"
                                         max="120"
+                                        value={formData.age}
+                                        onChange={handleInputChange('age')}
                                         placeholder={t(
                                             'Components.Features.PersonalDetailsPanel.characteristics.agePlaceholder'
                                         )}
@@ -335,7 +348,14 @@ export const PersonalDetailsPanel: FC = () => {
                                         )}
                                     </Label>
                                     <div className="w-full">
-                                        <Select>
+                                        <Select
+                                            value={formData.skinTone}
+                                            onValueChange={(value) =>
+                                                handleInputChange('skinTone')(
+                                                    value
+                                                )
+                                            }
+                                        >
                                             <SelectTrigger
                                                 id="skinTone"
                                                 className="w-full cursor-pointer h-9 bg-white"
@@ -372,7 +392,14 @@ export const PersonalDetailsPanel: FC = () => {
                                         )}
                                     </Label>
                                     <div className="w-full">
-                                        <Select>
+                                        <Select
+                                            value={formData.hairColor}
+                                            onValueChange={(value) =>
+                                                handleInputChange('hairColor')(
+                                                    value
+                                                )
+                                            }
+                                        >
                                             <SelectTrigger
                                                 id="hairColor"
                                                 className="w-full cursor-pointer h-9 bg-white"
@@ -409,7 +436,14 @@ export const PersonalDetailsPanel: FC = () => {
                                         )}
                                     </Label>
                                     <div className="w-full">
-                                        <Select>
+                                        <Select
+                                            value={formData.eyeColor}
+                                            onValueChange={(value) =>
+                                                handleInputChange('eyeColor')(
+                                                    value
+                                                )
+                                            }
+                                        >
                                             <SelectTrigger
                                                 id="eyeColor"
                                                 className="w-full cursor-pointer h-9 bg-white"
@@ -448,7 +482,12 @@ export const PersonalDetailsPanel: FC = () => {
                                     )}
                                 </Label>
                                 <div className="w-full">
-                                    <Select>
+                                    <Select
+                                        value={formData.bodyType}
+                                        onValueChange={(value) =>
+                                            handleInputChange('bodyType')(value)
+                                        }
+                                    >
                                         <SelectTrigger
                                             id="bodyType"
                                             className="w-full cursor-pointer h-9 bg-white"
