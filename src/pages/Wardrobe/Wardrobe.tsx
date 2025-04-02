@@ -51,7 +51,18 @@ const WardrobePage: FC = () => {
     // Инициализация локального гардероба при загрузке данных
     useEffect(() => {
         if (profile?.wardrobe) {
-            setLocalWardrobe(profile.wardrobe);
+            // Если есть предметы в гардеробе, но useWardrobeForOutfits выключен, включаем его
+            const hasItems = profile.wardrobe.categories.some(
+                (category) => category.items.length > 0
+            );
+            if (hasItems && !profile.wardrobe.useWardrobeForOutfits) {
+                setLocalWardrobe({
+                    ...profile.wardrobe,
+                    useWardrobeForOutfits: true
+                });
+            } else {
+                setLocalWardrobe(profile.wardrobe);
+            }
         }
     }, [profile]);
 
@@ -105,9 +116,16 @@ const WardrobePage: FC = () => {
                     return category;
                 });
 
+                // Проверяем, есть ли теперь предметы в гардеробе
+                const hasItems = updatedCategories.some(
+                    (category) => category.items.length > 0
+                );
+
                 return {
-                    ...prev,
-                    categories: updatedCategories
+                    categories: updatedCategories,
+                    useWardrobeForOutfits: hasItems
+                        ? true
+                        : prev.useWardrobeForOutfits
                 };
             });
 
@@ -173,7 +191,7 @@ const WardrobePage: FC = () => {
                     variant="ghost"
                     size="icon"
                     onClick={handleBack}
-                    className="mr-2 text-amber-800 hover:text-amber-900 cursor-pointer"
+                    className="mr-2 text-amber-800 hover:text-orange-500 hover:bg-transparent cursor-pointer"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Button>

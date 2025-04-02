@@ -192,26 +192,9 @@ export const ru = {
                     WardrobePanel: {
                         title: 'Ваш гардероб',
                         openWardrobe: 'Открыть гардероб',
-                        useWardrobeForOutfits:
-                            'Использовать ваш гардероб при подборе имиджа',
                         itemCount: 'Всего предметов: {{count}}',
-                        categories: {
-                            headwear: 'Головные уборы',
-                            tops: 'Верхняя одежда',
-                            bottoms: 'Нижняя одежда',
-                            dresses: 'Платья',
-                            outerwear: 'Верхняя одежда',
-                            shoes: 'Обувь',
-                            accessories: 'Аксессуары',
-                            jewelry: 'Украшения',
-                            bags: 'Сумки',
-                            socks: 'Носки',
-                            underwear: 'Нижнее белье',
-                            swimwear: 'Купальники',
-                            sportswear: 'Спортивная одежда',
-                            suits: 'Костюмы',
-                            other: 'Другое'
-                        }
+                        useWardrobeForOutfits:
+                            'Использовать гардероб для подбора образов'
                     },
                     EventPanel: {},
                     OutfitRequestPanel: {}
@@ -396,7 +379,7 @@ export const ru = {
                 },
                 Wardrobe: {
                     title: 'Мой гардероб',
-                    addItemPlaceholder: 'Добавить предмет',
+                    addItemPlaceholder: 'Введите название предмета',
                     noItems: 'Нет предметов',
                     saveChanges: 'Сохранить изменения',
                     saving: 'Сохранение...',

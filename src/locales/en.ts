@@ -191,26 +191,9 @@ export const en = {
                     WardrobePanel: {
                         title: 'Your Wardrobe',
                         openWardrobe: 'Open Wardrobe',
+                        itemCount: 'Total Items: {{count}}',
                         useWardrobeForOutfits:
-                            'Use your wardrobe for outfit suggestions',
-                        itemCount: 'Total items: {{count}}',
-                        categories: {
-                            headwear: 'Headwear',
-                            tops: 'Tops',
-                            bottoms: 'Bottoms',
-                            dresses: 'Dresses',
-                            outerwear: 'Outerwear',
-                            shoes: 'Shoes',
-                            accessories: 'Accessories',
-                            jewelry: 'Jewelry',
-                            bags: 'Bags',
-                            socks: 'Socks',
-                            underwear: 'Underwear',
-                            swimwear: 'Swimwear',
-                            sportswear: 'Sportswear',
-                            suits: 'Suits',
-                            other: 'Other'
-                        }
+                            'Use wardrobe for outfit selection'
                     },
                     EventPanel: {},
                     OutfitRequestPanel: {}
@@ -397,7 +380,7 @@ export const en = {
                 },
                 Wardrobe: {
                     title: 'My Wardrobe',
-                    addItemPlaceholder: 'Add item',
+                    addItemPlaceholder: 'Enter item name',
                     noItems: 'No items',
                     saveChanges: 'Save Changes',
                     saving: 'Saving...',

@@ -1,40 +1,49 @@
-import { FC, useEffect } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Loader } from '@/components/common/Loader';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { auth } from '@/firebase/firebaseConfig';
 import { routes } from '@/router/routes';
-import { useWardrobeStore } from '@/store/wardrobeStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
+import { Wardrobe } from '@/types/user';
 
 export const WardrobePanel: FC = () => {
     const { t } = useTranslation();
-    const {
-        wardrobe,
-        loading,
-        error,
-        fetchWardrobe,
-        toggleUseWardrobeForOutfits,
-        clearError
-    } = useWardrobeStore();
+    const { profile, loading, error, fetchUserProfile, updateWardrobe } =
+        useUserProfileStore();
+    const [localError, setLocalError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchWardrobe();
-    }, [fetchWardrobe]);
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            fetchUserProfile(currentUser.uid);
+        }
+    }, [fetchUserProfile]);
+
+    useEffect(() => {
+        if (profile?.wardrobe) {
+            const hasItems = profile.wardrobe.categories.some(
+                (category) => category.items.length > 0
+            );
+            if (hasItems && !profile.wardrobe.useWardrobeForOutfits) {
+                updateWardrobe({
+                    ...profile.wardrobe,
+                    useWardrobeForOutfits: true
+                });
+            }
+        }
+    }, [profile, updateWardrobe]);
 
     // Автоматически очищаем ошибку через 5 секунд
     useEffect(() => {
-        if (error) {
-            const timer = setTimeout(clearError, 5000);
+        if (localError) {
+            const timer = setTimeout(() => setLocalError(null), 5000);
             return () => clearTimeout(timer);
         }
-    }, [error, clearError]);
-
-    // Проверяем, есть ли предметы в гардеробе
-    const hasItems = wardrobe.categories.some(
-        (category) => category.items.length > 0
-    );
+    }, [localError]);
 
     // Функция для безопасного получения перевода ошибки
     const getErrorMessage = (errorKey: string) => {
@@ -45,73 +54,81 @@ export const WardrobePanel: FC = () => {
             : translation;
     };
 
+    const handleToggleUseWardrobe = async () => {
+        if (!profile?.wardrobe) return;
+
+        const updatedWardrobe: Wardrobe = {
+            ...profile.wardrobe,
+            useWardrobeForOutfits: !profile.wardrobe.useWardrobeForOutfits
+        };
+
+        try {
+            await updateWardrobe(updatedWardrobe);
+        } catch (error: any) {
+            console.error('Error toggling wardrobe usage:', error);
+            setLocalError(error.message || 'unknownError');
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-4">
+                <Loader />
+            </div>
+        );
+    }
+
+    const totalItems =
+        profile?.wardrobe?.categories.reduce(
+            (sum, category) => sum + category.items.length,
+            0
+        ) || 0;
+
     return (
         <div className="w-full">
-            {loading && <Loader />}
             <h2 className="text-2xl font-bold text-amber-50 text-center mb-4">
                 {t('Components.Features.WardrobePanel.title')}
             </h2>
+            <Link
+                to={routes.wardrobe}
+                className="flex items-center justify-center text-amber-200 hover:text-amber-100 font-medium transition-colors mb-4"
+            >
+                {t('Components.Features.WardrobePanel.openWardrobe')}
+                <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
 
-            {error && (
+            {(error || localError) && (
                 <div className="mb-4 p-3 bg-red-100 text-red-800 rounded-md text-center">
-                    {getErrorMessage(error)}
+                    {getErrorMessage(localError || error || '')}
                 </div>
             )}
 
-            <div className="flex flex-col items-center justify-center gap-4 mb-4">
-                <Link
-                    to={routes.wardrobe}
-                    className="text-amber-50 hover:text-amber-200 transition-colors"
-                >
-                    {t('Components.Features.WardrobePanel.openWardrobe')}
-                </Link>
+            <div className="space-y-4">
+                <p className="text-amber-50 text-center">
+                    {t('Components.Features.WardrobePanel.itemCount', {
+                        count: totalItems
+                    })}
+                </p>
 
-                {hasItems && (
-                    <div className="flex items-center space-x-2 mt-2">
+                {totalItems > 0 && (
+                    <div className="flex items-center justify-center space-x-2">
                         <Checkbox
                             id="useWardrobe"
-                            checked={wardrobe.useWardrobeForOutfits}
-                            onCheckedChange={toggleUseWardrobeForOutfits}
+                            checked={
+                                profile?.wardrobe?.useWardrobeForOutfits ||
+                                false
+                            }
+                            onCheckedChange={handleToggleUseWardrobe}
+                            className="border-amber-300 data-[state=checked]:bg-amber-600 data-[state=checked]:border-amber-600 data-[state=unchecked]:bg-transparent"
                         />
                         <label
                             htmlFor="useWardrobe"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-amber-50"
+                            className="text-sm text-amber-50 cursor-pointer"
                         >
                             {t(
                                 'Components.Features.WardrobePanel.useWardrobeForOutfits'
                             )}
                         </label>
-                    </div>
-                )}
-
-                {hasItems && (
-                    <div className="mt-4">
-                        <p className="text-sm text-amber-50 mb-2">
-                            {t('Components.Features.WardrobePanel.itemCount', {
-                                count: wardrobe.categories.reduce(
-                                    (total, category) =>
-                                        total + category.items.length,
-                                    0
-                                )
-                            })}
-                        </p>
-                        <div className="flex flex-wrap gap-2 justify-center">
-                            {wardrobe.categories.map(
-                                (category) =>
-                                    category.items.length > 0 && (
-                                        <Badge
-                                            key={category.id}
-                                            variant="outline"
-                                            className="bg-gray-800 text-amber-50 border-amber-500"
-                                        >
-                                            {t(
-                                                `Components.Features.WardrobePanel.categories.${category.name}`
-                                            )}
-                                            : {category.items.length}
-                                        </Badge>
-                                    )
-                            )}
-                        </div>
                     </div>
                 )}
             </div>
