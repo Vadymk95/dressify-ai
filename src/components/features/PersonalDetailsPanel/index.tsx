@@ -153,6 +153,7 @@ export const PersonalDetailsPanel: FC = () => {
 
     return (
         <div className="w-full">
+            {loading && <Loader />}
             <h2 className="text-2xl font-bold text-amber-50 text-center mb-4">
                 {t('Components.Features.PersonalDetailsPanel.title')}
             </h2>
@@ -162,7 +163,11 @@ export const PersonalDetailsPanel: FC = () => {
                     {t('Components.Features.PersonalDetailsPanel.gender')}
                 </div>
                 <RadioGroup
-                    value={profile?.characteristics?.gender || ''}
+                    value={
+                        characteristics?.gender ||
+                        profile?.characteristics?.gender ||
+                        ''
+                    }
                     onValueChange={updateGender}
                     className="flex flex-col md:flex-row gap-4"
                 >
@@ -680,15 +685,8 @@ export const PersonalDetailsPanel: FC = () => {
                                     disabled={loading}
                                     className="min-w-[200px] secondary-gradient cursor-pointer font-semibold"
                                 >
-                                    {loading ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader />
-                                            {t('General.sending')}
-                                        </div>
-                                    ) : (
-                                        t(
-                                            'Components.Features.PersonalDetailsPanel.save'
-                                        )
+                                    {t(
+                                        'Components.Features.PersonalDetailsPanel.save'
                                     )}
                                 </Button>
                             </div>

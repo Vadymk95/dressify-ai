@@ -88,6 +88,7 @@ export const ru = {
                             heightPlaceholder: 'Введите рост',
                             weight: 'Вес',
                             weightPlaceholder: 'Введите вес',
+                            bodyType: 'Тип фигуры',
                             age: 'Возраст',
                             agePlaceholder: 'Введите возраст',
                             skinTone: 'Цвет кожи',
