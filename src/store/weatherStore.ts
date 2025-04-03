@@ -51,8 +51,6 @@ export const useWeatherStore = create<WeatherState>()(
             fetchWeather: async (language, isTomorrow = false) => {
                 set({ loadingWeather: true, error: null });
                 try {
-                    // Здесь вместо API-вызываем задержку и возвращаем пример данных.
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
                     const city =
                         useUserProfileStore.getState().profile?.location
                             ?.city || '';
@@ -77,8 +75,10 @@ export const useWeatherStore = create<WeatherState>()(
                         useUserProfileStore.getState().profile?.location
                             ?.longitude || '';
 
+                    // Для погоды на завтра используем эндпоинт forecast
+                    const endpoint = isTomorrow ? 'forecast' : 'weather';
                     const response = await fetch(
-                        `${WEATHER_BASE_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${language}`
+                        `${WEATHER_BASE_URL}/${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${language}`
                     );
                     const data = await response.json();
 
@@ -92,20 +92,25 @@ export const useWeatherStore = create<WeatherState>()(
                                 icon: data.weather[0].icon
                             },
                             loadingWeather: false,
-                            weatherTomorrow: null,
-                            lastUpdated: now
+                            lastUpdated: now,
+                            weatherTomorrow: null
                         });
                     } else {
+                        // Для прогноза на завтра берем данные на 24 часа вперед
+                        const tomorrowData = data.list[8]; // 8 = 24 часа (3 часа * 8)
                         set({
                             weatherTomorrow: {
-                                temp: Math.round(data.main.temp),
-                                feels_like: Math.round(data.main.feels_like),
-                                description: data.weather[0].description,
-                                icon: data.weather[0].icon
+                                temp: Math.round(tomorrowData.main.temp),
+                                feels_like: Math.round(
+                                    tomorrowData.main.feels_like
+                                ),
+                                description:
+                                    tomorrowData.weather[0].description,
+                                icon: tomorrowData.weather[0].icon
                             },
                             loadingWeather: false,
-                            weatherToday: null,
-                            lastUpdated: now
+                            lastUpdated: now,
+                            weatherToday: null
                         });
                     }
                 } catch (error: any) {
