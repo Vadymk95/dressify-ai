@@ -196,7 +196,39 @@ export const ru = {
                         useWardrobeForOutfits:
                             'Использовать гардероб для подбора образов'
                     },
-                    EventPanel: {},
+                    EventPanel: {
+                        title: 'Выберите событие',
+                        description:
+                            'Выберите тип мероприятия, чтобы мы могли подобрать подходящий наряд',
+                        selectEvent: 'Выберите тип события',
+                        noEventFound: 'События не найдены',
+                        types: {
+                            businessMeeting: 'Деловая встреча',
+                            interview: 'Собеседование',
+                            wedding: 'Свадьба',
+                            dateNight: 'Свидание',
+                            restaurant: 'Ресторан',
+                            theater: 'Театр',
+                            clubbing: 'Клуб/Вечеринка',
+                            graduation: 'Выпускной/Вручение диплома',
+                            conference: 'Конференция',
+                            casualWalk: 'Прогулка по городу',
+                            shopping: 'Шоппинг',
+                            concert: 'Концерт',
+                            exhibition: 'Выставка/Музей',
+                            birthday: 'День рождения',
+                            cocktailParty: 'Коктейльная вечеринка',
+                            beachDay: 'Пляжный отдых',
+                            sportEvent: 'Спортивное мероприятие',
+                            casualFriends: 'Встреча с друзьями',
+                            workOffice: 'Офисный день',
+                            familyGathering: 'Семейное торжество',
+                            onlineMeeting: 'Онлайн-встреча',
+                            webinar: 'Вебинар',
+                            onlineInterview: 'Онлайн-собеседование',
+                            videoConference: 'Видеоконференция'
+                        }
+                    },
                     OutfitRequestPanel: {}
                 },
                 Layout: {
