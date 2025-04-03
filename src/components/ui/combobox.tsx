@@ -73,7 +73,18 @@ export function Combobox({
             {/* z-index less than header(z-50) */}
             <PopoverContent className="p-0 z-[49]">
                 <Command>
-                    <CommandInput placeholder={placeholder} className="h-9" />
+                    <CommandInput
+                        placeholder={placeholder}
+                        className="h-9"
+                        onValueChange={() => {
+                            // Сбрасываем скролл к началу списка при вводе
+                            const commandList =
+                                document.querySelector('[cmdk-list]');
+                            if (commandList) {
+                                commandList.scrollTop = 0;
+                            }
+                        }}
+                    />
                     <CommandList>
                         <CommandEmpty>{emptyMessage}</CommandEmpty>
                         <CommandGroup>
