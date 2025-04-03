@@ -229,7 +229,13 @@ export const ru = {
                             videoConference: 'Видеоконференция'
                         }
                     },
-                    OutfitRequestPanel: {}
+                    OutfitRequestPanel: {
+                        title: 'Создать образ',
+                        description:
+                            'На основе всех выбранных параметров мы создадим идеальный образ для вас',
+                        generate: 'Создать образ',
+                        generating: 'Создание образа...'
+                    }
                 },
                 Layout: {
                     Header: {

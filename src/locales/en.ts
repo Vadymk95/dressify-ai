@@ -228,7 +228,13 @@ export const en = {
                             videoConference: 'Video Conference'
                         }
                     },
-                    OutfitRequestPanel: {}
+                    OutfitRequestPanel: {
+                        title: 'Generate Outfit',
+                        description:
+                            'Based on all selected parameters, we will create the perfect outfit for you',
+                        generate: 'Generate Outfit',
+                        generating: 'Generating outfit...'
+                    }
                 },
                 Layout: {
                     Header: {
