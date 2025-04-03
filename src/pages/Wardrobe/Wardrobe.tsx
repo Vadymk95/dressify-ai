@@ -290,9 +290,11 @@ const WardrobePage: FC = () => {
                                     <Badge
                                         key={item.id}
                                         variant="secondary"
-                                        className="bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1"
+                                        className="bg-amber-100 text-amber-800 border border-amber-200 flex items-start gap-1 break-words whitespace-normal"
                                     >
-                                        {item.name}
+                                        <span className="break-words">
+                                            {item.name}
+                                        </span>
                                         <button
                                             onClick={() =>
                                                 handleRemoveItem(
@@ -300,7 +302,7 @@ const WardrobePage: FC = () => {
                                                     item.id
                                                 )
                                             }
-                                            className="ml-1 text-amber-600 hover:text-red-500 cursor-pointer"
+                                            className="ml-1 mt-1 text-amber-600 hover:text-red-500 cursor-pointer"
                                         >
                                             <X className="h-3 w-3" />
                                         </button>

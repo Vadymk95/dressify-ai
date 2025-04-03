@@ -73,10 +73,13 @@ export const WardrobePanel: FC = () => {
             </h2>
             <Link
                 to={routes.wardrobe}
-                className="flex items-center justify-center text-amber-200 hover:text-amber-100 font-medium transition-colors mb-4"
+                className="flex items-center justify-center px-4 py-2 bg-amber-600/50 hover:bg-amber-600/30 rounded-lg text-amber-200 hover:text-amber-100 font-medium transition-all transform hover:scale-105 border border-amber-200/20 hover:border-amber-200/40 shadow-lg hover:shadow-amber-900/20 mb-4 group"
             >
-                {t('Components.Features.WardrobePanel.openWardrobe')}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <span className="relative">
+                    {t('Components.Features.WardrobePanel.openWardrobe')}
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-200/40 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                </span>
+                <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
 
             {(error || localError) && (

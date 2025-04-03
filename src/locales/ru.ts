@@ -385,8 +385,8 @@ export const ru = {
                     saving: 'Сохранение...',
                     categories: {
                         headwear: 'Головные уборы',
-                        tops: 'Верхняя одежда',
-                        bottoms: 'Нижняя одежда',
+                        tops: 'Футболки и рубашки',
+                        bottoms: 'Брюки и юбки',
                         dresses: 'Платья',
                         outerwear: 'Верхняя одежда',
                         shoes: 'Обувь',
