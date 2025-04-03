@@ -16,8 +16,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export const AuthNavigation: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
-    const { user, logout } = useAuthStore();
+    const { user, initialized, logout } = useAuthStore();
     const { clearProfile } = useUserProfileStore();
+
+    if (!initialized)
+        return (
+            <nav>
+                <ul className="flex gap-6 md:gap-4">
+                    <li className="hidden md:block w-20 h-6 bg-gray-200 animate-pulse rounded"></li>
+                    <li className="hidden md:block w-24 h-6 bg-gray-200 animate-pulse rounded"></li>
+                    <li className="md:hidden w-8 h-8 bg-gray-200 animate-pulse rounded"></li>
+                </ul>
+            </nav>
+        );
+
     const handleLogout = () => {
         logout();
         clearProfile();
