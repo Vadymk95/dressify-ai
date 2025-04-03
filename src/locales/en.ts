@@ -229,11 +229,19 @@ export const en = {
                         }
                     },
                     OutfitRequestPanel: {
-                        title: 'Generate Outfit',
+                        title: 'Create Outfit',
                         description:
                             'Based on all selected parameters, we will create the perfect outfit for you',
-                        generate: 'Generate Outfit',
-                        generating: 'Generating outfit...'
+                        generate: 'Create Outfit',
+                        generateMore: 'Create Another Outfit',
+                        generating: 'Creating outfit...',
+                        errors: {
+                            noEventType: 'Please select an event type',
+                            noLocation: 'Please specify your location',
+                            noGender: 'Please specify your gender',
+                            generic:
+                                'An error occurred while generating the outfit'
+                        }
                     }
                 },
                 Layout: {
