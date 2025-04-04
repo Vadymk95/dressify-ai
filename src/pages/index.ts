@@ -1,10 +1,12 @@
 export { ContactUs } from './ContactUs';
+export { FailedPayment } from './FailedPayment';
 export { Home } from './Home';
 export { Login } from './Login';
 export { NotFound } from './NotFound';
 export { Pricing } from './Pricing';
 export { PrivacyPolicy } from './PrivacyPolicy';
 export { Register } from './Register';
+export { SuccessPayment } from './SuccessPayment';
 export { TermsOfUse } from './TermsOfUse';
 export { Wardrobe } from './Wardrobe';
 export { WhatToWear } from './WhatToWear';

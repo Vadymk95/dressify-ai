@@ -20,17 +20,7 @@ export const usePricing = () => {
 
         try {
             setIsProcessing(true);
-            const planId = StripeService.getPlanStripeId(plan);
-            if (!planId) throw new Error('Invalid plan ID');
-
-            const sessionId = await StripeService.createCheckoutSession({
-                planId,
-                customerId: profile?.uid,
-                successUrl: `${window.location.origin}/payment/success?plan=${plan}`,
-                cancelUrl: `${window.location.origin}/pricing`
-            });
-
-            await StripeService.redirectToCheckout(sessionId);
+            await StripeService.redirectToCheckout(plan, profile?.email || '');
         } catch (error) {
             console.error('Payment error:', error);
             // Здесь можно добавить обработку ошибок, например показ тоста

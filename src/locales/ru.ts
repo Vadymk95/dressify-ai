@@ -446,6 +446,16 @@ export const ru = {
                         suits: 'Костюмы',
                         other: 'Другое'
                     }
+                },
+                SuccessPayment: {
+                    title: 'Платеж успешно выполнен',
+                    description: 'Спасибо за ваш заказ!',
+                    goToHome: 'Перейти на главную'
+                },
+                FailedPayment: {
+                    title: 'Платеж не выполнен',
+                    description: 'Пожалуйста, попробуйте ещё раз.',
+                    goToHome: 'Перейти на главную'
                 }
             },
             General: {

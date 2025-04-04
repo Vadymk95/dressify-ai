@@ -447,6 +447,16 @@ export const en = {
                         suits: 'Suits',
                         other: 'Other'
                     }
+                },
+                SuccessPayment: {
+                    title: 'Payment Successful',
+                    description: 'Thank you for your purchase!',
+                    goToHome: 'Go to Home'
+                },
+                FailedPayment: {
+                    title: 'Payment Failed',
+                    description: 'Please try again.',
+                    goToHome: 'Go to Home'
                 }
             },
             General: {

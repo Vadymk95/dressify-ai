@@ -4,12 +4,14 @@ import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute, PublicRoute, WithSuspense } from '@/hocs';
 import {
     ContactUs,
+    FailedPayment,
     Home,
     Login,
     NotFound,
     Pricing,
     PrivacyPolicy,
     Register,
+    SuccessPayment,
     TermsOfUse,
     Wardrobe,
     WhatToWear
@@ -54,6 +56,16 @@ export const AppRouter: FC = () => {
                 element={
                     <PrivateRoute>{WithSuspense(<Wardrobe />)}</PrivateRoute>
                 }
+            />
+
+            <Route
+                path={routes.successPayment}
+                element={WithSuspense(<SuccessPayment />)}
+            />
+
+            <Route
+                path={routes.failedPayment}
+                element={WithSuspense(<FailedPayment />)}
             />
 
             {/* always available routes*/}
