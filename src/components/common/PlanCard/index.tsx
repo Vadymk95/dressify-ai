@@ -14,6 +14,7 @@ interface PlanCardProps {
     isActive: boolean;
     ribbonText?: string;
     onClick?: () => void;
+    disabled?: boolean;
 }
 
 export const PlanCard: FC<PlanCardProps> = ({
@@ -25,7 +26,8 @@ export const PlanCard: FC<PlanCardProps> = ({
     cta,
     isActive,
     ribbonText,
-    onClick
+    onClick,
+    disabled
 }) => {
     const { profile } = useUserProfileStore();
 
@@ -70,7 +72,7 @@ export const PlanCard: FC<PlanCardProps> = ({
                 <Button
                     className="bg-red-500 text-amber-50 px-6 py-2 rounded-md hover:bg-red-600 transition hover:scale-105 cursor-pointer"
                     onClick={onClick}
-                    disabled={isActive}
+                    disabled={isActive || disabled}
                 >
                     {cta}
                 </Button>

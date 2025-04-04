@@ -3,19 +3,22 @@ import { useTranslation } from 'react-i18next';
 
 import { Loader } from '@/components/common/Loader';
 import { PlanCard } from '@/components/common/PlanCard';
-import { useUserProfileStore } from '@/store/userProfileStore';
+import { usePricing } from '@/hooks/usePricing';
 
 const Pricing: FC = () => {
     const { t } = useTranslation();
-    const { profile, updatePlan, loading } = useUserProfileStore();
-    const userPlan = profile ? profile.plan : 'free';
-    const free = userPlan === 'free';
-    const monthly = userPlan === 'monthly';
-    const semiAnnual = userPlan === 'semiAnnual';
+    const {
+        isProcessing,
+        loading,
+        free,
+        monthly,
+        semiAnnual,
+        handlePlanSelection
+    } = usePricing();
 
     return (
         <>
-            {loading && <Loader />}
+            {(loading || isProcessing) && <Loader />}
             <div className="max-w-6xl mx-auto py-12 px-6">
                 <h1 className="text-3xl md:text-5xl font-bold text-center mb-8">
                     {t('Pages.Pricing.title')}
@@ -35,7 +38,8 @@ const Pricing: FC = () => {
                         ]}
                         cta={t('Pages.Pricing.plans.free.cta')}
                         isActive={free}
-                        onClick={() => updatePlan('free')}
+                        onClick={() => handlePlanSelection('free')}
+                        disabled={isProcessing}
                     />
 
                     {/* MONTHLY PLAN */}
@@ -50,7 +54,8 @@ const Pricing: FC = () => {
                             `Pages.Pricing.plans.monthly.${monthly ? 'currentPlan' : 'cta'}`
                         )}
                         isActive={monthly}
-                        onClick={() => updatePlan('monthly')}
+                        onClick={() => handlePlanSelection('monthly')}
+                        disabled={isProcessing}
                     />
 
                     {/* SEMI-ANNUAL PLAN */}
@@ -68,7 +73,8 @@ const Pricing: FC = () => {
                         )}
                         ribbonText={t('Pages.Pricing.plans.semiAnnual.ribbon')}
                         isActive={semiAnnual}
-                        onClick={() => updatePlan('semiAnnual')}
+                        onClick={() => handlePlanSelection('semiAnnual')}
+                        disabled={isProcessing}
                     />
                 </div>
             </div>
