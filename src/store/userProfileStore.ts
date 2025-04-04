@@ -1,10 +1,11 @@
-import { auth, db } from '@/firebase/firebaseConfig';
-import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
-import { UserCharacteristics, Wardrobe } from '@/types/user';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { create } from 'zustand';
 
-type Plan = 'free' | 'monthly' | 'semiAnnual';
+import { auth, db } from '@/firebase/firebaseConfig';
+import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
+import { Plan } from '@/types/plans';
+import { UserCharacteristics, Wardrobe } from '@/types/user';
+
 type Location = {
     country: string;
     city: string;
