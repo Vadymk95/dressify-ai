@@ -10,6 +10,7 @@ const Pricing: FC = () => {
     const {
         isProcessing,
         loading,
+        error,
         free,
         monthly,
         semiAnnual,
@@ -20,6 +21,11 @@ const Pricing: FC = () => {
         <>
             {(loading || isProcessing) && <Loader />}
             <div className="max-w-6xl mx-auto py-12 px-6">
+                {error && (
+                    <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
+                        {error}
+                    </div>
+                )}
                 <h1 className="text-3xl md:text-5xl font-bold text-center mb-8">
                     {t('Pages.Pricing.title')}
                 </h1>
