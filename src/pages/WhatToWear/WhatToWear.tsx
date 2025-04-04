@@ -9,13 +9,9 @@ import { OutfitRequestPanel } from '@/components/features/OutfitRequestPanel';
 import { PersonalDetailsPanel } from '@/components/features/PersonalDetailsPanel';
 import { WardrobePanel } from '@/components/features/WardrobePanel';
 import { WeatherPanel } from '@/components/features/WeatherPanel';
-import { useUserProfileStore } from '@/store/userProfileStore';
 
 const WhatToWear: FC = () => {
     const { t } = useTranslation();
-    const { profile } = useUserProfileStore();
-
-    console.log(profile);
 
     return (
         <div className="w-full max-w-4xl mx-auto px-6 flex flex-col gap-5">

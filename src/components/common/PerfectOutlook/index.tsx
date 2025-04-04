@@ -41,7 +41,7 @@ export const PerfectOutlook: FC = () => {
                     className="text-[40px] text-green-400"
                     icon={faCircleCheck}
                 />
-                <p className="text-gray-700 font-semibold text-md md:text-2xl">
+                <p className="text-gray-700 font-semibold text-md md:text-2xl text-left md:text-center">
                     {t('Components.Common.PerfectOutlook.yourOutfit')}
                 </p>
             </div>
