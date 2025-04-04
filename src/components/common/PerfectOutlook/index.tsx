@@ -29,7 +29,7 @@ export const PerfectOutlook: FC = () => {
                         <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full main-gradient-reverse text-amber-50 font-semibold shadow-md">
                             {index + 1}
                         </div>
-                        <span className="text-gray-700 font-semibold min-h-[56px] flex items-center justify-center max-w-xs">
+                        <span className="text-gray-700 font-semibold min-h-[56px] flex items-center justify-center text-left md:text-center max-w-xs">
                             {step.label}
                         </span>
                     </li>

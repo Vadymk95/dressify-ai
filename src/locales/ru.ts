@@ -27,7 +27,7 @@ export const ru = {
                     WeatherWidget: {
                         loading: 'Загрузка погоды...',
                         currentWeather: 'Текущая погода:',
-                        tomorrowWeather: 'Погода на завтра:',
+                        tomorrowWeather: 'Погода на завтра (в это же время):',
                         feelsLike: 'Ощущается как: ',
                         errors: {
                             fetchWeatherError:

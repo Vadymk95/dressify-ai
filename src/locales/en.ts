@@ -26,7 +26,7 @@ export const en = {
                     WeatherWidget: {
                         loading: 'Loading weather...',
                         currentWeather: 'Current weather:',
-                        tomorrowWeather: "Tomorrow's weather:",
+                        tomorrowWeather: 'Tomorrow weather (at the same time):',
                         feelsLike: 'Feels like: ',
                         errors: {
                             fetchWeatherError:
