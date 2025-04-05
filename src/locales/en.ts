@@ -96,17 +96,41 @@ export const en = {
                         successMessage: 'Feedback sent successfully!'
                     },
                     WeatherPanel: {
-                        title: 'Weather Overview',
+                        title: 'Weather',
                         selectYourLocation: 'Select your location',
-                        selectCountry: 'Select country...',
-                        selectCity: 'Select city...',
+                        selectCountry: 'Select country',
+                        selectCity: 'Select city',
                         noCountryFound: 'Country not found',
                         noCityFound: 'City not found',
-                        fetchWeather: 'Get current weather',
-                        fetchTomorrow: "Get tomorrow's weather",
+                        fetchWeather: 'Check weather',
+                        fetchTomorrow: "Tomorrow's weather",
+                        tabs: {
+                            location: 'By location',
+                            manual: 'Manual'
+                        },
+                        manual: {
+                            conditions: 'Weather conditions',
+                            temperature: 'Temperature'
+                        },
+                        conditions: {
+                            sunny: 'Sunny',
+                            partlyCloudy: 'Partly cloudy',
+                            cloudy: 'Cloudy',
+                            rain: 'Rain',
+                            heavyRain: 'Heavy rain',
+                            snow: 'Snow',
+                            thunderstorm: 'Thunderstorm'
+                        },
+                        temperature: {
+                            hot: 'Hot',
+                            warm: 'Warm',
+                            moderate: 'Moderate',
+                            cool: 'Cool',
+                            cold: 'Cold'
+                        },
                         errors: {
-                            fetchCitiesError:
-                                'Error fetching cities. Please try again later.'
+                            fetchWeatherError: 'Error fetching weather',
+                            fetchCitiesError: 'Error fetching cities'
                         }
                     },
                     PersonalDetailsPanel: {

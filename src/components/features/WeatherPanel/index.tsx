@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { WeatherWidget } from '@/components/common/WeatherWidget';
@@ -10,6 +10,14 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+    TEMPERATURE_VALUES,
+    getTemperatureRanges,
+    getWeatherConditions
+} from '@/constants/weather';
 import { getCityName } from '@/helpers/cityNameParser';
 import { useCountryOptions } from '@/hooks/useCountryOptions';
 import { useLanguageStore } from '@/store/languageStore';
@@ -28,9 +36,16 @@ export const WeatherPanel: FC = () => {
         fetchWeather,
         clearWeather,
         setLocation,
-        fetchCities
+        fetchCities,
+        setManualWeather
     } = useWeatherStore();
     const countries = useCountryOptions();
+
+    const weatherConditions = getWeatherConditions(t);
+    const temperatureRanges = getTemperatureRanges(t);
+
+    const [selectedCondition, setSelectedCondition] = useState<string>('');
+    const [selectedTemperature, setSelectedTemperature] = useState<string>('');
 
     const handleFetchWeather = async (tomorrow = false) => {
         await updateLocation(country, city);
@@ -52,6 +67,42 @@ export const WeatherPanel: FC = () => {
 
         if (profile?.location && !value) {
             clearLocation();
+        }
+    };
+
+    const handleManualWeatherSet = (condition: string, temperature: string) => {
+        if (condition) {
+            setSelectedCondition(condition);
+        }
+        if (temperature) {
+            setSelectedTemperature(temperature);
+        }
+
+        const tempValue =
+            temperature || selectedTemperature === 'hot'
+                ? TEMPERATURE_VALUES.HOT
+                : temperature || selectedTemperature === 'warm'
+                  ? TEMPERATURE_VALUES.WARM
+                  : temperature || selectedTemperature === 'moderate'
+                    ? TEMPERATURE_VALUES.MODERATE
+                    : temperature || selectedTemperature === 'cool'
+                      ? TEMPERATURE_VALUES.COOL
+                      : TEMPERATURE_VALUES.COLD;
+
+        const currentCondition = condition || selectedCondition;
+        const currentTemp = temperature || selectedTemperature;
+
+        if (currentCondition && currentTemp) {
+            setManualWeather({
+                temp: tempValue,
+                feels_like: tempValue,
+                description:
+                    weatherConditions.find((c) => c.value === currentCondition)
+                        ?.label || '',
+                icon:
+                    weatherConditions.find((c) => c.value === currentCondition)
+                        ?.icon || '01d'
+            });
         }
     };
 
@@ -85,83 +136,182 @@ export const WeatherPanel: FC = () => {
 
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
-            <h2 className="text-2xl font-semibold mb-4 text-amber-50">
+            <h2 className="text-2xl font-semibold mb-6 text-amber-50">
                 {t('Components.Features.WeatherPanel.title')}
             </h2>
 
+            <Tabs defaultValue="location" className="w-full mb-4">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
+                    <TabsTrigger
+                        value="location"
+                        className="cursor-pointer hover:bg-amber-500/20 transition-all duration-200"
+                    >
+                        {t('Components.Features.WeatherPanel.tabs.location')}
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="manual"
+                        className="cursor-pointer hover:bg-amber-500/20 transition-all duration-200"
+                    >
+                        {t('Components.Features.WeatherPanel.tabs.manual')}
+                    </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="location">
+                    <Accordion
+                        type="single"
+                        collapsible
+                        className="w-full bg-gray-100 px-4 md:px-6 rounded-lg"
+                    >
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger className="cursor-pointer py-4 text-base">
+                                {country && city
+                                    ? getCityDisplayName()
+                                    : t(
+                                          'Components.Features.WeatherPanel.selectYourLocation'
+                                      )}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="grid grid-cols-1 gap-4 w-full mb-6">
+                                    <div className="w-full">
+                                        <Combobox
+                                            className="cursor-pointer p-4"
+                                            options={countries}
+                                            value={country}
+                                            onValueChange={handleSetCountry}
+                                            placeholder={t(
+                                                'Components.Features.WeatherPanel.selectCountry'
+                                            )}
+                                            emptyMessage={t(
+                                                'Components.Features.WeatherPanel.noCountryFound'
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="w-full">
+                                        <Combobox
+                                            className="cursor-pointer p-4"
+                                            disabled={!country}
+                                            options={cities}
+                                            value={city}
+                                            onValueChange={handleSetCity}
+                                            placeholder={t(
+                                                'Components.Features.WeatherPanel.selectCity'
+                                            )}
+                                            emptyMessage={t(
+                                                'Components.Features.WeatherPanel.noCityFound'
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3 mb-4">
+                                    <Button
+                                        onClick={() => handleFetchWeather()}
+                                        disabled={!country || !city}
+                                        className="main-gradient text-amber-50 cursor-pointer shadow-sm p-6 w-full text-base"
+                                    >
+                                        {t(
+                                            'Components.Features.WeatherPanel.fetchWeather'
+                                        )}
+                                    </Button>
+
+                                    <Button
+                                        onClick={() => handleFetchWeather(true)}
+                                        disabled={!country || !city}
+                                        variant="outline"
+                                        className="cursor-pointer shadow-sm p-6 w-full text-base"
+                                    >
+                                        {t(
+                                            'Components.Features.WeatherPanel.fetchTomorrow'
+                                        )}
+                                    </Button>
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </TabsContent>
+
+                <TabsContent
+                    value="manual"
+                    className="bg-gray-100 rounded-lg p-4 md:p-6"
+                >
+                    <div className="space-y-8">
+                        <div>
+                            <h3 className="text-lg font-medium mb-6">
+                                {t(
+                                    'Components.Features.WeatherPanel.manual.conditions'
+                                )}
+                            </h3>
+                            <RadioGroup
+                                value={selectedCondition}
+                                onValueChange={(value) =>
+                                    handleManualWeatherSet(value, '')
+                                }
+                                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                            >
+                                {weatherConditions.map((condition) => (
+                                    <div
+                                        key={condition.value}
+                                        className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                    >
+                                        <RadioGroupItem
+                                            value={condition.value}
+                                            id={condition.value}
+                                            className="w-5 h-5"
+                                        />
+                                        <Label
+                                            htmlFor={condition.value}
+                                            className="cursor-pointer text-base flex-1"
+                                        >
+                                            {condition.label}
+                                        </Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
+                        </div>
+
+                        <div>
+                            <h3 className="text-lg font-medium mb-6">
+                                {t(
+                                    'Components.Features.WeatherPanel.manual.temperature'
+                                )}
+                            </h3>
+                            <RadioGroup
+                                value={selectedTemperature}
+                                onValueChange={(value) =>
+                                    handleManualWeatherSet('', value)
+                                }
+                                className="grid grid-cols-1 gap-4"
+                            >
+                                {temperatureRanges.map((range) => (
+                                    <div
+                                        key={range.value}
+                                        className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                    >
+                                        <RadioGroupItem
+                                            value={range.value}
+                                            id={range.value}
+                                            className="w-5 h-5"
+                                        />
+                                        <Label
+                                            htmlFor={range.value}
+                                            className="cursor-pointer text-base flex-1"
+                                        >
+                                            <span className="block">
+                                                {range.label}
+                                            </span>
+                                            <span className="text-sm text-gray-500 block mt-1">
+                                                {range.range}
+                                            </span>
+                                        </Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
+                        </div>
+                    </div>
+                </TabsContent>
+            </Tabs>
+
             <WeatherWidget />
-
-            <Accordion
-                type="single"
-                collapsible
-                className="w-full bg-gray-100 px-6 rounded-lg"
-            >
-                <AccordionItem value="item-1">
-                    <AccordionTrigger className="cursor-pointer">
-                        {country && city
-                            ? getCityDisplayName()
-                            : t(
-                                  'Components.Features.WeatherPanel.selectYourLocation'
-                              )}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        <div className="grid md:grid-cols-2 grid-cols-1 md:gap-4 gap-8 w-full mb-8">
-                            <div className="w-full">
-                                <Combobox
-                                    className="cursor-pointer md:p-4 p-6"
-                                    options={countries}
-                                    value={country}
-                                    onValueChange={handleSetCountry}
-                                    placeholder={t(
-                                        'Components.Features.WeatherPanel.selectCountry'
-                                    )}
-                                    emptyMessage={t(
-                                        'Components.Features.WeatherPanel.noCountryFound'
-                                    )}
-                                />
-                            </div>
-                            <div className="w-full">
-                                <Combobox
-                                    className="cursor-pointer md:p-4 p-6"
-                                    disabled={!country}
-                                    options={cities}
-                                    value={city}
-                                    onValueChange={handleSetCity}
-                                    placeholder={t(
-                                        'Components.Features.WeatherPanel.selectCity'
-                                    )}
-                                    emptyMessage={t(
-                                        'Components.Features.WeatherPanel.noCityFound'
-                                    )}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                            <Button
-                                onClick={() => handleFetchWeather()}
-                                disabled={!country || !city}
-                                className="main-gradient text-amber-50 cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
-                            >
-                                {t(
-                                    'Components.Features.WeatherPanel.fetchWeather'
-                                )}
-                            </Button>
-
-                            <Button
-                                onClick={() => handleFetchWeather(true)}
-                                disabled={!country || !city}
-                                variant="outline"
-                                className="cursor-pointer shadow-sm md:p-4 p-6 md:w-fit w-full"
-                            >
-                                {t(
-                                    'Components.Features.WeatherPanel.fetchTomorrow'
-                                )}
-                            </Button>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
         </div>
     );
 };

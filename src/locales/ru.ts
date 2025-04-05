@@ -97,17 +97,42 @@ export const ru = {
                         successMessage: 'Отзыв успешно отправлен!'
                     },
                     WeatherPanel: {
-                        title: 'Обзор погоды',
+                        title: 'Погода',
                         selectYourLocation: 'Выберите ваше местоположение',
-                        selectCountry: 'Выберите страну...',
-                        selectCity: 'Выберите город...',
+                        selectCountry: 'Выберите страну',
+                        selectCity: 'Выберите город',
                         noCountryFound: 'Страна не найдена',
                         noCityFound: 'Город не найден',
-                        fetchWeather: 'Получить текущую погоду',
-                        fetchTomorrow: 'Получить погоду на завтра',
+                        fetchWeather: 'Узнать погоду',
+                        fetchTomorrow: 'Погода на завтра',
+                        tabs: {
+                            location: 'По местоположению',
+                            manual: 'Вручную'
+                        },
+                        manual: {
+                            conditions: 'Погодные условия',
+                            temperature: 'Температура'
+                        },
+                        conditions: {
+                            sunny: 'Солнечно',
+                            partlyCloudy: 'Переменная облачность',
+                            cloudy: 'Облачно',
+                            rain: 'Дождь',
+                            heavyRain: 'Ливень',
+                            snow: 'Снег',
+                            thunderstorm: 'Гроза'
+                        },
+                        temperature: {
+                            hot: 'Жарко',
+                            warm: 'Тепло',
+                            moderate: 'Умеренно',
+                            cool: 'Прохладно',
+                            cold: 'Холодно'
+                        },
                         errors: {
+                            fetchWeatherError: 'Ошибка при получении погоды',
                             fetchCitiesError:
-                                'Ошибка получения городов. Попробуйте позже.'
+                                'Ошибка при получении списка городов'
                         }
                     },
                     PersonalDetailsPanel: {

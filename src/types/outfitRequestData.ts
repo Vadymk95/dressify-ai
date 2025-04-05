@@ -1,19 +1,17 @@
-import { EventType } from '@/constants/events';
 import { Weather } from '@/store/weatherStore';
-import { Gender, stylePreference } from '@/types/user';
 
 export interface OutfitRequestData {
     event: {
-        type: EventType;
+        type: string;
         name: string;
     };
     location: {
         city: string;
         country: string;
-    };
+    } | null;
     characteristics: {
-        gender: Gender;
-        stylePreference?: stylePreference[];
+        gender: string;
+        stylePreference?: string[];
         age?: number;
         height?: number;
         weight?: number;
@@ -21,14 +19,12 @@ export interface OutfitRequestData {
     wardrobe?: {
         categories: {
             name: string;
-            items: {
-                id: string;
-                name: string;
-            }[];
+            items: string[];
         }[];
     };
     weather: {
         current: Weather | null;
         tomorrow: Weather | null;
+        manual: Weather | null;
     };
 }

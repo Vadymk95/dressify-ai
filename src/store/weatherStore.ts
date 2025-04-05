@@ -23,15 +23,19 @@ interface WeatherState {
     cachedCities: { [country: string]: any[] };
     weatherToday: Weather | null;
     weatherTomorrow: Weather | null;
+    weatherManual: Weather | null;
     lastUpdated: number | null;
     loadingWeather: boolean;
     loadingCities: boolean;
     error: string | null;
+    isManualMode: boolean;
     setLocation: (country: string, city: string) => void;
     fetchWeather: (language: string, isTomorrow?: boolean) => Promise<void>;
     fetchCities: (country: string, language: string) => Promise<void>;
     clearWeather: () => void;
     checkWeatherStaleness: (language: string) => void;
+    setManualWeather: (weather: Weather) => void;
+    setIsManualMode: (isManual: boolean) => void;
 }
 
 export const useWeatherStore = create<WeatherState>()(
@@ -43,10 +47,12 @@ export const useWeatherStore = create<WeatherState>()(
             cachedCities: {},
             weatherToday: null,
             weatherTomorrow: null,
+            weatherManual: null,
             lastUpdated: null,
             loadingWeather: false,
             loadingCities: false,
             error: null,
+            isManualMode: false,
             setLocation: (country, city) => set({ country, city }),
             fetchWeather: async (language, isTomorrow = false) => {
                 set({ loadingWeather: true, error: null });
@@ -63,6 +69,7 @@ export const useWeatherStore = create<WeatherState>()(
                             loadingWeather: false,
                             weatherTomorrow: null,
                             weatherToday: null,
+                            weatherManual: null,
                             lastUpdated: null
                         });
                         return;
@@ -75,7 +82,6 @@ export const useWeatherStore = create<WeatherState>()(
                         useUserProfileStore.getState().profile?.location
                             ?.longitude || '';
 
-                    // Для погоды на завтра используем эндпоинт forecast
                     const endpoint = isTomorrow ? 'forecast' : 'weather';
                     const response = await fetch(
                         `${WEATHER_BASE_URL}/${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${language}`
@@ -93,11 +99,12 @@ export const useWeatherStore = create<WeatherState>()(
                             },
                             loadingWeather: false,
                             lastUpdated: now,
-                            weatherTomorrow: null
+                            weatherTomorrow: null,
+                            weatherManual: null,
+                            isManualMode: false
                         });
                     } else {
-                        // Для прогноза на завтра берем данные на 24 часа вперед
-                        const tomorrowData = data.list[8]; // 8 = 24 часа (3 часа * 8)
+                        const tomorrowData = data.list[8];
                         set({
                             weatherTomorrow: {
                                 temp: Math.round(tomorrowData.main.temp),
@@ -110,7 +117,9 @@ export const useWeatherStore = create<WeatherState>()(
                             },
                             loadingWeather: false,
                             lastUpdated: now,
-                            weatherToday: null
+                            weatherToday: null,
+                            weatherManual: null,
+                            isManualMode: false
                         });
                     }
                 } catch (error: any) {
@@ -122,6 +131,7 @@ export const useWeatherStore = create<WeatherState>()(
                         loadingWeather: false,
                         weatherTomorrow: null,
                         weatherToday: null,
+                        weatherManual: null,
                         lastUpdated: null
                     });
                 }
@@ -158,17 +168,37 @@ export const useWeatherStore = create<WeatherState>()(
                 set({
                     weatherToday: null,
                     weatherTomorrow: null,
-                    lastUpdated: null
+                    weatherManual: null,
+                    lastUpdated: null,
+                    isManualMode: false
                 }),
 
             checkWeatherStaleness: (language) => {
-                const { lastUpdated, fetchWeather } = get();
+                const { lastUpdated, fetchWeather, isManualMode } = get();
                 const THREE_HOURS = 3 * 60 * 60 * 1000;
 
-                if (!lastUpdated || Date.now() - lastUpdated > THREE_HOURS) {
+                if (
+                    !isManualMode &&
+                    (!lastUpdated || Date.now() - lastUpdated > THREE_HOURS)
+                ) {
                     fetchWeather(language);
                 }
-            }
+            },
+
+            setManualWeather: (weather: Weather) => {
+                set({
+                    weatherToday: null,
+                    weatherTomorrow: null,
+                    weatherManual: weather,
+                    lastUpdated: Date.now(),
+                    isManualMode: true,
+                    country: '',
+                    city: ''
+                });
+            },
+
+            setIsManualMode: (isManual: boolean) =>
+                set({ isManualMode: isManual })
         }),
         {
             name: 'weather-store'

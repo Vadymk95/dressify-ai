@@ -8,7 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 export const useOutfitRequest = () => {
     const { t } = useTranslation();
-    const { weatherToday, weatherTomorrow } = useWeatherStore();
+    const { weatherToday, weatherTomorrow, weatherManual, isManualMode } =
+        useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +47,10 @@ export const useOutfitRequest = () => {
             );
         }
 
-        if (!profile?.location?.city || !profile?.location?.country) {
+        if (
+            !isManualMode &&
+            (!profile?.location?.city || !profile?.location?.country)
+        ) {
             throw new Error(
                 t('Components.Features.OutfitRequestPanel.errors.noLocation')
             );
@@ -58,7 +62,6 @@ export const useOutfitRequest = () => {
             );
         }
 
-        // Базовые данные, которые всегда нужны
         const requestData: OutfitRequestData = {
             event: {
                 type: selectedEventType,
@@ -66,13 +69,15 @@ export const useOutfitRequest = () => {
                     `Components.Features.EventPanel.types.${selectedEventType}`
                 )
             },
-            location: {
-                city: profile.location.city,
-                country: profile.location.country
-            },
+            location:
+                isManualMode || !profile?.location
+                    ? null
+                    : {
+                          city: profile.location.city,
+                          country: profile.location.country
+                      },
             characteristics: {
                 gender: profile.characteristics.gender,
-                // Опциональные характеристики добавляем только если они есть
                 ...(profile.characteristics.stylePreference?.length && {
                     stylePreference: profile.characteristics.stylePreference
                 }),
@@ -87,12 +92,12 @@ export const useOutfitRequest = () => {
                 })
             },
             weather: {
-                current: weatherToday,
-                tomorrow: weatherTomorrow
+                current: isManualMode ? null : weatherToday,
+                tomorrow: isManualMode ? null : weatherTomorrow,
+                manual: isManualMode ? weatherManual : null
             }
         };
 
-        // Добавляем данные гардероба только если он используется и в нем есть предметы
         const useWardrobe = profile?.wardrobe?.useWardrobeForOutfits;
         const hasWardrobeItems = profile?.wardrobe?.categories?.some(
             (category) => category.items.length > 0
@@ -102,7 +107,7 @@ export const useOutfitRequest = () => {
             requestData.wardrobe = {
                 categories: profile.wardrobe.categories.map((category) => ({
                     name: category.name,
-                    items: category.items
+                    items: category.items.map((item) => item.name)
                 }))
             };
         }
