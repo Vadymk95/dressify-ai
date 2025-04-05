@@ -31,15 +31,15 @@ export const PerfectOutlook: FC = () => {
 
     return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogContent className="w-[calc(100vw-32px)] md:max-w-3xl bg-amber-50 p-0 overflow-hidden">
-                <DialogHeader className="p-6 main-gradient-reverse">
+            <DialogContent className="w-[calc(100vw-32px)] md:max-w-3xl bg-amber-50 p-0 overflow-hidden max-h-[calc(100vh-32px)] flex flex-col">
+                <DialogHeader className="p-6 main-gradient-reverse flex-shrink-0">
                     <DialogTitle className="text-2xl sm:text-3xl font-bold text-amber-50 text-center">
                         {t('Components.Common.PerfectOutlook.title')}
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="p-6">
-                    <ol className="flex flex-col md:flex-row md:justify-between flex-wrap gap-6 w-full">
+                <div className="p-6 overflow-y-auto flex-1">
+                    <ol className="flex flex-col md:flex-row md:justify-between flex-wrap gap-6 w-full min-h-min">
                         {steps.map((step, index) => (
                             <li
                                 key={step.id}
@@ -56,9 +56,9 @@ export const PerfectOutlook: FC = () => {
                     </ol>
 
                     <div className="mt-8 flex items-center justify-center gap-4 third-gradient p-6 rounded-xl">
-                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                        <div className="w-12 aspect-square bg-green-500 rounded-full flex items-center justify-center shrink-0">
                             <FontAwesomeIcon
-                                className="text-[24px]"
+                                className="h-6 w-6"
                                 icon={faCheck}
                                 color="#fef3c7"
                             />
@@ -69,7 +69,7 @@ export const PerfectOutlook: FC = () => {
                     </div>
                 </div>
 
-                <DialogFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/50 p-6 border-t border-amber-100">
+                <DialogFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/50 p-6 border-t border-amber-100 flex-shrink-0">
                     <div className="flex items-center space-x-3 bg-gradient-to-r from-amber-50/80 to-white/80 backdrop-blur-sm rounded-xl px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-amber-100/50">
                         <Checkbox
                             id="dont-show-again"
