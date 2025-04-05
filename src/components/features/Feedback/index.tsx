@@ -67,32 +67,42 @@ export const Feedback: FC = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-4"
                 >
-                    <Select
-                        {...register('topic')}
-                        onValueChange={(value) =>
-                            setValue('topic', value as FeedbackTopic)
-                        }
-                        value={watch('topic') || ''}
-                    >
-                        <SelectTrigger className="w-full cursor-pointer">
-                            <SelectValue
-                                placeholder={t(
-                                    'Components.Features.Feedback.selectTopic'
-                                )}
-                            />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {Object.entries(
-                                t('Components.Features.Feedback.topics', {
-                                    returnObjects: true
-                                })
-                            ).map(([key, label]) => (
-                                <SelectItem key={key} value={key}>
-                                    {label as string}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm">
+                                {t('Components.Features.Feedback.selectTopic')}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                                ({t('Components.Features.Feedback.optional')})
+                            </span>
+                        </div>
+                        <Select
+                            {...register('topic')}
+                            onValueChange={(value) =>
+                                setValue('topic', value as FeedbackTopic)
+                            }
+                            value={watch('topic') || ''}
+                        >
+                            <SelectTrigger className="w-full cursor-pointer">
+                                <SelectValue
+                                    placeholder={t(
+                                        'Components.Features.Feedback.selectPlaceholder'
+                                    )}
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {Object.entries(
+                                    t('Components.Features.Feedback.topics', {
+                                        returnObjects: true
+                                    })
+                                ).map(([key, label]) => (
+                                    <SelectItem key={key} value={key}>
+                                        {label as string}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
                     <Textarea
                         placeholder={t(

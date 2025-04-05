@@ -51,7 +51,9 @@ export const ru = {
                         placeholder: 'Оставьте ваш отзыв здесь...',
                         send: 'Отправить отзыв',
                         sending: 'Отправка...',
-                        selectTopic: 'Выберите тему обращения (необязательно)',
+                        selectTopic: 'Тема обращения',
+                        selectPlaceholder: 'Выберите тему',
+                        optional: 'необязательно',
                         topics: {
                             complaint: 'Жалоба',
                             partnership: 'Сотрудничество',

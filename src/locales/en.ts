@@ -50,7 +50,9 @@ export const en = {
                         placeholder: 'Leave your feedback here...',
                         send: 'Send Feedback',
                         sending: 'Sending...',
-                        selectTopic: 'Select topic (optional)',
+                        selectTopic: 'Topic',
+                        selectPlaceholder: 'Select topic',
+                        optional: 'optional',
                         topics: {
                             complaint: 'Complaint',
                             partnership: 'Partnership',
