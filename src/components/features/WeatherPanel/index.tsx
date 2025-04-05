@@ -37,7 +37,8 @@ export const WeatherPanel: FC = () => {
         clearWeather,
         setLocation,
         fetchCities,
-        setManualWeather
+        setManualWeather,
+        weatherManual
     } = useWeatherStore();
     const countries = useCountryOptions();
 
@@ -47,6 +48,28 @@ export const WeatherPanel: FC = () => {
     const [selectedCondition, setSelectedCondition] = useState<string>('');
     const [selectedTemperature, setSelectedTemperature] = useState<string>('');
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+    // Инициализация значений из стора при монтировании
+    useEffect(() => {
+        if (weatherManual) {
+            const condition = weatherConditions.find(
+                (c) => c.label === weatherManual.description
+            );
+            if (condition) {
+                setSelectedCondition(condition.value);
+            }
+
+            const tempValue = Object.entries(TEMPERATURE_VALUES).find(
+                ([key]) =>
+                    TEMPERATURE_VALUES[
+                        key as keyof typeof TEMPERATURE_VALUES
+                    ] === weatherManual.temp
+            );
+            if (tempValue) {
+                setSelectedTemperature(tempValue[0].toLowerCase());
+            }
+        }
+    }, [weatherManual, weatherConditions]);
 
     const handleFetchWeather = async (tomorrow = false) => {
         await updateLocation(country, city);
@@ -175,6 +198,10 @@ export const WeatherPanel: FC = () => {
                     {t('Components.Features.WeatherPanel.title')}
                 </h2>
                 <div className="text-amber-50/80">
+                    <p className="text-lg font-medium">
+                        {t('Components.Features.WeatherPanel.dateFormat.today')}
+                        :
+                    </p>
                     <p className="text-lg font-medium">
                         {getDayOfWeek(currentDate)}
                     </p>

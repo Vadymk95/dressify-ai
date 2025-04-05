@@ -67,6 +67,10 @@ export const en = {
                             'These cookies are used to deliver relevant advertisements.',
                         save: 'Save',
                         cancel: 'Cancel'
+                    },
+                    dateFormat: {
+                        today: 'Current date',
+                        tomorrow: 'Tomorrow'
                     }
                 },
                 Features: {
