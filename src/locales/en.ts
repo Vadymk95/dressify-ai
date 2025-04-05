@@ -50,6 +50,18 @@ export const en = {
                         placeholder: 'Leave your feedback here...',
                         send: 'Send Feedback',
                         sending: 'Sending...',
+                        selectTopic: 'Select topic (optional)',
+                        topics: {
+                            complaint: 'Complaint',
+                            partnership: 'Partnership',
+                            bug: 'Technical Issue',
+                            feature: 'Feature Request',
+                            content: 'Content Question',
+                            subscription: 'Subscription Issue',
+                            support: 'Support',
+                            business: 'Business Inquiry',
+                            other: 'Other'
+                        },
                         errors: {
                             messageRequired: 'Feedback message is required',
                             messageSendingError:

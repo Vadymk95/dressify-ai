@@ -51,6 +51,18 @@ export const ru = {
                         placeholder: 'Оставьте ваш отзыв здесь...',
                         send: 'Отправить отзыв',
                         sending: 'Отправка...',
+                        selectTopic: 'Выберите тему обращения (необязательно)',
+                        topics: {
+                            complaint: 'Жалоба',
+                            partnership: 'Сотрудничество',
+                            bug: 'Техническая проблема',
+                            feature: 'Предложение новой функции',
+                            content: 'Вопрос по контенту',
+                            subscription: 'Вопрос по подписке',
+                            support: 'Поддержка',
+                            business: 'Для бизнеса',
+                            other: 'Другое'
+                        },
                         errors: {
                             messageRequired: 'Текст отзыва обязателен',
                             messageSendingError:

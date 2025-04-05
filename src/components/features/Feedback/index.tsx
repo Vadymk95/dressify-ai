@@ -4,11 +4,20 @@ import { useTranslation } from 'react-i18next';
 
 import { Loader } from '@/components/common/Loader';
 import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useFeedbackStore } from '@/store/feedbackStore';
+import { FeedbackTopic, useFeedbackStore } from '@/store/feedbackStore';
 
 type FeedbackFormData = {
     message: string;
+    topic?: FeedbackTopic;
+    createdAt: Date;
 };
 
 export const Feedback: FC = () => {
@@ -17,8 +26,15 @@ export const Feedback: FC = () => {
         register,
         handleSubmit,
         reset,
+        setValue,
+        watch,
         formState: { errors }
-    } = useForm<FeedbackFormData>();
+    } = useForm<FeedbackFormData>({
+        defaultValues: {
+            message: '',
+            topic: undefined
+        }
+    });
     const { loading, error, feedbackSent, sendFeedback, resetFeedbackStatus } =
         useFeedbackStore();
 
@@ -27,6 +43,7 @@ export const Feedback: FC = () => {
 
         if (!error) {
             reset();
+            setValue('topic', undefined);
             setTimeout(() => resetFeedbackStatus(), 3000);
         }
     };
@@ -50,6 +67,33 @@ export const Feedback: FC = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-4"
                 >
+                    <Select
+                        {...register('topic')}
+                        onValueChange={(value) =>
+                            setValue('topic', value as FeedbackTopic)
+                        }
+                        value={watch('topic') || ''}
+                    >
+                        <SelectTrigger className="w-full cursor-pointer">
+                            <SelectValue
+                                placeholder={t(
+                                    'Components.Features.Feedback.selectTopic'
+                                )}
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {Object.entries(
+                                t('Components.Features.Feedback.topics', {
+                                    returnObjects: true
+                                })
+                            ).map(([key, label]) => (
+                                <SelectItem key={key} value={key}>
+                                    {label as string}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
                     <Textarea
                         placeholder={t(
                             'Components.Features.Feedback.placeholder'

@@ -3,8 +3,21 @@ import { addDoc, collection } from 'firebase/firestore';
 import { t } from 'i18next';
 import { create } from 'zustand';
 
+export type FeedbackTopic =
+    | 'complaint'
+    | 'partnership'
+    | 'bug'
+    | 'feature'
+    | 'content'
+    | 'subscription'
+    | 'support'
+    | 'business'
+    | 'other';
+
 type FeedbackData = {
     message: string;
+    topic?: FeedbackTopic;
+    createdAt: Date;
 };
 
 type FeedbackStore = {
@@ -29,9 +42,13 @@ export const useFeedbackStore = create<FeedbackStore>((set) => ({
                 ? {
                       ...data,
                       userId: currentUser.uid,
-                      userEmail: currentUser.email
+                      userEmail: currentUser.email,
+                      createdAt: new Date()
                   }
-                : data;
+                : {
+                      ...data,
+                      createdAt: new Date()
+                  };
 
             await addDoc(collection(db, 'feedback'), feedbackData);
             set({ feedbackSent: true });
