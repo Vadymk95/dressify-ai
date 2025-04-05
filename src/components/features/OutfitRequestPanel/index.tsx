@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
+import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TypeAnimation } from 'react-type-animation';
@@ -8,6 +9,7 @@ export const OutfitRequestPanel: FC = () => {
     const { t } = useTranslation();
     const { isLoading, showText, error, generateOutfit, hardcodedResponse } =
         useOutfitRequest();
+    const { clearResponse } = useOutfitResponseStore();
 
     return (
         <div className="w-full">
@@ -25,30 +27,44 @@ export const OutfitRequestPanel: FC = () => {
                     </div>
                 )}
 
-                <Button
-                    onClick={generateOutfit}
-                    disabled={isLoading}
-                    className={`
-                        px-8 py-3 rounded-xl text-white font-semibold
-                        shadow-lg transform transition-all duration-200
-                        bg-gradient-to-r from-orange-400 to-red-400
-                        hover:from-red-400 hover:to-orange-400
-                        hover:scale-105 active:scale-95
-                        disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-                        cursor-pointer
-                        ${isLoading ? 'animate-pulse' : ''}
-                    `}
-                >
-                    {isLoading
-                        ? t('Components.Features.OutfitRequestPanel.generating')
-                        : showText
-                          ? t(
-                                'Components.Features.OutfitRequestPanel.generateMore'
-                            )
-                          : t(
-                                'Components.Features.OutfitRequestPanel.generate'
-                            )}
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <Button
+                        onClick={generateOutfit}
+                        disabled={isLoading}
+                        className={`
+                            w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
+                            shadow-lg transform transition-all duration-200
+                            bg-gradient-to-r from-orange-400 to-red-400
+                            hover:from-red-400 hover:to-orange-400
+                            hover:scale-105 active:scale-95
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+                            cursor-pointer
+                            ${isLoading ? 'animate-pulse' : ''}
+                        `}
+                    >
+                        {isLoading
+                            ? t(
+                                  'Components.Features.OutfitRequestPanel.generating'
+                              )
+                            : showText
+                              ? t(
+                                    'Components.Features.OutfitRequestPanel.generateMore'
+                                )
+                              : t(
+                                    'Components.Features.OutfitRequestPanel.generate'
+                                )}
+                    </Button>
+
+                    {showText && (
+                        <Button
+                            onClick={clearResponse}
+                            variant="outline"
+                            className="w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl font-semibold cursor-pointer"
+                        >
+                            {t('Components.Features.OutfitRequestPanel.clear')}
+                        </Button>
+                    )}
+                </div>
             </div>
 
             {isLoading && (

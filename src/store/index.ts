@@ -4,5 +4,6 @@ export { useCookieConsentStore } from './cookieConsentStore';
 export { useEventStore } from './eventStore';
 export { useFeedbackStore } from './feedbackStore';
 export { useLanguageStore } from './languageStore';
+export { useOutfitResponseStore } from './outfitResponseStore';
 export { useUserProfileStore } from './userProfileStore';
 export { useWeatherStore } from './weatherStore';

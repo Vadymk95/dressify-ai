@@ -1,4 +1,5 @@
 import { useEventStore } from '@/store/eventStore';
+import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 import { OutfitRequestData } from '@/types/outfitRequestData';
@@ -9,11 +10,11 @@ export const useOutfitRequest = () => {
     const { t } = useTranslation();
     const { weatherToday, weatherTomorrow } = useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
-    const [showText, setShowText] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const { selectedEventType } = useEventStore();
     const { profile } = useUserProfileStore();
+    const { currentResponse, setCurrentResponse } = useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
 
@@ -24,7 +25,7 @@ export const useOutfitRequest = () => {
         try {
             const response = await mockRequest();
             console.log('Response received:', response);
-            setShowText(true);
+            setCurrentResponse(response);
             return response;
         } catch (error) {
             setError(
@@ -32,7 +33,7 @@ export const useOutfitRequest = () => {
                     ? error.message
                     : t('Components.Features.OutfitRequestPanel.errors.generic')
             );
-            setShowText(false);
+            setCurrentResponse(null);
         } finally {
             setIsLoading(false);
         }
@@ -111,13 +112,11 @@ export const useOutfitRequest = () => {
         return hardcodedResponse;
     };
 
-    // Перенесите mockRequest сюда
-
     return {
         isLoading,
-        showText,
+        showText: !!currentResponse,
         error,
         generateOutfit,
-        hardcodedResponse
+        hardcodedResponse: currentResponse || hardcodedResponse
     };
 };
