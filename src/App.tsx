@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 
-import { Footer, Header, Main } from '@/components/layout';
+import { RootLayout } from '@/components/layout';
 import { useAuthStore } from '@/store/authStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 
@@ -22,11 +22,5 @@ export const App: FC = () => {
         }
     }, [user, fetchUserProfile, clearProfile, checkSubscriptionExpiry]);
 
-    return (
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <Main />
-            <Footer />
-        </div>
-    );
+    return <RootLayout />;
 };

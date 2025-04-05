@@ -42,6 +42,28 @@ export const en = {
                             step4: 'Choose an event or occasion'
                         },
                         yourOutfit: 'Your perfect outfit is ready!'
+                    },
+                    CookieBanner: {
+                        description:
+                            'We use cookies to enhance your experience. Some are essential for basic functionality, while others help us improve your experience.',
+                        learnMore: 'Learn More',
+                        essentialOnly: 'Essential Only',
+                        acceptAll: 'Accept All',
+                        customize: 'Customize',
+                        essential: 'Essential',
+                        functional: 'Functional',
+                        analytics: 'Analytics',
+                        marketing: 'Marketing',
+                        essentialDesc:
+                            'These cookies are necessary for the website to function and cannot be switched off.',
+                        functionalDesc:
+                            'These cookies enable the website to save your settings and preferences.',
+                        analyticsDesc:
+                            'These cookies help us analyze site usage to improve our website.',
+                        marketingDesc:
+                            'These cookies are used to deliver relevant advertisements.',
+                        save: 'Save',
+                        cancel: 'Cancel'
                     }
                 },
                 Features: {
@@ -199,8 +221,13 @@ export const en = {
                             unknownError: 'An unknown error occurred',
                             networkError:
                                 'Network error. Please check your connection',
-                            saveFailed: 'Failed to save changes'
-                        }
+                            saveFailed: 'Failed to save changes',
+                            cookieRequired: 'Cookie permission required',
+                            cookieRequiredDesc:
+                                'Click "Customize" in the banner at the bottom of the page and enable functional cookies'
+                        },
+                        saveSuccess: 'Changes saved successfully',
+                        noChanges: 'No changes to save'
                     },
                     WardrobePanel: {
                         title: 'Your Wardrobe',

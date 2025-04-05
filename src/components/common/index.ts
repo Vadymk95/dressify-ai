@@ -1,4 +1,5 @@
 export { AuthNavigation } from './AuthNavigation';
+export { CookieBanner } from './CookieBanner';
 export { EmailVerificationPanel } from './EmailVerificationPanel';
 export { ErrorBoundary } from './ErrorBoundary';
 export { Loader } from './Loader';

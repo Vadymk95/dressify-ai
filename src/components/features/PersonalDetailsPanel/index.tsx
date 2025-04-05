@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Loader } from '@/components/common/Loader';
@@ -33,160 +33,33 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { useCharacteristicsStore } from '@/store/characteristicsStore';
-import { useUserProfileStore } from '@/store/userProfileStore';
+
 import {
-    Gender,
-    HeightUnit,
-    UserCharacteristics,
-    WeightUnit
-} from '@/types/user';
-
-// Опции для селектов
-const BODY_TYPES = {
-    common: ['slim', 'athletic', 'average', 'curvy', 'muscular'],
-    female: ['hourglass', 'pear', 'apple', 'rectangle', 'inverted_triangle'],
-    male: ['trapezoid', 'triangle', 'oval']
-};
-
-const SKIN_TONES = ['fair', 'light', 'medium', 'olive', 'brown', 'dark'];
-
-const HAIR_COLORS = [
-    'black',
-    'brown',
-    'blonde',
-    'red',
-    'gray',
-    'white',
-    'other'
-];
-
-const EYE_COLORS = ['brown', 'blue', 'green', 'hazel', 'gray', 'other'];
-
-const PREFERRED_COLORS = [
-    'black',
-    'white',
-    'gray',
-    'red',
-    'blue',
-    'green',
-    'yellow',
-    'purple',
-    'pink',
-    'orange',
-    'brown',
-    'beige'
-];
-
-const STYLE_PREFERENCES = [
-    'casual',
-    'formal',
-    'business',
-    'sporty',
-    'romantic',
-    'creative',
-    'minimalist',
-    'vintage',
-    'streetwear'
-];
-
-// Единицы измерения
-const HEIGHT_UNITS: HeightUnit[] = ['cm', 'ft', 'in'];
-const WEIGHT_UNITS: WeightUnit[] = ['kg', 'lb'];
+    EYE_COLORS,
+    HAIR_COLORS,
+    HEIGHT_UNITS,
+    PREFERRED_COLORS,
+    SKIN_TONES,
+    STYLE_PREFERENCES,
+    WEIGHT_UNITS
+} from '@/constants/personalDetails';
+import { usePersonalDetailsForm } from '@/hooks/usePersonalDetailsForm';
 
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
     const {
-        characteristics,
-        updateCharacteristics,
-        updateGender,
+        formData,
+        selectedColors,
+        selectedStyles,
         loading,
         error,
-        clearError
-    } = useCharacteristicsStore();
-    const { profile } = useUserProfileStore();
-    const [formData, setFormData] = useState({
-        gender: '',
-        height: '',
-        weight: '',
-        age: '',
-        skinTone: '',
-        hairColor: '',
-        eyeColor: '',
-        bodyType: '',
-        heightUnit: 'cm' as HeightUnit,
-        weightUnit: 'kg' as WeightUnit
-    });
-    const [selectedColors, setSelectedColors] = useState<string[]>([]);
-    const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
-
-    // Инициализируем данные из профиля при его загрузке
-    useEffect(() => {
-        if (profile?.characteristics) {
-            setFormData({
-                gender: profile.characteristics.gender || '',
-                height: profile.characteristics.height?.toString() || '',
-                weight: profile.characteristics.weight?.toString() || '',
-                age: profile.characteristics.age?.toString() || '',
-                skinTone: profile.characteristics.skinTone || '',
-                hairColor: profile.characteristics.hairColor || '',
-                eyeColor: profile.characteristics.eyeColor || '',
-                bodyType: profile.characteristics.bodyType || '',
-                heightUnit: profile.characteristics.heightUnit || 'cm',
-                weightUnit: profile.characteristics.weightUnit || 'kg'
-            });
-            setSelectedColors(profile.characteristics.preferredColors || []);
-            setSelectedStyles(profile.characteristics.stylePreference || []);
-        }
-    }, [profile?.characteristics]);
-
-    // Автоматически очищаем ошибку через 5 секунд
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(clearError, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [error, clearError]);
-
-    const handleInputChange =
-        (field: keyof typeof formData) =>
-        (e: ChangeEvent<HTMLInputElement> | string) => {
-            const value = typeof e === 'string' ? e : e.target.value;
-            setFormData((prev) => ({ ...prev, [field]: value }));
-        };
-
-    const getBodyTypesList = () => {
-        const gender = formData.gender;
-        if (!gender) {
-            return BODY_TYPES.common;
-        }
-        return [
-            ...BODY_TYPES.common,
-            ...(BODY_TYPES[gender as keyof typeof BODY_TYPES] || [])
-        ];
-    };
-
-    const handleSaveCharacteristics = async () => {
-        const updatedCharacteristics = {
-            ...characteristics,
-            gender: formData.gender,
-            height: formData.height ? Number(formData.height) : null,
-            weight: formData.weight ? Number(formData.weight) : null,
-            age: formData.age ? Number(formData.age) : null,
-            skinTone: formData.skinTone || null,
-            hairColor: formData.hairColor || null,
-            eyeColor: formData.eyeColor || null,
-            bodyType: formData.bodyType || null,
-            heightUnit: formData.heightUnit,
-            weightUnit: formData.weightUnit,
-            preferredColors: selectedColors,
-            stylePreference: selectedStyles
-        };
-
-        await updateCharacteristics(
-            updatedCharacteristics as UserCharacteristics
-        );
-    };
+        handleInputChange,
+        handleGenderChange,
+        handleColorsChange,
+        handleStylesChange,
+        handleSaveCharacteristics,
+        getBodyTypesList
+    } = usePersonalDetailsForm();
 
     return (
         <div className="w-full">
@@ -201,10 +74,7 @@ export const PersonalDetailsPanel: FC = () => {
                 </div>
                 <RadioGroup
                     value={formData.gender}
-                    onValueChange={(value) => {
-                        setFormData((prev) => ({ ...prev, gender: value }));
-                        updateGender(value as Gender);
-                    }}
+                    onValueChange={handleGenderChange}
                     className="flex flex-col md:flex-row gap-4"
                 >
                     <div className="flex items-center space-x-3">
@@ -255,7 +125,6 @@ export const PersonalDetailsPanel: FC = () => {
                 </RadioGroup>
             </div>
 
-            {/* Сообщение об ошибке */}
             {error && (
                 <div className="mb-4 px-4 py-2 text-red-600 bg-red-100 rounded-md text-center animate-fade-in">
                     {t([
@@ -314,7 +183,7 @@ export const PersonalDetailsPanel: FC = () => {
                                                 onValueChange={(value) =>
                                                     handleInputChange(
                                                         'heightUnit'
-                                                    )(value as HeightUnit)
+                                                    )(value)
                                                 }
                                             >
                                                 <SelectTrigger
@@ -372,7 +241,7 @@ export const PersonalDetailsPanel: FC = () => {
                                                 onValueChange={(value) =>
                                                     handleInputChange(
                                                         'weightUnit'
-                                                    )(value as WeightUnit)
+                                                    )(value)
                                                 }
                                             >
                                                 <SelectTrigger
@@ -669,24 +538,11 @@ export const PersonalDetailsPanel: FC = () => {
                                                         (color) => (
                                                             <CommandItem
                                                                 key={color}
-                                                                onSelect={() => {
-                                                                    setSelectedColors(
-                                                                        selectedColors.includes(
-                                                                            color
-                                                                        )
-                                                                            ? selectedColors.filter(
-                                                                                  (
-                                                                                      c
-                                                                                  ) =>
-                                                                                      c !==
-                                                                                      color
-                                                                              )
-                                                                            : [
-                                                                                  ...selectedColors,
-                                                                                  color
-                                                                              ]
-                                                                    );
-                                                                }}
+                                                                onSelect={() =>
+                                                                    handleColorsChange(
+                                                                        color
+                                                                    )
+                                                                }
                                                             >
                                                                 <div className="flex items-center gap-2 cursor-pointer">
                                                                     <div
@@ -772,24 +628,11 @@ export const PersonalDetailsPanel: FC = () => {
                                                         (style) => (
                                                             <CommandItem
                                                                 key={style}
-                                                                onSelect={() => {
-                                                                    setSelectedStyles(
-                                                                        selectedStyles.includes(
-                                                                            style
-                                                                        )
-                                                                            ? selectedStyles.filter(
-                                                                                  (
-                                                                                      s
-                                                                                  ) =>
-                                                                                      s !==
-                                                                                      style
-                                                                              )
-                                                                            : [
-                                                                                  ...selectedStyles,
-                                                                                  style
-                                                                              ]
-                                                                    );
-                                                                }}
+                                                                onSelect={() =>
+                                                                    handleStylesChange(
+                                                                        style
+                                                                    )
+                                                                }
                                                             >
                                                                 {t(
                                                                     `Components.Features.PersonalDetailsPanel.characteristics.styles.${style}`
