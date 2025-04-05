@@ -118,6 +118,11 @@ export const ru = {
                             conditions: 'Погодные условия',
                             temperature: 'Температура'
                         },
+                        accordions: {
+                            location: 'Местоположение',
+                            conditions: 'Погодные условия',
+                            temperature: 'Температура'
+                        },
                         conditions: {
                             sunny: 'Солнечно',
                             partlyCloudy: 'Переменная облачность',

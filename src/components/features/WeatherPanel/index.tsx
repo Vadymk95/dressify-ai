@@ -299,83 +299,125 @@ export const WeatherPanel: FC = () => {
                     </Accordion>
                 </TabsContent>
 
-                <TabsContent
-                    value="manual"
-                    className="bg-gray-100 rounded-lg p-4 md:p-6"
-                >
-                    <div className="space-y-8">
-                        <div>
-                            <h3 className="text-lg font-medium mb-6">
-                                {t(
-                                    'Components.Features.WeatherPanel.manual.conditions'
-                                )}
-                            </h3>
-                            <RadioGroup
-                                value={selectedCondition}
-                                onValueChange={(value) =>
-                                    handleManualWeatherSet(value, '')
-                                }
-                                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-                            >
-                                {weatherConditions.map((condition) => (
-                                    <div
-                                        key={condition.value}
-                                        className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
-                                    >
-                                        <RadioGroupItem
-                                            value={condition.value}
-                                            id={condition.value}
-                                            className="w-5 h-5"
-                                        />
-                                        <Label
-                                            htmlFor={condition.value}
-                                            className="cursor-pointer text-base flex-1"
-                                        >
-                                            {condition.label}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </RadioGroup>
-                        </div>
+                <TabsContent value="manual">
+                    <div>
+                        <Accordion
+                            type="single"
+                            collapsible
+                            className="w-full bg-gray-100 px-4 md:px-6 rounded-lg"
+                        >
+                            <AccordionItem value="weather-settings">
+                                <AccordionTrigger className="cursor-pointer text-base">
+                                    {t(
+                                        'Components.Features.WeatherPanel.accordions.conditions'
+                                    )}
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <div className="space-y-8">
+                                        <div>
+                                            <h3 className="text-lg font-medium mb-4">
+                                                {t(
+                                                    'Components.Features.WeatherPanel.manual.conditions'
+                                                )}
+                                            </h3>
+                                            <RadioGroup
+                                                value={selectedCondition}
+                                                onValueChange={(value) =>
+                                                    handleManualWeatherSet(
+                                                        value,
+                                                        ''
+                                                    )
+                                                }
+                                                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                                            >
+                                                {weatherConditions.map(
+                                                    (condition) => (
+                                                        <div
+                                                            key={
+                                                                condition.value
+                                                            }
+                                                            className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                                        >
+                                                            <RadioGroupItem
+                                                                value={
+                                                                    condition.value
+                                                                }
+                                                                id={
+                                                                    condition.value
+                                                                }
+                                                                className="w-5 h-5"
+                                                            />
+                                                            <Label
+                                                                htmlFor={
+                                                                    condition.value
+                                                                }
+                                                                className="cursor-pointer text-base flex-1"
+                                                            >
+                                                                {
+                                                                    condition.label
+                                                                }
+                                                            </Label>
+                                                        </div>
+                                                    )
+                                                )}
+                                            </RadioGroup>
+                                        </div>
 
-                        <div>
-                            <h3 className="text-lg font-medium mb-6">
-                                {t(
-                                    'Components.Features.WeatherPanel.manual.temperature'
-                                )}
-                            </h3>
-                            <RadioGroup
-                                value={selectedTemperature}
-                                onValueChange={(value) =>
-                                    handleManualWeatherSet('', value)
-                                }
-                                className="grid grid-cols-1 gap-4"
-                            >
-                                {temperatureRanges.map((range) => (
-                                    <div
-                                        key={range.value}
-                                        className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
-                                    >
-                                        <RadioGroupItem
-                                            value={range.value}
-                                            id={range.value}
-                                            className="w-5 h-5"
-                                        />
-                                        <Label
-                                            htmlFor={range.value}
-                                            className="cursor-pointer text-base flex-1"
-                                        >
-                                            <span className="block">
-                                                {range.label}
-                                            </span>
-                                            <span className="text-sm text-gray-500 block mt-1">
-                                                {range.range}
-                                            </span>
-                                        </Label>
+                                        <div>
+                                            <h3 className="text-lg font-medium mb-4">
+                                                {t(
+                                                    'Components.Features.WeatherPanel.manual.temperature'
+                                                )}
+                                            </h3>
+                                            <RadioGroup
+                                                value={selectedTemperature}
+                                                onValueChange={(value) =>
+                                                    handleManualWeatherSet(
+                                                        '',
+                                                        value
+                                                    )
+                                                }
+                                                className="grid grid-cols-1 gap-4"
+                                            >
+                                                {temperatureRanges.map(
+                                                    (range) => (
+                                                        <div
+                                                            key={range.value}
+                                                            className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                                        >
+                                                            <RadioGroupItem
+                                                                value={
+                                                                    range.value
+                                                                }
+                                                                id={range.value}
+                                                                className="w-5 h-5"
+                                                            />
+                                                            <Label
+                                                                htmlFor={
+                                                                    range.value
+                                                                }
+                                                                className="cursor-pointer text-base flex-1"
+                                                            >
+                                                                <span className="block">
+                                                                    {
+                                                                        range.label
+                                                                    }
+                                                                </span>
+                                                                <span className="text-sm text-gray-500 block mt-1">
+                                                                    {
+                                                                        range.range
+                                                                    }
+                                                                </span>
+                                                            </Label>
+                                                        </div>
+                                                    )
+                                                )}
+                                            </RadioGroup>
+                                        </div>
                                     </div>
-                                ))}
-                            </RadioGroup>
-                        </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
                     </div>
                 </TabsContent>
             </Tabs>
