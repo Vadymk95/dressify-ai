@@ -129,6 +129,19 @@ export const en = {
                             cool: 'Cool',
                             cold: 'Cold'
                         },
+                        daysOfWeek: {
+                            monday: 'Monday',
+                            tuesday: 'Tuesday',
+                            wednesday: 'Wednesday',
+                            thursday: 'Thursday',
+                            friday: 'Friday',
+                            saturday: 'Saturday',
+                            sunday: 'Sunday'
+                        },
+                        dateFormat: {
+                            today: 'Today',
+                            tomorrow: 'Tomorrow'
+                        },
                         errors: {
                             fetchWeatherError: 'Error fetching weather',
                             fetchCitiesError: 'Error fetching cities'

@@ -130,6 +130,19 @@ export const ru = {
                             cool: 'Прохладно',
                             cold: 'Холодно'
                         },
+                        daysOfWeek: {
+                            monday: 'Понедельник',
+                            tuesday: 'Вторник',
+                            wednesday: 'Среда',
+                            thursday: 'Четверг',
+                            friday: 'Пятница',
+                            saturday: 'Суббота',
+                            sunday: 'Воскресенье'
+                        },
+                        dateFormat: {
+                            today: 'Сегодня',
+                            tomorrow: 'Завтра'
+                        },
                         errors: {
                             fetchWeatherError: 'Ошибка при получении погоды',
                             fetchCitiesError:

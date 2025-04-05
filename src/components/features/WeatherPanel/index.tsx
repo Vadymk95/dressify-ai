@@ -46,6 +46,7 @@ export const WeatherPanel: FC = () => {
 
     const [selectedCondition, setSelectedCondition] = useState<string>('');
     const [selectedTemperature, setSelectedTemperature] = useState<string>('');
+    const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
     const handleFetchWeather = async (tomorrow = false) => {
         await updateLocation(country, city);
@@ -136,11 +137,50 @@ export const WeatherPanel: FC = () => {
         }
     }, [profile?.location, setLocation]);
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentDate(new Date());
+        }, 60000); // Обновляем каждую минуту
+
+        return () => clearInterval(timer);
+    }, []);
+
+    const getDayOfWeek = (date: Date) => {
+        const days = [
+            'sunday',
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday'
+        ];
+        return t(
+            `Components.Features.WeatherPanel.daysOfWeek.${days[date.getDay()]}`
+        );
+    };
+
+    const formatDate = (date: Date) => {
+        return new Intl.DateTimeFormat(language, {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+    };
+
     return (
         <div className="w-full mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl">
-            <h2 className="text-2xl font-semibold mb-6 text-amber-50">
-                {t('Components.Features.WeatherPanel.title')}
-            </h2>
+            <div className="text-center mb-4">
+                <h2 className="text-2xl font-semibold mb-2 text-amber-50">
+                    {t('Components.Features.WeatherPanel.title')}
+                </h2>
+                <div className="text-amber-50/80">
+                    <p className="text-lg font-medium">
+                        {getDayOfWeek(currentDate)}
+                    </p>
+                    <p className="text-sm">{formatDate(currentDate)}</p>
+                </div>
+            </div>
 
             <Tabs defaultValue="location" className="w-full mb-4">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
