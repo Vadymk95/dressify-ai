@@ -11,7 +11,7 @@ interface PerfectOutlookStore {
 export const usePerfectOutlookStore = create<PerfectOutlookStore>()(
     persist(
         (set) => ({
-            isModalOpen: true,
+            isModalOpen: false,
             dontShowAgain: false,
             setIsModalOpen: (isOpen) => set({ isModalOpen: isOpen }),
             setDontShowAgain: (value) => set({ dontShowAgain: value })

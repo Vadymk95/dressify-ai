@@ -10,13 +10,19 @@ import {
 import { usePerfectOutlookStore } from '@/store/perfectOutlookStore';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const PerfectOutlook: FC = () => {
     const { t } = useTranslation();
     const { isModalOpen, dontShowAgain, setIsModalOpen, setDontShowAgain } =
         usePerfectOutlookStore();
+
+    useEffect(() => {
+        if (!dontShowAgain) {
+            setIsModalOpen(true);
+        }
+    }, [dontShowAgain, setIsModalOpen]);
 
     const handleClose = () => {
         setIsModalOpen(false);
