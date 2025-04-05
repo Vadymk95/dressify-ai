@@ -79,23 +79,25 @@ export const WeatherPanel: FC = () => {
         }
 
         const tempValue =
-            temperature || selectedTemperature === 'hot'
+            temperature === 'hot'
                 ? TEMPERATURE_VALUES.HOT
-                : temperature || selectedTemperature === 'warm'
+                : temperature === 'warm'
                   ? TEMPERATURE_VALUES.WARM
-                  : temperature || selectedTemperature === 'moderate'
+                  : temperature === 'moderate'
                     ? TEMPERATURE_VALUES.MODERATE
-                    : temperature || selectedTemperature === 'cool'
+                    : temperature === 'cool'
                       ? TEMPERATURE_VALUES.COOL
-                      : TEMPERATURE_VALUES.COLD;
+                      : temperature === 'cold'
+                        ? TEMPERATURE_VALUES.COLD
+                        : null;
 
         const currentCondition = condition || selectedCondition;
         const currentTemp = temperature || selectedTemperature;
 
         if (currentCondition && currentTemp) {
             setManualWeather({
-                temp: tempValue,
-                feels_like: tempValue,
+                temp: tempValue || TEMPERATURE_VALUES.MODERATE,
+                feels_like: tempValue || TEMPERATURE_VALUES.MODERATE,
                 description:
                     weatherConditions.find((c) => c.value === currentCondition)
                         ?.label || '',

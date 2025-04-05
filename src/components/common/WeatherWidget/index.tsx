@@ -11,6 +11,8 @@ export const WeatherWidget: FC = () => {
         loadingWeather,
         weatherToday,
         weatherTomorrow,
+        weatherManual,
+        isManualMode,
         error,
         checkWeatherStaleness
     } = useWeatherStore();
@@ -28,16 +30,20 @@ export const WeatherWidget: FC = () => {
 
     if (error) return <p className="text-center p-4 text-red-500">{error}</p>;
 
-    const weather = weatherToday || weatherTomorrow;
+    const weather = isManualMode
+        ? weatherManual
+        : weatherToday || weatherTomorrow;
 
     if (!weather) return null;
 
     return (
         <div className="w-full flex flex-col items-center gap-2 py-4 px-6 mb-4 bg-gray-100/30 text-amber-50 rounded-xl shadow-lg">
             <p className="mt-2 opacity-75">
-                {weatherToday
-                    ? t('Components.Common.WeatherWidget.currentWeather')
-                    : t('Components.Common.WeatherWidget.tomorrowWeather')}
+                {isManualMode
+                    ? t('Components.Common.WeatherWidget.manualWeather')
+                    : weatherToday
+                      ? t('Components.Common.WeatherWidget.currentWeather')
+                      : t('Components.Common.WeatherWidget.tomorrowWeather')}
             </p>
             <img
                 src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
