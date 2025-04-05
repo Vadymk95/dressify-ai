@@ -36,12 +36,14 @@ export const en = {
                     PerfectOutlook: {
                         title: '🚀 Just 4 steps to your perfect outfit',
                         steps: {
-                            step1: 'Choose a city to check the weather',
-                            step2: 'Tell us a bit about yourself',
-                            step3: 'Add clothes to your wardrobe',
-                            step4: 'Choose an event or occasion'
+                            step1: 'Choose a city to check the weather, or set weather conditions manually',
+                            step2: 'Tell us about yourself: height, weight, age, and clothing preferences',
+                            step3: 'Add clothes to your wardrobe to get more accurate recommendations',
+                            step4: 'Choose an event or occasion, and we will pick the perfect outfit'
                         },
-                        yourOutfit: 'Your perfect outfit is ready!'
+                        yourOutfit: 'Your perfect outfit is ready!',
+                        dontShowAgain: "Don't show again",
+                        close: 'Close'
                     },
                     CookieBanner: {
                         description:

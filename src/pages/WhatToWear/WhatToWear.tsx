@@ -15,15 +15,12 @@ const WhatToWear: FC = () => {
 
     return (
         <div className="w-full max-w-4xl mx-auto px-6 flex flex-col gap-5">
+            <PerfectOutlook />
             <EmailVerificationPanel />
 
-            <section className="mt-5 p-4 main-gradient-reverse rounded-xl shadow-md text-center">
-                <h1 className="text-3xl font-semibold text-amber-50 mb-2">
-                    {t('Pages.WhatToWear.title')}
-                </h1>
-
-                <PerfectOutlook />
-            </section>
+            <h1 className="text-3xl text-center text-amber-50 font-semibold mt-10 third-gradient py-12 px-4 rounded-xl">
+                {t('Pages.WhatToWear.title')}
+            </h1>
 
             <section>
                 <WeatherPanel />
