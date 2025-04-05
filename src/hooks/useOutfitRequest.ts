@@ -1,11 +1,13 @@
 import { useEventStore } from '@/store/eventStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
+import { useWeatherStore } from '@/store/weatherStore';
 import { OutfitRequestData } from '@/types/outfitRequestData';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const useOutfitRequest = () => {
     const { t } = useTranslation();
+    const { weatherToday, weatherTomorrow } = useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
     const [showText, setShowText] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -82,6 +84,10 @@ export const useOutfitRequest = () => {
                 ...(profile.characteristics.weight && {
                     weight: profile.characteristics.weight
                 })
+            },
+            weather: {
+                current: weatherToday,
+                tomorrow: weatherTomorrow
             }
         };
 

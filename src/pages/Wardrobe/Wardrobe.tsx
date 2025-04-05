@@ -88,10 +88,10 @@ const WardrobePage: FC = () => {
 
     // Функция для безопасного получения перевода ошибки
     const getErrorMessage = (errorKey: string) => {
-        const translation = t(`errors.${errorKey}`);
+        const translation = t(`Pages.Wardrobe.errors.${errorKey}`);
         // Если перевод не найден, возвращаем общее сообщение об ошибке
-        return translation === `errors.${errorKey}`
-            ? t('errors.unknownError')
+        return translation === `Pages.Wardrobe.errors.${errorKey}`
+            ? t('Pages.Wardrobe.errors.unknownError')
             : translation;
     };
 
@@ -126,46 +126,51 @@ const WardrobePage: FC = () => {
     // Добавление предмета в локальное состояние
     const handleAddItem = (categoryId: string) => {
         const itemName = newItemInputs[categoryId]?.trim();
-        if (itemName) {
-            setLocalWardrobe((prev) => {
-                const updatedCategories = prev.categories.map((category) => {
-                    if (category.id === categoryId) {
-                        const newItem = {
-                            id: Date.now().toString(),
-                            name: itemName
-                        };
-                        return {
-                            ...category,
-                            items: [...category.items, newItem]
-                        };
-                    }
-                    return category;
-                });
 
-                // Проверяем, есть ли теперь предметы в гардеробе
-                const hasItems = updatedCategories.some(
-                    (category) => category.items.length > 0
-                );
+        // Теперь только проверка на максимальную длину
+        if (itemName.length > 50) {
+            setLocalError('maxLength');
+            return;
+        }
 
-                const updatedWardrobe = {
-                    categories: updatedCategories,
-                    useWardrobeForOutfits: hasItems
-                        ? true
-                        : prev.useWardrobeForOutfits
-                };
-
-                // Проверяем, есть ли изменения
-                setHasChanges(checkForChanges(updatedWardrobe));
-
-                return updatedWardrobe;
+        setLocalWardrobe((prev) => {
+            const updatedCategories = prev.categories.map((category) => {
+                if (category.id === categoryId) {
+                    const newItem = {
+                        id: Date.now().toString(),
+                        name: itemName
+                    };
+                    return {
+                        ...category,
+                        items: [...category.items, newItem]
+                    };
+                }
+                return category;
             });
 
-            // Очищаем поле ввода
-            setNewItemInputs((prev) => ({
-                ...prev,
-                [categoryId]: ''
-            }));
-        }
+            // Проверяем, есть ли теперь предметы в гардеробе
+            const hasItems = updatedCategories.some(
+                (category) => category.items.length > 0
+            );
+
+            const updatedWardrobe = {
+                categories: updatedCategories,
+                useWardrobeForOutfits: hasItems
+                    ? true
+                    : prev.useWardrobeForOutfits
+            };
+
+            // Проверяем, есть ли изменения
+            setHasChanges(checkForChanges(updatedWardrobe));
+
+            return updatedWardrobe;
+        });
+
+        // Очищаем поле ввода
+        setNewItemInputs((prev) => ({
+            ...prev,
+            [categoryId]: ''
+        }));
     };
 
     // Удаление предмета из локального состояния
@@ -278,7 +283,18 @@ const WardrobePage: FC = () => {
                             <Button
                                 size="icon"
                                 onClick={() => handleAddItem(category.id)}
-                                className="bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
+                                disabled={
+                                    !newItemInputs[category.id]?.trim() ||
+                                    newItemInputs[category.id]?.trim().length <
+                                        2
+                                }
+                                className={`${
+                                    !newItemInputs[category.id]?.trim() ||
+                                    newItemInputs[category.id]?.trim().length <
+                                        2
+                                        ? 'bg-gray-400'
+                                        : 'bg-amber-600 hover:bg-amber-700'
+                                } text-white cursor-pointer`}
                             >
                                 <Plus className="h-4 w-4" />
                             </Button>

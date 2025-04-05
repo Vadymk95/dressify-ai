@@ -1,4 +1,5 @@
 import { EventType } from '@/constants/events';
+import { Weather } from '@/store/weatherStore';
 import { Gender, stylePreference } from '@/types/user';
 
 export interface OutfitRequestData {
@@ -25,5 +26,9 @@ export interface OutfitRequestData {
                 name: string;
             }[];
         }[];
+    };
+    weather: {
+        current: Weather | null;
+        tomorrow: Weather | null;
     };
 }

@@ -454,6 +454,10 @@ export const en = {
                         sportswear: 'Sportswear',
                         suits: 'Suits',
                         other: 'Other'
+                    },
+                    errors: {
+                        maxLength: 'Item name should not exceed 50 characters',
+                        unknownError: 'An unknown error occurred'
                     }
                 },
                 SuccessPayment: {

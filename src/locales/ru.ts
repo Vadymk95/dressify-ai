@@ -186,7 +186,9 @@ export const ru = {
                             unknownError: 'Произошла неизвестная ошибка',
                             networkError:
                                 'Ошибка сети. Пожалуйста, проверьте подключение',
-                            saveFailed: 'Не удалось сохранить изменения'
+                            saveFailed: 'Не удалось сохранить изменения',
+                            maxLength:
+                                'Item name should not exceed 50 characters'
                         }
                     },
                     WardrobePanel: {
@@ -454,6 +456,11 @@ export const ru = {
                         sportswear: 'Спортивная одежда',
                         suits: 'Костюмы',
                         other: 'Другое'
+                    },
+                    errors: {
+                        maxLength:
+                            'Название предмета не должно превышать 50 символов',
+                        unknownError: 'Произошла неизвестная ошибка'
                     }
                 },
                 SuccessPayment: {
