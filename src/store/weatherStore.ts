@@ -29,6 +29,7 @@ interface WeatherState {
     loadingCities: boolean;
     error: string | null;
     isManualMode: boolean;
+    activeTab: 'location' | 'manual';
     setLocation: (country: string, city: string) => void;
     fetchWeather: (language: string, isTomorrow?: boolean) => Promise<void>;
     fetchCities: (country: string, language: string) => Promise<void>;
@@ -36,6 +37,7 @@ interface WeatherState {
     checkWeatherStaleness: (language: string) => void;
     setManualWeather: (weather: Weather) => void;
     setIsManualMode: (isManual: boolean) => void;
+    setActiveTab: (tab: 'location' | 'manual') => void;
 }
 
 export const useWeatherStore = create<WeatherState>()(
@@ -53,6 +55,7 @@ export const useWeatherStore = create<WeatherState>()(
             loadingCities: false,
             error: null,
             isManualMode: false,
+            activeTab: 'location',
             setLocation: (country, city) => set({ country, city }),
             fetchWeather: async (language, isTomorrow = false) => {
                 set({ loadingWeather: true, error: null });
@@ -198,7 +201,9 @@ export const useWeatherStore = create<WeatherState>()(
             },
 
             setIsManualMode: (isManual: boolean) =>
-                set({ isManualMode: isManual })
+                set({ isManualMode: isManual }),
+
+            setActiveTab: (tab) => set({ activeTab: tab })
         }),
         {
             name: 'weather-store'

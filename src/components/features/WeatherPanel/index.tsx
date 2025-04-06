@@ -38,7 +38,9 @@ export const WeatherPanel: FC = () => {
         setLocation,
         fetchCities,
         setManualWeather,
-        weatherManual
+        weatherManual,
+        activeTab,
+        setActiveTab
     } = useWeatherStore();
     const countries = useCountryOptions();
 
@@ -209,7 +211,14 @@ export const WeatherPanel: FC = () => {
                 </div>
             </div>
 
-            <Tabs defaultValue="location" className="w-full mb-4">
+            <Tabs
+                defaultValue={activeTab}
+                value={activeTab}
+                onValueChange={(value) =>
+                    setActiveTab(value as 'location' | 'manual')
+                }
+                className="w-full mb-4"
+            >
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                     <TabsTrigger
                         value="location"
