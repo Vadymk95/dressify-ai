@@ -544,7 +544,7 @@ export const ru = {
                     saveChanges: 'Сохранить изменения',
                     saving: 'Сохранение...',
                     standardPlanLimits:
-                        'In the standard plan, you can add up to 2 items in basic wardrobe categories.',
+                        'В стандартном плане вы можете добавить до 2 предметов в основные категории гардероба.',
                     categoryNotAvailable: 'Недоступно в стандартном плане',
                     categories: {
                         headwear: 'Головные уборы',

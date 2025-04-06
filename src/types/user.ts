@@ -1,3 +1,4 @@
+import { DEFAULT_CATEGORIES } from '@/constants/wardrobe';
 import { Plan } from '@/types/plans';
 
 export type Gender = 'male' | 'female' | 'other';
@@ -78,9 +79,12 @@ export interface WardrobeItem {
     name: string;
 }
 
+export type CategoryId = (typeof DEFAULT_CATEGORIES)[number]['id'];
+export type CategoryName = (typeof DEFAULT_CATEGORIES)[number]['name'];
+
 export interface WardrobeCategory {
-    id: string;
-    name: string;
+    id: CategoryId;
+    name: CategoryName;
     items: WardrobeItem[];
 }
 
