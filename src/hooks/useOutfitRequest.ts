@@ -143,8 +143,31 @@ export const useOutfitRequest = () => {
         updateProfile({ ...profile, requestLimits: newLimits });
     };
 
+    const checkRequiredFields = () => {
+        if (!selectedEventType) {
+            setError(
+                t('Components.Features.OutfitRequestPanel.errors.noEventType')
+            );
+            return false;
+        }
+
+        if (!profile?.characteristics?.gender) {
+            setError(
+                t('Components.Features.OutfitRequestPanel.errors.noGender')
+            );
+            return false;
+        }
+
+        return true;
+    };
+
     const generateAiOutfit = async () => {
         setError(null);
+
+        // Проверяем обязательные поля
+        if (!checkRequiredFields()) {
+            return;
+        }
 
         // Проверяем лимит запросов
         if (!checkRequestLimit()) {
@@ -172,8 +195,24 @@ export const useOutfitRequest = () => {
     };
 
     const generateStandardOutfit = async () => {
-        setIsLoading(true);
         setError(null);
+
+        // Проверяем обязательные поля
+        if (!checkRequiredFields()) {
+            return;
+        }
+
+        // Проверяем верификацию email
+        if (!profile?.emailVerified) {
+            setError(
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.emailNotVerified'
+                )
+            );
+            return;
+        }
+
+        setIsLoading(true);
 
         try {
             // Здесь будет логика для стандартных образов
@@ -329,6 +368,7 @@ export const useOutfitRequest = () => {
         standardResponse,
         isFreePlan: profile?.plan === 'free',
         remainingRequests: profile?.requestLimits?.remainingRequests ?? 0,
-        requestsResetAt: profile?.requestLimits?.requestsResetAt
+        requestsResetAt: profile?.requestLimits?.requestsResetAt,
+        isEmailVerified: profile?.emailVerified ?? false
     };
 };

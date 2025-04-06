@@ -17,7 +17,8 @@ export const OutfitRequestPanel: FC = () => {
         standardResponse,
         isFreePlan,
         remainingRequests,
-        requestsResetAt
+        requestsResetAt,
+        isEmailVerified
     } = useOutfitRequest();
     const { clearResponses } = useOutfitResponseStore();
 
@@ -69,6 +70,14 @@ export const OutfitRequestPanel: FC = () => {
                     </p>
                 )}
 
+                {!isEmailVerified && (
+                    <p className="text-sm text-amber-500 italic">
+                        {t(
+                            'Components.Features.OutfitRequestPanel.verifyEmailNote'
+                        )}
+                    </p>
+                )}
+
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                         onClick={generateAiOutfit}
@@ -99,7 +108,7 @@ export const OutfitRequestPanel: FC = () => {
 
                     <Button
                         onClick={generateStandardOutfit}
-                        disabled={isLoading}
+                        disabled={isLoading || !isEmailVerified}
                         className={`
                             w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
                             shadow-lg transform transition-all duration-200

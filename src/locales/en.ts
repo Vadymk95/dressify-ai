@@ -352,15 +352,18 @@ export const en = {
                             'Next outfits will be available at {{time}}',
                         errors: {
                             generic:
-                                'An error occurred while creating the outfit',
+                                'An error occurred while generating the outfit',
                             noEventType: 'Please select an event type',
-                            noLocation: 'Please specify your location',
                             noGender: 'Please specify your gender',
-                            freePlanLimit:
-                                'Personal outfit creation is not available on the free plan',
+                            noLocation: 'Please specify your location',
+                            freePlanLimit: 'Available only for paid plans',
                             requestLimitReached:
-                                'Daily request limit reached. Try again tomorrow or upgrade your plan.'
-                        }
+                                'Request limit reached for today',
+                            emailNotVerified:
+                                'Email verification required for standard outfit generation'
+                        },
+                        verifyEmailNote:
+                            'Please verify your email address to generate standard outfits'
                     }
                 },
                 Layout: {

@@ -96,6 +96,7 @@ export interface Wardrobe {
 export interface UserProfile {
     uid: string;
     email: string;
+    emailVerified: boolean;
     plan: 'free' | 'standard' | 'pro';
     lang: string;
     createdAt: Date | null;
