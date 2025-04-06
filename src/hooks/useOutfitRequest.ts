@@ -89,6 +89,21 @@ export const useOutfitRequest = () => {
                 }),
                 ...(profile.characteristics.weight && {
                     weight: profile.characteristics.weight
+                }),
+                ...(profile.characteristics.skinTone && {
+                    skinTone: profile.characteristics.skinTone
+                }),
+                ...(profile.characteristics.hairColor && {
+                    hairColor: profile.characteristics.hairColor
+                }),
+                ...(profile.characteristics.eyeColor && {
+                    eyeColor: profile.characteristics.eyeColor
+                }),
+                ...(profile.characteristics.bodyType && {
+                    bodyType: profile.characteristics.bodyType
+                }),
+                ...(profile.characteristics.preferredColors?.length && {
+                    preferredColors: profile.characteristics.preferredColors
                 })
             },
             weather: {
@@ -103,16 +118,50 @@ export const useOutfitRequest = () => {
             (category) => category.items.length > 0
         );
 
+        console.log('BEFORE', requestData);
+
         if (useWardrobe && hasWardrobeItems && profile?.wardrobe?.categories) {
             requestData.wardrobe = {
-                categories: profile.wardrobe.categories.map((category) => ({
-                    name: category.name,
-                    items: category.items.map((item) => item.name)
-                }))
+                categories: profile.wardrobe.categories
+                    .filter((category) => category.items.length > 0)
+                    .map((category) => ({
+                        name: category.name,
+                        items: category.items.map((item) => item.name)
+                    }))
             };
         }
 
-        console.log('Request data:', requestData);
+        // Очищаем объект от пустых значений
+        const cleanObject = (obj: any): any => {
+            if (Array.isArray(obj)) {
+                return obj
+                    .map((item) => cleanObject(item))
+                    .filter(
+                        (item) =>
+                            item !== null && item !== undefined && item !== ''
+                    );
+            }
+
+            if (obj && typeof obj === 'object') {
+                const cleaned: any = {};
+                for (const [key, value] of Object.entries(obj)) {
+                    const cleanedValue = cleanObject(value);
+                    if (
+                        cleanedValue !== null &&
+                        cleanedValue !== undefined &&
+                        cleanedValue !== ''
+                    ) {
+                        cleaned[key] = cleanedValue;
+                    }
+                }
+                return Object.keys(cleaned).length ? cleaned : null;
+            }
+
+            return obj;
+        };
+
+        const cleanedRequestData = cleanObject(requestData);
+        console.log('Cleaned request data:', cleanedRequestData);
         await new Promise((resolve) => setTimeout(resolve, 1500));
         return hardcodedResponse;
     };
