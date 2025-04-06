@@ -1,3 +1,5 @@
+import { Plan } from '@/types/plans';
+
 export type Gender = 'male' | 'female' | 'other';
 
 export type BodyType =
@@ -89,13 +91,18 @@ export interface Wardrobe {
 
 export interface UserProfile {
     uid: string;
-    email: string;
+    email: string | null;
+    createdAt: Date | null;
     emailVerified: boolean;
-    plan: string;
+    lang: string;
+    plan: Plan;
+    subscriptionExpiry?: Date | null;
     location?: {
         country: string;
         city: string;
-    };
-    characteristics?: UserCharacteristics;
-    wardrobe?: Wardrobe;
+        latitude?: string;
+        longitude?: string;
+    } | null;
+    characteristics?: UserCharacteristics | null;
+    wardrobe?: Wardrobe | null;
 }

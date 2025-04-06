@@ -284,7 +284,9 @@ export const en = {
                         openWardrobe: 'Open Wardrobe',
                         itemCount: 'Total Items: {{count}}',
                         useWardrobeForOutfits:
-                            'Use wardrobe for outfit selection'
+                            'Use wardrobe for outfit selection',
+                        wardrobeNotAvailable:
+                            'Wardrobe is only available for paid plans. Please choose a suitable plan.'
                     },
                     EventPanel: {
                         title: 'Choose Event',

@@ -4,27 +4,7 @@ import { create } from 'zustand';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
 import { Plan } from '@/types/plans';
-import { UserCharacteristics, Wardrobe } from '@/types/user';
-
-type Location = {
-    country: string;
-    city: string;
-    latitude: string;
-    longitude: string;
-};
-
-export interface UserProfile {
-    uid: string;
-    email: string | null;
-    createdAt: Date | null;
-    emailVerified: boolean;
-    lang: string;
-    plan: Plan;
-    subscriptionExpiry?: Date | null;
-    location?: Location | null;
-    characteristics?: UserCharacteristics | null;
-    wardrobe?: Wardrobe | null;
-}
+import { UserProfile, Wardrobe } from '@/types/user';
 
 interface UserProfileStore {
     profile: UserProfile | null;
@@ -121,7 +101,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             if (plan === 'monthly') {
                 subscriptionExpiry = new Date();
                 subscriptionExpiry.setDate(subscriptionExpiry.getDate() + 30);
-            } else if (plan === 'semiAnnual') {
+            } else if (plan === 'pro') {
                 subscriptionExpiry = new Date();
                 subscriptionExpiry.setDate(subscriptionExpiry.getDate() + 180);
             }
