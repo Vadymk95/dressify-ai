@@ -564,7 +564,10 @@ export const en = {
                     errors: {
                         maxLength: 'Item name should not exceed 50 characters',
                         unknownError: 'An unknown error occurred'
-                    }
+                    },
+                    unsavedChangesTitle: 'Unsaved Changes',
+                    unsavedChangesDescription:
+                        'You have unsaved changes. Are you sure you want to leave without saving?'
                 },
                 SuccessPayment: {
                     title: 'Payment Successful',
@@ -580,7 +583,10 @@ export const en = {
             General: {
                 brandName: 'DressifyAI',
                 goBack: 'Go back',
-                sending: 'Sending...'
+                sending: 'Sending...',
+                save: 'Save',
+                cancel: 'Cancel',
+                leave: 'Leave'
             },
             ...en_codes
         }

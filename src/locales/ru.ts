@@ -567,7 +567,10 @@ export const ru = {
                         maxLength:
                             'Название предмета не должно превышать 50 символов',
                         unknownError: 'Произошла неизвестная ошибка'
-                    }
+                    },
+                    unsavedChangesTitle: 'Есть несохраненные изменения',
+                    unsavedChangesDescription:
+                        'У вас есть несохраненные изменения. Вы уверены, что хотите уйти без сохранения?'
                 },
                 SuccessPayment: {
                     title: 'Платеж успешно выполнен',
@@ -583,7 +586,10 @@ export const ru = {
             General: {
                 brandName: 'DressifyAI',
                 goBack: 'Назад',
-                sending: 'Отправка...'
+                sending: 'Отправка...',
+                save: 'Сохранить',
+                cancel: 'Отмена',
+                leave: 'Уйти'
             },
             ...ru_codes
         }

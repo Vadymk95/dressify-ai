@@ -1,11 +1,19 @@
 import { ArrowLeft, Plus, Save, X } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { Loader } from '@/components/common/Loader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useWardrobe } from '@/hooks/useWardrobe';
 import { routes } from '@/router/routes';
@@ -13,6 +21,7 @@ import { routes } from '@/router/routes';
 const WardrobePage: FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const {
         sortedCategories,
         categoryStates,
@@ -32,11 +41,15 @@ const WardrobePage: FC = () => {
 
     const handleBack = () => {
         if (hasChanges) {
-            // TODO: Добавить модальное окно подтверждения
-            navigate(routes.whatToWear);
+            setShowConfirmModal(true);
         } else {
             navigate(routes.whatToWear);
         }
+    };
+
+    const handleConfirmLeave = () => {
+        setShowConfirmModal(false);
+        navigate(-1);
     };
 
     const handleSaveAndNavigate = async () => {
@@ -48,13 +61,7 @@ const WardrobePage: FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            {loading && (
-                <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-xl">
-                        <Loader />
-                    </div>
-                </div>
-            )}
+            {loading && <Loader />}
 
             <div className="flex items-center mb-6">
                 <Button
@@ -158,7 +165,11 @@ const WardrobePage: FC = () => {
                                         <Badge
                                             key={item.id}
                                             variant="secondary"
-                                            className="bg-amber-100 text-amber-800 border border-amber-200 flex items-start gap-1 break-words whitespace-normal"
+                                            className={`${
+                                                hasChanges
+                                                    ? 'bg-orange-100 text-orange-800 border border-orange-200'
+                                                    : 'bg-amber-100 text-amber-800 border border-amber-200'
+                                            } flex items-start gap-1 break-words whitespace-normal`}
                                         >
                                             <span className="break-words">
                                                 {item.name}
@@ -170,7 +181,11 @@ const WardrobePage: FC = () => {
                                                         item.id
                                                     )
                                                 }
-                                                className="ml-1 mt-1 text-amber-600 hover:text-red-500 cursor-pointer"
+                                                className={`ml-1 mt-1 ${
+                                                    hasChanges
+                                                        ? 'text-orange-600 hover:text-red-500'
+                                                        : 'text-amber-600 hover:text-red-500'
+                                                } cursor-pointer`}
                                                 disabled={!isAvailable}
                                             >
                                                 <X className="h-3 w-3" />
@@ -213,6 +228,35 @@ const WardrobePage: FC = () => {
                     )}
                 </Button>
             </div>
+
+            <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {t('Pages.Wardrobe.unsavedChangesTitle')}
+                        </DialogTitle>
+                        <DialogDescription>
+                            {t('Pages.Wardrobe.unsavedChangesDescription')}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowConfirmModal(false)}
+                            className="cursor-pointer"
+                        >
+                            {t('General.cancel')}
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleConfirmLeave}
+                            className="cursor-pointer"
+                        >
+                            {t('General.leave')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };
