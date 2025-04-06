@@ -229,7 +229,7 @@ export const WeatherPanel: FC = () => {
                     <Accordion
                         type="single"
                         collapsible
-                        className="w-full bg-gray-100 px-4 md:px-6 rounded-lg"
+                        className="w-full bg-gray-100 px-4 md:px-6 rounded-lg mb-4"
                     >
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="cursor-pointer py-4 text-base">
@@ -271,32 +271,31 @@ export const WeatherPanel: FC = () => {
                                         />
                                     </div>
                                 </div>
-
-                                <div className="flex flex-col gap-3 mb-4">
-                                    <Button
-                                        onClick={() => handleFetchWeather()}
-                                        disabled={!country || !city}
-                                        className="main-gradient text-amber-50 cursor-pointer shadow-sm p-6 w-full text-base"
-                                    >
-                                        {t(
-                                            'Components.Features.WeatherPanel.fetchWeather'
-                                        )}
-                                    </Button>
-
-                                    <Button
-                                        onClick={() => handleFetchWeather(true)}
-                                        disabled={!country || !city}
-                                        variant="outline"
-                                        className="cursor-pointer shadow-sm p-6 w-full text-base"
-                                    >
-                                        {t(
-                                            'Components.Features.WeatherPanel.fetchTomorrow'
-                                        )}
-                                    </Button>
-                                </div>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
+
+                    <div className="flex flex-col md:flex-row gap-3 mb-4 justify-center md:justify-between">
+                        <Button
+                            onClick={() => handleFetchWeather()}
+                            disabled={!country || !city}
+                            variant="outline"
+                            className="btn-third-gradient text-amber-50 hover:text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base"
+                        >
+                            {t('Components.Features.WeatherPanel.fetchWeather')}
+                        </Button>
+
+                        <Button
+                            onClick={() => handleFetchWeather(true)}
+                            disabled={!country || !city}
+                            variant="outline"
+                            className="cursor-pointer shadow-sm py-6 px-12 text-base"
+                        >
+                            {t(
+                                'Components.Features.WeatherPanel.fetchTomorrow'
+                            )}
+                        </Button>
+                    </div>
                 </TabsContent>
 
                 <TabsContent value="manual">
@@ -309,13 +308,13 @@ export const WeatherPanel: FC = () => {
                             <AccordionItem value="weather-settings">
                                 <AccordionTrigger className="cursor-pointer text-base">
                                     {t(
-                                        'Components.Features.WeatherPanel.accordions.conditions'
+                                        'Components.Features.WeatherPanel.accordions.title'
                                     )}
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                    <div className="space-y-8">
+                                    <div className="space-y-4">
                                         <div>
-                                            <h3 className="text-lg font-medium mb-4">
+                                            <h3 className="text-lg font-medium mb-2">
                                                 {t(
                                                     'Components.Features.WeatherPanel.manual.conditions'
                                                 )}
@@ -328,7 +327,7 @@ export const WeatherPanel: FC = () => {
                                                         ''
                                                     )
                                                 }
-                                                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                                                className="grid grid-cols-1 sm:grid-cols-2 gap-2"
                                             >
                                                 {weatherConditions.map(
                                                     (condition) => (
@@ -364,7 +363,7 @@ export const WeatherPanel: FC = () => {
                                         </div>
 
                                         <div>
-                                            <h3 className="text-lg font-medium mb-4">
+                                            <h3 className="text-lg font-medium mb-2">
                                                 {t(
                                                     'Components.Features.WeatherPanel.manual.temperature'
                                                 )}
@@ -377,7 +376,7 @@ export const WeatherPanel: FC = () => {
                                                         value
                                                     )
                                                 }
-                                                className="grid grid-cols-1 gap-4"
+                                                className="grid grid-cols-1 gap-2"
                                             >
                                                 {temperatureRanges.map(
                                                     (range) => (

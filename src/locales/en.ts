@@ -119,6 +119,7 @@ export const en = {
                         },
                         accordions: {
                             location: 'Location',
+                            title: 'Weather Settings',
                             conditions: 'Weather Conditions',
                             temperature: 'Temperature'
                         },

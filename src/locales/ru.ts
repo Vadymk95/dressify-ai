@@ -120,6 +120,7 @@ export const ru = {
                         },
                         accordions: {
                             location: 'Местоположение',
+                            title: 'Настройки погоды',
                             conditions: 'Погодные условия',
                             temperature: 'Температура'
                         },
