@@ -521,12 +521,12 @@ export const en = {
                     },
                     plans: {
                         free: {
-                            title: 'Free',
+                            title: 'Basic',
                             price: '$0 / month',
                             feature1: 'Standard outfit generation',
                             feature2: 'Basic characteristics',
                             feature3: 'No wardrobe',
-                            cta: 'Basic'
+                            cta: 'Free'
                         },
                         standard: {
                             title: 'Standard',
