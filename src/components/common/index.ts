@@ -1,4 +1,5 @@
 export { AuthNavigation } from './AuthNavigation';
+export { Captcha } from './Captcha';
 export { CookieBanner } from './CookieBanner';
 export { EmailVerificationPanel } from './EmailVerificationPanel';
 export { ErrorBoundary } from './ErrorBoundary';

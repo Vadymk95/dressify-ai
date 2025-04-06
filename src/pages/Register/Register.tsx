@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { Captcha } from '@/components/common/Captcha';
 import { Loader } from '@/components/common/Loader';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -41,9 +42,11 @@ const Register: FC = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isCaptchaValid, setIsCaptchaValid] = useState(false);
 
     const onSubmit = async (data: RegisterForm) => {
         if (data.password !== data.confirmPassword) return;
+        if (!isCaptchaValid) return;
 
         const success = await registerUser(data.email, data.password);
 
@@ -170,6 +173,10 @@ const Register: FC = () => {
                         )}
                     </div>
 
+                    <div>
+                        <Captcha onVerify={setIsCaptchaValid} />
+                    </div>
+
                     <Controller
                         control={control}
                         name="agree"
@@ -217,8 +224,11 @@ const Register: FC = () => {
                     <Button
                         type="submit"
                         className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-300 py-5 text-amber-50"
+                        disabled={loading || !isCaptchaValid}
                     >
-                        {t('Pages.Register.title')}
+                        {loading
+                            ? t('General.sending')
+                            : t('Pages.Register.title')}
                     </Button>
 
                     <div className="text-center text-sm">

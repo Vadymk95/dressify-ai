@@ -142,7 +142,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 const data = docSnap.data();
                 if (
                     data.subscriptionExpiry &&
-                    data.subscriptionExpiry.toDate() < new Date()
+                    new Date(data.subscriptionExpiry) < new Date()
                 ) {
                     await updateDoc(docRef, {
                         plan: 'free',

@@ -78,6 +78,10 @@ export const en = {
                             'Are you sure you want to switch to the free plan? You will lose access to premium features and your request limits will be reset.',
                         cancel: 'Cancel',
                         confirm: 'Confirm Downgrade'
+                    },
+                    Captcha: {
+                        new: 'New example',
+                        placeholder: 'Enter the answer'
                     }
                 },
                 Features: {
