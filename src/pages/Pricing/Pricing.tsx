@@ -13,7 +13,7 @@ const Pricing: FC = () => {
         error,
         free,
         monthly,
-        semiAnnual,
+        pro,
         handlePlanSelection
     } = usePricing();
 
@@ -40,7 +40,8 @@ const Pricing: FC = () => {
                         price={t('Pages.Pricing.plans.free.price')}
                         features={[
                             t('Pages.Pricing.plans.free.feature1'),
-                            t('Pages.Pricing.plans.free.feature2')
+                            t('Pages.Pricing.plans.free.feature2'),
+                            t('Pages.Pricing.plans.free.feature3')
                         ]}
                         cta={t('Pages.Pricing.plans.free.cta')}
                         isActive={free}
@@ -54,7 +55,10 @@ const Pricing: FC = () => {
                         price={t('Pages.Pricing.plans.monthly.price')}
                         features={[
                             t('Pages.Pricing.plans.monthly.feature1'),
-                            t('Pages.Pricing.plans.monthly.feature2')
+                            t('Pages.Pricing.plans.monthly.feature2'),
+                            t('Pages.Pricing.plans.monthly.feature3'),
+                            t('Pages.Pricing.plans.monthly.feature4'),
+                            t('Pages.Pricing.plans.monthly.feature5')
                         ]}
                         cta={t(
                             `Pages.Pricing.plans.monthly.${monthly ? 'currentPlan' : 'cta'}`
@@ -64,25 +68,29 @@ const Pricing: FC = () => {
                         disabled={isProcessing}
                     />
 
-                    {/* SEMI-ANNUAL PLAN */}
+                    {/* PRO PLAN */}
                     <PlanCard
-                        title={t('Pages.Pricing.plans.semiAnnual.title')}
-                        price={t('Pages.Pricing.plans.semiAnnual.price')}
-                        oldPrice={t('Pages.Pricing.plans.semiAnnual.oldPrice')}
-                        save={t('Pages.Pricing.plans.semiAnnual.save')}
+                        title={t('Pages.Pricing.plans.pro.title')}
+                        price={t('Pages.Pricing.plans.pro.price')}
                         features={[
-                            t('Pages.Pricing.plans.semiAnnual.feature1'),
-                            t('Pages.Pricing.plans.semiAnnual.feature2')
+                            t('Pages.Pricing.plans.pro.feature1'),
+                            t('Pages.Pricing.plans.pro.feature2'),
+                            t('Pages.Pricing.plans.pro.feature3'),
+                            t('Pages.Pricing.plans.pro.feature4'),
+                            t('Pages.Pricing.plans.pro.feature5')
                         ]}
                         cta={t(
-                            `Pages.Pricing.plans.semiAnnual.${semiAnnual ? 'currentPlan' : 'cta'}`
+                            `Pages.Pricing.plans.pro.${pro ? 'currentPlan' : 'cta'}`
                         )}
-                        ribbonText={t('Pages.Pricing.plans.semiAnnual.ribbon')}
-                        isActive={semiAnnual}
-                        onClick={() => handlePlanSelection('semiAnnual')}
+                        isActive={pro}
+                        onClick={() => handlePlanSelection('pro')}
                         disabled={isProcessing}
                     />
                 </div>
+
+                <p className="text-center text-sm text-gray-500 italic mt-8">
+                    {t('Pages.Pricing.note')}
+                </p>
             </div>
         </>
     );

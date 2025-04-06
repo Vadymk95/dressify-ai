@@ -494,32 +494,35 @@ export const en = {
                         free: {
                             title: 'Free',
                             price: '$0 / month',
-                            feature1:
-                                'View weather for different cities and countries',
-                            feature2: 'Basic usage only',
+                            feature1: 'Standard outfit generation',
+                            feature2: 'Basic characteristics',
+                            feature3: 'No wardrobe',
                             cta: 'Basic'
                         },
                         monthly: {
                             title: 'Standard',
                             price: '$3 / month',
-                            feature1:
-                                'All Free features + AI outfit recommendations',
-                            feature2: 'Personalized settings for your wardrobe',
+                            feature1: 'Standard outfits + AI assistant',
+                            feature2: 'Up to 2 outfits per day',
+                            feature3: 'Extended characteristics',
+                            feature4: 'Up to 2 items per wardrobe category',
+                            feature5: 'Limited wardrobe categories',
                             cta: 'Choose Plan',
                             currentPlan: 'Current Plan'
                         },
-                        semiAnnual: {
-                            title: 'Best Value',
-                            oldPrice: '$18',
-                            price: '$15 / 6 months',
-                            save: 'You save $3',
-                            feature1: 'All Standard features for 6 months',
-                            feature2: 'One-time discounted payment',
+                        pro: {
+                            title: 'Pro',
+                            price: '$5 / month',
+                            feature1: 'All Standard features',
+                            feature2: 'Up to 5 outfits per day',
+                            feature3: 'All characteristics available',
+                            feature4: 'Unlimited wardrobe',
+                            feature5: 'All wardrobe categories available',
                             cta: 'Choose Plan',
-                            ribbon: 'Best Deal',
                             currentPlan: 'Current Plan'
                         }
-                    }
+                    },
+                    note: 'A semi-annual plan will be added in the future. Prices may be revised based on collected feedback.'
                 },
                 WhatToWear: {
                     title: "Let's find out what to wear today!"

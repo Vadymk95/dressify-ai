@@ -1,1 +1,1 @@
-export type Plan = 'free' | 'monthly' | 'semiAnnual';
+export type Plan = 'free' | 'monthly' | 'pro';

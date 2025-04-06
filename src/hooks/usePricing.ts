@@ -13,7 +13,7 @@ export const usePricing = () => {
     const userPlan = profile ? profile.plan : 'free';
     const free = userPlan === 'free';
     const monthly = userPlan === 'monthly';
-    const semiAnnual = userPlan === 'semiAnnual';
+    const pro = userPlan === 'pro';
 
     useEffect(() => {
         let timeoutId: ReturnType<typeof setTimeout>;
@@ -66,7 +66,7 @@ export const usePricing = () => {
         userPlan,
         free,
         monthly,
-        semiAnnual,
+        pro,
         handlePlanSelection
     };
 };
