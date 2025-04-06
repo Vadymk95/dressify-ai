@@ -14,12 +14,14 @@ import { Wardrobe } from '@/types/user';
 
 // Предопределенные категории гардероба
 const DEFAULT_CATEGORIES = [
-    { id: 'headwear', name: 'headwear', items: [] },
+    // Доступные категории для стандартного плана
     { id: 'tops', name: 'tops', items: [] },
     { id: 'bottoms', name: 'bottoms', items: [] },
     { id: 'dresses', name: 'dresses', items: [] },
     { id: 'outerwear', name: 'outerwear', items: [] },
     { id: 'shoes', name: 'shoes', items: [] },
+    // Недоступные категории для стандартного плана
+    { id: 'headwear', name: 'headwear', items: [] },
     { id: 'accessories', name: 'accessories', items: [] },
     { id: 'jewelry', name: 'jewelry', items: [] },
     { id: 'bags', name: 'bags', items: [] },
@@ -31,11 +33,22 @@ const DEFAULT_CATEGORIES = [
     { id: 'other', name: 'other', items: [] }
 ];
 
+const STANDARD_PLAN_CATEGORIES = [
+    'tops',
+    'bottoms',
+    'shoes',
+    'outerwear',
+    'dresses'
+];
+const ITEMS_LIMIT_PER_CATEGORY = 2;
+
 const WardrobePage: FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { profile, loading, error, fetchUserProfile, updateWardrobe } =
         useUserProfileStore();
+
+    const isStandardPlan = profile?.plan === 'standard' || false;
 
     // Состояние для временных изменений
     const [localWardrobe, setLocalWardrobe] = useState<Wardrobe>({
@@ -127,10 +140,21 @@ const WardrobePage: FC = () => {
     const handleAddItem = (categoryId: string) => {
         const itemName = newItemInputs[categoryId]?.trim();
 
-        // Теперь только проверка на максимальную длину
+        // Проверка на максимальную длину
         if (itemName.length > 50) {
             setLocalError('maxLength');
             return;
+        }
+
+        // Проверка лимита для стандартного плана
+        if (isStandardPlan) {
+            const category = localWardrobe.categories.find(
+                (cat) => cat.id === categoryId
+            );
+            if (category && category.items.length >= ITEMS_LIMIT_PER_CATEGORY) {
+                setLocalError('itemLimitReached');
+                return;
+            }
         }
 
         setLocalWardrobe((prev) => {
@@ -249,6 +273,12 @@ const WardrobePage: FC = () => {
                 </h1>
             </div>
 
+            {isStandardPlan && (
+                <p className="text-orange-500 italic mb-6 ">
+                    {t('Pages.Wardrobe.standardPlanLimits')}
+                </p>
+            )}
+
             {(error || localError) && (
                 <div className="mb-6 p-3 bg-red-100 text-red-800 rounded-md text-center">
                     {getErrorMessage(localError || error || '')}
@@ -256,82 +286,115 @@ const WardrobePage: FC = () => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {localWardrobe.categories.map((category) => (
-                    <div
-                        key={category.id}
-                        className="bg-white p-4 rounded-lg shadow-md border border-amber-100 hover:shadow-lg transition-shadow"
-                    >
-                        <h2 className="text-xl font-semibold text-amber-800 mb-4">
-                            {t(`Pages.Wardrobe.categories.${category.name}`)}
-                        </h2>
+                {localWardrobe.categories.map((category) => {
+                    const isCategoryDisabled =
+                        isStandardPlan &&
+                        !STANDARD_PLAN_CATEGORIES.includes(category.id);
+                    const isLimitReached =
+                        isStandardPlan &&
+                        category.items.length >= ITEMS_LIMIT_PER_CATEGORY;
 
-                        <div className="flex items-center space-x-2 mb-4">
-                            <Input
-                                type="text"
-                                placeholder={t(
-                                    'Pages.Wardrobe.addItemPlaceholder'
+                    return (
+                        <div
+                            key={category.id}
+                            className={`bg-white p-4 rounded-lg shadow-md border border-amber-100 hover:shadow-lg transition-shadow ${
+                                isCategoryDisabled ? 'opacity-50' : ''
+                            }`}
+                        >
+                            <h2 className="text-xl font-semibold text-amber-800 mb-4">
+                                {t(
+                                    `Pages.Wardrobe.categories.${category.name}`
                                 )}
-                                value={newItemInputs[category.id] || ''}
-                                onChange={(e) =>
-                                    handleInputChange(
-                                        category.id,
-                                        e.target.value
-                                    )
-                                }
-                                className="flex-1 bg-amber-50 border-amber-200 text-amber-900 placeholder:text-amber-400 focus:border-amber-300 focus:ring-amber-300"
-                            />
-                            <Button
-                                size="icon"
-                                onClick={() => handleAddItem(category.id)}
-                                disabled={
-                                    !newItemInputs[category.id]?.trim() ||
-                                    newItemInputs[category.id]?.trim().length <
-                                        2
-                                }
-                                className={`${
-                                    !newItemInputs[category.id]?.trim() ||
-                                    newItemInputs[category.id]?.trim().length <
-                                        2
-                                        ? 'bg-gray-400'
-                                        : 'bg-amber-600 hover:bg-amber-700'
-                                } text-white cursor-pointer`}
-                            >
-                                <Plus className="h-4 w-4" />
-                            </Button>
-                        </div>
+                            </h2>
 
-                        <div className="flex flex-wrap gap-2">
-                            {category.items.length > 0 ? (
-                                category.items.map((item) => (
-                                    <Badge
-                                        key={item.id}
-                                        variant="secondary"
-                                        className="bg-amber-100 text-amber-800 border border-amber-200 flex items-start gap-1 break-words whitespace-normal"
-                                    >
-                                        <span className="break-words">
-                                            {item.name}
-                                        </span>
-                                        <button
-                                            onClick={() =>
-                                                handleRemoveItem(
-                                                    category.id,
-                                                    item.id
-                                                )
-                                            }
-                                            className="ml-1 mt-1 text-amber-600 hover:text-red-500 cursor-pointer"
-                                        >
-                                            <X className="h-3 w-3" />
-                                        </button>
-                                    </Badge>
-                                ))
-                            ) : (
-                                <p className="text-amber-600 text-sm">
-                                    {t('Pages.Wardrobe.noItems')}
-                                </p>
+                            {isCategoryDisabled && (
+                                <div className="mb-4 text-sm text-amber-600 italic">
+                                    {t('Pages.Wardrobe.categoryNotAvailable')}
+                                </div>
                             )}
+
+                            {isLimitReached && !isCategoryDisabled && (
+                                <div className="mb-4 text-sm text-amber-600 italic">
+                                    {t('Pages.Wardrobe.itemLimitReached')}
+                                </div>
+                            )}
+
+                            <div className="flex items-center space-x-2 mb-4">
+                                <Input
+                                    type="text"
+                                    placeholder={t(
+                                        'Pages.Wardrobe.addItemPlaceholder'
+                                    )}
+                                    value={newItemInputs[category.id] || ''}
+                                    onChange={(e) =>
+                                        handleInputChange(
+                                            category.id,
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={
+                                        isCategoryDisabled || isLimitReached
+                                    }
+                                    className="flex-1 bg-amber-50 border-amber-200 text-amber-900 placeholder:text-amber-400 focus:border-amber-300 focus:ring-amber-300 disabled:opacity-50"
+                                />
+                                <Button
+                                    size="icon"
+                                    onClick={() => handleAddItem(category.id)}
+                                    disabled={
+                                        isCategoryDisabled ||
+                                        isLimitReached ||
+                                        !newItemInputs[category.id]?.trim() ||
+                                        newItemInputs[category.id]?.trim()
+                                            .length < 2
+                                    }
+                                    className={`${
+                                        isCategoryDisabled ||
+                                        isLimitReached ||
+                                        !newItemInputs[category.id]?.trim() ||
+                                        newItemInputs[category.id]?.trim()
+                                            .length < 2
+                                            ? 'bg-gray-400'
+                                            : 'bg-amber-600 hover:bg-amber-700'
+                                    } text-white cursor-pointer`}
+                                >
+                                    <Plus className="h-4 w-4" />
+                                </Button>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                                {category.items.length > 0 ? (
+                                    category.items.map((item) => (
+                                        <Badge
+                                            key={item.id}
+                                            variant="secondary"
+                                            className="bg-amber-100 text-amber-800 border border-amber-200 flex items-start gap-1 break-words whitespace-normal"
+                                        >
+                                            <span className="break-words">
+                                                {item.name}
+                                            </span>
+                                            <button
+                                                onClick={() =>
+                                                    handleRemoveItem(
+                                                        category.id,
+                                                        item.id
+                                                    )
+                                                }
+                                                className="ml-1 mt-1 text-amber-600 hover:text-red-500 cursor-pointer"
+                                                disabled={isCategoryDisabled}
+                                            >
+                                                <X className="h-3 w-3" />
+                                            </button>
+                                        </Badge>
+                                    ))
+                                ) : (
+                                    <p className="text-amber-600 text-sm">
+                                        {t('Pages.Wardrobe.noItems')}
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="mt-8 flex justify-center">

@@ -12,7 +12,7 @@ export const usePricing = () => {
 
     const userPlan = profile ? profile.plan : 'free';
     const free = userPlan === 'free';
-    const monthly = userPlan === 'monthly';
+    const standard = userPlan === 'standard';
     const pro = userPlan === 'pro';
 
     useEffect(() => {
@@ -65,7 +65,7 @@ export const usePricing = () => {
         error,
         userPlan,
         free,
-        monthly,
+        standard,
         pro,
         handlePlanSelection
     };

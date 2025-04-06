@@ -98,7 +98,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
 
             // Вычисляем дату окончания подписки
             let subscriptionExpiry: Date | null = null;
-            if (plan === 'monthly') {
+            if (plan === 'standard') {
                 subscriptionExpiry = new Date();
                 subscriptionExpiry.setDate(subscriptionExpiry.getDate() + 30);
             } else if (plan === 'pro') {

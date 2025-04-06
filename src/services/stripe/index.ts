@@ -12,7 +12,7 @@ export class StripeError extends Error {
 export class StripeService {
     private static readonly STRIPE_PUBLIC_KEY = 'pk_test_your_test_key';
     private static readonly PLAN_IDS = {
-        monthly: 'price_test_monthly',
+        standard: 'price_test_standard',
         pro: 'price_test_pro'
     };
 

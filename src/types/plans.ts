@@ -1,1 +1,1 @@
-export type Plan = 'free' | 'monthly' | 'pro';
+export type Plan = 'free' | 'standard' | 'pro';

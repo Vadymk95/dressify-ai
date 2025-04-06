@@ -509,7 +509,7 @@ export const ru = {
                             feature3: 'Без гардероба',
                             cta: 'Базовый'
                         },
-                        monthly: {
+                        standard: {
                             title: 'Стандарт',
                             price: '3 $ / месяц',
                             feature1: 'Стандартные образы + AI-ассистент',
@@ -543,6 +543,9 @@ export const ru = {
                     noItems: 'Нет предметов',
                     saveChanges: 'Сохранить изменения',
                     saving: 'Сохранение...',
+                    standardPlanLimits:
+                        'In the standard plan, you can add up to 2 items in basic wardrobe categories.',
+                    categoryNotAvailable: 'Недоступно в стандартном плане',
                     categories: {
                         headwear: 'Головные уборы',
                         tops: 'Футболки и рубашки',

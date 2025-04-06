@@ -507,7 +507,7 @@ export const en = {
                             feature3: 'No wardrobe',
                             cta: 'Basic'
                         },
-                        monthly: {
+                        standard: {
                             title: 'Standard',
                             price: '$3 / month',
                             feature1: 'Standard outfits + AI assistant',
@@ -541,6 +541,9 @@ export const en = {
                     noItems: 'No items',
                     saveChanges: 'Save Changes',
                     saving: 'Saving...',
+                    standardPlanLimits:
+                        'In the standard plan, you can add up to 2 items in basic wardrobe categories.',
+                    categoryNotAvailable: 'Not available in standard plan',
                     categories: {
                         headwear: 'Headwear',
                         tops: 'Tops',

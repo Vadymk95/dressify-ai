@@ -12,7 +12,7 @@ const Pricing: FC = () => {
         loading,
         error,
         free,
-        monthly,
+        standard,
         pro,
         handlePlanSelection
     } = usePricing();
@@ -49,22 +49,22 @@ const Pricing: FC = () => {
                         disabled={isProcessing}
                     />
 
-                    {/* MONTHLY PLAN */}
+                    {/* STANDARD PLAN */}
                     <PlanCard
-                        title={t('Pages.Pricing.plans.monthly.title')}
-                        price={t('Pages.Pricing.plans.monthly.price')}
+                        title={t('Pages.Pricing.plans.standard.title')}
+                        price={t('Pages.Pricing.plans.standard.price')}
                         features={[
-                            t('Pages.Pricing.plans.monthly.feature1'),
-                            t('Pages.Pricing.plans.monthly.feature2'),
-                            t('Pages.Pricing.plans.monthly.feature3'),
-                            t('Pages.Pricing.plans.monthly.feature4'),
-                            t('Pages.Pricing.plans.monthly.feature5')
+                            t('Pages.Pricing.plans.standard.feature1'),
+                            t('Pages.Pricing.plans.standard.feature2'),
+                            t('Pages.Pricing.plans.standard.feature3'),
+                            t('Pages.Pricing.plans.standard.feature4'),
+                            t('Pages.Pricing.plans.standard.feature5')
                         ]}
                         cta={t(
-                            `Pages.Pricing.plans.monthly.${monthly ? 'currentPlan' : 'cta'}`
+                            `Pages.Pricing.plans.standard.${standard ? 'currentPlan' : 'cta'}`
                         )}
-                        isActive={monthly}
-                        onClick={() => handlePlanSelection('monthly')}
+                        isActive={standard}
+                        onClick={() => handlePlanSelection('standard')}
                         disabled={isProcessing}
                     />
 
