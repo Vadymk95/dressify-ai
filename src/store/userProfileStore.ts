@@ -6,7 +6,7 @@ import { parseCityCoordinates } from '@/helpers/parseCityCoordinates';
 import { Plan } from '@/types/plans';
 import { UserProfile, Wardrobe } from '@/types/user';
 
-interface UserProfileStore {
+export interface UserProfileStore {
     profile: UserProfile | null;
     loading: boolean;
     error: string | null;
@@ -20,6 +20,7 @@ interface UserProfileStore {
     updateLocation: (country: string, city: string) => Promise<void>;
     clearLocation: () => Promise<void>;
     updateWardrobe: (wardrobe: Wardrobe) => Promise<void>;
+    updateProfile: (profile: UserProfile) => Promise<void>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -35,15 +36,15 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                set({
-                    profile: {
-                        ...data,
-                        createdAt: data.createdAt
-                            ? data.createdAt.toDate()
-                            : null
-                    } as UserProfile,
-                    loading: false
-                });
+                const profile: UserProfile = {
+                    uid: docSnap.id,
+                    email: data.email,
+                    plan: data.plan,
+                    lang: data.lang,
+                    createdAt: data.createdAt?.toDate() || null,
+                    ...data
+                };
+                set({ profile, loading: false });
             } else {
                 set({ error: 'Profile not found', loading: false });
             }
@@ -97,13 +98,15 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             if (!currentUser) throw new Error('User not logged in');
 
             // Вычисляем дату окончания подписки
-            let subscriptionExpiry: Date | null = null;
+            let subscriptionExpiry: string | null = null;
             if (plan === 'standard') {
-                subscriptionExpiry = new Date();
-                subscriptionExpiry.setDate(subscriptionExpiry.getDate() + 30);
+                const date = new Date();
+                date.setDate(date.getDate() + 30);
+                subscriptionExpiry = date.toISOString();
             } else if (plan === 'pro') {
-                subscriptionExpiry = new Date();
-                subscriptionExpiry.setDate(subscriptionExpiry.getDate() + 180);
+                const date = new Date();
+                date.setDate(date.getDate() + 180);
+                subscriptionExpiry = date.toISOString();
             }
 
             // Обновляем Firestore: изменяем план и дату окончания подписки
@@ -256,7 +259,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const currentProfile = get().profile;
             if (currentProfile) {
                 set({
-                    profile: { ...currentProfile, location: null },
+                    profile: { ...currentProfile, location: undefined },
                     loading: false
                 });
             } else {
@@ -293,6 +296,20 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
         } catch (error: any) {
             console.error(error);
             set({ error: error.message, loading: false });
+        }
+    },
+
+    updateProfile: async (profile: UserProfile) => {
+        try {
+            set({ loading: true, error: null });
+
+            // Здесь будет запрос к API для обновления профиля
+            // await api.updateProfile(profile);
+
+            set({ profile, loading: false });
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            set({ error: 'Failed to update profile', loading: false });
         }
     }
 }));

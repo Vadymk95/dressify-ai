@@ -1,3 +1,4 @@
+import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
 import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
@@ -14,7 +15,7 @@ export const useOutfitRequest = () => {
     const [error, setError] = useState<string | null>(null);
 
     const { selectedEventType } = useEventStore();
-    const { profile } = useUserProfileStore();
+    const { profile, updateProfile } = useUserProfileStore();
     const { aiResponse, standardResponse, setAiResponse, setStandardResponse } =
         useOutfitResponseStore();
 
@@ -22,14 +23,85 @@ export const useOutfitRequest = () => {
     const standardHardcodedResponse =
         'Стандартный образ: черные брюки, белая рубашка, классические туфли';
 
+    const checkRequestLimit = () => {
+        if (!profile) return false;
+
+        const { plan, requestLimits } = profile;
+
+        // Если бесплатный план, запросы недоступны
+        if (plan === 'free') {
+            setError(
+                t('Components.Features.OutfitRequestPanel.errors.freePlanLimit')
+            );
+            return false;
+        }
+
+        // Если нет лимитов, инициализируем их
+        if (!requestLimits) {
+            const now = new Date();
+            const resetAt = new Date(now);
+            resetAt.setHours(24, 0, 0, 0); // Устанавливаем на конец текущего дня
+            const newLimits = {
+                remainingRequests: DAILY_REQUEST_LIMITS[plan],
+                requestsResetAt: resetAt.toISOString()
+            };
+            updateProfile({ ...profile, requestLimits: newLimits });
+            return true;
+        }
+
+        const now = new Date();
+        const resetAt = new Date(requestLimits.requestsResetAt);
+
+        // Если прошли сутки, обновляем лимиты
+        if (now > resetAt) {
+            const newResetAt = new Date(now);
+            newResetAt.setHours(24, 0, 0, 0); // Устанавливаем на конец текущего дня
+            const newLimits = {
+                remainingRequests: DAILY_REQUEST_LIMITS[plan],
+                requestsResetAt: newResetAt.toISOString()
+            };
+            updateProfile({ ...profile, requestLimits: newLimits });
+            return true;
+        }
+
+        // Проверяем оставшиеся запросы
+        if (requestLimits.remainingRequests <= 0) {
+            setError(
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.requestLimitReached'
+                )
+            );
+            return false;
+        }
+
+        return true;
+    };
+
+    const decrementRequestLimit = () => {
+        if (!profile?.requestLimits) return;
+
+        const newLimits = {
+            ...profile.requestLimits,
+            remainingRequests: profile.requestLimits.remainingRequests - 1
+        };
+        updateProfile({ ...profile, requestLimits: newLimits });
+    };
+
     const generateAiOutfit = async () => {
-        setIsLoading(true);
         setError(null);
+
+        // Проверяем лимит запросов
+        if (!checkRequestLimit()) {
+            return;
+        }
+
+        setIsLoading(true);
 
         try {
             const response = await mockRequest();
             console.log('AI Response received:', response);
             setAiResponse(response);
+            decrementRequestLimit();
             return response;
         } catch (error) {
             setError(
@@ -199,6 +271,8 @@ export const useOutfitRequest = () => {
         generateStandardOutfit,
         aiResponse,
         standardResponse,
-        isFreePlan: profile?.plan === 'free'
+        isFreePlan: profile?.plan === 'free',
+        remainingRequests: profile?.requestLimits?.remainingRequests ?? 0,
+        requestsResetAt: profile?.requestLimits?.requestsResetAt
     };
 };

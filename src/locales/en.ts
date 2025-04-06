@@ -335,12 +335,20 @@ export const en = {
                         clear: 'Clear',
                         freePlanNote:
                             'Personal outfit creation is only available for premium users',
+                        remainingRequests:
+                            'Personal outfits remaining: {{count}}',
+                        nextRequestsAt:
+                            'Next outfits will be available at {{time}}',
                         errors: {
                             generic:
                                 'An error occurred while creating the outfit',
                             noEventType: 'Please select an event type',
                             noLocation: 'Please specify your location',
-                            noGender: 'Please specify your gender'
+                            noGender: 'Please specify your gender',
+                            freePlanLimit:
+                                'Personal outfit creation is not available on the free plan',
+                            requestLimitReached:
+                                'Daily request limit reached. Try again tomorrow or upgrade your plan.'
                         }
                     }
                 },

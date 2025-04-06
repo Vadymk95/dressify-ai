@@ -1,5 +1,4 @@
 import { DEFAULT_CATEGORIES } from '@/constants/wardrobe';
-import { Plan } from '@/types/plans';
 
 export type Gender = 'male' | 'female' | 'other';
 
@@ -96,18 +95,30 @@ export interface Wardrobe {
 
 export interface UserProfile {
     uid: string;
-    email: string | null;
-    createdAt: Date | null;
-    emailVerified: boolean;
+    email: string;
+    plan: 'free' | 'standard' | 'pro';
     lang: string;
-    plan: Plan;
-    subscriptionExpiry?: Date | null;
+    createdAt: Date | null;
+    subscriptionExpiry?: string | null; // ISO date string
+    wardrobe?: Wardrobe;
     location?: {
         country: string;
         city: string;
-        latitude?: string;
-        longitude?: string;
-    } | null;
-    characteristics?: UserCharacteristics | null;
-    wardrobe?: Wardrobe | null;
+    };
+    characteristics?: {
+        gender?: string;
+        height?: number;
+        weight?: number;
+        age?: number;
+        bodyType?: string;
+        skinTone?: string;
+        hairColor?: string;
+        eyeColor?: string;
+        preferredColors?: string[];
+        stylePreference?: string[];
+    };
+    requestLimits?: {
+        remainingRequests: number;
+        requestsResetAt: string; // ISO date string
+    };
 }

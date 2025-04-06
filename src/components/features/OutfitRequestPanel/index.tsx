@@ -15,7 +15,9 @@ export const OutfitRequestPanel: FC = () => {
         generateStandardOutfit,
         aiResponse,
         standardResponse,
-        isFreePlan
+        isFreePlan,
+        remainingRequests,
+        requestsResetAt
     } = useOutfitRequest();
     const { clearResponses } = useOutfitResponseStore();
 
@@ -33,6 +35,38 @@ export const OutfitRequestPanel: FC = () => {
                     <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2 rounded-lg text-sm">
                         {error}
                     </div>
+                )}
+
+                {!isFreePlan ? (
+                    <div className="text-sm text-amber-600">
+                        {t(
+                            'Components.Features.OutfitRequestPanel.remainingRequests',
+                            {
+                                count: remainingRequests
+                            }
+                        )}
+                        {remainingRequests === 0 && requestsResetAt && (
+                            <div className="mt-1 text-xs text-amber-500">
+                                {t(
+                                    'Components.Features.OutfitRequestPanel.nextRequestsAt',
+                                    {
+                                        time: new Date(
+                                            requestsResetAt
+                                        ).toLocaleTimeString('ru-RU', {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })
+                                    }
+                                )}
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <p className="text-sm text-amber-500 italic">
+                        {t(
+                            'Components.Features.OutfitRequestPanel.freePlanNote'
+                        )}
+                    </p>
                 )}
 
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -100,14 +134,6 @@ export const OutfitRequestPanel: FC = () => {
                         </Button>
                     )}
                 </div>
-
-                {isFreePlan && (
-                    <p className="text-sm text-amber-500 italic">
-                        {t(
-                            'Components.Features.OutfitRequestPanel.freePlanNote'
-                        )}
-                    </p>
-                )}
             </div>
 
             {isLoading && (
