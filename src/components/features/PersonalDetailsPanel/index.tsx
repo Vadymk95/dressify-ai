@@ -44,9 +44,12 @@ import {
     WEIGHT_UNITS
 } from '@/constants/personalDetails';
 import { usePersonalDetailsForm } from '@/hooks/usePersonalDetailsForm';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const PersonalDetailsPanel: FC = () => {
     const { t } = useTranslation();
+    const { profile } = useUserProfileStore();
+    const isFreePlan = profile?.plan === 'free';
     const {
         formData,
         selectedColors,
@@ -300,6 +303,14 @@ export const PersonalDetailsPanel: FC = () => {
                                 </div>
                             </div>
 
+                            {isFreePlan && (
+                                <p className="text-sm text-amber-500 italic">
+                                    {t(
+                                        'Components.Features.PersonalDetailsPanel.freePlanNote'
+                                    )}
+                                </p>
+                            )}
+
                             {/* Второй ряд: цвет кожи, волос, глаз */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="space-y-1">
@@ -319,6 +330,7 @@ export const PersonalDetailsPanel: FC = () => {
                                                     value
                                                 )
                                             }
+                                            disabled={isFreePlan}
                                         >
                                             <SelectTrigger
                                                 id="skinTone"
@@ -363,6 +375,7 @@ export const PersonalDetailsPanel: FC = () => {
                                                     value
                                                 )
                                             }
+                                            disabled={isFreePlan}
                                         >
                                             <SelectTrigger
                                                 id="hairColor"
@@ -407,6 +420,7 @@ export const PersonalDetailsPanel: FC = () => {
                                                     value
                                                 )
                                             }
+                                            disabled={isFreePlan}
                                         >
                                             <SelectTrigger
                                                 id="eyeColor"
@@ -451,6 +465,7 @@ export const PersonalDetailsPanel: FC = () => {
                                         onValueChange={(value) =>
                                             handleInputChange('bodyType')(value)
                                         }
+                                        disabled={isFreePlan}
                                     >
                                         <SelectTrigger
                                             id="bodyType"
@@ -487,7 +502,10 @@ export const PersonalDetailsPanel: FC = () => {
                                         )}
                                     </Label>
                                     <Popover>
-                                        <PopoverTrigger asChild>
+                                        <PopoverTrigger
+                                            asChild
+                                            disabled={isFreePlan}
+                                        >
                                             <Button
                                                 variant="outline"
                                                 className="w-full h-9 justify-start font-normal cursor-pointer"
@@ -577,7 +595,10 @@ export const PersonalDetailsPanel: FC = () => {
                                         )}
                                     </Label>
                                     <Popover>
-                                        <PopoverTrigger asChild>
+                                        <PopoverTrigger
+                                            asChild
+                                            disabled={isFreePlan}
+                                        >
                                             <Button
                                                 variant="outline"
                                                 className="w-full h-9 justify-start font-normal cursor-pointer"

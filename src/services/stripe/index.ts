@@ -13,7 +13,7 @@ export class StripeService {
     private static readonly STRIPE_PUBLIC_KEY = 'pk_test_your_test_key';
     private static readonly PLAN_IDS = {
         monthly: 'price_test_monthly',
-        semiAnnual: 'price_test_semiannual'
+        pro: 'price_test_pro'
     };
 
     private static readonly SUCCESS_URL = `${window.location.origin}${routes.successPayment}`;

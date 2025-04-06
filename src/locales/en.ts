@@ -168,6 +168,8 @@ export const en = {
                         optionalNote:
                             'Additional information is optional, but it helps us provide more accurate outfit recommendations',
                         additionalInfo: 'Additional Information',
+                        freePlanNote:
+                            'Some fields are only available for premium users. Upgrade your plan to access all features.',
                         characteristics: {
                             height: 'Height',
                             weight: 'Weight',
