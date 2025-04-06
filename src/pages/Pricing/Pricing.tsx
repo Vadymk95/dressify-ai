@@ -1,14 +1,24 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { DowngradeModal } from '@/components/common/DowngradeModal';
 import { Loader } from '@/components/common/Loader';
 import { PlanCard } from '@/components/common/PlanCard';
 import { usePricing } from '@/hooks/usePricing';
 
 const Pricing: FC = () => {
     const { t } = useTranslation();
-    const { loading, error, free, standard, pro, handlePlanSelection } =
-        usePricing();
+    const {
+        loading,
+        error,
+        free,
+        standard,
+        pro,
+        handlePlanSelection,
+        showDowngradeModal,
+        setShowDowngradeModal,
+        handleConfirmDowngrade
+    } = usePricing();
 
     return (
         <>
@@ -85,6 +95,12 @@ const Pricing: FC = () => {
                     {t('Pages.Pricing.note')}
                 </p>
             </div>
+
+            <DowngradeModal
+                isOpen={showDowngradeModal}
+                onClose={() => setShowDowngradeModal(false)}
+                onConfirm={handleConfirmDowngrade}
+            />
         </>
     );
 };

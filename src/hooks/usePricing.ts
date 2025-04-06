@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 export const usePricing = () => {
     const { t } = useTranslation();
     const [error, setError] = useState<string | null>(null);
+    const [showDowngradeModal, setShowDowngradeModal] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
     const { profile, updatePlan, updateProfile, loading } =
         useUserProfileStore();
 
@@ -39,6 +41,20 @@ export const usePricing = () => {
             return;
         }
 
+        // Если пользователь пытается перейти на бесплатный план с платного
+        if (
+            plan === 'free' &&
+            (userPlan === 'standard' || userPlan === 'pro')
+        ) {
+            setSelectedPlan(plan);
+            setShowDowngradeModal(true);
+            return;
+        }
+
+        await updatePlanAndLimits(plan);
+    };
+
+    const updatePlanAndLimits = async (plan: Plan) => {
         try {
             // Обновляем план
             await updatePlan(plan);
@@ -55,6 +71,9 @@ export const usePricing = () => {
             };
 
             // Обновляем профиль с новыми лимитами
+            if (!profile) {
+                throw new Error('Profile is not defined');
+            }
             await updateProfile({
                 ...profile,
                 plan,
@@ -66,6 +85,13 @@ export const usePricing = () => {
         }
     };
 
+    const handleConfirmDowngrade = () => {
+        if (selectedPlan) {
+            updatePlanAndLimits(selectedPlan);
+            setShowDowngradeModal(false);
+        }
+    };
+
     return {
         loading,
         error,
@@ -73,6 +99,9 @@ export const usePricing = () => {
         free,
         standard,
         pro,
-        handlePlanSelection
+        handlePlanSelection,
+        showDowngradeModal,
+        setShowDowngradeModal,
+        handleConfirmDowngrade
     };
 };

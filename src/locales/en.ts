@@ -71,6 +71,13 @@ export const en = {
                     dateFormat: {
                         today: 'Current date',
                         tomorrow: 'Tomorrow'
+                    },
+                    DowngradeModal: {
+                        title: 'Confirm Plan Downgrade',
+                        description:
+                            'Are you sure you want to switch to the free plan? You will lose access to premium features and your request limits will be reset.',
+                        cancel: 'Cancel',
+                        confirm: 'Confirm Downgrade'
                     }
                 },
                 Features: {
