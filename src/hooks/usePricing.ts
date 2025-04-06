@@ -1,4 +1,4 @@
-import { StripeError, StripeService } from '@/services/stripe';
+import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { Plan } from '@/types/plans';
 import { useEffect, useState } from 'react';
@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 
 export const usePricing = () => {
     const { t } = useTranslation();
-    const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const { profile, updatePlan, loading } = useUserProfileStore();
+    const { profile, updatePlan, updateProfile, loading } =
+        useUserProfileStore();
 
     const userPlan = profile ? profile.plan : 'free';
     const free = userPlan === 'free';
@@ -34,33 +34,39 @@ export const usePricing = () => {
     const handlePlanSelection = async (plan: Plan) => {
         setError(null);
 
-        if (plan === 'free') {
-            await updatePlan(plan);
-            return;
-        }
-
         if (!profile?.email) {
             setError(t('Pages.Pricing.errors.noEmail'));
             return;
         }
 
         try {
-            setIsProcessing(true);
-            await StripeService.redirectToCheckout(plan, profile.email);
+            // Обновляем план
+            await updatePlan(plan);
+
+            // Обновляем лимиты запросов в зависимости от плана
+            const now = new Date();
+            const nextResetDate = new Date(now);
+            nextResetDate.setDate(nextResetDate.getDate() + 1);
+            nextResetDate.setHours(0, 0, 0, 0);
+
+            const requestLimits = {
+                remainingRequests: DAILY_REQUEST_LIMITS[plan],
+                requestsResetAt: nextResetDate.toISOString()
+            };
+
+            // Обновляем профиль с новыми лимитами
+            await updateProfile({
+                ...profile,
+                plan,
+                requestLimits
+            });
         } catch (error) {
-            console.error('Payment error:', error);
-            if (error instanceof StripeError) {
-                setError(t(`Pages.Pricing.errors.${error.message}`));
-            } else {
-                setError(t('Pages.Pricing.errors.generic'));
-            }
-        } finally {
-            setIsProcessing(false);
+            console.error('Error updating plan:', error);
+            setError(t('Pages.Pricing.errors.generic'));
         }
     };
 
     return {
-        isProcessing,
         loading,
         error,
         userPlan,

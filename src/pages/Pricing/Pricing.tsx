@@ -7,19 +7,12 @@ import { usePricing } from '@/hooks/usePricing';
 
 const Pricing: FC = () => {
     const { t } = useTranslation();
-    const {
-        isProcessing,
-        loading,
-        error,
-        free,
-        standard,
-        pro,
-        handlePlanSelection
-    } = usePricing();
+    const { loading, error, free, standard, pro, handlePlanSelection } =
+        usePricing();
 
     return (
         <>
-            {(loading || isProcessing) && <Loader />}
+            {loading && <Loader />}
             <div className="max-w-6xl mx-auto py-12 px-6">
                 {error && (
                     <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
@@ -46,7 +39,7 @@ const Pricing: FC = () => {
                         cta={t('Pages.Pricing.plans.free.cta')}
                         isActive={free}
                         onClick={() => handlePlanSelection('free')}
-                        disabled={isProcessing}
+                        disabled={loading}
                     />
 
                     {/* STANDARD PLAN */}
@@ -65,7 +58,7 @@ const Pricing: FC = () => {
                         )}
                         isActive={standard}
                         onClick={() => handlePlanSelection('standard')}
-                        disabled={isProcessing}
+                        disabled={loading}
                     />
 
                     {/* PRO PLAN */}
@@ -84,7 +77,7 @@ const Pricing: FC = () => {
                         )}
                         isActive={pro}
                         onClick={() => handlePlanSelection('pro')}
-                        disabled={isProcessing}
+                        disabled={loading}
                     />
                 </div>
 

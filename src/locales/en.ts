@@ -499,7 +499,6 @@ export const en = {
                     title: 'Choose Your Plan',
                     subtitle: 'Find the perfect plan for your needs.',
                     errors: {
-                        stripeLoadFailed: 'Failed to load payment system',
                         invalidPlan: 'Selected plan is not available',
                         checkoutFailed: 'Checkout process failed',
                         generic: 'An error occurred during payment processing',
