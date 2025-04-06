@@ -47,7 +47,7 @@ export const OutfitRequestPanel: FC = () => {
                             hover:scale-105 active:scale-95
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
                             cursor-pointer
-                            ${isLoading ? 'animate-pulse' : ''}
+                            ${isLoading && !standardResponse ? 'animate-pulse' : ''}
                         `}
                     >
                         {isLoading && !standardResponse
@@ -74,7 +74,7 @@ export const OutfitRequestPanel: FC = () => {
                             hover:scale-105 active:scale-95
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
                             cursor-pointer
-                            ${isLoading ? 'animate-pulse' : ''}
+                            ${isLoading && !aiResponse ? 'animate-pulse' : ''}
                         `}
                     >
                         {isLoading && !aiResponse
@@ -120,7 +120,8 @@ export const OutfitRequestPanel: FC = () => {
                 <div className="bg-gradient-to-br from-amber-950/40 to-orange-900/40 backdrop-blur-sm p-8 rounded-2xl shadow-xl text-amber-50 break-words max-w-full overflow-hidden border border-amber-500/20">
                     <div className="prose prose-invert max-w-none whitespace-pre-wrap prose-p:text-amber-50/90">
                         <TypeAnimation
-                            sequence={[aiResponse || standardResponse || '']}
+                            key={standardResponse || aiResponse}
+                            sequence={[standardResponse || aiResponse || '']}
                             wrapper="div"
                             speed={75}
                             repeat={0}
