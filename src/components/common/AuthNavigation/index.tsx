@@ -8,6 +8,7 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 
 import {
     faDoorOpen,
+    faHouse,
     faRightToBracket,
     faUserPlus
 } from '@fortawesome/free-solid-svg-icons';
@@ -41,23 +42,43 @@ export const AuthNavigation: FC = () => {
         <nav>
             <ul className="flex gap-6 md:gap-4 text-sm md:text-lg">
                 {user ? (
-                    <li>
-                        <Link
-                            onClick={handleLogout}
-                            className="hover:underline hover:text-orange-400"
-                            to={routes.home}
-                        >
-                            <div className="md:hidden flex items-center">
-                                <FontAwesomeIcon
-                                    className="text-2xl text-orange-400 hover:text-orange-600"
-                                    icon={faDoorOpen}
-                                />
-                            </div>
-                            <span className="hidden md:inline">
-                                {t('Components.Common.AuthNavigation.logout')}
-                            </span>
-                        </Link>
-                    </li>
+                    <>
+                        <li>
+                            <Link
+                                className="hover:underline hover:text-orange-400"
+                                to={routes.whatToWear}
+                            >
+                                <div className="md:hidden flex items-center">
+                                    <FontAwesomeIcon
+                                        className="text-2xl text-orange-400 hover:text-orange-600"
+                                        icon={faHouse}
+                                    />
+                                </div>
+                                <span className="hidden md:inline">
+                                    {t('Components.Common.AuthNavigation.home')}
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                onClick={handleLogout}
+                                className="hover:underline hover:text-orange-400"
+                                to={routes.home}
+                            >
+                                <div className="md:hidden flex items-center">
+                                    <FontAwesomeIcon
+                                        className="text-2xl text-orange-400 hover:text-orange-600"
+                                        icon={faDoorOpen}
+                                    />
+                                </div>
+                                <span className="hidden md:inline">
+                                    {t(
+                                        'Components.Common.AuthNavigation.logout'
+                                    )}
+                                </span>
+                            </Link>
+                        </li>
+                    </>
                 ) : (
                     <>
                         {!isLogin && (

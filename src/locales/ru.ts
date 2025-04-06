@@ -8,7 +8,8 @@ export const ru = {
                     AuthNavigation: {
                         login: 'Войти',
                         register: 'Регистрация',
-                        logout: 'Выйти'
+                        logout: 'Выйти',
+                        home: 'Главная'
                     },
                     EmailVerification: {
                         checkStatus: 'Проверить статус',

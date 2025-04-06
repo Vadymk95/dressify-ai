@@ -8,7 +8,8 @@ export const en = {
                     AuthNavigation: {
                         login: 'Sign In',
                         register: 'Sign Up',
-                        logout: 'Sign Out'
+                        logout: 'Sign Out',
+                        home: 'Home'
                     },
                     EmailVerification: {
                         checkStatus: 'Check Status',
