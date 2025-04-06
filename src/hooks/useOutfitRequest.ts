@@ -4,7 +4,7 @@ import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 import { OutfitRequestData } from '@/types/outfitRequestData';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const useOutfitRequest = () => {
@@ -13,6 +13,7 @@ export const useOutfitRequest = () => {
         useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { selectedEventType } = useEventStore();
     const { profile, updateProfile } = useUserProfileStore();
@@ -22,6 +23,62 @@ export const useOutfitRequest = () => {
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
     const standardHardcodedResponse =
         'Стандартный образ: черные брюки, белая рубашка, классические туфли';
+
+    // Функция для обновления лимитов
+    const resetLimits = useCallback(() => {
+        if (!profile || profile.plan === 'free') return;
+
+        const now = new Date();
+        const nextResetDate = new Date(now);
+        nextResetDate.setDate(nextResetDate.getDate() + 1); // Следующий день
+        nextResetDate.setHours(0, 0, 0, 0); // Начало следующего дня (полночь)
+
+        const newLimits = {
+            remainingRequests: DAILY_REQUEST_LIMITS[profile.plan], // 2 для standard, 5 для pro
+            requestsResetAt: nextResetDate.toISOString()
+        };
+
+        updateProfile({ ...profile, requestLimits: newLimits });
+    }, [profile, updateProfile]);
+
+    // Функция для установки таймера на следующую полночь
+    const scheduleNextReset = useCallback(() => {
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setHours(24, 0, 0, 0);
+        const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+
+        if (resetTimeoutRef.current) {
+            clearTimeout(resetTimeoutRef.current);
+        }
+
+        resetTimeoutRef.current = setTimeout(() => {
+            resetLimits();
+            scheduleNextReset(); // Планируем следующий сброс
+        }, timeUntilMidnight);
+    }, [resetLimits]);
+
+    // Устанавливаем таймер при монтировании и изменении профиля
+    useEffect(() => {
+        if (profile && profile.plan !== 'free') {
+            scheduleNextReset();
+        }
+        return () => {
+            if (resetTimeoutRef.current) {
+                clearTimeout(resetTimeoutRef.current);
+            }
+        };
+    }, [profile, scheduleNextReset]);
+
+    // Автоматически очищаем ошибку через 5 секунд
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     const checkRequestLimit = () => {
         if (!profile) return false;
@@ -36,29 +93,28 @@ export const useOutfitRequest = () => {
             return false;
         }
 
+        // Проверяем, нужно ли обновить лимиты
+        if (requestLimits?.requestsResetAt) {
+            const resetTime = new Date(requestLimits.requestsResetAt);
+            const now = new Date();
+
+            if (now >= resetTime) {
+                // Время сброса наступило, обновляем лимиты
+                resetLimits();
+                return true;
+            }
+        }
+
         // Если нет лимитов, инициализируем их
         if (!requestLimits) {
             const now = new Date();
-            const resetAt = new Date(now);
-            resetAt.setHours(24, 0, 0, 0); // Устанавливаем на конец текущего дня
+            const nextResetDate = new Date(now);
+            nextResetDate.setDate(nextResetDate.getDate() + 1);
+            nextResetDate.setHours(0, 0, 0, 0);
+
             const newLimits = {
                 remainingRequests: DAILY_REQUEST_LIMITS[plan],
-                requestsResetAt: resetAt.toISOString()
-            };
-            updateProfile({ ...profile, requestLimits: newLimits });
-            return true;
-        }
-
-        const now = new Date();
-        const resetAt = new Date(requestLimits.requestsResetAt);
-
-        // Если прошли сутки, обновляем лимиты
-        if (now > resetAt) {
-            const newResetAt = new Date(now);
-            newResetAt.setHours(24, 0, 0, 0); // Устанавливаем на конец текущего дня
-            const newLimits = {
-                remainingRequests: DAILY_REQUEST_LIMITS[plan],
-                requestsResetAt: newResetAt.toISOString()
+                requestsResetAt: nextResetDate.toISOString()
             };
             updateProfile({ ...profile, requestLimits: newLimits });
             return true;

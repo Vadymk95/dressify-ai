@@ -42,6 +42,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                     plan: data.plan,
                     lang: data.lang,
                     createdAt: data.createdAt?.toDate() || null,
+                    requestLimits: data.requestLimits || null,
                     ...data
                 };
                 set({ profile, loading: false });
@@ -303,9 +304,15 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
         try {
             set({ loading: true, error: null });
 
-            // Здесь будет запрос к API для обновления профиля
-            // await api.updateProfile(profile);
+            const currentUser = auth.currentUser;
+            if (!currentUser) throw new Error('User not logged in');
 
+            // Обновляем данные в Firestore
+            await updateDoc(doc(db, 'users', currentUser.uid), {
+                requestLimits: profile.requestLimits
+            });
+
+            // Обновляем локальное состояние
             set({ profile, loading: false });
         } catch (error) {
             console.error('Error updating profile:', error);
