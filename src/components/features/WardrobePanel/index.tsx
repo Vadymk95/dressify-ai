@@ -17,9 +17,14 @@ export const WardrobePanel: FC = () => {
     const [localError, setLocalError] = useState<string | null>(null);
 
     const isFreePlan = profile?.plan === 'free';
+    const totalItems =
+        profile?.wardrobe?.categories.reduce(
+            (sum, category) => sum + category.items.length,
+            0
+        ) || 0;
 
     const handleToggleUseWardrobe = useCallback(async () => {
-        if (!profile?.wardrobe) return;
+        if (!profile?.wardrobe || totalItems === 0) return;
 
         const updatedWardrobe: Wardrobe = {
             ...profile.wardrobe,
@@ -32,7 +37,7 @@ export const WardrobePanel: FC = () => {
             console.error('Error toggling wardrobe usage:', error);
             setLocalError(error.message || 'unknownError');
         }
-    }, [profile?.wardrobe, updateWardrobe]);
+    }, [profile?.wardrobe, updateWardrobe, totalItems]);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -42,13 +47,17 @@ export const WardrobePanel: FC = () => {
         }
     }, [subscribeToUserProfile]);
 
-    // Автоматически отключаем использование гардероба при переходе на бесплатный план
+    // Автоматически отключаем использование гардероба при переходе на бесплатный план или если гардероб пуст
     useEffect(() => {
-        if (isFreePlan && profile?.wardrobe?.useWardrobeForOutfits) {
+        if (
+            (isFreePlan || totalItems === 0) &&
+            profile?.wardrobe?.useWardrobeForOutfits
+        ) {
             handleToggleUseWardrobe();
         }
     }, [
         isFreePlan,
+        totalItems,
         profile?.wardrobe?.useWardrobeForOutfits,
         handleToggleUseWardrobe
     ]);
@@ -66,12 +75,6 @@ export const WardrobePanel: FC = () => {
             ? t('errors.unknownError')
             : translation;
     };
-
-    const totalItems =
-        profile?.wardrobe?.categories.reduce(
-            (sum, category) => sum + category.items.length,
-            0
-        ) || 0;
 
     return (
         <div
@@ -135,12 +138,13 @@ export const WardrobePanel: FC = () => {
                     <Checkbox
                         id="useWardrobe"
                         checked={
-                            profile?.wardrobe?.useWardrobeForOutfits || false
+                            totalItems > 0 &&
+                            (profile?.wardrobe?.useWardrobeForOutfits || false)
                         }
                         onCheckedChange={handleToggleUseWardrobe}
-                        disabled={isFreePlan}
+                        disabled={isFreePlan || totalItems === 0}
                         className={`h-5 w-5 border-2 ${
-                            isFreePlan
+                            isFreePlan || totalItems === 0
                                 ? 'border-amber-300/50 data-[state=checked]:bg-amber-600/50 data-[state=checked]:border-amber-600/50'
                                 : 'border-amber-300 data-[state=checked]:bg-amber-600 data-[state=checked]:border-amber-600'
                         } data-[state=unchecked]:bg-transparent focus:ring-amber-500 focus:ring-offset-0`}
@@ -148,7 +152,9 @@ export const WardrobePanel: FC = () => {
                     <label
                         htmlFor="useWardrobe"
                         className={`text-sm cursor-pointer ${
-                            isFreePlan ? 'text-amber-50/50' : 'text-amber-50'
+                            isFreePlan || totalItems === 0
+                                ? 'text-amber-50/50'
+                                : 'text-amber-50'
                         }`}
                     >
                         {t(
