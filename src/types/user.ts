@@ -105,11 +105,15 @@ export interface UserProfile {
     location?: {
         country: string;
         city: string;
+        latitude: number;
+        longitude: number;
     };
     characteristics?: {
         gender?: string;
         height?: number;
         weight?: number;
+        heightUnit?: HeightUnit;
+        weightUnit?: WeightUnit;
         age?: number;
         bodyType?: string;
         skinTone?: string;

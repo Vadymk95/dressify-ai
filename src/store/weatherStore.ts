@@ -80,10 +80,10 @@ export const useWeatherStore = create<WeatherState>()(
 
                     const latitude =
                         useUserProfileStore.getState().profile?.location
-                            ?.latitude || '';
+                            ?.latitude || 0;
                     const longitude =
                         useUserProfileStore.getState().profile?.location
-                            ?.longitude || '';
+                            ?.longitude || 0;
 
                     const endpoint = isTomorrow ? 'forecast' : 'weather';
                     const response = await fetch(

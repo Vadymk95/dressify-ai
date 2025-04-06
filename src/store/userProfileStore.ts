@@ -225,8 +225,8 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const { latitude, longitude } = parsedCoordinates;
             const locationData = {
                 ...location,
-                latitude,
-                longitude
+                latitude: Number(latitude),
+                longitude: Number(longitude)
             };
 
             await updateDoc(doc(db, 'users', currentUser.uid), {
