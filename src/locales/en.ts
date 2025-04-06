@@ -69,10 +69,6 @@ export const en = {
                         save: 'Save',
                         cancel: 'Cancel'
                     },
-                    dateFormat: {
-                        today: 'Current date',
-                        tomorrow: 'Tomorrow'
-                    },
                     DowngradeModal: {
                         title: 'Confirm Plan Downgrade',
                         description:

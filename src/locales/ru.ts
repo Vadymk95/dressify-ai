@@ -70,10 +70,6 @@ export const ru = {
                         save: 'Сохранить',
                         cancel: 'Отмена'
                     },
-                    dateFormat: {
-                        today: 'Сегодняшняя дата',
-                        tomorrow: 'Завтра'
-                    },
                     DowngradeModal: {
                         title: 'Подтвердите понижение тарифа',
                         description:
