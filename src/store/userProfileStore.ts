@@ -39,6 +39,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
                 const profile: UserProfile = {
                     uid: docSnap.id,
                     email: data.email,
+                    emailVerified: data.emailVerified || false,
                     plan: data.plan,
                     lang: data.lang,
                     createdAt: data.createdAt?.toDate() || null,
