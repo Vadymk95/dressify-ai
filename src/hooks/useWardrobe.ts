@@ -131,12 +131,8 @@ export const useWardrobe = () => {
 
     const handleAddItem = useCallback(
         (categoryId: string) => {
-            const itemName = newItemInputs[categoryId]?.trim();
-
-            if (itemName.length > 50) {
-                setLocalError('maxLength');
-                return;
-            }
+            const newItemName = newItemInputs[categoryId]?.trim();
+            if (!newItemName) return;
 
             if (isStandardPlan) {
                 const category = localWardrobe.categories.find(
@@ -151,48 +147,31 @@ export const useWardrobe = () => {
                 }
             }
 
-            setLocalWardrobe((prev) => {
-                const updatedCategories = prev.categories.map((category) => {
-                    if (category.id === categoryId) {
-                        const newItem = {
-                            id: Date.now().toString(),
-                            name: itemName
-                        };
-                        return {
-                            ...category,
-                            items: [...category.items, newItem]
-                        };
-                    }
-                    return category;
-                });
-
-                const hasItems = updatedCategories.some(
-                    (category) => category.items.length > 0
-                );
-
-                const updatedWardrobe = {
-                    categories: updatedCategories,
-                    useWardrobeForOutfits: hasItems
-                        ? true
-                        : prev.useWardrobeForOutfits
-                };
-
-                setHasChanges(checkForChanges(updatedWardrobe));
-
-                return updatedWardrobe;
-            });
+            setLocalWardrobe((prev) => ({
+                ...prev,
+                categories: prev.categories.map((category) =>
+                    category.id === categoryId
+                        ? {
+                              ...category,
+                              items: [
+                                  ...category.items,
+                                  {
+                                      id: crypto.randomUUID(),
+                                      name: newItemName,
+                                      isNew: true
+                                  }
+                              ]
+                          }
+                        : category
+                )
+            }));
 
             setNewItemInputs((prev) => ({
                 ...prev,
                 [categoryId]: ''
             }));
         },
-        [
-            isStandardPlan,
-            newItemInputs,
-            checkForChanges,
-            localWardrobe.categories
-        ]
+        [isStandardPlan, newItemInputs, localWardrobe.categories]
     );
 
     const handleRemoveItem = useCallback(
@@ -223,17 +202,34 @@ export const useWardrobe = () => {
         [checkForChanges]
     );
 
-    const handleSave = useCallback(async () => {
-        if (!hasChanges) return false;
-
-        setIsSaving(true);
-        setLocalError(null);
+    const handleSave = async () => {
         try {
-            await updateWardrobe(localWardrobe);
-            const currentUser = auth.currentUser;
-            if (currentUser) {
-                fetchUserProfile(currentUser.uid);
-            }
+            setIsSaving(true);
+            await updateWardrobe({
+                ...localWardrobe,
+                categories: localWardrobe.categories.map((category) => ({
+                    ...category,
+                    items: category.items.map((item) => ({
+                        id: item.id,
+                        name: item.name
+                    }))
+                }))
+            });
+            setHasChanges(false);
+            setLocalError(null);
+
+            // Убираем флаг isNew после сохранения
+            setLocalWardrobe((prev) => ({
+                ...prev,
+                categories: prev.categories.map((category) => ({
+                    ...category,
+                    items: category.items.map((item) => ({
+                        ...item,
+                        isNew: false
+                    }))
+                }))
+            }));
+
             return true;
         } catch (error: any) {
             console.error('Error saving wardrobe:', error);
@@ -242,7 +238,7 @@ export const useWardrobe = () => {
         } finally {
             setIsSaving(false);
         }
-    }, [hasChanges, localWardrobe, updateWardrobe, fetchUserProfile]);
+    };
 
     // Мемоизируем отсортированные категории
     const sortedCategories = useMemo(() => {

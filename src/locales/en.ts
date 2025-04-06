@@ -537,17 +537,27 @@ export const en = {
                 },
                 Wardrobe: {
                     title: 'My Wardrobe',
-                    addItemPlaceholder: 'Enter item name',
-                    noItems: 'No items',
-                    saveChanges: 'Save Changes',
-                    saving: 'Saving...',
                     standardPlanLimits:
-                        'In the standard plan, you can add up to 2 items in basic wardrobe categories.',
-                    categoryNotAvailable: 'Not available in standard plan',
+                        'Standard plan includes only basic categories with limited items',
+                    categoryNotAvailable:
+                        'This category is available in premium plan only',
+                    itemLimitReached: 'Item limit reached for this category',
+                    addItemPlaceholder: 'Enter item name',
+                    noItems: 'No items added',
+                    saving: 'Saving...',
+                    saveChanges: 'Save Changes',
+                    unsavedChangesTitle: 'Unsaved Changes',
+                    unsavedChangesDescription:
+                        'You have unsaved changes. Are you sure you want to leave without saving?',
+                    errors: {
+                        maxLength: 'Item name should not exceed 50 characters',
+                        unknownError: 'An unknown error occurred',
+                        itemLimitReached: 'Item limit reached for this category'
+                    },
                     categories: {
                         headwear: 'Headwear',
-                        tops: 'Tops',
-                        bottoms: 'Bottoms',
+                        tops: 'Tops & Shirts',
+                        bottoms: 'Pants & Skirts',
                         dresses: 'Dresses',
                         outerwear: 'Outerwear',
                         shoes: 'Shoes',
@@ -560,14 +570,7 @@ export const en = {
                         sportswear: 'Sportswear',
                         suits: 'Suits',
                         other: 'Other'
-                    },
-                    errors: {
-                        maxLength: 'Item name should not exceed 50 characters',
-                        unknownError: 'An unknown error occurred'
-                    },
-                    unsavedChangesTitle: 'Unsaved Changes',
-                    unsavedChangesDescription:
-                        'You have unsaved changes. Are you sure you want to leave without saving?'
+                    }
                 },
                 SuccessPayment: {
                     title: 'Payment Successful',

@@ -77,6 +77,7 @@ export interface UserCharacteristics {
 export interface WardrobeItem {
     id: string;
     name: string;
+    isNew?: boolean;
 }
 
 export type CategoryId = (typeof DEFAULT_CATEGORIES)[number]['id'];

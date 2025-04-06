@@ -166,8 +166,8 @@ const WardrobePage: FC = () => {
                                             key={item.id}
                                             variant="secondary"
                                             className={`${
-                                                hasChanges
-                                                    ? 'bg-orange-100 text-orange-800 border border-orange-200'
+                                                item.isNew
+                                                    ? 'bg-green-100 text-green-800 border border-green-200'
                                                     : 'bg-amber-100 text-amber-800 border border-amber-200'
                                             } flex items-start gap-1 break-words whitespace-normal`}
                                         >
@@ -182,8 +182,8 @@ const WardrobePage: FC = () => {
                                                     )
                                                 }
                                                 className={`ml-1 mt-1 ${
-                                                    hasChanges
-                                                        ? 'text-orange-600 hover:text-red-500'
+                                                    item.isNew
+                                                        ? 'text-green-600 hover:text-red-500'
                                                         : 'text-amber-600 hover:text-red-500'
                                                 } cursor-pointer`}
                                                 disabled={!isAvailable}
