@@ -80,7 +80,7 @@ export const WardrobePanel: FC = () => {
             {loading && <Loader />}
             {isFreePlan && (
                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="bg-gray-100 text-gray-800 rounded-md text-center p-4 shadow-lg">
+                    <div className="bg-gray-100 text-sm text-amber-500 italic rounded-md text-center p-4 shadow-lg">
                         {t(
                             'Components.Features.WardrobePanel.wardrobeNotAvailable'
                         )}

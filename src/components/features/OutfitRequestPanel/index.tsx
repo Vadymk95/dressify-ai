@@ -7,9 +7,17 @@ import { TypeAnimation } from 'react-type-animation';
 
 export const OutfitRequestPanel: FC = () => {
     const { t } = useTranslation();
-    const { isLoading, showText, error, generateOutfit, hardcodedResponse } =
-        useOutfitRequest();
-    const { clearResponse } = useOutfitResponseStore();
+    const {
+        isLoading,
+        showText,
+        error,
+        generateAiOutfit,
+        generateStandardOutfit,
+        aiResponse,
+        standardResponse,
+        isFreePlan
+    } = useOutfitRequest();
+    const { clearResponses } = useOutfitResponseStore();
 
     return (
         <div className="w-full">
@@ -29,8 +37,8 @@ export const OutfitRequestPanel: FC = () => {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Button
-                        onClick={generateOutfit}
-                        disabled={isLoading}
+                        onClick={generateAiOutfit}
+                        disabled={isLoading || isFreePlan}
                         className={`
                             w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
                             shadow-lg transform transition-all duration-200
@@ -42,22 +50,49 @@ export const OutfitRequestPanel: FC = () => {
                             ${isLoading ? 'animate-pulse' : ''}
                         `}
                     >
-                        {isLoading
+                        {isLoading && !standardResponse
                             ? t(
                                   'Components.Features.OutfitRequestPanel.generating'
                               )
-                            : showText
+                            : aiResponse
                               ? t(
-                                    'Components.Features.OutfitRequestPanel.generateMore'
+                                    'Components.Features.OutfitRequestPanel.generateMoreAi'
                                 )
                               : t(
-                                    'Components.Features.OutfitRequestPanel.generate'
+                                    'Components.Features.OutfitRequestPanel.generateAi'
+                                )}
+                    </Button>
+
+                    <Button
+                        onClick={generateStandardOutfit}
+                        disabled={isLoading}
+                        className={`
+                            w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
+                            shadow-lg transform transition-all duration-200
+                            bg-gradient-to-r from-amber-400 to-yellow-400
+                            hover:from-yellow-400 hover:to-amber-400
+                            hover:scale-105 active:scale-95
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+                            cursor-pointer
+                            ${isLoading ? 'animate-pulse' : ''}
+                        `}
+                    >
+                        {isLoading && !aiResponse
+                            ? t(
+                                  'Components.Features.OutfitRequestPanel.generating'
+                              )
+                            : standardResponse
+                              ? t(
+                                    'Components.Features.OutfitRequestPanel.generateMoreStandard'
+                                )
+                              : t(
+                                    'Components.Features.OutfitRequestPanel.generateStandard'
                                 )}
                     </Button>
 
                     {showText && (
                         <Button
-                            onClick={clearResponse}
+                            onClick={clearResponses}
                             variant="outline"
                             className="w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl font-semibold cursor-pointer"
                         >
@@ -65,6 +100,14 @@ export const OutfitRequestPanel: FC = () => {
                         </Button>
                     )}
                 </div>
+
+                {isFreePlan && (
+                    <p className="text-sm text-amber-500 italic">
+                        {t(
+                            'Components.Features.OutfitRequestPanel.freePlanNote'
+                        )}
+                    </p>
+                )}
             </div>
 
             {isLoading && (
@@ -77,7 +120,7 @@ export const OutfitRequestPanel: FC = () => {
                 <div className="bg-gradient-to-br from-amber-950/40 to-orange-900/40 backdrop-blur-sm p-8 rounded-2xl shadow-xl text-amber-50 break-words max-w-full overflow-hidden border border-amber-500/20">
                     <div className="prose prose-invert max-w-none whitespace-pre-wrap prose-p:text-amber-50/90">
                         <TypeAnimation
-                            sequence={[hardcodedResponse]}
+                            sequence={[aiResponse || standardResponse || '']}
                             wrapper="div"
                             speed={75}
                             repeat={0}

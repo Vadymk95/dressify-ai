@@ -324,16 +324,20 @@ export const en = {
                         }
                     },
                     OutfitRequestPanel: {
-                        title: 'Create Your Perfect Outfit',
+                        title: 'Create Outfit',
                         description:
-                            'Click the button below to get outfit recommendations',
-                        generate: 'Generate Outfit',
-                        generateMore: 'Generate Another Outfit',
-                        generating: 'Generating Outfit...',
+                            'Click the button to get outfit recommendations',
+                        generating: 'Creating outfit...',
+                        generateAi: 'Create Personal Outfit',
+                        generateMoreAi: 'Create Another Personal Outfit',
+                        generateStandard: 'Create Standard Outfit',
+                        generateMoreStandard: 'Create Another Standard Outfit',
                         clear: 'Clear',
+                        freePlanNote:
+                            'Personal outfit creation is only available for premium users',
                         errors: {
                             generic:
-                                'An error occurred while generating the outfit',
+                                'An error occurred while creating the outfit',
                             noEventType: 'Please select an event type',
                             noLocation: 'Please specify your location',
                             noGender: 'Please specify your gender'

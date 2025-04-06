@@ -15,18 +15,21 @@ export const useOutfitRequest = () => {
 
     const { selectedEventType } = useEventStore();
     const { profile } = useUserProfileStore();
-    const { currentResponse, setCurrentResponse } = useOutfitResponseStore();
+    const { aiResponse, standardResponse, setAiResponse, setStandardResponse } =
+        useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
+    const standardHardcodedResponse =
+        'Стандартный образ: черные брюки, белая рубашка, классические туфли';
 
-    const generateOutfit = async () => {
+    const generateAiOutfit = async () => {
         setIsLoading(true);
         setError(null);
 
         try {
             const response = await mockRequest();
-            console.log('Response received:', response);
-            setCurrentResponse(response);
+            console.log('AI Response received:', response);
+            setAiResponse(response);
             return response;
         } catch (error) {
             setError(
@@ -34,7 +37,29 @@ export const useOutfitRequest = () => {
                     ? error.message
                     : t('Components.Features.OutfitRequestPanel.errors.generic')
             );
-            setCurrentResponse(null);
+            setAiResponse(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const generateStandardOutfit = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            // Здесь будет логика для стандартных образов
+            console.log('Generating standard outfit...');
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Имитация задержки
+            setStandardResponse(standardHardcodedResponse);
+            return standardHardcodedResponse;
+        } catch (error) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : t('Components.Features.OutfitRequestPanel.errors.generic')
+            );
+            setStandardResponse(null);
         } finally {
             setIsLoading(false);
         }
@@ -168,9 +193,12 @@ export const useOutfitRequest = () => {
 
     return {
         isLoading,
-        showText: !!currentResponse,
+        showText: !!(aiResponse || standardResponse),
         error,
-        generateOutfit,
-        hardcodedResponse: currentResponse || hardcodedResponse
+        generateAiOutfit,
+        generateStandardOutfit,
+        aiResponse,
+        standardResponse,
+        isFreePlan: profile?.plan === 'free'
     };
 };
