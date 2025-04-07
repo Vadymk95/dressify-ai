@@ -1,6 +1,9 @@
+import { Language } from '@/data/outfits/outfitGenerator';
 import { Weather } from '@/store/weatherStore';
+import { HeightUnit, WeightUnit } from '@/types/user';
 
 export interface OutfitRequestData {
+    lang: Language;
     event: {
         type: string;
         name: string;
@@ -14,7 +17,9 @@ export interface OutfitRequestData {
         stylePreference?: string[];
         age?: number;
         height?: number;
+        heightUnit?: HeightUnit;
         weight?: number;
+        weightUnit?: WeightUnit;
     };
     wardrobe?: {
         categories: {
