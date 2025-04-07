@@ -368,6 +368,43 @@ export function generateOutfitDescription(
     return description;
 }
 
+// Базовые аксессуары для разных типов событий
+function getEventAccessories(
+    eventType: BaseOutfit['event'],
+    language: Language
+): string[] {
+    const accessories = {
+        shopping: {
+            ru: ['рюкзак или сумка', 'кошелек'],
+            en: ['backpack or bag', 'wallet']
+        },
+        casualFriends: {
+            ru: ['сумка через плечо', 'часы'],
+            en: ['crossbody bag', 'watch']
+        },
+        dateNight: {
+            ru: ['элегантная сумка', 'часы', 'парфюм'],
+            en: ['elegant bag', 'watch', 'perfume']
+        },
+        workOffice: {
+            ru: ['портфель', 'часы', 'визитница'],
+            en: ['briefcase', 'watch', 'card holder']
+        }
+    };
+
+    if (!accessories[eventType]) {
+        console.error('Invalid event type:', eventType);
+        return [];
+    }
+
+    if (!accessories[eventType][language]) {
+        console.error('Invalid language:', language);
+        return [];
+    }
+
+    return accessories[eventType][language];
+}
+
 // Вспомогательная функция для получения информации о погоде
 function getWeatherInfo(
     weather: OutfitRequest['weather']
@@ -426,11 +463,29 @@ function getWeatherInfo(
 function adaptOutfitForWeather(
     outfit: BaseOutfit,
     weather: WeatherData,
-    lang: Language
+    lang: Language,
+    characteristics: {
+        height: number;
+        heightUnit: 'cm' | 'ft' | 'in';
+        weight: number;
+        weightUnit: 'kg' | 'lb';
+        age: number;
+    }
 ): BaseOutfit {
     const temp = weather.temp;
     const adaptedOutfit = { ...outfit };
     const isMale = outfit.gender === 'male';
+
+    // Определяем категории физических характеристик
+    const heightCategory = determineHeightCategory({
+        value: characteristics.height,
+        unit: characteristics.heightUnit
+    });
+    const weightCategory = determineWeightCategory({
+        value: characteristics.weight,
+        unit: characteristics.weightUnit
+    });
+    const ageCategory = determineAgeCategory(characteristics.age);
 
     // Определяем тип погоды
     const isRainy =
@@ -443,30 +498,256 @@ function adaptOutfitForWeather(
         weather.description.toLowerCase().includes('ветер') ||
         weather.description.toLowerCase().includes('wind');
 
-    // Базовые аксессуары для разных типов событий
-    const eventAccessories = {
-        shopping: {
-            ru: ['рюкзак или сумка', 'кошелек'],
-            en: ['backpack or bag', 'wallet']
+    // Вступительные фразы
+    const greetings = {
+        ru: [
+            'Готово! ',
+            'Вот что я подобрал: ',
+            'Думаю, тебе подойдет: ',
+            'Специально для тебя: ',
+            'У меня есть идея! '
+        ],
+        en: [
+            'Done! ',
+            "Here's what I picked: ",
+            'I think this will suit you: ',
+            'Specially for you: ',
+            'I have an idea! '
+        ]
+    };
+
+    const randomGreeting =
+        greetings[lang][Math.floor(Math.random() * greetings[lang].length)];
+
+    // Переформулированные рекомендации для роста
+    const heightRecommendations = {
+        short: {
+            add: {
+                ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт',
+                en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette'
+            }
         },
-        casualFriends: {
-            ru: ['сумка через плечо', 'часы'],
-            en: ['crossbody bag', 'watch']
-        },
-        dateNight: {
-            ru: ['элегантная сумка', 'часы', 'парфюм'],
-            en: ['elegant bag', 'watch', 'perfume']
-        },
-        workOffice: {
-            ru: ['портфель', 'часы', 'визитница'],
-            en: ['briefcase', 'watch', 'card holder']
+        tall: {
+            add: {
+                ru: 'обрати внимание на многослойность - это поможет сбалансировать пропорции',
+                en: 'pay attention to layering - it will help balance your proportions'
+            }
         }
     };
 
-    if (temp >= 25) {
+    // Переформулированные рекомендации для веса
+    const weightRecommendations = {
+        thin: {
+            add: {
+                ru: 'попробуй многослойные образы и объемные вещи - они добавят фактуры',
+                en: 'try layered looks and voluminous pieces - they will add texture'
+            }
+        },
+        heavy: {
+            add: {
+                ru: 'выбирай одежду с вертикальными линиями и структурированные вещи - они создадут гармоничный силуэт',
+                en: 'choose clothes with vertical lines and structured pieces - they will create a harmonious silhouette'
+            }
+        }
+    };
+
+    // Базовые рекомендации по физическим характеристикам
+    let physicalRecommendations = {
+        ru: [] as string[],
+        en: [] as string[]
+    };
+
+    // Добавляем рекомендации по росту
+    if (
+        heightCategory &&
+        heightCategory !== 'medium' &&
+        heightRecommendations[heightCategory]
+    ) {
+        physicalRecommendations.ru.push(
+            heightRecommendations[heightCategory].add.ru
+        );
+        physicalRecommendations.en.push(
+            heightRecommendations[heightCategory].add.en
+        );
+    }
+
+    // Добавляем рекомендации по весу
+    if (
+        weightCategory &&
+        weightCategory !== 'medium' &&
+        weightRecommendations[weightCategory]
+    ) {
+        physicalRecommendations.ru.push(
+            weightRecommendations[weightCategory].add.ru
+        );
+        physicalRecommendations.en.push(
+            weightRecommendations[weightCategory].add.en
+        );
+    }
+
+    // Добавляем рекомендации по возрасту
+    if (ageCategory && adaptationRules.age[ageCategory].add) {
+        physicalRecommendations.ru.push(
+            adaptationRules.age[ageCategory].add!.ru
+        );
+        physicalRecommendations.en.push(
+            adaptationRules.age[ageCategory].add!.en
+        );
+    }
+
+    // Варианты одежды для разной погоды
+    const clothingVariants = {
+        cold: {
+            male: {
+                tops: {
+                    ru: [
+                        'свитер с пальто',
+                        'водолазка с пальто',
+                        'джемпер с пальто',
+                        'свитер с шерстяным пальто'
+                    ],
+                    en: [
+                        'sweater with coat',
+                        'turtleneck with coat',
+                        'jumper with coat',
+                        'sweater with wool coat'
+                    ]
+                },
+                bottoms: {
+                    ru: [
+                        'брюки',
+                        'шерстяные брюки',
+                        'классические брюки',
+                        'темные брюки'
+                    ],
+                    en: ['pants', 'wool pants', 'classic pants', 'dark pants']
+                },
+                shoes: {
+                    ru: [
+                        'туфли',
+                        'кожаные туфли',
+                        'классические туфли',
+                        'утепленные туфли'
+                    ],
+                    en: [
+                        'shoes',
+                        'leather shoes',
+                        'classic shoes',
+                        'warm shoes'
+                    ]
+                }
+            },
+            female: {
+                tops: {
+                    ru: [
+                        'свитер с пальто',
+                        'водолазка с пальто',
+                        'джемпер с пальто',
+                        'свитер с шерстяным пальто'
+                    ],
+                    en: [
+                        'sweater with coat',
+                        'turtleneck with coat',
+                        'jumper with coat',
+                        'sweater with wool coat'
+                    ]
+                },
+                bottoms: {
+                    ru: [
+                        'юбка с теплыми колготками',
+                        'брюки',
+                        'шерстяная юбка с колготками',
+                        'теплые брюки'
+                    ],
+                    en: [
+                        'skirt with warm tights',
+                        'pants',
+                        'wool skirt with tights',
+                        'warm pants'
+                    ]
+                },
+                shoes: {
+                    ru: [
+                        'ботинки',
+                        'кожаные ботинки',
+                        'утепленные ботинки',
+                        'зимние ботинки'
+                    ],
+                    en: ['boots', 'leather boots', 'warm boots', 'winter boots']
+                }
+            }
+        }
+    };
+
+    // Дополнительные аксессуары по типу события
+    const eventExtraAccessories = {
+        dateNight: {
+            ru: ['парфюм', 'часы', 'кольцо', 'запонки', 'браслет', 'ремень'],
+            en: ['perfume', 'watch', 'ring', 'cufflinks', 'bracelet', 'belt']
+        },
+        workOffice: {
+            ru: ['ежедневник', 'визитница', 'портфель', 'часы', 'ремень'],
+            en: ['planner', 'card holder', 'briefcase', 'watch', 'belt']
+        },
+        casualFriends: {
+            ru: ['часы', 'шарф', 'перчатки', 'сумка через плечо'],
+            en: ['watch', 'scarf', 'gloves', 'crossbody bag']
+        },
+        shopping: {
+            ru: ['рюкзак', 'сумка', 'кошелек', 'часы'],
+            en: ['backpack', 'bag', 'wallet', 'watch']
+        }
+    };
+
+    // Функция для случайного выбора элементов
+    const getRandomItems = (arr: string[], count: number = 1): string[] => {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    };
+
+    if (temp <= 10) {
+        // Холодная погода
+        const gender = isMale ? 'male' : 'female';
+        const variants = clothingVariants.cold[gender];
+
+        // Базовые аксессуары для холодной погоды
+        let accessories = ['шапка', 'перчатки'];
+        if (isSnowy) {
+            accessories.push('шарф');
+        } else if (isRainy) {
+            accessories.push('зонт');
+        }
+
+        // Добавляем 2-3 случайных аксессуара для события
+        const extraAccessories = getRandomItems(
+            eventExtraAccessories[outfit.event].ru,
+            Math.floor(Math.random() * 2) + 2
+        );
+        accessories.push(...extraAccessories);
+
+        adaptedOutfit.coreItems = {
+            ...outfit.coreItems,
+            top: {
+                ru: getRandomItems(variants.tops.ru)[0],
+                en: getRandomItems(variants.tops.en)[0]
+            },
+            bottom: {
+                ru: getRandomItems(variants.bottoms.ru)[0],
+                en: getRandomItems(variants.bottoms.en)[0]
+            },
+            shoes: {
+                ru: getRandomItems(variants.shoes.ru)[0],
+                en: getRandomItems(variants.shoes.en)[0]
+            },
+            accessories: {
+                ru: accessories,
+                en: accessories.map((acc) => acc) // Здесь нужно добавить перевод
+            }
+        };
+    } else if (temp >= 25) {
         // Жаркая погода
         const accessories = [
-            ...eventAccessories[outfit.event][lang],
+            ...getEventAccessories(outfit.event, lang),
             'солнцезащитные очки',
             'головной убор'
         ];
@@ -558,7 +839,7 @@ function adaptOutfitForWeather(
         }
     } else if (temp >= 15) {
         // Умеренная погода
-        let accessories = [...eventAccessories[outfit.event][lang]];
+        let accessories = [...getEventAccessories(outfit.event, lang)];
 
         if (isRainy) {
             accessories.push('зонт');
@@ -651,105 +932,6 @@ function adaptOutfitForWeather(
                 }
             };
         }
-    } else if (temp <= 10) {
-        // Холодная погода
-        let accessories = [
-            ...eventAccessories[outfit.event][lang],
-            'шапка',
-            'перчатки'
-        ];
-
-        if (isSnowy) {
-            accessories.push('шарф');
-        } else if (isRainy) {
-            accessories.push('зонт');
-        }
-
-        if (outfit.event === 'shopping') {
-            adaptedOutfit.coreItems = {
-                ...outfit.coreItems,
-                top: {
-                    ru: isMale ? 'свитшот с курткой' : 'свитшот с курткой',
-                    en: isMale
-                        ? 'sweatshirt with jacket'
-                        : 'sweatshirt with jacket'
-                },
-                bottom: {
-                    ru: isMale ? 'джинсы' : 'джинсы или теплые колготки',
-                    en: isMale ? 'jeans' : 'jeans or warm tights'
-                },
-                shoes: {
-                    ru: isMale ? 'кроссовки' : 'ботинки',
-                    en: isMale ? 'sneakers' : 'boots'
-                },
-                accessories: {
-                    ru: [...accessories, 'рюкзак'],
-                    en: [...accessories, 'backpack']
-                }
-            };
-        } else if (outfit.event === 'casualFriends') {
-            adaptedOutfit.coreItems = {
-                ...outfit.coreItems,
-                top: {
-                    ru: isMale ? 'свитшот с курткой' : 'свитер с курткой',
-                    en: isMale
-                        ? 'sweatshirt with jacket'
-                        : 'sweater with jacket'
-                },
-                bottom: {
-                    ru: isMale ? 'джинсы' : 'джинсы или теплые колготки',
-                    en: isMale ? 'jeans' : 'jeans or warm tights'
-                },
-                shoes: {
-                    ru: isMale ? 'кроссовки' : 'ботинки',
-                    en: isMale ? 'sneakers' : 'boots'
-                },
-                accessories: {
-                    ru: [...accessories, 'шарф'],
-                    en: [...accessories, 'scarf']
-                }
-            };
-        } else if (outfit.event === 'dateNight') {
-            adaptedOutfit.coreItems = {
-                ...outfit.coreItems,
-                top: {
-                    ru: isMale ? 'свитер с пальто' : 'свитер с пальто',
-                    en: isMale ? 'sweater with coat' : 'sweater with coat'
-                },
-                bottom: {
-                    ru: isMale ? 'брюки' : 'юбка или платье с колготками',
-                    en: isMale ? 'pants' : 'skirt or dress with tights'
-                },
-                shoes: {
-                    ru: isMale ? 'туфли' : 'ботинки',
-                    en: isMale ? 'shoes' : 'boots'
-                },
-                accessories: {
-                    ru: [...accessories, 'парфюм', 'кольцо'],
-                    en: [...accessories, 'perfume', 'ring']
-                }
-            };
-        } else if (outfit.event === 'workOffice') {
-            adaptedOutfit.coreItems = {
-                ...outfit.coreItems,
-                top: {
-                    ru: isMale ? 'свитер с пальто' : 'свитер с пальто',
-                    en: isMale ? 'sweater with coat' : 'sweater with coat'
-                },
-                bottom: {
-                    ru: isMale ? 'брюки' : 'юбка или брюки',
-                    en: isMale ? 'pants' : 'skirt or pants'
-                },
-                shoes: {
-                    ru: isMale ? 'туфли' : 'ботинки',
-                    en: isMale ? 'shoes' : 'boots'
-                },
-                accessories: {
-                    ru: [...accessories, 'ежедневник', 'визитница'],
-                    en: [...accessories, 'planner', 'card holder']
-                }
-            };
-        }
     }
 
     // Обновляем описание с учетом всех условий
@@ -760,10 +942,20 @@ function adaptOutfitForWeather(
 
     const weatherText =
         weatherConditions.length > 0 ? `, ${weatherConditions.join(', ')}` : '';
+    const physicalText = {
+        ru:
+            physicalRecommendations.ru.length > 0
+                ? `. Рекомендации: ${physicalRecommendations.ru.join('. ')}`
+                : '',
+        en:
+            physicalRecommendations.en.length > 0
+                ? `. Tips: ${physicalRecommendations.en.join('. ')}`
+                : ''
+    };
 
     adaptedOutfit.baseDescription = {
-        ru: `${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru}${weatherText}`,
-        en: `${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en}${weatherText}`
+        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru}${weatherText}${physicalText.ru}`,
+        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en}${weatherText}${physicalText.en}`
     };
 
     return adaptedOutfit;
@@ -780,10 +972,16 @@ export function generateOutfitResponse(request: OutfitRequest) {
         };
     }
 
-    // Адаптируем образ под погодные условия
+    // Адаптируем образ под погодные условия и физические характеристики
     const weatherData = request.weather.current || request.weather.manual;
     const adaptedOutfit = weatherData
-        ? adaptOutfitForWeather(outfit, weatherData, request.lang)
+        ? adaptOutfitForWeather(outfit, weatherData, request.lang, {
+              height: request.characteristics.height,
+              heightUnit: request.characteristics.heightUnit,
+              weight: request.characteristics.weight,
+              weightUnit: request.characteristics.weightUnit,
+              age: request.characteristics.age
+          })
         : outfit;
 
     const description = generateOutfitDescription(adaptedOutfit, request);

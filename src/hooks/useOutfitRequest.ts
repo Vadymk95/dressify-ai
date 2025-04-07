@@ -86,9 +86,18 @@ export const useOutfitRequest = () => {
 
     // Обновляем ответ при изменении языка
     useEffect(() => {
-        if (standardResponse) {
+        if (
+            standardResponse &&
+            profile?.lang &&
+            profile?.characteristics?.gender &&
+            profile?.characteristics?.age &&
+            profile?.characteristics?.height &&
+            profile?.characteristics?.heightUnit &&
+            profile?.characteristics?.weight &&
+            profile?.characteristics?.weightUnit
+        ) {
             const requestData = {
-                lang: profile?.lang as Language,
+                lang: profile.lang as Language,
                 event: {
                     type: selectedEventType as BaseOutfit['event'],
                     name: t(
@@ -96,15 +105,12 @@ export const useOutfitRequest = () => {
                     )
                 },
                 characteristics: {
-                    gender:
-                        (profile?.characteristics?.gender as
-                            | 'male'
-                            | 'female') || 'male',
-                    age: profile?.characteristics?.age || 25,
-                    height: profile?.characteristics?.height || 175,
-                    heightUnit: profile?.characteristics?.heightUnit || 'cm',
-                    weight: profile?.characteristics?.weight || 70,
-                    weightUnit: profile?.characteristics?.weightUnit || 'kg'
+                    gender: profile.characteristics.gender as 'male' | 'female',
+                    age: profile.characteristics.age,
+                    height: profile.characteristics.height,
+                    heightUnit: profile.characteristics.heightUnit,
+                    weight: profile.characteristics.weight,
+                    weightUnit: profile.characteristics.weightUnit
                 },
                 weather: {
                     current: isManualMode
@@ -240,6 +246,7 @@ export const useOutfitRequest = () => {
 
     const generateStandardOutfit = async () => {
         setError(null);
+        setStandardResponse(null); // Очищаем предыдущий ответ
 
         // Проверяем обязательные поля
         if (!checkRequiredFields()) {
