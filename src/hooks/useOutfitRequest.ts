@@ -320,11 +320,16 @@ export const useOutfitRequest = () => {
                     current: isManualMode
                         ? undefined
                         : (weatherToday as WeatherData),
+                    tomorrow: isManualMode
+                        ? undefined
+                        : (weatherTomorrow as WeatherData),
                     manual: isManualMode
                         ? (weatherManual as WeatherData)
                         : undefined
                 }
             };
+
+            console.log('REQUEST DATA', requestData);
 
             const response = generateOutfitResponse(requestData);
 

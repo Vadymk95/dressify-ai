@@ -347,9 +347,9 @@ export function findMatchingOutfit(request: OutfitRequest): BaseOutfit | null {
         return null;
     }
 
-    // Пока просто возвращаем первый подходящий образ
-    // В будущем можно добавить более сложную логику выбора
-    return matchingOutfits[0];
+    // Случайный выбор из подходящих образов
+    const randomIndex = Math.floor(Math.random() * matchingOutfits.length);
+    return matchingOutfits[randomIndex];
 }
 
 // Функция для генерации полного описания образа
@@ -423,10 +423,354 @@ function getWeatherInfo(
     };
 }
 
-// Функция для генерации полного ответа
+function adaptOutfitForWeather(
+    outfit: BaseOutfit,
+    weather: WeatherData,
+    lang: Language
+): BaseOutfit {
+    const temp = weather.temp;
+    const adaptedOutfit = { ...outfit };
+    const isMale = outfit.gender === 'male';
+
+    // Определяем тип погоды
+    const isRainy =
+        weather.description.toLowerCase().includes('дождь') ||
+        weather.description.toLowerCase().includes('rain');
+    const isSnowy =
+        weather.description.toLowerCase().includes('снег') ||
+        weather.description.toLowerCase().includes('snow');
+    const isWindy =
+        weather.description.toLowerCase().includes('ветер') ||
+        weather.description.toLowerCase().includes('wind');
+
+    // Базовые аксессуары для разных типов событий
+    const eventAccessories = {
+        shopping: {
+            ru: ['рюкзак или сумка', 'кошелек'],
+            en: ['backpack or bag', 'wallet']
+        },
+        casualFriends: {
+            ru: ['сумка через плечо', 'часы'],
+            en: ['crossbody bag', 'watch']
+        },
+        dateNight: {
+            ru: ['элегантная сумка', 'часы', 'парфюм'],
+            en: ['elegant bag', 'watch', 'perfume']
+        },
+        workOffice: {
+            ru: ['портфель', 'часы', 'визитница'],
+            en: ['briefcase', 'watch', 'card holder']
+        }
+    };
+
+    if (temp >= 25) {
+        // Жаркая погода
+        const accessories = [
+            ...eventAccessories[outfit.event][lang],
+            'солнцезащитные очки',
+            'головной убор'
+        ];
+
+        if (outfit.event === 'shopping') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'футболка' : 'топ или футболка',
+                    en: isMale ? 't-shirt' : 'top or t-shirt'
+                },
+                bottom: {
+                    ru: isMale ? 'шорты' : 'юбка или шорты',
+                    en: isMale ? 'shorts' : 'skirt or shorts'
+                },
+                shoes: {
+                    ru: isMale ? 'сандалии' : 'сандалии или босоножки',
+                    en: isMale ? 'sandals' : 'sandals or flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'бутылка воды'],
+                    en: [...accessories, 'water bottle']
+                }
+            };
+        } else if (outfit.event === 'casualFriends') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'футболка с принтом' : 'топ с принтом',
+                    en: isMale ? 'printed t-shirt' : 'printed top'
+                },
+                bottom: {
+                    ru: isMale ? 'шорты' : 'юбка или шорты',
+                    en: isMale ? 'shorts' : 'skirt or shorts'
+                },
+                shoes: {
+                    ru: isMale ? 'сандалии' : 'босоножки',
+                    en: isMale ? 'sandals' : 'sandals'
+                },
+                accessories: {
+                    ru: [...accessories, 'повязка на голову'],
+                    en: [...accessories, 'headband']
+                }
+            };
+        } else if (outfit.event === 'dateNight') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale
+                        ? 'рубашка из легкой ткани'
+                        : 'блузка из легкой ткани',
+                    en: isMale ? 'light fabric shirt' : 'light fabric blouse'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки чинос' : 'юбка или платье',
+                    en: isMale ? 'chinos' : 'skirt or dress'
+                },
+                shoes: {
+                    ru: isMale ? 'мокасины' : 'босоножки',
+                    en: isMale ? 'loafers' : 'sandals'
+                },
+                accessories: {
+                    ru: [...accessories, 'парфюм', 'браслет'],
+                    en: [...accessories, 'perfume', 'bracelet']
+                }
+            };
+        } else if (outfit.event === 'workOffice') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale
+                        ? 'рубашка из легкой ткани'
+                        : 'блузка из легкой ткани',
+                    en: isMale ? 'light fabric shirt' : 'light fabric blouse'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки чинос' : 'юбка или брюки',
+                    en: isMale ? 'chinos' : 'skirt or pants'
+                },
+                shoes: {
+                    ru: isMale ? 'мокасины' : 'балетки',
+                    en: isMale ? 'loafers' : 'flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'блокнот', 'ручка'],
+                    en: [...accessories, 'notebook', 'pen']
+                }
+            };
+        }
+    } else if (temp >= 15) {
+        // Умеренная погода
+        let accessories = [...eventAccessories[outfit.event][lang]];
+
+        if (isRainy) {
+            accessories.push('зонт');
+        } else if (isWindy) {
+            accessories.push('шапка');
+        }
+
+        if (outfit.event === 'shopping') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'футболка с ветровкой' : 'топ с ветровкой',
+                    en: isMale
+                        ? 't-shirt with windbreaker'
+                        : 'top with windbreaker'
+                },
+                bottom: {
+                    ru: isMale ? 'джинсы' : 'джинсы или юбка',
+                    en: isMale ? 'jeans' : 'jeans or skirt'
+                },
+                shoes: {
+                    ru: isMale ? 'кроссовки' : 'кроссовки или балетки',
+                    en: isMale ? 'sneakers' : 'sneakers or flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'рюкзак'],
+                    en: [...accessories, 'backpack']
+                }
+            };
+        } else if (outfit.event === 'casualFriends') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'футболка с джинсовкой' : 'топ с джинсовкой',
+                    en: isMale
+                        ? 't-shirt with denim jacket'
+                        : 'top with denim jacket'
+                },
+                bottom: {
+                    ru: isMale ? 'джинсы' : 'джинсы или юбка',
+                    en: isMale ? 'jeans' : 'jeans or skirt'
+                },
+                shoes: {
+                    ru: isMale ? 'кроссовки' : 'кроссовки или балетки',
+                    en: isMale ? 'sneakers' : 'sneakers or flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'кепка'],
+                    en: [...accessories, 'cap']
+                }
+            };
+        } else if (outfit.event === 'dateNight') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'рубашка с пиджаком' : 'блузка с жакетом',
+                    en: isMale ? 'shirt with blazer' : 'blouse with jacket'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки' : 'юбка или платье',
+                    en: isMale ? 'pants' : 'skirt or dress'
+                },
+                shoes: {
+                    ru: isMale ? 'туфли' : 'туфли или балетки',
+                    en: isMale ? 'shoes' : 'shoes or flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'парфюм', 'кольцо'],
+                    en: [...accessories, 'perfume', 'ring']
+                }
+            };
+        } else if (outfit.event === 'workOffice') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'рубашка с пиджаком' : 'блузка с жакетом',
+                    en: isMale ? 'shirt with blazer' : 'blouse with jacket'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки' : 'юбка или брюки',
+                    en: isMale ? 'pants' : 'skirt or pants'
+                },
+                shoes: {
+                    ru: isMale ? 'туфли' : 'туфли или балетки',
+                    en: isMale ? 'shoes' : 'shoes or flats'
+                },
+                accessories: {
+                    ru: [...accessories, 'ежедневник', 'визитница'],
+                    en: [...accessories, 'planner', 'card holder']
+                }
+            };
+        }
+    } else if (temp <= 10) {
+        // Холодная погода
+        let accessories = [
+            ...eventAccessories[outfit.event][lang],
+            'шапка',
+            'перчатки'
+        ];
+
+        if (isSnowy) {
+            accessories.push('шарф');
+        } else if (isRainy) {
+            accessories.push('зонт');
+        }
+
+        if (outfit.event === 'shopping') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'свитшот с курткой' : 'свитшот с курткой',
+                    en: isMale
+                        ? 'sweatshirt with jacket'
+                        : 'sweatshirt with jacket'
+                },
+                bottom: {
+                    ru: isMale ? 'джинсы' : 'джинсы или теплые колготки',
+                    en: isMale ? 'jeans' : 'jeans or warm tights'
+                },
+                shoes: {
+                    ru: isMale ? 'кроссовки' : 'ботинки',
+                    en: isMale ? 'sneakers' : 'boots'
+                },
+                accessories: {
+                    ru: [...accessories, 'рюкзак'],
+                    en: [...accessories, 'backpack']
+                }
+            };
+        } else if (outfit.event === 'casualFriends') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'свитшот с курткой' : 'свитер с курткой',
+                    en: isMale
+                        ? 'sweatshirt with jacket'
+                        : 'sweater with jacket'
+                },
+                bottom: {
+                    ru: isMale ? 'джинсы' : 'джинсы или теплые колготки',
+                    en: isMale ? 'jeans' : 'jeans or warm tights'
+                },
+                shoes: {
+                    ru: isMale ? 'кроссовки' : 'ботинки',
+                    en: isMale ? 'sneakers' : 'boots'
+                },
+                accessories: {
+                    ru: [...accessories, 'шарф'],
+                    en: [...accessories, 'scarf']
+                }
+            };
+        } else if (outfit.event === 'dateNight') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'свитер с пальто' : 'свитер с пальто',
+                    en: isMale ? 'sweater with coat' : 'sweater with coat'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки' : 'юбка или платье с колготками',
+                    en: isMale ? 'pants' : 'skirt or dress with tights'
+                },
+                shoes: {
+                    ru: isMale ? 'туфли' : 'ботинки',
+                    en: isMale ? 'shoes' : 'boots'
+                },
+                accessories: {
+                    ru: [...accessories, 'парфюм', 'кольцо'],
+                    en: [...accessories, 'perfume', 'ring']
+                }
+            };
+        } else if (outfit.event === 'workOffice') {
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: isMale ? 'свитер с пальто' : 'свитер с пальто',
+                    en: isMale ? 'sweater with coat' : 'sweater with coat'
+                },
+                bottom: {
+                    ru: isMale ? 'брюки' : 'юбка или брюки',
+                    en: isMale ? 'pants' : 'skirt or pants'
+                },
+                shoes: {
+                    ru: isMale ? 'туфли' : 'ботинки',
+                    en: isMale ? 'shoes' : 'boots'
+                },
+                accessories: {
+                    ru: [...accessories, 'ежедневник', 'визитница'],
+                    en: [...accessories, 'planner', 'card holder']
+                }
+            };
+        }
+    }
+
+    // Обновляем описание с учетом всех условий
+    let weatherConditions = [];
+    if (isRainy) weatherConditions.push('дождь');
+    if (isSnowy) weatherConditions.push('снег');
+    if (isWindy) weatherConditions.push('ветер');
+
+    const weatherText =
+        weatherConditions.length > 0 ? `, ${weatherConditions.join(', ')}` : '';
+
+    adaptedOutfit.baseDescription = {
+        ru: `${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru}${weatherText}`,
+        en: `${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en}${weatherText}`
+    };
+
+    return adaptedOutfit;
+}
+
 export function generateOutfitResponse(request: OutfitRequest) {
     const outfit = findMatchingOutfit(request);
-
     if (!outfit) {
         return {
             error:
@@ -436,16 +780,22 @@ export function generateOutfitResponse(request: OutfitRequest) {
         };
     }
 
-    const description = generateOutfitDescription(outfit, request);
+    // Адаптируем образ под погодные условия
+    const weatherData = request.weather.current || request.weather.manual;
+    const adaptedOutfit = weatherData
+        ? adaptOutfitForWeather(outfit, weatherData, request.lang)
+        : outfit;
+
+    const description = generateOutfitDescription(adaptedOutfit, request);
 
     return {
         outfit: {
             description,
             items: {
-                top: outfit.coreItems.top[request.lang],
-                bottom: outfit.coreItems.bottom[request.lang],
-                shoes: outfit.coreItems.shoes[request.lang],
-                accessories: outfit.coreItems.accessories[request.lang]
+                top: adaptedOutfit.coreItems.top[request.lang],
+                bottom: adaptedOutfit.coreItems.bottom[request.lang],
+                shoes: adaptedOutfit.coreItems.shoes[request.lang],
+                accessories: adaptedOutfit.coreItems.accessories[request.lang]
             },
             event: request.event.name
         }
