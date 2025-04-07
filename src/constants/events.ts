@@ -1,5 +1,5 @@
-export const events = {
-    types: {
+export const EVENT_TYPES = {
+    PREMIUM: {
         businessMeeting: 'businessMeeting',
         interview: 'interview',
         wedding: 'wedding',
@@ -24,7 +24,24 @@ export const events = {
         webinar: 'webinar',
         onlineInterview: 'onlineInterview',
         videoConference: 'videoConference'
+    },
+    FREE: {
+        casualFriends: 'casualFriends',
+        workOffice: 'workOffice',
+        dateNight: 'dateNight',
+        shopping: 'shopping'
     }
 } as const;
 
-export type EventType = keyof typeof events.types;
+export type PremiumEventType = keyof typeof EVENT_TYPES.PREMIUM;
+export type FreeEventType = keyof typeof EVENT_TYPES.FREE;
+export type EventType = PremiumEventType | FreeEventType;
+
+// Хелпер для проверки типа события
+export const isPremiumEvent = (event: EventType): event is PremiumEventType => {
+    return event in EVENT_TYPES.PREMIUM;
+};
+
+export const isFreeEvent = (event: EventType): event is FreeEventType => {
+    return event in EVENT_TYPES.FREE;
+};

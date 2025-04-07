@@ -519,26 +519,28 @@ export const en = {
                     plans: {
                         free: {
                             title: 'Basic',
-                            price: '$0 / month',
+                            price: '$ 0 / month',
                             feature1: 'Standard outfit generation',
                             feature2: 'Basic characteristics',
                             feature3: 'No wardrobe',
+                            feature4: 'Limited to 2 genders (male/female)',
+                            feature5: '4 basic event types',
                             cta: 'Free'
                         },
                         standard: {
                             title: 'Standard',
-                            price: '$3 / month',
+                            price: '$ 3 / month',
                             feature1: 'Standard outfits + AI assistant',
                             feature2: 'Up to 2 outfits per day',
                             feature3: 'Extended characteristics',
                             feature4: 'Up to 2 items per wardrobe category',
-                            feature5: 'Limited wardrobe categories',
+                            feature5: 'All event types and 3 gender options',
                             cta: 'Choose Plan',
                             currentPlan: 'Current Plan'
                         },
                         pro: {
                             title: 'Pro',
-                            price: '$5 / month',
+                            price: '$ 5 / month',
                             feature1: 'All Standard features',
                             feature2: 'Up to 5 outfits per day',
                             feature3: 'All characteristics available',

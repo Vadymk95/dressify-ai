@@ -44,7 +44,9 @@ const Pricing: FC = () => {
                         features={[
                             t('Pages.Pricing.plans.free.feature1'),
                             t('Pages.Pricing.plans.free.feature2'),
-                            t('Pages.Pricing.plans.free.feature3')
+                            t('Pages.Pricing.plans.free.feature3'),
+                            t('Pages.Pricing.plans.free.feature4'),
+                            t('Pages.Pricing.plans.free.feature5')
                         ]}
                         cta={t('Pages.Pricing.plans.free.cta')}
                         isActive={free}
