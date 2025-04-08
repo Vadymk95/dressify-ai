@@ -193,14 +193,23 @@ const determineHeightCategory = (
 };
 
 const determineWeightCategory = (
-    weight: OutfitGenerationParams['weight']
+    weight: OutfitGenerationParams['weight'],
+    gender: 'male' | 'female'
 ): keyof typeof adaptationRules.weight | null => {
+    // Конвертируем вес в килограммы
     const weightInKg =
         weight.unit === 'kg' ? weight.value : weight.value * 0.453592;
 
-    if (weightInKg < 60) return 'thin';
-    if (weightInKg > 80) return 'heavy';
-    return 'medium';
+    // Разные пороговые значения для мужчин и женщин
+    if (gender === 'male') {
+        if (weightInKg < 70) return 'thin';
+        if (weightInKg > 90) return 'heavy';
+        return 'medium';
+    } else {
+        if (weightInKg < 55) return 'thin';
+        if (weightInKg > 75) return 'heavy';
+        return 'medium';
+    }
 };
 
 const determineAgeCategory = (
@@ -247,7 +256,10 @@ export function generateOutfit(
     }
 
     // Применяем правила по весу
-    const weightCategory = determineWeightCategory(params.weight);
+    const weightCategory = determineWeightCategory(
+        params.weight,
+        params.gender
+    );
     if (weightCategory) {
         const weightRule = adaptationRules.weight[weightCategory];
         if (weightRule?.add) {
@@ -508,10 +520,13 @@ function adaptOutfitForWeather(
         value: characteristics.height,
         unit: characteristics.heightUnit
     });
-    const weightCategory = determineWeightCategory({
-        value: characteristics.weight,
-        unit: characteristics.weightUnit
-    });
+    const weightCategory = determineWeightCategory(
+        {
+            value: characteristics.weight,
+            unit: characteristics.weightUnit
+        },
+        outfit.gender
+    );
     const ageCategory = determineAgeCategory(characteristics.age);
 
     // Определяем тип погоды
@@ -664,7 +679,8 @@ function adaptOutfitForWeather(
         isSunny: boolean,
         isCold: boolean,
         isOvercast: boolean,
-        lang: Language
+        lang: Language,
+        weight: number
     ): string[] => {
         const accessories = [];
 
@@ -678,6 +694,15 @@ function adaptOutfitForWeather(
             isOvercast
         });
 
+        // Определяем весовую категорию
+        const weightCategory = determineWeightCategory(
+            {
+                value: weight,
+                unit: 'kg'
+            },
+            'male' // Используем 'male' как значение по умолчанию, так как это не влияет на аксессуары
+        );
+
         if (isSnowy) {
             accessories.push(
                 lang === 'ru' ? 'шапка' : 'hat',
@@ -685,16 +710,13 @@ function adaptOutfitForWeather(
             );
         }
 
-        // Добавляем только аксессуары, не погодные условия
         if (isRainy || isThunderstorm) {
             accessories.push(lang === 'ru' ? 'зонт' : 'umbrella');
         }
 
-        if (isCold) {
-            accessories.push(
-                lang === 'ru' ? 'шарф' : 'scarf',
-                lang === 'ru' ? 'перчатки' : 'gloves'
-            );
+        // Добавляем шарф только если холодно (ниже 15°C)
+        if (isCold && temp < 15) {
+            accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
             if (!isSunny) {
                 accessories.push(lang === 'ru' ? 'шапка' : 'hat');
             }
@@ -712,7 +734,6 @@ function adaptOutfitForWeather(
 
         // Пасмурная погода
         if (isOvercast && temp <= 15) {
-            // В пасмурную прохладную погоду добавляем шарф
             accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
         }
 
@@ -723,25 +744,32 @@ function adaptOutfitForWeather(
             }
         }
 
-        // Туманная погода
-        if (isFoggy && temp <= 15) {
-            if (!accessories.includes(lang === 'ru' ? 'шарф' : 'scarf')) {
-                accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
-            }
-        }
-
         // Жаркая погода
         if (isHot) {
-            if (
-                !accessories.includes(
-                    lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
-                )
-            ) {
-                accessories.push(
-                    lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
-                );
-            }
-            accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
+            accessories.push(
+                lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses',
+                lang === 'ru' ? 'головной убор' : 'hat'
+            );
+        }
+
+        // Туманная погода
+        if (isFoggy) {
+            accessories.push(
+                lang === 'ru'
+                    ? 'светоотражающие элементы'
+                    : 'reflective elements'
+            );
+        }
+
+        // Адаптация аксессуаров под вес
+        if (weightCategory === 'thin') {
+            // Для худых людей добавляем аксессуары, которые визуально увеличат объем
+            accessories.push(
+                lang === 'ru' ? 'сумка через плечо' : 'crossbody bag'
+            );
+        } else if (weightCategory === 'heavy') {
+            // Для полных людей выбираем более строгие аксессуары
+            accessories.push(lang === 'ru' ? 'часы' : 'watch');
         }
 
         console.log('Сформированные аксессуары:', accessories);
@@ -1378,10 +1406,13 @@ function adaptOutfitForWeather(
             unit: characteristics.heightUnit
         }),
         weight: characteristics.weight,
-        weightCategory: determineWeightCategory({
-            value: characteristics.weight,
-            unit: characteristics.weightUnit
-        }),
+        weightCategory: determineWeightCategory(
+            {
+                value: characteristics.weight,
+                unit: characteristics.weightUnit
+            },
+            outfit.gender
+        ),
         event: outfit.event,
         style: determineStyle(outfit.event),
         weather: {
@@ -1410,10 +1441,13 @@ function adaptOutfitForWeather(
             value: characteristics.height,
             unit: characteristics.heightUnit
         });
-        const weightCategory = determineWeightCategory({
-            value: characteristics.weight,
-            unit: characteristics.weightUnit
-        });
+        const weightCategory = determineWeightCategory(
+            {
+                value: characteristics.weight,
+                unit: characteristics.weightUnit
+            },
+            outfit.gender
+        );
         const ageCategory = determineAgeCategory(characteristics.age);
 
         // Применяем фильтры к вариантам одежды
@@ -1463,7 +1497,8 @@ function adaptOutfitForWeather(
                 isSunny,
                 isCold,
                 isOvercast,
-                lang
+                lang,
+                characteristics.weight
             ),
             ...getEventAccessories(outfit.event, lang),
             ...getRandomItems(
@@ -1526,10 +1561,13 @@ function adaptOutfitForWeather(
             value: characteristics.height,
             unit: characteristics.heightUnit
         });
-        const weightCategory = determineWeightCategory({
-            value: characteristics.weight,
-            unit: characteristics.weightUnit
-        });
+        const weightCategory = determineWeightCategory(
+            {
+                value: characteristics.weight,
+                unit: characteristics.weightUnit
+            },
+            outfit.gender
+        );
         const ageCategory = determineAgeCategory(characteristics.age);
 
         // Логирование выбранных категорий
@@ -1984,7 +2022,8 @@ function adaptOutfitForWeather(
             isSunny,
             isCold,
             isOvercast,
-            lang
+            lang,
+            characteristics.weight
         ),
         ...getEventAccessories(outfit.event, lang),
         ...getRandomItems(
