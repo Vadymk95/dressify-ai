@@ -1,3 +1,6 @@
+import { colorSchemes } from '@/data/outfits/constants/colorSchemes';
+import { eventExtraAccessories } from '@/data/outfits/constants/eventExtraAccessories';
+import { greetings } from '@/data/outfits/constants/greetings';
 import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
 import { deduplicateAccessories } from '@/data/outfits/utils/accessoryUtils';
 import { adaptationRules } from '@/data/outfits/utils/adaptationRules';
@@ -9,16 +12,12 @@ import {
 } from '@/data/outfits/utils/categoryDeterminers';
 import { clothingFilters } from '@/data/outfits/utils/clothingFilters';
 import { clothingVariants } from '@/data/outfits/utils/clothingVariants';
-import { colorSchemes } from '@/data/outfits/constants/colorSchemes';
-import { eventExtraAccessories } from '@/data/outfits/constants/eventExtraAccessories';
 import { filterClothing, getRandomItems } from '@/data/outfits/utils/helpers';
 import {
     heightRecommendations,
     weightRecommendations
 } from '@/data/outfits/utils/recommendations';
 import { getEventAccessories } from '@/data/outfits/utils/weatherAccessories';
-
-// Вспомогательная функция для получения информации о погоде
 
 export const adaptOutfitForWeather = (
     outfit: BaseOutfit,
@@ -81,24 +80,6 @@ export const adaptOutfitForWeather = (
         weather.description.toLowerCase().includes('облачно') ||
         weather.description.toLowerCase().includes('overcast') ||
         weather.description.toLowerCase().includes('cloudy');
-
-    // Вступительные фразы
-    const greetings = {
-        ru: [
-            'Готово! ',
-            'Вот что я подобрал: ',
-            'Думаю, тебе подойдет: ',
-            'Специально для тебя: ',
-            'У меня есть идея! '
-        ],
-        en: [
-            'Done! ',
-            "Here's what I picked: ",
-            'I think this will suit you: ',
-            'Specially for you: ',
-            'I have an idea! '
-        ]
-    };
 
     const randomGreeting =
         greetings[lang][Math.floor(Math.random() * greetings[lang].length)];
