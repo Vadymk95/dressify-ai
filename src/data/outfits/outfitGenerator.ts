@@ -1386,13 +1386,7 @@ function adaptOutfitForWeather(
             getRandomItems(variants.shoes[style].ru)[0];
         const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
 
-        // Формируем описание с цветовой схемой
-        adaptedOutfit.baseDescription = {
-            ru: `${randomGreeting}${selectedTop}, ${selectedBottom}, ${selectedShoes} ${selectedColorScheme}`,
-            en: `${randomGreeting}${getRandomItems(variants.tops[style].en)[0]}, ${getRandomItems(variants.bottoms[style].en)[0]}, ${getRandomItems(variants.shoes[style].en)[0]} ${getRandomItems(colorSchemes[style].en)[0]}`
-        };
-
-        // Добавляем аксессуары
+        // Получаем все аксессуары для образа
         const accessories = [
             ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy, lang),
             ...getRandomItems(
@@ -1400,6 +1394,11 @@ function adaptOutfitForWeather(
                 Math.floor(Math.random() * 2) + 1
             )
         ];
+
+        adaptedOutfit.baseDescription = {
+            ru: `${randomGreeting}${selectedTop}, ${selectedBottom}, ${selectedShoes} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}`,
+            en: `${randomGreeting}${getRandomItems(variants.tops[style].en)[0]}, ${getRandomItems(variants.bottoms[style].en)[0]}, ${getRandomItems(variants.shoes[style].en)[0]} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}`
+        };
 
         adaptedOutfit.coreItems = {
             ...outfit.coreItems,
@@ -1643,8 +1642,8 @@ function adaptOutfitForWeather(
         // Добавляем цветовую схему в описание
         const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
         adaptedOutfit.baseDescription = {
-            ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}`,
-            en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}`
+            ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}`,
+            en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}`
         };
     } else if (temp >= 25) {
         // Жаркая погода
@@ -1859,9 +1858,18 @@ function adaptOutfitForWeather(
     const style = determineStyle(outfit.event);
     const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
 
+    // Получаем аксессуары для образа
+    const accessories = [
+        ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy, lang),
+        ...getRandomItems(
+            eventExtraAccessories[outfit.event][lang],
+            Math.floor(Math.random() * 2) + 1
+        )
+    ];
+
     adaptedOutfit.baseDescription = {
-        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${weatherText}${physicalText.ru}`,
-        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${weatherText}${physicalText.en}`
+        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}${weatherText}${physicalText.ru}`,
+        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}${weatherText}${physicalText.en}`
     };
 
     return adaptedOutfit;
