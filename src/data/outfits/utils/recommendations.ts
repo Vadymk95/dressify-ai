@@ -1,3 +1,5 @@
+import { OutfitGenerationParams } from '@/data/outfits/types';
+
 // Переформулированные рекомендации для роста
 export const heightRecommendations = {
     short: {
@@ -41,3 +43,42 @@ export const weightRecommendations = {
         }
     }
 };
+
+export function generateRecommendations(
+    params: OutfitGenerationParams,
+    language: 'ru' | 'en'
+): string {
+    const recommendations: string[] = [];
+
+    // Добавляем рекомендации по цветам
+    if (params.colors === 'spring') {
+        recommendations.push(
+            language === 'ru'
+                ? 'Используйте пастельные тона'
+                : 'Use pastel tones'
+        );
+    } else {
+        recommendations.push(
+            language === 'ru'
+                ? 'Выбирайте насыщенные цвета'
+                : 'Choose rich colors'
+        );
+    }
+
+    // Добавляем рекомендации по стилю
+    if (params.style === 'casual') {
+        recommendations.push(
+            language === 'ru'
+                ? 'Отдавайте предпочтение расслабленным силуэтам'
+                : 'Prefer relaxed silhouettes'
+        );
+    } else {
+        recommendations.push(
+            language === 'ru'
+                ? 'Выбирайте структурированные вещи'
+                : 'Choose structured pieces'
+        );
+    }
+
+    return recommendations.join('. ');
+}

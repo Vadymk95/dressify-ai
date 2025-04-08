@@ -1,275 +1,26 @@
-import { baseOutfits } from '@/data/outfits/data/baseOutfits';
-import {
-    BaseOutfit,
-    Language,
-    OutfitGenerationParams,
-    OutfitRequest,
-    WeatherData
-} from '@/data/outfits/types';
+import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
+import { deduplicateAccessories } from '@/data/outfits/utils/accessoryUtils';
 import { adaptationRules } from '@/data/outfits/utils/adaptationRules';
+import {
+    determineAgeCategory,
+    determineHeightCategory,
+    determineStyle,
+    determineWeightCategory
+} from '@/data/outfits/utils/categoryDeterminers';
 import { clothingFilters } from '@/data/outfits/utils/clothingFilters';
 import { clothingVariants } from '@/data/outfits/utils/clothingVariants';
 import { colorSchemes } from '@/data/outfits/utils/colorSchemes';
 import { eventExtraAccessories } from '@/data/outfits/utils/eventExtraAccessories';
+import { filterClothing, getRandomItems } from '@/data/outfits/utils/helpers';
 import {
     heightRecommendations,
     weightRecommendations
 } from '@/data/outfits/utils/recommendations';
-import { weatherDescriptions } from '@/data/outfits/utils/weatherDescriptions';
-
-// Хелперы для определения категорий
-const determineHeightCategory = (
-    height: OutfitGenerationParams['height']
-): keyof typeof adaptationRules.height | null => {
-    const heightInCm =
-        height.unit === 'cm'
-            ? height.value
-            : height.unit === 'ft'
-              ? height.value * 30.48
-              : height.value * 2.54;
-
-    if (heightInCm < 165) return 'short';
-    if (heightInCm > 180) return 'tall';
-    return 'medium';
-};
-
-const determineWeightCategory = (
-    weight: OutfitGenerationParams['weight'],
-    gender: 'male' | 'female'
-): keyof typeof adaptationRules.weight | null => {
-    // Конвертируем вес в килограммы
-    const weightInKg =
-        weight.unit === 'kg' ? weight.value : weight.value * 0.453592;
-
-    // Разные пороговые значения для мужчин и женщин
-    if (gender === 'male') {
-        if (weightInKg < 70) return 'thin';
-        if (weightInKg > 90) return 'heavy';
-        return 'medium';
-    } else {
-        if (weightInKg < 55) return 'thin';
-        if (weightInKg > 75) return 'heavy';
-        return 'medium';
-    }
-};
-
-const determineAgeCategory = (
-    age: number
-): keyof typeof adaptationRules.age | null => {
-    if (age >= 18 && age <= 25) return 'young';
-    if (age >= 26 && age <= 40) return 'middle';
-    if (age >= 41 && age <= 60) return 'mature';
-    if (age >= 61 && age <= 120) return 'senior';
-    return null;
-};
-
-const determineWeatherCategory = (
-    weather: OutfitGenerationParams['weather']
-): keyof typeof adaptationRules.weather | null => {
-    if (weather.temperature <= 10) return 'cold';
-    if (weather.temperature >= 21) return 'warm';
-    return 'cool';
-};
-
-// Функция для определения стиля по событию
-const determineStyle = (event: string): 'formal' | 'casual' => {
-    return event === 'workOffice' || event === 'dateNight'
-        ? 'formal'
-        : 'casual';
-};
-
-// Функция генерации образа
-export function generateOutfit(
-    base: BaseOutfit,
-    params: OutfitGenerationParams,
-    language: 'ru' | 'en'
-) {
-    let description = base.baseDescription[language];
-    let items = { ...base.coreItems };
-
-    // Применяем правила по росту
-    const heightCategory = determineHeightCategory(params.height);
-    if (heightCategory) {
-        const heightRule = adaptationRules.height[heightCategory];
-        if (heightRule?.add) {
-            description += `, ${heightRule.add[language]}`;
-        }
-    }
-
-    // Применяем правила по весу
-    const weightCategory = determineWeightCategory(
-        params.weight,
-        params.gender
-    );
-    if (weightCategory) {
-        const weightRule = adaptationRules.weight[weightCategory];
-        if (weightRule?.add) {
-            description += `, ${weightRule.add[language]}`;
-        }
-    }
-
-    // Применяем правила по возрасту
-    const ageCategory = determineAgeCategory(params.age);
-    if (ageCategory) {
-        const ageRule = adaptationRules.age[ageCategory];
-        if (ageRule?.add) {
-            description += `, ${ageRule.add[language]}`;
-        }
-    }
-
-    // Применяем правила по погоде
-    const weatherCategory = determineWeatherCategory(params.weather);
-    if (weatherCategory) {
-        const weatherRule = adaptationRules.weather[weatherCategory];
-        if (weatherRule?.add) {
-            description += `, ${weatherRule.add[language]}`;
-        }
-    }
-
-    return {
-        description,
-        items,
-        recommendations: {
-            [language]: generateRecommendations(params, language)
-        }
-    };
-}
-
-// Функция для генерации рекомендаций
-function generateRecommendations(
-    params: OutfitGenerationParams,
-    language: 'ru' | 'en'
-): string {
-    const recommendations: string[] = [];
-
-    // Добавляем рекомендации по цветам
-    if (params.colors === 'spring') {
-        recommendations.push(
-            language === 'ru'
-                ? 'Используйте пастельные тона'
-                : 'Use pastel tones'
-        );
-    } else {
-        recommendations.push(
-            language === 'ru'
-                ? 'Выбирайте насыщенные цвета'
-                : 'Choose rich colors'
-        );
-    }
-
-    // Добавляем рекомендации по стилю
-    if (params.style === 'casual') {
-        recommendations.push(
-            language === 'ru'
-                ? 'Отдавайте предпочтение расслабленным силуэтам'
-                : 'Prefer relaxed silhouettes'
-        );
-    } else {
-        recommendations.push(
-            language === 'ru'
-                ? 'Выбирайте структурированные вещи'
-                : 'Choose structured pieces'
-        );
-    }
-
-    return recommendations.join('. ');
-}
-
-// Функция для поиска подходящего образа
-export function findMatchingOutfit(request: OutfitRequest): BaseOutfit | null {
-    // Фильтруем образы по полу и типу события
-    const matchingOutfits = baseOutfits.filter(
-        (outfit: BaseOutfit) =>
-            outfit.gender === request.characteristics.gender &&
-            outfit.event === request.event.type
-    );
-
-    if (matchingOutfits.length === 0) {
-        return null;
-    }
-
-    // Случайный выбор из подходящих образов
-    const randomIndex = Math.floor(Math.random() * matchingOutfits.length);
-    return matchingOutfits[randomIndex];
-}
-
-// Функция для генерации полного описания образа
-export function generateOutfitDescription(
-    outfit: BaseOutfit,
-    request: OutfitRequest
-): string {
-    let description = outfit.baseDescription[request.lang];
-
-    // Добавляем информацию о погоде
-    const weatherInfo = getWeatherInfo(request.weather);
-    if (weatherInfo) {
-        description += ` ${weatherInfo[request.lang]}`;
-    }
-
-    return description;
-}
-
-// Базовые аксессуары для разных типов событий
-function getEventAccessories(
-    eventType: BaseOutfit['event'],
-    language: Language
-): string[] {
-    const accessories = {
-        shopping: {
-            ru: ['рюкзак или сумка', 'кошелек'],
-            en: ['backpack or bag', 'wallet']
-        },
-        casualFriends: {
-            ru: ['сумка через плечо', 'часы'],
-            en: ['crossbody bag', 'watch']
-        },
-        dateNight: {
-            ru: ['элегантная сумка', 'часы', 'парфюм'],
-            en: ['elegant bag', 'watch', 'perfume']
-        },
-        workOffice: {
-            ru: ['портфель', 'часы', 'визитница'],
-            en: ['briefcase', 'watch', 'card holder']
-        }
-    };
-
-    if (!accessories[eventType]) {
-        console.error('Invalid event type:', eventType);
-        return [];
-    }
-
-    if (!accessories[eventType][language]) {
-        console.error('Invalid language:', language);
-        return [];
-    }
-
-    return accessories[eventType][language];
-}
+import { getEventAccessories } from '@/data/outfits/utils/weatherAccessories';
 
 // Вспомогательная функция для получения информации о погоде
-function getWeatherInfo(
-    weather: OutfitRequest['weather']
-): Record<Language, string> | null {
-    const weatherData = weather.current || weather.manual;
 
-    if (!weatherData) {
-        return null;
-    }
-
-    const temp = Math.round(weatherData.temp);
-
-    // Получаем описание на нужном языке
-    const description =
-        weatherDescriptions[weatherData.description]?.['en'] ||
-        weatherData.description;
-
-    return {
-        ru: `Погода: ${temp}°C, ${weatherData.description}`,
-        en: `Weather: ${temp}°C, ${description}`
-    };
-}
-
-function adaptOutfitForWeather(
+export const adaptOutfitForWeather = (
     outfit: BaseOutfit,
     weather: WeatherData,
     lang: Language,
@@ -280,7 +31,7 @@ function adaptOutfitForWeather(
         weightUnit: 'kg' | 'lb';
         age: number;
     }
-): BaseOutfit {
+): BaseOutfit => {
     const temp = weather.temp;
     const adaptedOutfit = { ...outfit };
     const isMale = outfit.gender === 'male';
@@ -489,30 +240,6 @@ function adaptOutfitForWeather(
         }
 
         return [...new Set(accessories)]; // Убираем дубликаты
-    };
-
-    // Функция для фильтрации одежды по правилам
-    const filterClothing = (
-        items: string[],
-        filters: { exclude?: string[]; include?: string[] }
-    ): string[] => {
-        return items.filter((item) => {
-            const shouldExclude = filters.exclude?.some((exclude) =>
-                item.toLowerCase().includes(exclude.toLowerCase())
-            );
-            const shouldInclude =
-                !filters.include ||
-                filters.include.some((include) =>
-                    item.toLowerCase().includes(include.toLowerCase())
-                );
-            return !shouldExclude && shouldInclude;
-        });
-    };
-
-    // Функция для случайного выбора элементов
-    const getRandomItems = (arr: string[], count: number = 1): string[] => {
-        const shuffled = [...arr].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
     };
 
     if (temp <= 5) {
@@ -1369,137 +1096,4 @@ function adaptOutfitForWeather(
     adaptedOutfit.baseDescription = description;
 
     return adaptedOutfit;
-}
-
-export function generateOutfitResponse(request: OutfitRequest) {
-    const outfit = findMatchingOutfit(request);
-    if (!outfit) {
-        return {
-            error:
-                request.lang === 'ru'
-                    ? 'Не удалось найти подходящий образ'
-                    : 'Could not find a matching outfit'
-        };
-    }
-
-    // Адаптируем образ под погодные условия и физические характеристики
-    const weatherData = request.weather.current || request.weather.manual;
-    const adaptedOutfit = weatherData
-        ? adaptOutfitForWeather(outfit, weatherData, request.lang, {
-              height: request.characteristics.height,
-              heightUnit: request.characteristics.heightUnit,
-              weight: request.characteristics.weight,
-              weightUnit: request.characteristics.weightUnit,
-              age: request.characteristics.age
-          })
-        : outfit;
-
-    const description = generateOutfitDescription(adaptedOutfit, request);
-
-    return {
-        outfit: {
-            description,
-            items: {
-                top: adaptedOutfit.coreItems.top[request.lang],
-                bottom: adaptedOutfit.coreItems.bottom[request.lang],
-                shoes: adaptedOutfit.coreItems.shoes[request.lang],
-                accessories: adaptedOutfit.coreItems.accessories[request.lang]
-            },
-            event: request.event.name
-        }
-    };
-}
-
-// Функция для удаления дубликатов и похожих аксессуаров
-function deduplicateAccessories(accessories: string[]): string[] {
-    const result: string[] = [];
-    const lowercased: string[] = [];
-
-    // Список слов, которые могут пересекаться
-    const similarItems: Record<string, string[]> = {
-        рюкзак: ['сумка', 'рюкзак или сумка', 'сумка через плечо'],
-        сумка: ['рюкзак', 'рюкзак или сумка', 'сумка через плечо'],
-        'сумка через плечо': ['сумка', 'рюкзак', 'рюкзак или сумка'],
-        шапка: ['теплая шапка', 'головной убор'],
-        перчатки: ['теплые перчатки'],
-        шарф: ['теплый шарф', 'утепленный шарф'],
-        backpack: ['bag', 'backpack or bag', 'crossbody bag'],
-        bag: ['backpack', 'backpack or bag', 'crossbody bag'],
-        'crossbody bag': ['bag', 'backpack', 'backpack or bag'],
-        hat: ['warm hat', 'headwear'],
-        gloves: ['warm gloves'],
-        scarf: ['warm scarf', 'insulated scarf']
-    };
-
-    // Приоритетные аксессуары, которые сохраняются вместо более общих
-    const priorities: Record<string, string[]> = {
-        'сумка через плечо': ['сумка'],
-        'crossbody bag': ['bag']
-    };
-
-    // Проверяем наличие приоритетных аксессуаров
-    const hasPriorityItems = new Map<string, string>();
-    for (const acc of accessories) {
-        const lowerAcc = acc.toLowerCase();
-
-        for (const [priority, general] of Object.entries(priorities)) {
-            if (lowerAcc === priority.toLowerCase()) {
-                for (const gen of general) {
-                    hasPriorityItems.set(gen.toLowerCase(), priority);
-                }
-            }
-        }
-    }
-
-    // Проверяем каждый аксессуар
-    for (const acc of accessories) {
-        const lowerAcc = acc.toLowerCase();
-
-        // Проверяем, не является ли этот аксессуар менее приоритетным
-        let isLowPriority = false;
-        for (const general of hasPriorityItems.keys()) {
-            if (lowerAcc === general) {
-                isLowPriority = true;
-                break;
-            }
-        }
-
-        if (isLowPriority) {
-            continue;
-        }
-
-        // Проверяем, не содержится ли уже этот аксессуар или похожий
-        let isDuplicate = false;
-
-        // Проверяем точные дубликаты
-        if (lowercased.includes(lowerAcc)) {
-            isDuplicate = true;
-        } else {
-            // Проверяем похожие элементы
-            for (const [key, synonyms] of Object.entries(similarItems)) {
-                if (lowerAcc.includes(key.toLowerCase())) {
-                    // Проверяем, есть ли уже синонимы в результате
-                    for (const synonym of synonyms) {
-                        if (
-                            lowercased.some((item) =>
-                                item.includes(synonym.toLowerCase())
-                            )
-                        ) {
-                            isDuplicate = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (isDuplicate) break;
-            }
-        }
-
-        if (!isDuplicate) {
-            result.push(acc);
-            lowercased.push(lowerAcc);
-        }
-    }
-
-    return result;
-}
+};
