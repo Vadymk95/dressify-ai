@@ -209,6 +209,13 @@ const determineWeatherCategory = (
     return 'cool';
 };
 
+// Функция для определения стиля по событию
+const determineStyle = (event: string): 'formal' | 'casual' => {
+    return event === 'workOffice' || event === 'dateNight'
+        ? 'formal'
+        : 'casual';
+};
+
 // Функция генерации образа
 export function generateOutfit(
     base: BaseOutfit,
@@ -523,14 +530,20 @@ function adaptOutfitForWeather(
     const heightRecommendations = {
         short: {
             add: {
-                ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт',
-                en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette'
+                ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт. Избегай объемных вещей и многослойности',
+                en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette. Avoid voluminous items and layering'
+            }
+        },
+        medium: {
+            add: {
+                ru: 'сбалансируй пропорции с помощью правильно подобранной длины и структуры одежды',
+                en: 'balance proportions with properly chosen clothing length and structure'
             }
         },
         tall: {
             add: {
-                ru: 'обрати внимание на многослойность - это поможет сбалансировать пропорции',
-                en: 'pay attention to layering - it will help balance your proportions'
+                ru: 'обрати внимание на многослойность и структурированные вещи - это поможет сбалансировать пропорции и создать гармоничный силуэт',
+                en: 'pay attention to layering and structured pieces - this will help balance your proportions and create a harmonious silhouette'
             }
         }
     };
@@ -539,14 +552,20 @@ function adaptOutfitForWeather(
     const weightRecommendations = {
         thin: {
             add: {
-                ru: 'попробуй многослойные образы и объемные вещи - они добавят фактуры',
-                en: 'try layered looks and voluminous pieces - they will add texture'
+                ru: 'попробуй многослойные образы и объемные вещи - они добавят фактуры и визуально увеличат объем',
+                en: 'try layered looks and voluminous pieces - they will add texture and visually increase volume'
+            }
+        },
+        medium: {
+            add: {
+                ru: 'сбалансируй силуэт с помощью правильно подобранных пропорций и структуры одежды',
+                en: 'balance your silhouette with properly chosen proportions and clothing structure'
             }
         },
         heavy: {
             add: {
-                ru: 'выбирай одежду с вертикальными линиями и структурированные вещи - они создадут гармоничный силуэт',
-                en: 'choose clothes with vertical lines and structured pieces - they will create a harmonious silhouette'
+                ru: 'выбирай одежду с вертикальными линиями, структурированные вещи и избегай объемных элементов - это создаст стройный силуэт',
+                en: 'choose clothes with vertical lines, structured pieces and avoid voluminous elements - this will create a slimming silhouette'
             }
         }
     };
@@ -595,85 +614,583 @@ function adaptOutfitForWeather(
         );
     }
 
+    // Базовые аксессуары в зависимости от погоды
+    const getWeatherAccessories = (
+        temp: number,
+        isRainy: boolean,
+        isWindy: boolean,
+        isSnowy: boolean
+    ): string[] => {
+        const accessories = [];
+
+        if (temp <= 0) {
+            accessories.push('шапка', 'перчатки', 'шарф');
+        } else if (temp <= 5) {
+            accessories.push('шапка', 'перчатки');
+            if (isWindy || isSnowy) accessories.push('шарф');
+        } else if (temp <= 10) {
+            if (isWindy || isSnowy) accessories.push('шарф');
+            if (isWindy) accessories.push('шапка');
+        }
+
+        if (isRainy) accessories.push('зонт');
+
+        return accessories;
+    };
+
+    // Цветовые схемы для разных стилей
+    const colorSchemes = {
+        formal: {
+            ru: [
+                'в классических темных тонах',
+                'в благородных серых оттенках',
+                'в глубоком синем цвете',
+                'в элегантном черном',
+                'в теплых коричневых тонах'
+            ],
+            en: [
+                'in classic dark tones',
+                'in noble grey shades',
+                'in deep blue',
+                'in elegant black',
+                'in warm brown tones'
+            ]
+        },
+        casual: {
+            ru: [
+                'в стильных монохромных тонах',
+                'в контрастных сочетаниях',
+                'в базовых нейтральных цветах',
+                'в современных урбан-оттенках',
+                'в минималистичной палитре'
+            ],
+            en: [
+                'in stylish monochrome tones',
+                'in contrasting combinations',
+                'in basic neutral colors',
+                'in modern urban shades',
+                'in minimalist palette'
+            ]
+        }
+    };
+
+    // Правила фильтрации одежды
+    const clothingFilters = {
+        temperature: {
+            hot: {
+                exclude: [
+                    'пуховик',
+                    'пальто',
+                    'шерстяной',
+                    'утепленный',
+                    'дутый'
+                ],
+                include: ['легкий', 'хлопковый', 'льняной']
+            },
+            cold: {
+                exclude: ['шорты', 'сандалии', 'босоножки', 'майка'],
+                include: ['утепленный', 'шерстяной', 'дутый']
+            }
+        },
+        height: {
+            short: {
+                exclude: ['длинный', 'объемный', 'многослойный'],
+                include: ['укороченный', 'приталенный']
+            },
+            medium: {
+                exclude: [],
+                include: []
+            },
+            tall: {
+                exclude: ['укороченный'],
+                include: ['длинный', 'структурированный']
+            }
+        },
+        weight: {
+            thin: {
+                exclude: ['приталенный', 'облегающий'],
+                include: ['объемный', 'многослойный']
+            },
+            medium: {
+                exclude: [],
+                include: []
+            },
+            heavy: {
+                exclude: ['объемный', 'горизонтальные полосы'],
+                include: ['приталенный', 'вертикальные линии']
+            }
+        },
+        age: {
+            young: {
+                exclude: ['классический', 'элегантный'],
+                include: ['молодежный', 'трендовый']
+            },
+            middle: {
+                exclude: [],
+                include: []
+            },
+            adult: {
+                exclude: ['молодежный', 'трендовый'],
+                include: ['классический', 'элегантный']
+            }
+        },
+        event: {
+            workOffice: {
+                exclude: ['джинсы', 'кроссовки', 'футболка'],
+                include: ['брюки', 'рубашка', 'пиджак']
+            },
+            dateNight: {
+                exclude: ['спортивный', 'повседневный'],
+                include: ['элегантный', 'стильный']
+            },
+            casualFriends: {
+                exclude: ['формальный', 'строгий'],
+                include: ['повседневный', 'комфортный']
+            },
+            shopping: {
+                exclude: ['формальный', 'строгий'],
+                include: ['удобный', 'практичный']
+            }
+        }
+    };
+
+    // Функция для фильтрации одежды по правилам
+    const filterClothing = (
+        items: string[],
+        filters: { exclude?: string[]; include?: string[] }
+    ): string[] => {
+        return items.filter((item) => {
+            const shouldExclude = filters.exclude?.some((exclude) =>
+                item.toLowerCase().includes(exclude.toLowerCase())
+            );
+            const shouldInclude =
+                !filters.include ||
+                filters.include.some((include) =>
+                    item.toLowerCase().includes(include.toLowerCase())
+                );
+            return !shouldExclude && shouldInclude;
+        });
+    };
+
     // Варианты одежды для разной погоды
     const clothingVariants = {
         cold: {
             male: {
                 tops: {
-                    ru: [
-                        'свитер с пальто',
-                        'водолазка с пальто',
-                        'джемпер с пальто',
-                        'свитер с шерстяным пальто'
-                    ],
-                    en: [
-                        'sweater with coat',
-                        'turtleneck with coat',
-                        'jumper with coat',
-                        'sweater with wool coat'
-                    ]
+                    formal: {
+                        ru: [
+                            'шерстяной свитер с пальто',
+                            'водолазка с шерстяным пальто',
+                            'джемпер с двубортным пальто',
+                            'свитер с утепленным тренчем',
+                            'водолазка с пальто'
+                        ],
+                        en: [
+                            'wool sweater with coat',
+                            'turtleneck with wool coat',
+                            'jumper with double-breasted coat',
+                            'sweater with insulated trench',
+                            'turtleneck with coat'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'свитер с пуховиком',
+                            'худи с утепленной курткой',
+                            'свитшот с дутой курткой',
+                            'джемпер с зимней курткой',
+                            'толстовка с пуховиком'
+                        ],
+                        en: [
+                            'sweater with down jacket',
+                            'hoodie with padded jacket',
+                            'sweatshirt with puffer jacket',
+                            'jumper with winter jacket',
+                            'sweatshirt with down jacket'
+                        ]
+                    }
                 },
                 bottoms: {
-                    ru: [
-                        'брюки',
-                        'шерстяные брюки',
-                        'классические брюки',
-                        'темные брюки'
-                    ],
-                    en: ['pants', 'wool pants', 'classic pants', 'dark pants']
+                    formal: {
+                        ru: [
+                            'прямые брюки',
+                            'классические брюки',
+                            'брюки со стрелками',
+                            'шерстяные брюки',
+                            'брюки чинос'
+                        ],
+                        en: [
+                            'straight pants',
+                            'classic trousers',
+                            'creased pants',
+                            'wool trousers',
+                            'chinos'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'джинсы',
+                            'брюки чинос',
+                            'брюки карго',
+                            'джоггеры',
+                            'прямые брюки'
+                        ],
+                        en: [
+                            'jeans',
+                            'chinos',
+                            'cargo pants',
+                            'joggers',
+                            'straight pants'
+                        ]
+                    }
                 },
                 shoes: {
-                    ru: [
-                        'туфли',
-                        'кожаные туфли',
-                        'классические туфли',
-                        'утепленные туфли'
-                    ],
-                    en: [
-                        'shoes',
-                        'leather shoes',
-                        'classic shoes',
-                        'warm shoes'
-                    ]
+                    formal: {
+                        ru: [
+                            'кожаные оксфорды',
+                            'классические дерби',
+                            'кожаные лоферы',
+                            'замшевые ботинки',
+                            'челси'
+                        ],
+                        en: [
+                            'leather oxfords',
+                            'classic derbies',
+                            'leather loafers',
+                            'suede boots',
+                            'chelsea boots'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'кожаные кроссовки',
+                            'замшевые кеды',
+                            'ботинки на шнуровке',
+                            'слипоны',
+                            'кеды'
+                        ],
+                        en: [
+                            'leather sneakers',
+                            'suede sneakers',
+                            'lace-up boots',
+                            'slip-ons',
+                            'canvas shoes'
+                        ]
+                    }
                 }
             },
             female: {
                 tops: {
-                    ru: [
-                        'свитер с пальто',
-                        'водолазка с пальто',
-                        'джемпер с пальто',
-                        'свитер с шерстяным пальто'
-                    ],
-                    en: [
-                        'sweater with coat',
-                        'turtleneck with coat',
-                        'jumper with coat',
-                        'sweater with wool coat'
-                    ]
+                    formal: {
+                        ru: [
+                            'блузка с тренчем',
+                            'джемпер с легким пальто',
+                            'водолазка с жакетом',
+                            'блузка с кардиганом',
+                            'свитер с блейзером'
+                        ],
+                        en: [
+                            'blouse with trench coat',
+                            'jumper with light coat',
+                            'turtleneck with jacket',
+                            'blouse with cardigan',
+                            'sweater with blazer'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'футболка с джинсовой курткой',
+                            'лонгслив с кожаной курткой',
+                            'свитшот с ветровкой',
+                            'футболка с бомбером',
+                            'худи с легкой курткой'
+                        ],
+                        en: [
+                            't-shirt with denim jacket',
+                            'longsleeve with leather jacket',
+                            'sweatshirt with windbreaker',
+                            't-shirt with bomber',
+                            'hoodie with light jacket'
+                        ]
+                    }
                 },
                 bottoms: {
-                    ru: [
-                        'юбка с теплыми колготками',
-                        'брюки',
-                        'шерстяная юбка с колготками',
-                        'теплые брюки'
-                    ],
-                    en: [
-                        'skirt with warm tights',
-                        'pants',
-                        'wool skirt with tights',
-                        'warm pants'
-                    ]
+                    formal: {
+                        ru: [
+                            'прямые брюки',
+                            'юбка-карандаш',
+                            'классические брюки',
+                            'плиссированная юбка',
+                            'брюки со стрелками'
+                        ],
+                        en: [
+                            'straight pants',
+                            'pencil skirt',
+                            'classic trousers',
+                            'pleated skirt',
+                            'creased pants'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'джинсы',
+                            'брюки чинос',
+                            'трикотажная юбка',
+                            'джинсовая юбка',
+                            'брюки карго'
+                        ],
+                        en: [
+                            'jeans',
+                            'chinos',
+                            'knit skirt',
+                            'denim skirt',
+                            'cargo pants'
+                        ]
+                    }
                 },
                 shoes: {
-                    ru: [
-                        'ботинки',
-                        'кожаные ботинки',
-                        'утепленные ботинки',
-                        'зимние ботинки'
-                    ],
-                    en: ['boots', 'leather boots', 'warm boots', 'winter boots']
+                    formal: {
+                        ru: [
+                            'кожаные ботильоны',
+                            'классические лоферы',
+                            'кожаные туфли',
+                            'замшевые ботинки',
+                            'челси на каблуке'
+                        ],
+                        en: [
+                            'leather ankle boots',
+                            'classic loafers',
+                            'leather shoes',
+                            'suede boots',
+                            'heeled chelsea boots'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'кожаные кроссовки',
+                            'замшевые кеды',
+                            'ботинки на шнуровке',
+                            'слипоны',
+                            'кеды'
+                        ],
+                        en: [
+                            'leather sneakers',
+                            'suede sneakers',
+                            'lace-up boots',
+                            'slip-ons',
+                            'canvas shoes'
+                        ]
+                    }
+                }
+            }
+        },
+        cool: {
+            male: {
+                tops: {
+                    formal: {
+                        ru: [
+                            'рубашка с тренчем',
+                            'джемпер с легким пальто',
+                            'водолазка с пиджаком',
+                            'рубашка с кардиганом',
+                            'свитер с блейзером'
+                        ],
+                        en: [
+                            'shirt with trench coat',
+                            'jumper with light coat',
+                            'turtleneck with blazer',
+                            'shirt with cardigan',
+                            'sweater with blazer'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'футболка с джинсовой курткой',
+                            'лонгслив с кожаной курткой',
+                            'свитшот с ветровкой',
+                            'футболка с бомбером',
+                            'худи с легкой курткой'
+                        ],
+                        en: [
+                            't-shirt with denim jacket',
+                            'longsleeve with leather jacket',
+                            'sweatshirt with windbreaker',
+                            't-shirt with bomber',
+                            'hoodie with light jacket'
+                        ]
+                    }
+                },
+                bottoms: {
+                    formal: {
+                        ru: [
+                            'прямые брюки',
+                            'классические брюки',
+                            'брюки со стрелками',
+                            'шерстяные брюки',
+                            'брюки чинос'
+                        ],
+                        en: [
+                            'straight pants',
+                            'classic trousers',
+                            'creased pants',
+                            'wool trousers',
+                            'chinos'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'джинсы',
+                            'брюки чинос',
+                            'брюки карго',
+                            'джоггеры',
+                            'прямые брюки'
+                        ],
+                        en: [
+                            'jeans',
+                            'chinos',
+                            'cargo pants',
+                            'joggers',
+                            'straight pants'
+                        ]
+                    }
+                },
+                shoes: {
+                    formal: {
+                        ru: [
+                            'кожаные оксфорды',
+                            'классические дерби',
+                            'кожаные лоферы',
+                            'замшевые ботинки',
+                            'челси'
+                        ],
+                        en: [
+                            'leather oxfords',
+                            'classic derbies',
+                            'leather loafers',
+                            'suede boots',
+                            'chelsea boots'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'кожаные кроссовки',
+                            'замшевые кеды',
+                            'ботинки на шнуровке',
+                            'слипоны',
+                            'кеды'
+                        ],
+                        en: [
+                            'leather sneakers',
+                            'suede sneakers',
+                            'lace-up boots',
+                            'slip-ons',
+                            'canvas shoes'
+                        ]
+                    }
+                }
+            },
+            female: {
+                tops: {
+                    formal: {
+                        ru: [
+                            'блузка с тренчем',
+                            'джемпер с легким пальто',
+                            'водолазка с жакетом',
+                            'блузка с кардиганом',
+                            'свитер с блейзером'
+                        ],
+                        en: [
+                            'blouse with trench coat',
+                            'jumper with light coat',
+                            'turtleneck with jacket',
+                            'blouse with cardigan',
+                            'sweater with blazer'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'футболка с джинсовой курткой',
+                            'лонгслив с кожаной курткой',
+                            'свитшот с ветровкой',
+                            'футболка с бомбером',
+                            'худи с легкой курткой'
+                        ],
+                        en: [
+                            't-shirt with denim jacket',
+                            'longsleeve with leather jacket',
+                            'sweatshirt with windbreaker',
+                            't-shirt with bomber',
+                            'hoodie with light jacket'
+                        ]
+                    }
+                },
+                bottoms: {
+                    formal: {
+                        ru: [
+                            'прямые брюки',
+                            'юбка-карандаш',
+                            'классические брюки',
+                            'плиссированная юбка',
+                            'брюки со стрелками'
+                        ],
+                        en: [
+                            'straight pants',
+                            'pencil skirt',
+                            'classic trousers',
+                            'pleated skirt',
+                            'creased pants'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'джинсы',
+                            'брюки чинос',
+                            'трикотажная юбка',
+                            'джинсовая юбка',
+                            'брюки карго'
+                        ],
+                        en: [
+                            'jeans',
+                            'chinos',
+                            'knit skirt',
+                            'denim skirt',
+                            'cargo pants'
+                        ]
+                    }
+                },
+                shoes: {
+                    formal: {
+                        ru: [
+                            'кожаные ботильоны',
+                            'классические лоферы',
+                            'кожаные туфли',
+                            'замшевые ботинки',
+                            'челси на каблуке'
+                        ],
+                        en: [
+                            'leather ankle boots',
+                            'classic loafers',
+                            'leather shoes',
+                            'suede boots',
+                            'heeled chelsea boots'
+                        ]
+                    },
+                    casual: {
+                        ru: [
+                            'кожаные кроссовки',
+                            'замшевые кеды',
+                            'ботинки на шнуровке',
+                            'слипоны',
+                            'кеды'
+                        ],
+                        en: [
+                            'leather sneakers',
+                            'suede sneakers',
+                            'lace-up boots',
+                            'slip-ons',
+                            'canvas shoes'
+                        ]
+                    }
                 }
             }
         }
@@ -705,17 +1222,164 @@ function adaptOutfitForWeather(
         return shuffled.slice(0, count);
     };
 
-    if (temp <= 10) {
-        // Холодная погода
-        const gender = isMale ? 'male' : 'female';
-        const variants = clothingVariants.cold[gender];
+    // Логирование параметров
+    console.log('Генерация образа для:', {
+        gender: isMale ? 'male' : 'female',
+        age: characteristics.age,
+        ageCategory: determineAgeCategory(characteristics.age),
+        height: characteristics.height,
+        heightCategory: determineHeightCategory({
+            value: characteristics.height,
+            unit: characteristics.heightUnit
+        }),
+        weight: characteristics.weight,
+        weightCategory: determineWeightCategory({
+            value: characteristics.weight,
+            unit: characteristics.weightUnit
+        }),
+        event: outfit.event,
+        style: determineStyle(outfit.event),
+        weather: {
+            temp,
+            isRainy,
+            isSnowy,
+            isWindy
+        }
+    });
 
-        // Базовые аксессуары для холодной погоды
+    if (temp <= 5) {
+        // Холодная погода (ниже +5)
+        const gender = isMale ? 'male' : 'female';
+        const style: 'formal' | 'casual' = determineStyle(outfit.event);
+        const variants = clothingVariants.cold[gender] as {
+            tops: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
+            bottoms: Record<
+                'formal' | 'casual',
+                { ru: string[]; en: string[] }
+            >;
+            shoes: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
+        };
+
+        // Определяем категории
+        const heightCategory = determineHeightCategory({
+            value: characteristics.height,
+            unit: characteristics.heightUnit
+        });
+        const weightCategory = determineWeightCategory({
+            value: characteristics.weight,
+            unit: characteristics.weightUnit
+        });
+        const ageCategory = determineAgeCategory(characteristics.age);
+
+        // Применяем фильтры к вариантам одежды
+        let topOptions = filterClothing(variants.tops[style].ru, {
+            ...clothingFilters.temperature.cold,
+            ...(heightCategory ? clothingFilters.height[heightCategory] : {}),
+            ...(weightCategory ? clothingFilters.weight[weightCategory] : {}),
+            ...(ageCategory ? clothingFilters.age[ageCategory] : {}),
+            ...clothingFilters.event[outfit.event]
+        });
+
+        let bottomOptions = filterClothing(variants.bottoms[style].ru, {
+            ...clothingFilters.temperature.cold,
+            ...(heightCategory ? clothingFilters.height[heightCategory] : {}),
+            ...(weightCategory ? clothingFilters.weight[weightCategory] : {}),
+            ...(ageCategory ? clothingFilters.age[ageCategory] : {}),
+            ...clothingFilters.event[outfit.event]
+        });
+
+        let shoesOptions = filterClothing(variants.shoes[style].ru, {
+            ...clothingFilters.temperature.cold,
+            ...(heightCategory ? clothingFilters.height[heightCategory] : {}),
+            ...(weightCategory ? clothingFilters.weight[weightCategory] : {}),
+            ...(ageCategory ? clothingFilters.age[ageCategory] : {}),
+            ...clothingFilters.event[outfit.event]
+        });
+
+        // Выбираем случайные элементы из отфильтрованных вариантов
+        const selectedTop =
+            getRandomItems(topOptions)[0] ||
+            getRandomItems(variants.tops[style].ru)[0];
+        const selectedBottom =
+            getRandomItems(bottomOptions)[0] ||
+            getRandomItems(variants.bottoms[style].ru)[0];
+        const selectedShoes =
+            getRandomItems(shoesOptions)[0] ||
+            getRandomItems(variants.shoes[style].ru)[0];
+        const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
+
+        // Формируем описание с цветовой схемой
+        adaptedOutfit.baseDescription = {
+            ru: `${randomGreeting}${selectedTop}, ${selectedBottom}, ${selectedShoes} ${selectedColorScheme}`,
+            en: `${randomGreeting}${getRandomItems(variants.tops[style].en)[0]}, ${getRandomItems(variants.bottoms[style].en)[0]}, ${getRandomItems(variants.shoes[style].en)[0]} ${getRandomItems(colorSchemes[style].en)[0]}`
+        };
+
+        // Добавляем аксессуары
+        const accessories = [
+            ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy),
+            ...getRandomItems(
+                eventExtraAccessories[outfit.event].ru,
+                Math.floor(Math.random() * 2) + 1
+            )
+        ];
+
+        adaptedOutfit.coreItems = {
+            ...outfit.coreItems,
+            top: {
+                ru: selectedTop,
+                en: getRandomItems(variants.tops[style].en)[0]
+            },
+            bottom: {
+                ru: selectedBottom,
+                en: getRandomItems(variants.bottoms[style].en)[0]
+            },
+            shoes: {
+                ru: selectedShoes,
+                en: getRandomItems(variants.shoes[style].en)[0]
+            },
+            accessories: {
+                ru: accessories,
+                en: accessories
+            }
+        };
+    } else if (temp <= 15) {
+        // Прохладная погода (от +5 до +15)
+        const gender = isMale ? 'male' : 'female';
+        const style: 'formal' | 'casual' = determineStyle(outfit.event);
+        const variants = clothingVariants.cool[gender] as {
+            tops: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
+            bottoms: Record<
+                'formal' | 'casual',
+                { ru: string[]; en: string[] }
+            >;
+            shoes: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
+        };
+
+        // Определяем категории
+        const heightCategory = determineHeightCategory({
+            value: characteristics.height,
+            unit: characteristics.heightUnit
+        });
+        const weightCategory = determineWeightCategory({
+            value: characteristics.weight,
+            unit: characteristics.weightUnit
+        });
+        const ageCategory = determineAgeCategory(characteristics.age);
+
+        // Логирование выбранных категорий
+        console.log('Определены категории:', {
+            heightCategory,
+            weightCategory,
+            ageCategory,
+            style
+        });
+
+        // Базовые аксессуары для прохладной погоды
         let accessories = ['шапка', 'перчатки'];
-        if (isSnowy) {
-            accessories.push('шарф');
-        } else if (isRainy) {
+        if (isRainy) {
             accessories.push('зонт');
+        } else if (isWindy) {
+            accessories.push('шапка');
         }
 
         // Добавляем 2-3 случайных аксессуара для события
@@ -725,24 +1389,112 @@ function adaptOutfitForWeather(
         );
         accessories.push(...extraAccessories);
 
+        // Выбираем одежду в зависимости от категорий
+        let topOptions = variants.tops[style].ru;
+        let bottomOptions = variants.bottoms[style].ru;
+        let shoesOptions = variants.shoes[style].ru;
+
+        // Корректируем выбор в зависимости от категорий
+        if (heightCategory === 'short') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    !item.includes('объемный') && !item.includes('многослойный')
+            );
+            bottomOptions = bottomOptions.filter(
+                (item) => !item.includes('карго') && !item.includes('объемные')
+            );
+        } else if (heightCategory === 'tall') {
+            topOptions = topOptions.filter(
+                (item) => item.includes('пальто') || item.includes('куртка')
+            );
+        }
+
+        if (weightCategory === 'thin') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    item.includes('объемный') || item.includes('многослойный')
+            );
+        } else if (weightCategory === 'heavy') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    (item.includes('пальто') || item.includes('куртка')) &&
+                    !item.includes('объемный') &&
+                    !item.includes('многослойный')
+            );
+            bottomOptions = bottomOptions.filter(
+                (item) =>
+                    item.includes('брюки') &&
+                    !item.includes('карго') &&
+                    !item.includes('объемные')
+            );
+            shoesOptions = shoesOptions.filter(
+                (item) =>
+                    item.includes('кожаные') || item.includes('классические')
+            );
+        }
+
+        // Учитываем возраст
+        if (ageCategory === 'young') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    !item.includes('классический') &&
+                    !item.includes('элегантный')
+            );
+            bottomOptions = bottomOptions.filter(
+                (item) =>
+                    !item.includes('классический') &&
+                    !item.includes('элегантный')
+            );
+        } else if (ageCategory === 'adult') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    item.includes('классический') || item.includes('элегантный')
+            );
+            bottomOptions = bottomOptions.filter(
+                (item) =>
+                    item.includes('классический') || item.includes('элегантный')
+            );
+        }
+
+        // Логирование выбранных опций
+        console.log('Доступные опции:', {
+            topOptions,
+            bottomOptions,
+            shoesOptions,
+            accessories
+        });
+
         adaptedOutfit.coreItems = {
             ...outfit.coreItems,
             top: {
-                ru: getRandomItems(variants.tops.ru)[0],
-                en: getRandomItems(variants.tops.en)[0]
+                ru:
+                    getRandomItems(topOptions)[0] ||
+                    getRandomItems(variants.tops[style].ru)[0],
+                en: getRandomItems(variants.tops[style].en)[0]
             },
             bottom: {
-                ru: getRandomItems(variants.bottoms.ru)[0],
-                en: getRandomItems(variants.bottoms.en)[0]
+                ru:
+                    getRandomItems(bottomOptions)[0] ||
+                    getRandomItems(variants.bottoms[style].ru)[0],
+                en: getRandomItems(variants.bottoms[style].en)[0]
             },
             shoes: {
-                ru: getRandomItems(variants.shoes.ru)[0],
-                en: getRandomItems(variants.shoes.en)[0]
+                ru:
+                    getRandomItems(shoesOptions)[0] ||
+                    getRandomItems(variants.shoes[style].ru)[0],
+                en: getRandomItems(variants.shoes[style].en)[0]
             },
             accessories: {
                 ru: accessories,
-                en: accessories.map((acc) => acc) // Здесь нужно добавить перевод
+                en: accessories
             }
+        };
+
+        // Добавляем цветовую схему в описание
+        const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
+        adaptedOutfit.baseDescription = {
+            ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}`,
+            en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}`
         };
     } else if (temp >= 25) {
         // Жаркая погода
@@ -953,9 +1705,13 @@ function adaptOutfitForWeather(
                 : ''
     };
 
+    // Добавляем цветовую схему в описание
+    const style = determineStyle(outfit.event);
+    const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
+
     adaptedOutfit.baseDescription = {
-        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru}${weatherText}${physicalText.ru}`,
-        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en}${weatherText}${physicalText.en}`
+        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${weatherText}${physicalText.ru}`,
+        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${weatherText}${physicalText.en}`
     };
 
     return adaptedOutfit;
