@@ -668,6 +668,16 @@ function adaptOutfitForWeather(
     ): string[] => {
         const accessories = [];
 
+        console.log('Погодные условия:', {
+            temp,
+            isRainy,
+            isWindy,
+            isSnowy,
+            isSunny,
+            isCold,
+            isOvercast
+        });
+
         if (isSnowy) {
             accessories.push(
                 lang === 'ru' ? 'шапка' : 'hat',
@@ -734,6 +744,7 @@ function adaptOutfitForWeather(
             accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
         }
 
+        console.log('Сформированные аксессуары:', accessories);
         return [...new Set(accessories)]; // Убираем дубликаты
     };
 
@@ -1948,10 +1959,6 @@ function adaptOutfitForWeather(
         weatherConditions.en.push('cloudy');
     }
 
-    const weatherText =
-        weatherConditions[lang].length > 0
-            ? `, ${weatherConditions[lang].join(', ')}`
-            : '';
     const physicalText = {
         ru:
             physicalRecommendations.ru.length > 0
@@ -1986,10 +1993,40 @@ function adaptOutfitForWeather(
         )
     ];
 
-    adaptedOutfit.baseDescription = {
-        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}${weatherText}${physicalText.ru}`,
-        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}${weatherText}${physicalText.en}`
+    // Убираем дубликаты и погодные условия из списка аксессуаров
+    const uniqueAccessories = [...new Set(accessories)].filter((acc) => {
+        const lowerAcc = acc.toLowerCase();
+        return ![
+            'дождь',
+            'ливень',
+            'rain',
+            'heavy rain',
+            'снег',
+            'snow',
+            'ветер',
+            'wind',
+            'пасмурно',
+            'cloudy',
+            'туман',
+            'fog',
+            'гроза',
+            'thunderstorm',
+            'ясно',
+            'clear',
+            'солнечно',
+            'sunny'
+        ].includes(lowerAcc);
+    });
+
+    console.log('Финальный список аксессуаров:', uniqueAccessories);
+
+    const description = {
+        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${uniqueAccessories.length > 0 ? `. Дополните образ: ${uniqueAccessories.join(', ')}` : ''}${physicalText.ru}.`,
+        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${uniqueAccessories.length > 0 ? `. Complete the look with: ${uniqueAccessories.join(', ')}` : ''}${physicalText.en}.`
     };
+
+    // Удаляем дублирование погоды в базовом описании
+    adaptedOutfit.baseDescription = description;
 
     return adaptedOutfit;
 }
