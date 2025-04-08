@@ -1,4 +1,4 @@
-import { Language } from '@/data/outfits/outfitGenerator';
+import { Language } from '@/data/outfits/types';
 import { Weather } from '@/store/weatherStore';
 import { HeightUnit, WeightUnit } from '@/types/user';
 
