@@ -3,7 +3,7 @@ import { OutfitRequest } from '@/data/outfits/types';
 import { adaptOutfitForWeather } from '@/data/outfits/utils/adaptOutfitForWeather';
 import { findMatchingOutfit } from '@/data/outfits/utils/helpers';
 
-export function generateOutfitResponse(request: OutfitRequest) {
+export const generateOutfitResponse = (request: OutfitRequest) => {
     const outfit = findMatchingOutfit(request);
     if (!outfit) {
         return {
@@ -40,4 +40,4 @@ export function generateOutfitResponse(request: OutfitRequest) {
             event: request.event.name
         }
     };
-}
+};
