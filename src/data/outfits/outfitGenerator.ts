@@ -1657,34 +1657,114 @@ function adaptOutfitForWeather(
                     en: selectedShoesEn
                 },
                 accessories: {
-                    ru: accessories.filter((acc) => typeof acc === 'string'),
-                    en: accessories.map((acc) => {
-                        const translations: Record<string, string> = {
-                            зонт: 'umbrella',
-                            шапка: 'hat',
-                            'теплая шапка': 'warm hat',
-                            перчатки: 'gloves',
-                            'теплые перчатки': 'warm gloves',
-                            шарф: 'scarf',
-                            'теплый шарф': 'warm scarf',
-                            'утепленный шарф': 'insulated scarf',
-                            'зимняя маска для лица': 'winter face mask',
-                            термобелье: 'thermal underwear',
-                            ежедневник: 'planner',
-                            визитница: 'card holder',
-                            часы: 'watch',
-                            ремень: 'belt',
-                            рюкзак: 'backpack',
-                            сумка: 'bag',
-                            кошелек: 'wallet'
-                        };
-                        return translations[acc] || acc;
-                    })
+                    ru: deduplicateAccessories(
+                        accessories.filter((acc) => typeof acc === 'string')
+                    ),
+                    en: deduplicateAccessories(
+                        accessories.map((acc) => {
+                            const translations: Record<string, string> = {
+                                зонт: 'umbrella',
+                                шапка: 'hat',
+                                'теплая шапка': 'warm hat',
+                                перчатки: 'gloves',
+                                'теплые перчатки': 'warm gloves',
+                                шарф: 'scarf',
+                                'теплый шарф': 'warm scarf',
+                                'утепленный шарф': 'insulated scarf',
+                                'зимняя маска для лица': 'winter face mask',
+                                термобелье: 'thermal underwear',
+                                ежедневник: 'planner',
+                                визитница: 'card holder',
+                                часы: 'watch',
+                                ремень: 'belt',
+                                рюкзак: 'backpack',
+                                сумка: 'bag',
+                                кошелек: 'wallet'
+                            };
+                            return translations[acc] || acc;
+                        })
+                    )
                 }
             };
         } else {
-            // Оставляем существующую логику для других температур
-            // ... существующий код ...
+            // Логика для обычной холодной погоды (от 0 до 5°C)
+            // Не такие строгие требования к одежде, как при экстремальном холоде
+
+            // Фильтры для верхней одежды при обычном холоде
+            let topOptionsEn = variants.tops[style].en.filter(
+                (item) =>
+                    item.includes('coat') ||
+                    item.includes('jacket') ||
+                    item.includes('puffer') ||
+                    item.includes('sweater') ||
+                    item.includes('trench')
+            );
+
+            let bottomOptionsEn = variants.bottoms[style].en.filter(
+                (item) =>
+                    item.includes('thick') ||
+                    item.includes('wool') ||
+                    item.includes('insulated') ||
+                    item.includes('warm')
+            );
+
+            let shoesOptionsEn = variants.shoes[style].en.filter(
+                (item) =>
+                    item.includes('boots') ||
+                    item.includes('leather') ||
+                    !item.includes('sandals')
+            );
+
+            // Выбираем случайные элементы из отфильтрованных вариантов
+            const selectedTopEn =
+                getRandomItems(topOptionsEn)[0] ||
+                getRandomItems(variants.tops[style].en)[0];
+            const selectedBottomEn =
+                getRandomItems(bottomOptionsEn)[0] ||
+                getRandomItems(variants.bottoms[style].en)[0];
+            const selectedShoesEn =
+                getRandomItems(shoesOptionsEn)[0] ||
+                getRandomItems(variants.shoes[style].en)[0];
+
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: selectedTop,
+                    en: selectedTopEn
+                },
+                bottom: {
+                    ru: selectedBottom,
+                    en: selectedBottomEn
+                },
+                shoes: {
+                    ru: selectedShoes,
+                    en: selectedShoesEn
+                },
+                accessories: {
+                    ru: deduplicateAccessories(
+                        accessories.filter((acc) => typeof acc === 'string')
+                    ),
+                    en: deduplicateAccessories(
+                        accessories.map((acc) => {
+                            const translations: Record<string, string> = {
+                                зонт: 'umbrella',
+                                шапка: 'hat',
+                                перчатки: 'gloves',
+                                шарф: 'scarf',
+                                ежедневник: 'planner',
+                                визитница: 'card holder',
+                                часы: 'watch',
+                                ремень: 'belt',
+                                'сумка через плечо': 'crossbody bag',
+                                рюкзак: 'backpack',
+                                сумка: 'bag',
+                                кошелек: 'wallet'
+                            };
+                            return translations[acc] || acc;
+                        })
+                    )
+                }
+            };
         }
     } else if (temp <= 15) {
         // Прохладная погода (от +5 до +15)
@@ -1904,20 +1984,22 @@ function adaptOutfitForWeather(
                 en: getRandomItems(variants.shoes[style].en)[0]
             },
             accessories: {
-                ru: accessories,
-                en: accessories.map((acc) => {
-                    const translations: Record<string, string> = {
-                        зонт: 'umbrella',
-                        шапка: 'hat',
-                        перчатки: 'gloves',
-                        шарф: 'scarf',
-                        ежедневник: 'planner',
-                        визитница: 'card holder',
-                        часы: 'watch',
-                        ремень: 'belt'
-                    };
-                    return translations[acc] || acc;
-                })
+                ru: deduplicateAccessories(accessories),
+                en: deduplicateAccessories(
+                    accessories.map((acc) => {
+                        const translations: Record<string, string> = {
+                            зонт: 'umbrella',
+                            шапка: 'hat',
+                            перчатки: 'gloves',
+                            шарф: 'scarf',
+                            ежедневник: 'planner',
+                            визитница: 'card holder',
+                            часы: 'watch',
+                            ремень: 'belt'
+                        };
+                        return translations[acc] || acc;
+                    })
+                )
             }
         };
 
@@ -2176,29 +2258,31 @@ function adaptOutfitForWeather(
     ];
 
     // Убираем дубликаты и погодные условия из списка аксессуаров
-    const uniqueAccessories = [...new Set(accessories)].filter((acc) => {
-        const lowerAcc = acc.toLowerCase();
-        return ![
-            'дождь',
-            'ливень',
-            'rain',
-            'heavy rain',
-            'снег',
-            'snow',
-            'ветер',
-            'wind',
-            'пасмурно',
-            'cloudy',
-            'туман',
-            'fog',
-            'гроза',
-            'thunderstorm',
-            'ясно',
-            'clear',
-            'солнечно',
-            'sunny'
-        ].includes(lowerAcc);
-    });
+    const uniqueAccessories = deduplicateAccessories(
+        accessories.filter((acc) => {
+            const lowerAcc = acc.toLowerCase();
+            return ![
+                'дождь',
+                'ливень',
+                'rain',
+                'heavy rain',
+                'снег',
+                'snow',
+                'ветер',
+                'wind',
+                'пасмурно',
+                'cloudy',
+                'туман',
+                'fog',
+                'гроза',
+                'thunderstorm',
+                'ясно',
+                'clear',
+                'солнечно',
+                'sunny'
+            ].includes(lowerAcc);
+        })
+    );
 
     console.log('Финальный список аксессуаров:', uniqueAccessories);
 
@@ -2250,4 +2334,63 @@ export function generateOutfitResponse(request: OutfitRequest) {
             event: request.event.name
         }
     };
+}
+
+// Функция для удаления дубликатов и похожих аксессуаров
+function deduplicateAccessories(accessories: string[]): string[] {
+    const result: string[] = [];
+    const lowercased: string[] = [];
+
+    // Список слов, которые могут пересекаться
+    const similarItems: Record<string, string[]> = {
+        рюкзак: ['сумка', 'рюкзак или сумка'],
+        сумка: ['рюкзак', 'рюкзак или сумка'],
+        шапка: ['теплая шапка', 'головной убор'],
+        перчатки: ['теплые перчатки'],
+        шарф: ['теплый шарф', 'утепленный шарф'],
+        backpack: ['bag', 'backpack or bag'],
+        bag: ['backpack', 'backpack or bag'],
+        hat: ['warm hat', 'headwear'],
+        gloves: ['warm gloves'],
+        scarf: ['warm scarf', 'insulated scarf']
+    };
+
+    // Проверяем каждый аксессуар
+    for (const acc of accessories) {
+        const lowerAcc = acc.toLowerCase();
+
+        // Проверяем, не содержится ли уже этот аксессуар или похожий
+        let isDuplicate = false;
+
+        // Проверяем точные дубликаты
+        if (lowercased.includes(lowerAcc)) {
+            isDuplicate = true;
+        } else {
+            // Проверяем похожие элементы
+            for (const [key, synonyms] of Object.entries(similarItems)) {
+                if (lowerAcc.includes(key.toLowerCase())) {
+                    // Проверяем, есть ли уже синонимы в результате
+                    for (const synonym of synonyms) {
+                        if (
+                            lowercased.some((item) =>
+                                item.includes(synonym.toLowerCase())
+                            )
+                        ) {
+                            isDuplicate = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (isDuplicate) break;
+            }
+        }
+
+        if (!isDuplicate) {
+            result.push(acc);
+            lowercased.push(lowerAcc);
+        }
+    }
+
+    return result;
 }
