@@ -9,8 +9,8 @@ import {
 } from '@/data/outfits/utils/categoryDeterminers';
 import { clothingFilters } from '@/data/outfits/utils/clothingFilters';
 import { clothingVariants } from '@/data/outfits/utils/clothingVariants';
-import { colorSchemes } from '@/data/outfits/utils/colorSchemes';
-import { eventExtraAccessories } from '@/data/outfits/utils/eventExtraAccessories';
+import { colorSchemes } from '@/data/outfits/constants/colorSchemes';
+import { eventExtraAccessories } from '@/data/outfits/constants/eventExtraAccessories';
 import { filterClothing, getRandomItems } from '@/data/outfits/utils/helpers';
 import {
     heightRecommendations,

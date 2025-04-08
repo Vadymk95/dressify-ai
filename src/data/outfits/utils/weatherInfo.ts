@@ -1,7 +1,7 @@
 import { OutfitRequest } from '@/data/outfits/types';
 
 import { Language } from '@/data/outfits/types';
-import { weatherDescriptions } from '@/data/outfits/utils/weatherDescriptions';
+import { weatherDescriptions } from '@/data/outfits/constants/weatherDescriptions';
 
 export const getWeatherInfo = (
     weather: OutfitRequest['weather']
