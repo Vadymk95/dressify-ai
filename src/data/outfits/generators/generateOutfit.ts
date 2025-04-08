@@ -1,11 +1,10 @@
-import { determineWeightCategory } from '@/data/outfits/utils/categoryDeterminers';
-
 import { BaseOutfit, OutfitGenerationParams } from '@/data/outfits/types';
 import { adaptationRules } from '@/data/outfits/utils/adaptationRules';
 import {
     determineAgeCategory,
     determineHeightCategory,
-    determineWeatherCategory
+    determineWeatherCategory,
+    determineWeightCategory
 } from '@/data/outfits/utils/categoryDeterminers';
 import { generateRecommendations } from '@/data/outfits/utils/recommendations';
 
