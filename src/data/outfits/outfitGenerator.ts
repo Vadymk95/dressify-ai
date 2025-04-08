@@ -986,68 +986,68 @@ function adaptOutfitForWeather(
                 bottoms: {
                     formal: {
                         ru: [
-                            'прямые брюки',
-                            'классические брюки',
-                            'брюки со стрелками',
+                            'утепленные прямые брюки',
+                            'утепленные классические брюки',
+                            'плотные брюки со стрелками',
                             'шерстяные брюки',
-                            'брюки чинос'
+                            'плотные брюки чинос'
                         ],
                         en: [
-                            'straight pants',
-                            'classic trousers',
-                            'creased pants',
+                            'insulated straight pants',
+                            'insulated classic trousers',
+                            'thick creased pants',
                             'wool trousers',
-                            'chinos'
+                            'thick chinos'
                         ]
                     },
                     casual: {
                         ru: [
-                            'джинсы',
-                            'брюки чинос',
-                            'брюки карго',
-                            'джоггеры',
-                            'прямые брюки'
+                            'утепленные джинсы',
+                            'плотные брюки чинос',
+                            'утепленные брюки карго',
+                            'теплые джоггеры',
+                            'шерстяные прямые брюки'
                         ],
                         en: [
-                            'jeans',
-                            'chinos',
-                            'cargo pants',
-                            'joggers',
-                            'straight pants'
+                            'insulated jeans',
+                            'thick chinos',
+                            'insulated cargo pants',
+                            'warm joggers',
+                            'wool straight pants'
                         ]
                     }
                 },
                 shoes: {
                     formal: {
                         ru: [
-                            'кожаные оксфорды',
-                            'классические дерби',
-                            'кожаные лоферы',
-                            'замшевые ботинки',
-                            'челси'
+                            'утепленные кожаные ботинки',
+                            'зимние дерби',
+                            'утепленные ботинки',
+                            'зимние ботинки на меху',
+                            'утепленные челси'
                         ],
                         en: [
-                            'leather oxfords',
-                            'classic derbies',
-                            'leather loafers',
-                            'suede boots',
-                            'chelsea boots'
+                            'insulated leather boots',
+                            'winter derbies',
+                            'insulated boots',
+                            'winter fur-lined boots',
+                            'insulated chelsea boots'
                         ]
                     },
                     casual: {
                         ru: [
-                            'кожаные кроссовки',
-                            'замшевые кеды',
-                            'ботинки на шнуровке',
-                            'слипоны',
-                            'кеды'
+                            'зимние ботинки',
+                            'утепленные кожаные ботинки',
+                            'водонепроницаемые зимние ботинки',
+                            'утепленные треккинговые ботинки',
+                            'высокие зимние ботинки'
                         ],
                         en: [
-                            'leather sneakers',
-                            'suede sneakers',
-                            'lace-up boots',
-                            'slip-ons',
-                            'canvas shoes'
+                            'winter boots',
+                            'insulated leather boots',
+                            'waterproof winter boots',
+                            'insulated hiking boots',
+                            'high winter boots'
                         ]
                     }
                 }
@@ -1124,34 +1124,34 @@ function adaptOutfitForWeather(
                 shoes: {
                     formal: {
                         ru: [
-                            'кожаные ботильоны',
-                            'классические лоферы',
-                            'кожаные туфли',
-                            'замшевые ботинки',
-                            'челси на каблуке'
+                            'утепленные кожаные ботильоны',
+                            'зимние сапоги на невысоком каблуке',
+                            'зимние кожаные сапоги',
+                            'утепленные замшевые ботинки',
+                            'зимние ботинки на меху'
                         ],
                         en: [
-                            'leather ankle boots',
-                            'classic loafers',
-                            'leather shoes',
-                            'suede boots',
-                            'heeled chelsea boots'
+                            'insulated leather ankle boots',
+                            'winter boots with low heel',
+                            'winter leather boots',
+                            'insulated suede boots',
+                            'winter fur-lined boots'
                         ]
                     },
                     casual: {
                         ru: [
-                            'кожаные кроссовки',
-                            'замшевые кеды',
-                            'ботинки на шнуровке',
-                            'слипоны',
-                            'кеды'
+                            'зимние кожаные ботинки',
+                            'утепленные сапоги',
+                            'водонепроницаемые зимние ботинки',
+                            'утепленные теплые сапоги',
+                            'зимние ботинки на меху'
                         ],
                         en: [
-                            'leather sneakers',
-                            'suede sneakers',
-                            'lace-up boots',
-                            'slip-ons',
-                            'canvas shoes'
+                            'winter leather boots',
+                            'insulated boots',
+                            'waterproof winter boots',
+                            'insulated warm boots',
+                            'winter fur-lined boots'
                         ]
                     }
                 }
@@ -1543,6 +1543,149 @@ function adaptOutfitForWeather(
                 })
             }
         };
+
+        // Особые правила для экстремально холодной погоды (ниже -10°C)
+        if (temp < -10) {
+            // Дополнительные фильтры для очень холодной погоды
+            topOptions = topOptions.filter(
+                (item) =>
+                    item.includes('пуховик') ||
+                    item.includes('дутая') ||
+                    item.includes('утепленная')
+            );
+
+            bottomOptions = bottomOptions.filter(
+                (item) =>
+                    item.includes('утепленные') ||
+                    item.includes('шерстяные') ||
+                    item.includes('теплые')
+            );
+
+            shoesOptions = shoesOptions.filter(
+                (item) =>
+                    item.includes('зимние') ||
+                    item.includes('утепленные') ||
+                    item.includes('меху')
+            );
+
+            // Английские варианты
+            let topOptionsEn = variants.tops[style].en.filter(
+                (item) =>
+                    item.includes('down') ||
+                    item.includes('puffer') ||
+                    item.includes('insulated') ||
+                    item.includes('padded')
+            );
+
+            let bottomOptionsEn = variants.bottoms[style].en.filter(
+                (item) =>
+                    item.includes('insulated') ||
+                    item.includes('wool') ||
+                    item.includes('warm') ||
+                    item.includes('thick')
+            );
+
+            let shoesOptionsEn = variants.shoes[style].en.filter(
+                (item) =>
+                    item.includes('winter') ||
+                    item.includes('insulated') ||
+                    item.includes('fur') ||
+                    item.includes('warm')
+            );
+
+            // Добавляем дополнительные аксессуары для экстремального холода
+            if (
+                !accessories.includes('термобелье') &&
+                !accessories.includes('thermal underwear')
+            ) {
+                accessories.push(
+                    lang === 'ru' ? 'термобелье' : 'thermal underwear'
+                );
+            }
+
+            if (
+                !accessories.includes('теплый шарф') &&
+                !accessories.includes('warm scarf')
+            ) {
+                const scarfIndex = accessories.findIndex(
+                    (acc) => acc === 'шарф' || acc === 'scarf'
+                );
+                if (scarfIndex !== -1) {
+                    accessories[scarfIndex] =
+                        lang === 'ru' ? 'теплый шарф' : 'warm scarf';
+                } else {
+                    accessories.push(
+                        lang === 'ru' ? 'теплый шарф' : 'warm scarf'
+                    );
+                }
+            }
+
+            // Выбираем случайные элементы из отфильтрованных вариантов
+            const selectedTop =
+                getRandomItems(topOptions)[0] ||
+                getRandomItems(variants.tops[style].ru)[0];
+            const selectedBottom =
+                getRandomItems(bottomOptions)[0] ||
+                getRandomItems(variants.bottoms[style].ru)[0];
+            const selectedShoes =
+                getRandomItems(shoesOptions)[0] ||
+                getRandomItems(variants.shoes[style].ru)[0];
+
+            const selectedTopEn =
+                getRandomItems(topOptionsEn)[0] ||
+                getRandomItems(variants.tops[style].en)[0];
+            const selectedBottomEn =
+                getRandomItems(bottomOptionsEn)[0] ||
+                getRandomItems(variants.bottoms[style].en)[0];
+            const selectedShoesEn =
+                getRandomItems(shoesOptionsEn)[0] ||
+                getRandomItems(variants.shoes[style].en)[0];
+
+            // Обновляем элементы гардероба
+            adaptedOutfit.coreItems = {
+                ...outfit.coreItems,
+                top: {
+                    ru: selectedTop,
+                    en: selectedTopEn
+                },
+                bottom: {
+                    ru: selectedBottom,
+                    en: selectedBottomEn
+                },
+                shoes: {
+                    ru: selectedShoes,
+                    en: selectedShoesEn
+                },
+                accessories: {
+                    ru: accessories.filter((acc) => typeof acc === 'string'),
+                    en: accessories.map((acc) => {
+                        const translations: Record<string, string> = {
+                            зонт: 'umbrella',
+                            шапка: 'hat',
+                            'теплая шапка': 'warm hat',
+                            перчатки: 'gloves',
+                            'теплые перчатки': 'warm gloves',
+                            шарф: 'scarf',
+                            'теплый шарф': 'warm scarf',
+                            'утепленный шарф': 'insulated scarf',
+                            'зимняя маска для лица': 'winter face mask',
+                            термобелье: 'thermal underwear',
+                            ежедневник: 'planner',
+                            визитница: 'card holder',
+                            часы: 'watch',
+                            ремень: 'belt',
+                            рюкзак: 'backpack',
+                            сумка: 'bag',
+                            кошелек: 'wallet'
+                        };
+                        return translations[acc] || acc;
+                    })
+                }
+            };
+        } else {
+            // Оставляем существующую логику для других температур
+            // ... существующий код ...
+        }
     } else if (temp <= 15) {
         // Прохладная погода (от +5 до +15)
         const gender = isMale ? 'male' : 'female';
