@@ -438,33 +438,41 @@ function getWeatherInfo(
 
     // Маппинг описаний погоды на разные языки
     const weatherDescriptions: Record<string, Record<Language, string>> = {
-        пасмурно: {
+        cloudy: {
             ru: 'пасмурно',
             en: 'cloudy'
         },
-        Солнечно: {
+        sunny: {
             ru: 'солнечно',
             en: 'sunny'
         },
-        дождь: {
+        rain: {
             ru: 'дождь',
             en: 'rain'
         },
-        снег: {
+        heavyRain: {
+            ru: 'ливень',
+            en: 'heavy rain'
+        },
+        snow: {
             ru: 'снег',
             en: 'snow'
         },
-        облачно: {
+        overcast: {
             ru: 'облачно',
             en: 'overcast'
         },
-        туман: {
+        foggy: {
             ru: 'туман',
             en: 'foggy'
         },
-        гроза: {
+        thunderstorm: {
             ru: 'гроза',
             en: 'thunderstorm'
+        },
+        clear: {
+            ru: 'ясно',
+            en: 'clear'
         }
     };
 
@@ -509,6 +517,7 @@ function adaptOutfitForWeather(
     // Определяем тип погоды
     const isRainy =
         weather.description.toLowerCase().includes('дождь') ||
+        weather.description.toLowerCase().includes('ливень') ||
         weather.description.toLowerCase().includes('rain');
     const isSnowy =
         weather.description.toLowerCase().includes('снег') ||
@@ -516,6 +525,26 @@ function adaptOutfitForWeather(
     const isWindy =
         weather.description.toLowerCase().includes('ветер') ||
         weather.description.toLowerCase().includes('wind');
+
+    const isSunny =
+        weather.description.toLowerCase().includes('солнечно') ||
+        weather.description.toLowerCase().includes('ясно') ||
+        weather.description.toLowerCase().includes('sunny') ||
+        weather.description.toLowerCase().includes('clear');
+
+    const isHot = temp >= 25;
+    const isCold = temp <= 5;
+    const isFoggy =
+        weather.description.toLowerCase().includes('туман') ||
+        weather.description.toLowerCase().includes('fog');
+    const isThunderstorm =
+        weather.description.toLowerCase().includes('гроза') ||
+        weather.description.toLowerCase().includes('thunderstorm');
+    const isOvercast =
+        weather.description.toLowerCase().includes('пасмурно') ||
+        weather.description.toLowerCase().includes('облачно') ||
+        weather.description.toLowerCase().includes('overcast') ||
+        weather.description.toLowerCase().includes('cloudy');
 
     // Вступительные фразы
     const greetings = {
@@ -632,39 +661,80 @@ function adaptOutfitForWeather(
         isRainy: boolean,
         isWindy: boolean,
         isSnowy: boolean,
+        isSunny: boolean,
+        isCold: boolean,
+        isOvercast: boolean,
         lang: Language
     ): string[] => {
         const accessories = [];
 
-        // Добавляем зонт в первую очередь при дожде
-        if (isRainy) {
+        if (isSnowy) {
+            accessories.push(
+                lang === 'ru' ? 'шапка' : 'hat',
+                lang === 'ru' ? 'перчатки' : 'gloves'
+            );
+        }
+
+        // Добавляем только аксессуары, не погодные условия
+        if (isRainy || isThunderstorm) {
             accessories.push(lang === 'ru' ? 'зонт' : 'umbrella');
         }
 
-        // Остальные погодные аксессуары...
-        if (temp <= 0) {
+        if (isCold) {
             accessories.push(
-                lang === 'ru' ? 'шапка' : 'hat',
-                lang === 'ru' ? 'перчатки' : 'gloves',
-                lang === 'ru' ? 'шарф' : 'scarf'
+                lang === 'ru' ? 'шарф' : 'scarf',
+                lang === 'ru' ? 'перчатки' : 'gloves'
             );
-        } else if (temp <= 5) {
-            if (isWindy || isSnowy) {
-                accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
-            }
-            if (isWindy) {
-                accessories.push(lang === 'ru' ? 'шапка' : 'hat');
-            }
-        } else if (temp <= 10) {
-            if (isWindy || isSnowy) {
-                accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
-            }
-            if (isWindy) {
+            if (!isSunny) {
                 accessories.push(lang === 'ru' ? 'шапка' : 'hat');
             }
         }
 
-        return accessories;
+        // Солнечная погода
+        if (isSunny && temp > 10) {
+            accessories.push(
+                lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
+            );
+            if (temp > 20) {
+                accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
+            }
+        }
+
+        // Пасмурная погода
+        if (isOvercast && temp <= 15) {
+            // В пасмурную прохладную погоду добавляем шарф
+            accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
+        }
+
+        // Ветреная погода
+        if (isWindy && temp <= 15) {
+            if (!accessories.includes(lang === 'ru' ? 'шапка' : 'hat')) {
+                accessories.push(lang === 'ru' ? 'шапка' : 'hat');
+            }
+        }
+
+        // Туманная погода
+        if (isFoggy && temp <= 15) {
+            if (!accessories.includes(lang === 'ru' ? 'шарф' : 'scarf')) {
+                accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
+            }
+        }
+
+        // Жаркая погода
+        if (isHot) {
+            if (
+                !accessories.includes(
+                    lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
+                )
+            ) {
+                accessories.push(
+                    lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
+                );
+            }
+            accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
+        }
+
+        return [...new Set(accessories)]; // Убираем дубликаты
     };
 
     // Цветовые схемы для разных стилей
@@ -1374,7 +1444,16 @@ function adaptOutfitForWeather(
 
         // Получаем все аксессуары для образа
         const accessories = [
-            ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy, lang),
+            ...getWeatherAccessories(
+                temp,
+                isRainy,
+                isWindy,
+                isSnowy,
+                isSunny,
+                isCold,
+                isOvercast,
+                lang
+            ),
             ...getEventAccessories(outfit.event, lang),
             ...getRandomItems(
                 eventExtraAccessories[outfit.event][lang],
@@ -1847,13 +1926,32 @@ function adaptOutfitForWeather(
     }
 
     // Обновляем описание с учетом всех условий
-    let weatherConditions = [];
-    if (isRainy) weatherConditions.push('дождь');
-    if (isSnowy) weatherConditions.push('снег');
-    if (isWindy) weatherConditions.push('ветер');
+    let weatherConditions = {
+        ru: [] as string[],
+        en: [] as string[]
+    };
+
+    if (isRainy) {
+        weatherConditions.ru.push('дождь');
+        weatherConditions.en.push('rain');
+    }
+    if (isSnowy) {
+        weatherConditions.ru.push('снег');
+        weatherConditions.en.push('snow');
+    }
+    if (isWindy) {
+        weatherConditions.ru.push('ветер');
+        weatherConditions.en.push('wind');
+    }
+    if (isOvercast) {
+        weatherConditions.ru.push('пасмурно');
+        weatherConditions.en.push('cloudy');
+    }
 
     const weatherText =
-        weatherConditions.length > 0 ? `, ${weatherConditions.join(', ')}` : '';
+        weatherConditions[lang].length > 0
+            ? `, ${weatherConditions[lang].join(', ')}`
+            : '';
     const physicalText = {
         ru:
             physicalRecommendations.ru.length > 0
@@ -1871,7 +1969,16 @@ function adaptOutfitForWeather(
 
     // Получаем аксессуары для образа
     const accessories = [
-        ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy, lang),
+        ...getWeatherAccessories(
+            temp,
+            isRainy,
+            isWindy,
+            isSnowy,
+            isSunny,
+            isCold,
+            isOvercast,
+            lang
+        ),
         ...getEventAccessories(outfit.event, lang),
         ...getRandomItems(
             eventExtraAccessories[outfit.event][lang],
