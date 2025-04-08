@@ -1,4 +1,4 @@
-import { BaseOutfit } from '@/data/outfits/outfitGenerator';
+import { BaseOutfit } from '@/data/outfits/types';
 
 export const baseOutfits: BaseOutfit[] = [
     // Мужские образы
