@@ -1,17 +1,14 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
-import {
-    BaseOutfit,
-    generateOutfitResponse,
-    Language,
-    WeatherData
-} from '@/data/outfits/outfitGenerator';
+import { generateOutfitResponse } from '@/data/outfits/generators/generateOutfitResponse';
+import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
 import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 import { OutfitRequestData } from '@/types/outfitRequestData';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const useOutfitRequest = () => {
     const { t } = useTranslation();
