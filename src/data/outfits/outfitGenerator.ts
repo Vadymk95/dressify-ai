@@ -117,7 +117,7 @@ const adaptationRules = {
             },
             remove: null
         },
-        adult: {
+        mature: {
             range: { min: 41, max: 60 },
             add: {
                 ru: 'классические элементы, качественные ткани',
@@ -126,6 +126,17 @@ const adaptationRules = {
             remove: {
                 ru: 'слишком молодежные детали',
                 en: 'too youthful details'
+            }
+        },
+        senior: {
+            range: { min: 61, max: 120 },
+            add: {
+                ru: 'комфортные вещи, удобная обувь, практичные аксессуары',
+                en: 'comfortable pieces, comfortable shoes, practical accessories'
+            },
+            remove: {
+                ru: 'молодежные элементы, неудобная обувь, сложные застежки',
+                en: 'youthful elements, uncomfortable shoes, complex fasteners'
             }
         }
     },
@@ -197,7 +208,8 @@ const determineAgeCategory = (
 ): keyof typeof adaptationRules.age | null => {
     if (age >= 18 && age <= 25) return 'young';
     if (age >= 26 && age <= 40) return 'middle';
-    if (age >= 41 && age <= 60) return 'adult';
+    if (age >= 41 && age <= 60) return 'mature';
+    if (age >= 61 && age <= 120) return 'senior';
     return null;
 };
 
@@ -619,21 +631,52 @@ function adaptOutfitForWeather(
         temp: number,
         isRainy: boolean,
         isWindy: boolean,
-        isSnowy: boolean
+        isSnowy: boolean,
+        lang: Language
     ): string[] => {
+        const weatherAccessories = {
+            ru: {
+                hat: 'шапка',
+                gloves: 'перчатки',
+                scarf: 'шарф',
+                umbrella: 'зонт'
+            },
+            en: {
+                hat: 'hat',
+                gloves: 'gloves',
+                scarf: 'scarf',
+                umbrella: 'umbrella'
+            }
+        };
+
         const accessories = [];
 
         if (temp <= 0) {
-            accessories.push('шапка', 'перчатки', 'шарф');
+            accessories.push(
+                weatherAccessories[lang].hat,
+                weatherAccessories[lang].gloves,
+                weatherAccessories[lang].scarf
+            );
         } else if (temp <= 5) {
-            accessories.push('шапка', 'перчатки');
-            if (isWindy || isSnowy) accessories.push('шарф');
+            accessories.push(
+                weatherAccessories[lang].hat,
+                weatherAccessories[lang].gloves
+            );
+            if (isWindy || isSnowy) {
+                accessories.push(weatherAccessories[lang].scarf);
+            }
         } else if (temp <= 10) {
-            if (isWindy || isSnowy) accessories.push('шарф');
-            if (isWindy) accessories.push('шапка');
+            if (isWindy || isSnowy) {
+                accessories.push(weatherAccessories[lang].scarf);
+            }
+            if (isWindy) {
+                accessories.push(weatherAccessories[lang].hat);
+            }
         }
 
-        if (isRainy) accessories.push('зонт');
+        if (isRainy) {
+            accessories.push(weatherAccessories[lang].umbrella);
+        }
 
         return accessories;
     };
@@ -729,9 +772,44 @@ function adaptOutfitForWeather(
                 exclude: [],
                 include: []
             },
-            adult: {
+            mature: {
                 exclude: ['молодежный', 'трендовый'],
                 include: ['классический', 'элегантный']
+            },
+            senior: {
+                exclude: [
+                    'молодежный',
+                    'трендовый',
+                    'объемный',
+                    'многослойный',
+                    'кроссовки',
+                    'джинсы',
+                    'худи',
+                    'свитшот',
+                    'ветровка',
+                    'карго',
+                    'спортивный',
+                    'молодежный',
+                    'трендовый',
+                    'объемный',
+                    'многослойный'
+                ],
+                include: [
+                    'классический',
+                    'элегантный',
+                    'комфортный',
+                    'удобный',
+                    'брюки',
+                    'платье',
+                    'туфли',
+                    'кардиган',
+                    'джемпер',
+                    'пальто',
+                    'брюки классические',
+                    'туфли классические',
+                    'рубашка',
+                    'свитер'
+                ]
             }
         },
         event: {
@@ -1316,9 +1394,9 @@ function adaptOutfitForWeather(
 
         // Добавляем аксессуары
         const accessories = [
-            ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy),
+            ...getWeatherAccessories(temp, isRainy, isWindy, isSnowy, lang),
             ...getRandomItems(
-                eventExtraAccessories[outfit.event].ru,
+                eventExtraAccessories[outfit.event][lang],
                 Math.floor(Math.random() * 2) + 1
             )
         ];
@@ -1384,7 +1462,7 @@ function adaptOutfitForWeather(
 
         // Добавляем 2-3 случайных аксессуара для события
         const extraAccessories = getRandomItems(
-            eventExtraAccessories[outfit.event].ru,
+            eventExtraAccessories[outfit.event][lang],
             Math.floor(Math.random() * 2) + 2
         );
         accessories.push(...extraAccessories);
@@ -1398,38 +1476,62 @@ function adaptOutfitForWeather(
         if (heightCategory === 'short') {
             topOptions = topOptions.filter(
                 (item) =>
-                    !item.includes('объемный') && !item.includes('многослойный')
+                    !item.includes('объемный') &&
+                    !item.includes('voluminous') &&
+                    !item.includes('многослойный') &&
+                    !item.includes('layered')
             );
             bottomOptions = bottomOptions.filter(
-                (item) => !item.includes('карго') && !item.includes('объемные')
+                (item) =>
+                    !item.includes('карго') &&
+                    !item.includes('cargo') &&
+                    !item.includes('объемные') &&
+                    !item.includes('voluminous')
             );
         } else if (heightCategory === 'tall') {
             topOptions = topOptions.filter(
-                (item) => item.includes('пальто') || item.includes('куртка')
+                (item) =>
+                    item.includes('пальто') ||
+                    item.includes('coat') ||
+                    item.includes('куртка') ||
+                    item.includes('jacket')
             );
         }
 
         if (weightCategory === 'thin') {
             topOptions = topOptions.filter(
                 (item) =>
-                    item.includes('объемный') || item.includes('многослойный')
+                    item.includes('объемный') ||
+                    item.includes('voluminous') ||
+                    item.includes('многослойный') ||
+                    item.includes('layered')
             );
         } else if (weightCategory === 'heavy') {
             topOptions = topOptions.filter(
                 (item) =>
-                    (item.includes('пальто') || item.includes('куртка')) &&
+                    (item.includes('пальто') ||
+                        item.includes('coat') ||
+                        item.includes('куртка') ||
+                        item.includes('jacket')) &&
                     !item.includes('объемный') &&
-                    !item.includes('многослойный')
+                    !item.includes('voluminous') &&
+                    !item.includes('многослойный') &&
+                    !item.includes('layered')
             );
             bottomOptions = bottomOptions.filter(
                 (item) =>
-                    item.includes('брюки') &&
+                    (item.includes('брюки') || item.includes('pants')) &&
                     !item.includes('карго') &&
-                    !item.includes('объемные')
+                    !item.includes('cargo') &&
+                    !item.includes('объемные') &&
+                    !item.includes('voluminous')
             );
             shoesOptions = shoesOptions.filter(
                 (item) =>
-                    item.includes('кожаные') || item.includes('классические')
+                    item.includes('кожаные') ||
+                    item.includes('leather') ||
+                    item.includes('классические') ||
+                    item.includes('classic')
             );
         }
 
@@ -1438,21 +1540,69 @@ function adaptOutfitForWeather(
             topOptions = topOptions.filter(
                 (item) =>
                     !item.includes('классический') &&
-                    !item.includes('элегантный')
+                    !item.includes('classic') &&
+                    !item.includes('элегантный') &&
+                    !item.includes('elegant')
             );
             bottomOptions = bottomOptions.filter(
                 (item) =>
                     !item.includes('классический') &&
-                    !item.includes('элегантный')
+                    !item.includes('classic') &&
+                    !item.includes('элегантный') &&
+                    !item.includes('elegant')
             );
-        } else if (ageCategory === 'adult') {
+        } else if (ageCategory === 'mature') {
             topOptions = topOptions.filter(
                 (item) =>
-                    item.includes('классический') || item.includes('элегантный')
+                    item.includes('классический') ||
+                    item.includes('classic') ||
+                    item.includes('элегантный') ||
+                    item.includes('elegant')
             );
             bottomOptions = bottomOptions.filter(
                 (item) =>
-                    item.includes('классический') || item.includes('элегантный')
+                    item.includes('классический') ||
+                    item.includes('classic') ||
+                    item.includes('элегантный') ||
+                    item.includes('elegant')
+            );
+        } else if (ageCategory === 'senior') {
+            topOptions = topOptions.filter(
+                (item) =>
+                    (item.includes('классический') ||
+                        item.includes('classic') ||
+                        item.includes('элегантный') ||
+                        item.includes('elegant')) &&
+                    !item.includes('молодежный') &&
+                    !item.includes('youthful') &&
+                    !item.includes('трендовый') &&
+                    !item.includes('trendy') &&
+                    !item.includes('объемный') &&
+                    !item.includes('voluminous') &&
+                    !item.includes('многослойный') &&
+                    !item.includes('layered')
+            );
+            bottomOptions = bottomOptions.filter(
+                (item) =>
+                    (item.includes('брюки') ||
+                        item.includes('pants') ||
+                        item.includes('платье') ||
+                        item.includes('dress')) &&
+                    !item.includes('джинсы') &&
+                    !item.includes('jeans') &&
+                    !item.includes('объемные') &&
+                    !item.includes('voluminous')
+            );
+            shoesOptions = shoesOptions.filter(
+                (item) =>
+                    (item.includes('туфли') ||
+                        item.includes('shoes') ||
+                        item.includes('балетки') ||
+                        item.includes('flats')) &&
+                    !item.includes('кроссовки') &&
+                    !item.includes('sneakers') &&
+                    !item.includes('высокие') &&
+                    !item.includes('high')
             );
         }
 
