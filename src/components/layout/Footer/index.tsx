@@ -4,12 +4,19 @@ import { Link } from 'react-router-dom';
 
 import { Logo } from '@/components/common/Logo';
 import { routes } from '@/router/routes';
+import { PrivateRoutePaths } from '@/types/ruotes';
 
 export const Footer: FC = () => {
     const { t } = useTranslation();
+    const { wardrobe, personalDetails, event, weather } = routes;
+    const isPrivateRoute = [wardrobe, personalDetails, event, weather].includes(
+        location.pathname as PrivateRoutePaths
+    );
 
     return (
-        <footer className="bg-gray-100 py-8 px-4 md:px-8 mt-12 text-gray-600">
+        <footer
+            className={`bg-gray-100 py-8 px-4 md:px-8 ${isPrivateRoute ? '' : 'mt-12'} text-gray-600`}
+        >
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
                 <div className="mb-4 md:mb-0 text-2xl">
                     <Logo variant="secondary" />

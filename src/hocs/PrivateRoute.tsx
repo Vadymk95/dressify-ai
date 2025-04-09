@@ -5,12 +5,11 @@ import { Loader } from '@/components/common/Loader';
 import { routes } from '@/router/routes';
 import { useAuthStore } from '@/store/authStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
+import { PrivateRoutePaths } from '@/types/ruotes';
 
 interface PrivateRouteProps {
     children: JSX.Element;
 }
-
-type PrivateRoutePaths = keyof typeof routes;
 
 export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     const { user, initialized } = useAuthStore();
