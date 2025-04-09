@@ -661,7 +661,8 @@ export const ru = {
                 save: 'Сохранить',
                 cancel: 'Отмена',
                 leave: 'Уйти',
-                goToHome: 'Перейти на главную'
+                goToHome: 'Перейти на главную',
+                tooltip: 'Подсказка'
             },
             ...ru_codes
         }

@@ -3,19 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { TypeAnimation } from 'react-type-animation';
 
 import { Button } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger
-} from '@/components/ui/tooltip';
+import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
-
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const OutfitRequestPanel: FC = () => {
     const { t } = useTranslation();
@@ -120,91 +112,85 @@ export const OutfitRequestPanel: FC = () => {
                                 )}
                     </Button>
 
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <div className="flex items-center gap-2">
-                                    <Button
-                                        onClick={generateStandardOutfit}
-                                        disabled={isLoading || !isEmailVerified}
-                                        className={`
-                                            w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
-                                            shadow-lg transform transition-all duration-200
-                                            bg-gradient-to-r from-amber-400 to-yellow-400
-                                            hover:from-yellow-400 hover:to-amber-400
-                                            hover:scale-105 active:scale-95
-                                            disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-                                            cursor-pointer
-                                            ${isLoading && !aiResponse ? 'animate-pulse' : ''}
-                                        `}
-                                    >
-                                        {isLoading && !aiResponse
-                                            ? t(
-                                                  'Components.Features.OutfitRequestPanel.generating'
-                                              )
-                                            : standardResponse
-                                              ? t(
-                                                    'Components.Features.OutfitRequestPanel.generateMoreStandard'
-                                                )
-                                              : t(
-                                                    'Components.Features.OutfitRequestPanel.generateStandard'
-                                                )}
-                                    </Button>
-                                    <FontAwesomeIcon
-                                        icon={faCircleInfo}
-                                        className="text-blue-400 hover:text-blue-300 transition-colors cursor-help text-xl"
-                                    />
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onClick={generateStandardOutfit}
+                            disabled={isLoading || !isEmailVerified}
+                            className={`
+                                w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
+                                shadow-lg transform transition-all duration-200
+                                bg-gradient-to-r from-amber-400 to-yellow-400
+                                hover:from-yellow-400 hover:to-amber-400
+                                hover:scale-105 active:scale-95
+                                disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+                                cursor-pointer
+                                ${isLoading && !aiResponse ? 'animate-pulse' : ''}
+                            `}
+                        >
+                            {isLoading && !aiResponse
+                                ? t(
+                                      'Components.Features.OutfitRequestPanel.generating'
+                                  )
+                                : standardResponse
+                                  ? t(
+                                        'Components.Features.OutfitRequestPanel.generateMoreStandard'
+                                    )
+                                  : t(
+                                        'Components.Features.OutfitRequestPanel.generateStandard'
+                                    )}
+                        </Button>
+                        <InfoTooltip
+                            content={
+                                <div className="py-8 px-4 mx-2 sm:mx-0 max-w-[calc(100vw-2rem)] sm:max-w-md bg-gradient-to-br from-amber-50/95 to-orange-50/95 border border-amber-200/50 text-amber-900 rounded-xl shadow-lg backdrop-blur-sm">
+                                    <p className="font-semibold mb-2 text-amber-800">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.title'
+                                        )}
+                                    </p>
+                                    <p className="text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.weather'
+                                        )}
+                                    </p>
+                                    <p className="mt-2 text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.basicInfo'
+                                        )}
+                                    </p>
+                                    <p className="text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.gender'
+                                        )}
+                                    </p>
+                                    <p className="text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.height'
+                                        )}
+                                    </p>
+                                    <p className="text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.weight'
+                                        )}
+                                    </p>
+                                    <p className="text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.age'
+                                        )}
+                                    </p>
+                                    <p className="mt-2 text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.event'
+                                        )}
+                                    </p>
+                                    <pre className="mt-1 whitespace-pre-wrap text-amber-700">
+                                        {t(
+                                            'Components.Features.OutfitRequestPanel.tooltip.requirements.eventTypes'
+                                        )}
+                                    </pre>
                                 </div>
-                            </TooltipTrigger>
-                            <TooltipContent className="p-4 max-w-xs bg-gradient-to-br from-amber-950/90 to-orange-900/90 border border-amber-500/20 text-amber-50">
-                                <p className="font-semibold mb-2">
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.title'
-                                    )}
-                                </p>
-                                <p>
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.weather'
-                                    )}
-                                </p>
-                                <p className="mt-2">
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.basicInfo'
-                                    )}
-                                </p>
-                                <p>
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.gender'
-                                    )}
-                                </p>
-                                <p>
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.height'
-                                    )}
-                                </p>
-                                <p>
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.weight'
-                                    )}
-                                </p>
-                                <p>
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.age'
-                                    )}
-                                </p>
-                                <p className="mt-2">
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.event'
-                                    )}
-                                </p>
-                                <pre className="mt-1 whitespace-pre-wrap">
-                                    {t(
-                                        'Components.Features.OutfitRequestPanel.tooltip.requirements.eventTypes'
-                                    )}
-                                </pre>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                            }
+                        />
+                    </div>
 
                     {showText && (
                         <Button
