@@ -117,64 +117,6 @@ export const ru = {
                         },
                         successMessage: 'Отзыв успешно отправлен!'
                     },
-                    WeatherPanel: {
-                        title: 'Погода',
-                        selectYourLocation: 'Выберите ваше местоположение',
-                        selectCountry: 'Выберите страну',
-                        selectCity: 'Выберите город',
-                        noCountryFound: 'Страна не найдена',
-                        noCityFound: 'Город не найден',
-                        fetchWeather: 'Узнать погоду',
-                        fetchTomorrow: 'Погода на завтра',
-                        tabs: {
-                            location: 'По местоположению',
-                            manual: 'Вручную'
-                        },
-                        manual: {
-                            conditions: 'Погодные условия',
-                            temperature: 'Температура'
-                        },
-                        accordions: {
-                            location: 'Местоположение',
-                            title: 'Настройки погоды',
-                            conditions: 'Погодные условия',
-                            temperature: 'Температура'
-                        },
-                        conditions: {
-                            sunny: 'Солнечно',
-                            partlyCloudy: 'Переменная облачность',
-                            cloudy: 'Облачно',
-                            rain: 'Дождь',
-                            heavyRain: 'Ливень',
-                            snow: 'Снег',
-                            thunderstorm: 'Гроза'
-                        },
-                        temperature: {
-                            hot: 'Жарко',
-                            warm: 'Тепло',
-                            moderate: 'Умеренно',
-                            cool: 'Прохладно',
-                            cold: 'Холодно'
-                        },
-                        daysOfWeek: {
-                            monday: 'Понедельник',
-                            tuesday: 'Вторник',
-                            wednesday: 'Среда',
-                            thursday: 'Четверг',
-                            friday: 'Пятница',
-                            saturday: 'Суббота',
-                            sunday: 'Воскресенье'
-                        },
-                        dateFormat: {
-                            today: 'Сегодня',
-                            tomorrow: 'Завтра'
-                        },
-                        errors: {
-                            fetchWeatherError: 'Ошибка при получении погоды',
-                            fetchCitiesError:
-                                'Ошибка при получении списка городов'
-                        }
-                    },
                     PersonalDetailsPanel: {
                         title: 'Личные данные',
                         gender: 'Пол:',
@@ -641,6 +583,64 @@ export const ru = {
                     title: 'Платеж не выполнен',
                     description: 'Пожалуйста, попробуйте ещё раз.',
                     goToHome: 'Перейти на главную'
+                },
+                Weather: {
+                    title: 'Погода',
+                    selectYourLocation: 'Выберите ваше местоположение',
+                    selectCountry: 'Выберите страну',
+                    selectCity: 'Выберите город',
+                    noCountryFound: 'Страна не найдена',
+                    noCityFound: 'Город не найден',
+                    fetchWeather: 'Узнать погоду',
+                    fetchTomorrow: 'Погода на завтра',
+                    whatToWear: '',
+                    tabs: {
+                        location: 'По местоположению',
+                        manual: 'Вручную'
+                    },
+                    manual: {
+                        conditions: 'Погодные условия',
+                        temperature: 'Температура'
+                    },
+                    accordions: {
+                        location: 'Местоположение',
+                        title: 'Настройки погоды',
+                        conditions: 'Погодные условия',
+                        temperature: 'Температура'
+                    },
+                    conditions: {
+                        sunny: 'Солнечно',
+                        partlyCloudy: 'Переменная облачность',
+                        cloudy: 'Облачно',
+                        rain: 'Дождь',
+                        heavyRain: 'Ливень',
+                        snow: 'Снег',
+                        thunderstorm: 'Гроза'
+                    },
+                    temperature: {
+                        hot: 'Жарко',
+                        warm: 'Тепло',
+                        moderate: 'Умеренно',
+                        cool: 'Прохладно',
+                        cold: 'Холодно'
+                    },
+                    daysOfWeek: {
+                        monday: 'Понедельник',
+                        tuesday: 'Вторник',
+                        wednesday: 'Среда',
+                        thursday: 'Четверг',
+                        friday: 'Пятница',
+                        saturday: 'Суббота',
+                        sunday: 'Воскресенье'
+                    },
+                    dateFormat: {
+                        today: 'Сегодня',
+                        tomorrow: 'Завтра'
+                    },
+                    errors: {
+                        fetchWeatherError: 'Ошибка при получении погоды',
+                        fetchCitiesError: 'Ошибка при получении списка городов'
+                    }
                 }
             },
             General: {
@@ -649,7 +649,8 @@ export const ru = {
                 sending: 'Отправка...',
                 save: 'Сохранить',
                 cancel: 'Отмена',
-                leave: 'Уйти'
+                leave: 'Уйти',
+                goToHome: 'Перейти на главную'
             },
             ...ru_codes
         }

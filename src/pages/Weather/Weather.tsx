@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GoToHomeButton } from '@/components/common/GoToHomeButton';
 import { WeatherWidget } from '@/components/common/WeatherWidget';
 import {
     Accordion,
@@ -136,7 +137,7 @@ const Weather: FC = () => {
 
     const getCityDisplayName = () => {
         if (!country || !city) {
-            return t('Components.Features.WeatherPanel.selectYourLocation');
+            return t('Pages.Weather.selectYourLocation');
         }
 
         const cleanCityName = getCityName(
@@ -180,9 +181,7 @@ const Weather: FC = () => {
             'friday',
             'saturday'
         ];
-        return t(
-            `Components.Features.WeatherPanel.daysOfWeek.${days[date.getDay()]}`
-        );
+        return t(`Pages.Weather.daysOfWeek.${days[date.getDay()]}`);
     };
 
     const formatDate = (date: Date) => {
@@ -198,14 +197,11 @@ const Weather: FC = () => {
             <div className="w-full flex-1 max-w-4xl mx-auto flex flex-col items-center">
                 <div className="text-center mb-4">
                     <h2 className="text-2xl font-semibold mb-2 text-amber-50">
-                        {t('Components.Features.WeatherPanel.title')}
+                        {t('Pages.Weather.title')}
                     </h2>
                     <div className="text-amber-50/80">
                         <p className="text-lg font-medium">
-                            {t(
-                                'Components.Features.WeatherPanel.dateFormat.today'
-                            )}
-                            :
+                            {t('Pages.Weather.dateFormat.today')}:
                         </p>
                         <p className="text-lg font-medium">
                             {getDayOfWeek(currentDate)}
@@ -227,15 +223,13 @@ const Weather: FC = () => {
                             value="location"
                             className="cursor-pointer hover:bg-amber-500/20 transition-all duration-200"
                         >
-                            {t(
-                                'Components.Features.WeatherPanel.tabs.location'
-                            )}
+                            {t('Pages.Weather.tabs.location')}
                         </TabsTrigger>
                         <TabsTrigger
                             value="manual"
                             className="cursor-pointer hover:bg-amber-500/20 transition-all duration-200"
                         >
-                            {t('Components.Features.WeatherPanel.tabs.manual')}
+                            {t('Pages.Weather.tabs.manual')}
                         </TabsTrigger>
                     </TabsList>
 
@@ -249,9 +243,7 @@ const Weather: FC = () => {
                                 <AccordionTrigger className="cursor-pointer py-4 text-base">
                                     {country && city
                                         ? getCityDisplayName()
-                                        : t(
-                                              'Components.Features.WeatherPanel.selectYourLocation'
-                                          )}
+                                        : t('Pages.Weather.selectYourLocation')}
                                 </AccordionTrigger>
                                 <AccordionContent>
                                     <div className="grid grid-cols-1 gap-4 w-full mb-6">
@@ -262,10 +254,10 @@ const Weather: FC = () => {
                                                 value={country}
                                                 onValueChange={handleSetCountry}
                                                 placeholder={t(
-                                                    'Components.Features.WeatherPanel.selectCountry'
+                                                    'Pages.Weather.selectCountry'
                                                 )}
                                                 emptyMessage={t(
-                                                    'Components.Features.WeatherPanel.noCountryFound'
+                                                    'Pages.Weather.noCountryFound'
                                                 )}
                                             />
                                         </div>
@@ -277,10 +269,10 @@ const Weather: FC = () => {
                                                 value={city}
                                                 onValueChange={handleSetCity}
                                                 placeholder={t(
-                                                    'Components.Features.WeatherPanel.selectCity'
+                                                    'Pages.Weather.selectCity'
                                                 )}
                                                 emptyMessage={t(
-                                                    'Components.Features.WeatherPanel.noCityFound'
+                                                    'Pages.Weather.noCityFound'
                                                 )}
                                             />
                                         </div>
@@ -296,9 +288,7 @@ const Weather: FC = () => {
                                 variant="outline"
                                 className="btn-third-gradient text-amber-50 hover:text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base"
                             >
-                                {t(
-                                    'Components.Features.WeatherPanel.fetchWeather'
-                                )}
+                                {t('Pages.Weather.fetchWeather')}
                             </Button>
 
                             <Button
@@ -307,9 +297,7 @@ const Weather: FC = () => {
                                 variant="outline"
                                 className="cursor-pointer shadow-sm py-6 px-12 text-base"
                             >
-                                {t(
-                                    'Components.Features.WeatherPanel.fetchTomorrow'
-                                )}
+                                {t('Pages.Weather.fetchTomorrow')}
                             </Button>
                         </div>
                     </TabsContent>
@@ -323,16 +311,14 @@ const Weather: FC = () => {
                             >
                                 <AccordionItem value="weather-settings">
                                     <AccordionTrigger className="cursor-pointer text-base">
-                                        {t(
-                                            'Components.Features.WeatherPanel.accordions.title'
-                                        )}
+                                        {t('Pages.Weather.accordions.title')}
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         <div className="space-y-4">
                                             <div>
                                                 <h3 className="text-lg font-medium mb-2">
                                                     {t(
-                                                        'Components.Features.WeatherPanel.manual.conditions'
+                                                        'Pages.Weather.manual.conditions'
                                                     )}
                                                 </h3>
                                                 <RadioGroup
@@ -381,7 +367,7 @@ const Weather: FC = () => {
                                             <div>
                                                 <h3 className="text-lg font-medium mb-2">
                                                     {t(
-                                                        'Components.Features.WeatherPanel.manual.temperature'
+                                                        'Pages.Weather.manual.temperature'
                                                     )}
                                                 </h3>
                                                 <RadioGroup
@@ -442,6 +428,10 @@ const Weather: FC = () => {
                 </Tabs>
 
                 <WeatherWidget />
+
+                <div className="flex justify-center my-4">
+                    <GoToHomeButton variant="third" />
+                </div>
             </div>
         </div>
     );

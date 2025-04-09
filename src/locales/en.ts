@@ -116,63 +116,6 @@ export const en = {
                         },
                         successMessage: 'Feedback sent successfully!'
                     },
-                    WeatherPanel: {
-                        title: 'Weather',
-                        selectYourLocation: 'Select your location',
-                        selectCountry: 'Select country',
-                        selectCity: 'Select city',
-                        noCountryFound: 'Country not found',
-                        noCityFound: 'City not found',
-                        fetchWeather: 'Check weather',
-                        fetchTomorrow: "Tomorrow's weather",
-                        tabs: {
-                            location: 'By location',
-                            manual: 'Manual'
-                        },
-                        manual: {
-                            conditions: 'Weather conditions',
-                            temperature: 'Temperature'
-                        },
-                        accordions: {
-                            location: 'Location',
-                            title: 'Weather Settings',
-                            conditions: 'Weather Conditions',
-                            temperature: 'Temperature'
-                        },
-                        conditions: {
-                            sunny: 'Sunny',
-                            partlyCloudy: 'Partly cloudy',
-                            cloudy: 'Cloudy',
-                            rain: 'Rain',
-                            heavyRain: 'Heavy rain',
-                            snow: 'Snow',
-                            thunderstorm: 'Thunderstorm'
-                        },
-                        temperature: {
-                            hot: 'Hot',
-                            warm: 'Warm',
-                            moderate: 'Moderate',
-                            cool: 'Cool',
-                            cold: 'Cold'
-                        },
-                        daysOfWeek: {
-                            monday: 'Monday',
-                            tuesday: 'Tuesday',
-                            wednesday: 'Wednesday',
-                            thursday: 'Thursday',
-                            friday: 'Friday',
-                            saturday: 'Saturday',
-                            sunday: 'Sunday'
-                        },
-                        dateFormat: {
-                            today: 'Today',
-                            tomorrow: 'Tomorrow'
-                        },
-                        errors: {
-                            fetchWeatherError: 'Error fetching weather',
-                            fetchCitiesError: 'Error fetching cities'
-                        }
-                    },
                     PersonalDetailsPanel: {
                         title: 'Personal Details',
                         gender: 'Gender:',
@@ -636,6 +579,64 @@ export const en = {
                     title: 'Payment Failed',
                     description: 'Please try again.',
                     goToHome: 'Go to Home'
+                },
+                Weather: {
+                    title: 'Weather',
+                    selectYourLocation: 'Select your location',
+                    selectCountry: 'Select country',
+                    selectCity: 'Select city',
+                    noCountryFound: 'Country not found',
+                    noCityFound: 'City not found',
+                    fetchWeather: 'Check weather',
+                    fetchTomorrow: "Tomorrow's weather",
+                    whatToWear: '',
+                    tabs: {
+                        location: 'By location',
+                        manual: 'Manual'
+                    },
+                    manual: {
+                        conditions: 'Weather conditions',
+                        temperature: 'Temperature'
+                    },
+                    accordions: {
+                        location: 'Location',
+                        title: 'Weather Settings',
+                        conditions: 'Weather Conditions',
+                        temperature: 'Temperature'
+                    },
+                    conditions: {
+                        sunny: 'Sunny',
+                        partlyCloudy: 'Partly cloudy',
+                        cloudy: 'Cloudy',
+                        rain: 'Rain',
+                        heavyRain: 'Heavy rain',
+                        snow: 'Snow',
+                        thunderstorm: 'Thunderstorm'
+                    },
+                    temperature: {
+                        hot: 'Hot',
+                        warm: 'Warm',
+                        moderate: 'Moderate',
+                        cool: 'Cool',
+                        cold: 'Cold'
+                    },
+                    daysOfWeek: {
+                        monday: 'Monday',
+                        tuesday: 'Tuesday',
+                        wednesday: 'Wednesday',
+                        thursday: 'Thursday',
+                        friday: 'Friday',
+                        saturday: 'Saturday',
+                        sunday: 'Sunday'
+                    },
+                    dateFormat: {
+                        today: 'Today',
+                        tomorrow: 'Tomorrow'
+                    },
+                    errors: {
+                        fetchWeatherError: 'Error fetching weather',
+                        fetchCitiesError: 'Error fetching cities'
+                    }
                 }
             },
             General: {
@@ -644,7 +645,8 @@ export const en = {
                 sending: 'Sending...',
                 save: 'Save',
                 cancel: 'Cancel',
-                leave: 'Leave'
+                leave: 'Leave',
+                goToHome: 'Go to Home'
             },
             ...en_codes
         }
