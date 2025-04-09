@@ -5,7 +5,6 @@ import { Loader } from '@/components/common/Loader';
 import { routes } from '@/router/routes';
 import { useAuthStore } from '@/store/authStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
-import { PrivateRoutePaths } from '@/types/ruotes';
 
 interface PrivateRouteProps {
     children: JSX.Element;
@@ -20,13 +19,9 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     if (!user) return <Navigate to={routes.login} />;
 
     const isFreePlan = profile?.plan === 'free';
-    const { wardrobe, personalDetails, weather } = routes;
-    const isPrivateRoute = [wardrobe, personalDetails, weather].includes(
-        location.pathname as PrivateRoutePaths
-    );
+    const { wardrobe } = routes;
 
-    // Проверяем, пытается ли пользователь с бесплатным планом получить доступ к гардеробу
-    if (isFreePlan && isPrivateRoute) {
+    if (isFreePlan && wardrobe === location.pathname) {
         return <Navigate to={routes.pricing} />;
     }
 

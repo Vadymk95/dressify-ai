@@ -10,13 +10,13 @@ export const Footer: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const { wardrobe, personalDetails, weather } = routes;
-    const isPrivateRoute = [wardrobe, personalDetails, weather].includes(
+    const withoutMarginPages = [wardrobe, personalDetails, weather].includes(
         location.pathname as PrivateRoutePaths
     );
 
     return (
         <footer
-            className={`bg-gray-100 py-8 px-4 md:px-8 ${isPrivateRoute ? '' : 'mt-12'} text-gray-600`}
+            className={`bg-gray-100 py-8 px-4 md:px-8 ${withoutMarginPages ? '' : 'mt-12'} text-gray-600`}
         >
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
                 <div className="mb-4 md:mb-0 text-2xl">
