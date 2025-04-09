@@ -386,7 +386,9 @@ export const en = {
                     note: 'A semi-annual plan will be added in the future. Prices may be revised based on collected feedback.'
                 },
                 WhatToWear: {
-                    title: "Let's find out what to wear today!"
+                    title: "Let's find your perfect outfit!",
+                    subtitle:
+                        'Fill in the information below, and we will help you create the perfect look for any occasion'
                 },
                 Wardrobe: {
                     title: 'My Wardrobe',
