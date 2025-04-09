@@ -25,7 +25,7 @@ export const WeatherPanel: FC = () => {
     };
 
     return (
-        <div
+        <section
             className="group w-full max-w-[200px] mx-auto p-4 flex flex-col items-center main-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             onClick={() => navigate('/weather')}
         >
@@ -52,6 +52,6 @@ export const WeatherPanel: FC = () => {
                     {t('Components.Features.WeatherPanel.noWeather')}
                 </span>
             )}
-        </div>
+        </section>
     );
 };

@@ -123,128 +123,7 @@ export const ru = {
                     },
                     PersonalDetailsPanel: {
                         title: 'Личные данные',
-                        gender: 'Пол:',
-                        genderOptions: {
-                            male: 'Мужской',
-                            female: 'Женский',
-                            other: 'Другой'
-                        },
-                        optionalNote:
-                            'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
-                        additionalInfo: 'Дополнительная информация',
-                        freePlanNote:
-                            'Некоторые поля доступны только для пользователей с премиум подпиской. Обновите свой план, чтобы получить доступ ко всем функциям.',
-                        characteristics: {
-                            height: 'Рост',
-                            heightPlaceholder: 'Введите рост',
-                            weight: 'Вес',
-                            weightPlaceholder: 'Введите вес',
-                            bodyType: 'Тип фигуры',
-                            age: 'Возраст',
-                            agePlaceholder: 'Введите возраст',
-                            skinTone: 'Цвет кожи',
-                            hairColor: 'Цвет волос',
-                            eyeColor: 'Цвет глаз',
-                            preferredColors: 'Предпочитаемые цвета',
-                            stylePreference: 'Предпочитаемый стиль',
-                            units: {
-                                cm: 'см',
-                                kg: 'кг',
-                                years: 'лет',
-                                lb: 'фунт',
-                                ft: 'фут',
-                                in: 'дюйм'
-                            },
-                            bodyTypes: {
-                                // Common body types
-                                slim: 'Стройный',
-                                athletic: 'Атлетический',
-                                average: 'Средний',
-                                curvy: 'Фигуристый',
-                                muscular: 'Мускулистый',
-                                // Female body types
-                                hourglass: 'Песочные часы',
-                                pear: 'Груша',
-                                apple: 'Яблоко',
-                                rectangle: 'Прямоугольник',
-                                inverted_triangle: 'Перевёрнутый треугольник',
-                                // Male body types
-                                trapezoid: 'Трапеция',
-                                triangle: 'Треугольник',
-                                oval: 'Овал'
-                            },
-                            skinTones: {
-                                fair: 'Очень светлый',
-                                light: 'Светлый',
-                                medium: 'Средний',
-                                olive: 'Оливковый',
-                                brown: 'Смуглый',
-                                dark: 'Тёмный'
-                            },
-                            hairColors: {
-                                black: 'Чёрный',
-                                brown: 'Коричневый',
-                                blonde: 'Светлый',
-                                red: 'Рыжий',
-                                gray: 'Седой',
-                                white: 'Белый',
-                                other: 'Другой'
-                            },
-                            eyeColors: {
-                                brown: 'Карий',
-                                blue: 'Голубой',
-                                green: 'Зелёный',
-                                hazel: 'Ореховый',
-                                gray: 'Серый',
-                                other: 'Другой'
-                            },
-                            colors: {
-                                black: 'Чёрный',
-                                white: 'Белый',
-                                gray: 'Серый',
-                                red: 'Красный',
-                                blue: 'Синий',
-                                green: 'Зелёный',
-                                yellow: 'Жёлтый',
-                                purple: 'Фиолетовый',
-                                pink: 'Розовый',
-                                orange: 'Оранжевый',
-                                brown: 'Коричневый',
-                                beige: 'Бежевый'
-                            },
-                            styles: {
-                                casual: 'Повседневный',
-                                formal: 'Формальный',
-                                business: 'Деловой',
-                                sporty: 'Спортивный',
-                                romantic: 'Романтический',
-                                creative: 'Креативный',
-                                minimalist: 'Минималистичный',
-                                vintage: 'Винтажный',
-                                streetwear: 'Уличный'
-                            }
-                        },
-                        search: 'Поиск...',
-                        noResults: 'Ничего не найдено',
-                        save: 'Сохранить изменения',
-                        validation: {
-                            height: 'Рост должен быть от 100 до 250 см',
-                            weight: 'Вес должен быть от 30 до 250 кг',
-                            age: 'Возраст должен быть от 13 до 120 лет'
-                        },
-                        errors: {
-                            userNotAuthorized: 'Пользователь не авторизован',
-                            unknownError: 'Произошла неизвестная ошибка',
-                            networkError:
-                                'Ошибка сети. Пожалуйста, проверьте подключение',
-                            saveFailed: 'Не удалось сохранить изменения',
-                            cookieRequired:
-                                'Требуется разрешение на сохранение настроек',
-                            cookieRequiredDesc:
-                                'Нажмите "Настроить" в баннере внизу страницы и включите функциональные куки'
-                        },
-                        saveSuccess: 'Изменения успешно сохранены',
-                        noChanges: 'Нет изменений для сохранения'
+                        description: 'Настройте ваши личные данные'
                     },
                     WardrobePanel: {
                         title: 'Ваш гардероб',
@@ -645,6 +524,131 @@ export const ru = {
                         fetchWeatherError: 'Ошибка при получении погоды',
                         fetchCitiesError: 'Ошибка при получении списка городов'
                     }
+                },
+                PersonalDetails: {
+                    title: 'Личные данные',
+                    gender: 'Пол:',
+                    genderOptions: {
+                        male: 'Мужской',
+                        female: 'Женский',
+                        other: 'Другой'
+                    },
+                    optionalNote:
+                        'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
+                    additionalInfo: 'Дополнительная информация',
+                    freePlanNote:
+                        'Некоторые поля доступны только для пользователей с премиум подпиской. Обновите свой план, чтобы получить доступ ко всем функциям.',
+                    characteristics: {
+                        height: 'Рост',
+                        heightPlaceholder: 'Введите рост',
+                        weight: 'Вес',
+                        weightPlaceholder: 'Введите вес',
+                        bodyType: 'Тип фигуры',
+                        age: 'Возраст',
+                        agePlaceholder: 'Введите возраст',
+                        skinTone: 'Цвет кожи',
+                        hairColor: 'Цвет волос',
+                        eyeColor: 'Цвет глаз',
+                        preferredColors: 'Предпочитаемые цвета',
+                        stylePreference: 'Предпочитаемый стиль',
+                        units: {
+                            cm: 'см',
+                            kg: 'кг',
+                            years: 'лет',
+                            lb: 'фунт',
+                            ft: 'фут',
+                            in: 'дюйм'
+                        },
+                        bodyTypes: {
+                            // Common body types
+                            slim: 'Стройный',
+                            athletic: 'Атлетический',
+                            average: 'Средний',
+                            curvy: 'Фигуристый',
+                            muscular: 'Мускулистый',
+                            // Female body types
+                            hourglass: 'Песочные часы',
+                            pear: 'Груша',
+                            apple: 'Яблоко',
+                            rectangle: 'Прямоугольник',
+                            inverted_triangle: 'Перевёрнутый треугольник',
+                            // Male body types
+                            trapezoid: 'Трапеция',
+                            triangle: 'Треугольник',
+                            oval: 'Овал'
+                        },
+                        skinTones: {
+                            fair: 'Очень светлый',
+                            light: 'Светлый',
+                            medium: 'Средний',
+                            olive: 'Оливковый',
+                            brown: 'Смуглый',
+                            dark: 'Тёмный'
+                        },
+                        hairColors: {
+                            black: 'Чёрный',
+                            brown: 'Коричневый',
+                            blonde: 'Светлый',
+                            red: 'Рыжий',
+                            gray: 'Седой',
+                            white: 'Белый',
+                            other: 'Другой'
+                        },
+                        eyeColors: {
+                            brown: 'Карий',
+                            blue: 'Голубой',
+                            green: 'Зелёный',
+                            hazel: 'Ореховый',
+                            gray: 'Серый',
+                            other: 'Другой'
+                        },
+                        colors: {
+                            black: 'Чёрный',
+                            white: 'Белый',
+                            gray: 'Серый',
+                            red: 'Красный',
+                            blue: 'Синий',
+                            green: 'Зелёный',
+                            yellow: 'Жёлтый',
+                            purple: 'Фиолетовый',
+                            pink: 'Розовый',
+                            orange: 'Оранжевый',
+                            brown: 'Коричневый',
+                            beige: 'Бежевый'
+                        },
+                        styles: {
+                            casual: 'Повседневный',
+                            formal: 'Формальный',
+                            business: 'Деловой',
+                            sporty: 'Спортивный',
+                            romantic: 'Романтический',
+                            creative: 'Креативный',
+                            minimalist: 'Минималистичный',
+                            vintage: 'Винтажный',
+                            streetwear: 'Уличный'
+                        }
+                    },
+                    search: 'Поиск...',
+                    noResults: 'Ничего не найдено',
+                    save: 'Сохранить изменения',
+                    validation: {
+                        height: 'Рост должен быть от 100 до 250 см',
+                        weight: 'Вес должен быть от 30 до 250 кг',
+                        age: 'Возраст должен быть от 13 до 120 лет'
+                    },
+                    errors: {
+                        userNotAuthorized: 'Пользователь не авторизован',
+                        unknownError: 'Произошла неизвестная ошибка',
+                        networkError:
+                            'Ошибка сети. Пожалуйста, проверьте подключение',
+                        saveFailed: 'Не удалось сохранить изменения',
+                        cookieRequired:
+                            'Требуется разрешение на сохранение настроек',
+                        cookieRequiredDesc:
+                            'Нажмите "Настроить" в баннере внизу страницы и включите функциональные куки'
+                    },
+                    saveSuccess: 'Изменения успешно сохранены',
+                    noChanges: 'Нет изменений для сохранения'
                 }
             },
             General: {

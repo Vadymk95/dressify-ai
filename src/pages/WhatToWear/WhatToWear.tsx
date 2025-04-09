@@ -22,13 +22,8 @@ const WhatToWear: FC = () => {
                 {t('Pages.WhatToWear.title')}
             </h1>
 
-            <section>
-                <WeatherPanel />
-            </section>
-
-            <section className="p-4 secondary-gradient shadow-md rounded-xl">
-                <PersonalDetailsPanel />
-            </section>
+            <WeatherPanel />
+            <PersonalDetailsPanel />
 
             <div className="flex flex-col md:flex-row gap-5">
                 <section className="flex-1 p-4 main-gradient-reverse shadow-md rounded-xl flex flex-col">

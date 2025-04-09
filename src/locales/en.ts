@@ -122,127 +122,7 @@ export const en = {
                     },
                     PersonalDetailsPanel: {
                         title: 'Personal Details',
-                        gender: 'Gender:',
-                        genderOptions: {
-                            male: 'Male',
-                            female: 'Female',
-                            other: 'Other'
-                        },
-                        optionalNote:
-                            'Additional information is optional, but it helps us provide more accurate outfit recommendations',
-                        additionalInfo: 'Additional Information',
-                        freePlanNote:
-                            'Some fields are only available for premium users. Upgrade your plan to access all features.',
-                        characteristics: {
-                            height: 'Height',
-                            weight: 'Weight',
-                            bodyType: 'Body Type',
-                            age: 'Age',
-                            skinTone: 'Skin Tone',
-                            hairColor: 'Hair Color',
-                            eyeColor: 'Eye Color',
-                            preferredColors: 'Preferred Colors',
-                            stylePreference: 'Style Preference',
-                            units: {
-                                cm: 'cm',
-                                kg: 'kg',
-                                years: 'years',
-                                lb: 'lb',
-                                ft: 'ft',
-                                in: 'in'
-                            },
-                            bodyTypes: {
-                                // Common body types
-                                slim: 'Slim',
-                                athletic: 'Athletic',
-                                average: 'Average',
-                                curvy: 'Curvy',
-                                muscular: 'Muscular',
-                                // Female body types
-                                hourglass: 'Hourglass',
-                                pear: 'Pear',
-                                apple: 'Apple',
-                                rectangle: 'Rectangle',
-                                inverted_triangle: 'Inverted Triangle',
-                                // Male body types
-                                trapezoid: 'Trapezoid',
-                                triangle: 'Triangle',
-                                oval: 'Oval'
-                            },
-                            skinTones: {
-                                fair: 'Fair',
-                                light: 'Light',
-                                medium: 'Medium',
-                                olive: 'Olive',
-                                brown: 'Brown',
-                                dark: 'Dark'
-                            },
-                            hairColors: {
-                                black: 'Black',
-                                brown: 'Brown',
-                                blonde: 'Blonde',
-                                red: 'Red',
-                                gray: 'Gray',
-                                white: 'White',
-                                other: 'Other'
-                            },
-                            eyeColors: {
-                                brown: 'Brown',
-                                blue: 'Blue',
-                                green: 'Green',
-                                hazel: 'Hazel',
-                                gray: 'Gray',
-                                other: 'Other'
-                            },
-                            colors: {
-                                black: 'Black',
-                                white: 'White',
-                                gray: 'Gray',
-                                red: 'Red',
-                                blue: 'Blue',
-                                green: 'Green',
-                                yellow: 'Yellow',
-                                purple: 'Purple',
-                                pink: 'Pink',
-                                orange: 'Orange',
-                                brown: 'Brown',
-                                beige: 'Beige'
-                            },
-                            styles: {
-                                casual: 'Casual',
-                                formal: 'Formal',
-                                business: 'Business',
-                                sporty: 'Sporty',
-                                romantic: 'Romantic',
-                                creative: 'Creative',
-                                minimalist: 'Minimalist',
-                                vintage: 'Vintage',
-                                streetwear: 'Streetwear'
-                            },
-                            heightPlaceholder: 'Enter height',
-                            weightPlaceholder: 'Enter weight',
-                            agePlaceholder: 'Enter age'
-                        },
-                        search: 'Search...',
-                        noResults: 'No results found',
-                        save: 'Save Changes',
-                        validation: {
-                            height: 'Height should be between 100 and 250 cm',
-                            weight: 'Weight should be between 30 and 250 kg',
-                            age: 'Age should be between 13 and 120 years'
-                        },
-                        errors: {
-                            userNotAuthorized: 'User is not authorized',
-                            unknownError: 'An unknown error occurred',
-                            networkError:
-                                'Network error. Please check your connection',
-                            saveFailed: 'Failed to save changes',
-                            cookieRequired: 'Cookie permission required',
-                            cookieRequiredDesc:
-                                'Click "Customize" in the banner at the bottom of the page and enable functional cookies'
-                        },
-                        saveSuccess: 'Changes saved successfully',
-                        noChanges: 'No changes to save'
+                        description: 'Set up your personal information'
                     },
                     WardrobePanel: {
                         title: 'Your Wardrobe',
@@ -641,6 +521,130 @@ export const en = {
                         fetchWeatherError: 'Error fetching weather',
                         fetchCitiesError: 'Error fetching cities'
                     }
+                },
+                PersonalDetails: {
+                    title: 'Personal Details',
+                    gender: 'Gender:',
+                    genderOptions: {
+                        male: 'Male',
+                        female: 'Female',
+                        other: 'Other'
+                    },
+                    optionalNote:
+                        'Additional information is optional, but it helps us provide more accurate outfit recommendations',
+                    additionalInfo: 'Additional Information',
+                    freePlanNote:
+                        'Some fields are only available for premium users. Upgrade your plan to access all features.',
+                    characteristics: {
+                        height: 'Height',
+                        weight: 'Weight',
+                        bodyType: 'Body Type',
+                        age: 'Age',
+                        skinTone: 'Skin Tone',
+                        hairColor: 'Hair Color',
+                        eyeColor: 'Eye Color',
+                        preferredColors: 'Preferred Colors',
+                        stylePreference: 'Style Preference',
+                        units: {
+                            cm: 'cm',
+                            kg: 'kg',
+                            years: 'years',
+                            lb: 'lb',
+                            ft: 'ft',
+                            in: 'in'
+                        },
+                        bodyTypes: {
+                            // Common body types
+                            slim: 'Slim',
+                            athletic: 'Athletic',
+                            average: 'Average',
+                            curvy: 'Curvy',
+                            muscular: 'Muscular',
+                            // Female body types
+                            hourglass: 'Hourglass',
+                            pear: 'Pear',
+                            apple: 'Apple',
+                            rectangle: 'Rectangle',
+                            inverted_triangle: 'Inverted Triangle',
+                            // Male body types
+                            trapezoid: 'Trapezoid',
+                            triangle: 'Triangle',
+                            oval: 'Oval'
+                        },
+                        skinTones: {
+                            fair: 'Fair',
+                            light: 'Light',
+                            medium: 'Medium',
+                            olive: 'Olive',
+                            brown: 'Brown',
+                            dark: 'Dark'
+                        },
+                        hairColors: {
+                            black: 'Black',
+                            brown: 'Brown',
+                            blonde: 'Blonde',
+                            red: 'Red',
+                            gray: 'Gray',
+                            white: 'White',
+                            other: 'Other'
+                        },
+                        eyeColors: {
+                            brown: 'Brown',
+                            blue: 'Blue',
+                            green: 'Green',
+                            hazel: 'Hazel',
+                            gray: 'Gray',
+                            other: 'Other'
+                        },
+                        colors: {
+                            black: 'Black',
+                            white: 'White',
+                            gray: 'Gray',
+                            red: 'Red',
+                            blue: 'Blue',
+                            green: 'Green',
+                            yellow: 'Yellow',
+                            purple: 'Purple',
+                            pink: 'Pink',
+                            orange: 'Orange',
+                            brown: 'Brown',
+                            beige: 'Beige'
+                        },
+                        styles: {
+                            casual: 'Casual',
+                            formal: 'Formal',
+                            business: 'Business',
+                            sporty: 'Sporty',
+                            romantic: 'Romantic',
+                            creative: 'Creative',
+                            minimalist: 'Minimalist',
+                            vintage: 'Vintage',
+                            streetwear: 'Streetwear'
+                        },
+                        heightPlaceholder: 'Enter height',
+                        weightPlaceholder: 'Enter weight',
+                        agePlaceholder: 'Enter age'
+                    },
+                    search: 'Search...',
+                    noResults: 'No results found',
+                    save: 'Save Changes',
+                    validation: {
+                        height: 'Height should be between 100 and 250 cm',
+                        weight: 'Weight should be between 30 and 250 kg',
+                        age: 'Age should be between 13 and 120 years'
+                    },
+                    errors: {
+                        userNotAuthorized: 'User is not authorized',
+                        unknownError: 'An unknown error occurred',
+                        networkError:
+                            'Network error. Please check your connection',
+                        saveFailed: 'Failed to save changes',
+                        cookieRequired: 'Cookie permission required',
+                        cookieRequiredDesc:
+                            'Click "Customize" in the banner at the bottom of the page and enable functional cookies'
+                    },
+                    saveSuccess: 'Changes saved successfully',
+                    noChanges: 'No changes to save'
                 }
             },
             General: {

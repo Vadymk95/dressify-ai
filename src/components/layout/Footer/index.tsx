@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { Logo } from '@/components/common/Logo';
 import { routes } from '@/router/routes';
@@ -8,6 +8,7 @@ import { PrivateRoutePaths } from '@/types/ruotes';
 
 export const Footer: FC = () => {
     const { t } = useTranslation();
+    const location = useLocation();
     const { wardrobe, personalDetails, event, weather } = routes;
     const isPrivateRoute = [wardrobe, personalDetails, event, weather].includes(
         location.pathname as PrivateRoutePaths
