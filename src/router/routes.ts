@@ -9,7 +9,6 @@ export const routes = {
     weather: '/weather',
     personalDetails: '/personal-details',
     wardrobe: '/wardrobe',
-    event: '/event',
     successPayment: '/payment/success',
     failedPayment: '/payment/failed',
 

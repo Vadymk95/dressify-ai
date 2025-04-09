@@ -9,8 +9,8 @@ import { PrivateRoutePaths } from '@/types/ruotes';
 export const Footer: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
-    const { wardrobe, personalDetails, event, weather } = routes;
-    const isPrivateRoute = [wardrobe, personalDetails, event, weather].includes(
+    const { wardrobe, personalDetails, weather } = routes;
+    const isPrivateRoute = [wardrobe, personalDetails, weather].includes(
         location.pathname as PrivateRoutePaths
     );
 

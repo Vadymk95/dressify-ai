@@ -20,8 +20,8 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     if (!user) return <Navigate to={routes.login} />;
 
     const isFreePlan = profile?.plan === 'free';
-    const { wardrobe, personalDetails, event, weather } = routes;
-    const isPrivateRoute = [wardrobe, personalDetails, event, weather].includes(
+    const { wardrobe, personalDetails, weather } = routes;
+    const isPrivateRoute = [wardrobe, personalDetails, weather].includes(
         location.pathname as PrivateRoutePaths
     );
 

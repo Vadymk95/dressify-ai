@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute, PublicRoute, WithSuspense } from '@/hocs';
 import {
     ContactUs,
-    Event,
     FailedPayment,
     Home,
     Login,
@@ -75,11 +74,6 @@ export const AppRouter: FC = () => {
                 element={
                     <PrivateRoute>{WithSuspense(<Wardrobe />)}</PrivateRoute>
                 }
-            />
-
-            <Route
-                path={routes.event}
-                element={<PrivateRoute>{WithSuspense(<Event />)}</PrivateRoute>}
             />
 
             <Route
