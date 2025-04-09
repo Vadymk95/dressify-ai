@@ -40,6 +40,7 @@ export interface BaseOutfit {
         accessories: Record<Language, string[]>;
     };
     baseDescription: Record<Language, string>;
+    description?: Record<Language, string>;
 }
 
 export interface WeatherData {

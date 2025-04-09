@@ -341,7 +341,8 @@ export const en = {
                         generateStandard: 'Standard Outfit',
                         generateMoreStandard: 'Another Outfit',
                         clear: 'Clear',
-                        freePlanNote: 'Available only for premium users',
+                        freePlanNote:
+                            'AI outfit generation is available only for premium users',
                         remainingRequests: 'Remaining requests: {{count}}',
                         nextRequestsAt: 'Next requests available at {{time}}',
                         loadingProfile: 'Loading profile...',
@@ -359,12 +360,31 @@ export const en = {
                                 'Please verify your email to use this feature',
                             missingData:
                                 'Please fill in the required profile data',
-                            invalidEventType: 'Invalid event type',
+                            invalidEventType:
+                                'Please select one of the available events: casual with friends, office work, date night, or shopping',
                             invalidGender: 'Invalid gender specified',
                             noLocation:
                                 'Please specify location or use manual weather mode',
                             noOutfitFound: 'Could not find a suitable outfit',
+                            noWeather:
+                                'Please select weather (current or tomorrow)',
+                            missingBasicInfo:
+                                'Please fill in basic characteristics (gender, height, weight, age)',
                             generic: 'An error occurred. Please try again later'
+                        },
+                        tooltip: {
+                            title: 'To generate an outfit you need:',
+                            requirements: {
+                                weather: '• Weather (current or tomorrow)',
+                                basicInfo: '• Basic characteristics:',
+                                gender: '  - Gender',
+                                height: '  - Height',
+                                weight: '  - Weight',
+                                age: '  - Age',
+                                event: '• One of these events:',
+                                eventTypes:
+                                    '  - Casual with friends\n  - Office work\n  - Date night\n  - Shopping'
+                            }
                         }
                     }
                 },

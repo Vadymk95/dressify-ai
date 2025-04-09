@@ -203,6 +203,42 @@ export const useOutfitRequest = () => {
     };
 
     const checkRequiredFields = () => {
+        // Проверяем наличие погоды
+        const hasWeather = isManualMode
+            ? !!weatherManual
+            : !!weatherToday || !!weatherTomorrow;
+
+        if (!hasWeather) {
+            setError(
+                t('Components.Features.OutfitRequestPanel.errors.noWeather')
+            );
+            return false;
+        }
+
+        // Проверяем базовые характеристики
+        const characteristics = profile?.characteristics;
+        if (
+            !characteristics?.gender ||
+            !characteristics?.height ||
+            !characteristics?.weight ||
+            !characteristics?.age
+        ) {
+            setError(
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.missingBasicInfo'
+                )
+            );
+            return false;
+        }
+
+        // Проверяем тип события
+        const validEventTypes: BaseOutfit['event'][] = [
+            'casualFriends',
+            'workOffice',
+            'dateNight',
+            'shopping'
+        ];
+
         if (!selectedEventType) {
             setError(
                 t('Components.Features.OutfitRequestPanel.errors.noEventType')
@@ -210,9 +246,13 @@ export const useOutfitRequest = () => {
             return false;
         }
 
-        if (!profile?.characteristics?.gender) {
+        if (
+            !validEventTypes.includes(selectedEventType as BaseOutfit['event'])
+        ) {
             setError(
-                t('Components.Features.OutfitRequestPanel.errors.noGender')
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.invalidEventType'
+                )
             );
             return false;
         }

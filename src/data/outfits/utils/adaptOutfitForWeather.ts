@@ -1104,5 +1104,10 @@ export const adaptOutfitForWeather = (
     // Удаляем дублирование погоды в базовом описании
     adaptedOutfit.baseDescription = description;
 
+    adaptedOutfit.description = {
+        ru: `Генерация AI образов доступна только для премиум пользователей`,
+        en: `AI outfit generation is available only for premium users`
+    };
+
     return adaptedOutfit;
 };
