@@ -4,7 +4,7 @@ import { AppRouter } from '@/router/AppRouter';
 
 export const Main: FC = () => {
     return (
-        <main className="flex-grow">
+        <main className="flex-grow flex">
             <AppRouter />
         </main>
     );
