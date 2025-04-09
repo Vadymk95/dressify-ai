@@ -355,14 +355,15 @@ export const en = {
                             requestLimitReached: 'Daily request limit reached',
                             noEventType: 'Please select an event type',
                             noGender:
-                                'Please specify your gender in profile settings',
+                                'Please select male or female gender in profile settings',
                             emailNotVerified:
                                 'Please verify your email to use this feature',
                             missingData:
                                 'Please fill in the required profile data',
                             invalidEventType:
                                 'Please select one of the available events: casual with friends, office work, date night, or shopping',
-                            invalidGender: 'Invalid gender specified',
+                            invalidGender:
+                                'Please select male or female gender',
                             noLocation:
                                 'Please specify location or use manual weather mode',
                             noOutfitFound: 'Could not find a suitable outfit',

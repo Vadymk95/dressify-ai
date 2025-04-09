@@ -19,8 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const OutfitRequestPanel: FC = () => {
     const { t } = useTranslation();
-    const { weatherToday, weatherTomorrow, weatherManual, isManualMode } =
-        useWeatherStore();
+    const { loadingWeather } = useWeatherStore();
     const { profile } = useUserProfileStore();
     const {
         isLoading,
@@ -37,9 +36,6 @@ export const OutfitRequestPanel: FC = () => {
     } = useOutfitRequest();
     const { clearResponses } = useOutfitResponseStore();
 
-    const isWeatherLoading = isManualMode
-        ? !weatherManual
-        : !weatherToday && !weatherTomorrow;
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold text-center mb-2">
@@ -235,7 +231,7 @@ export const OutfitRequestPanel: FC = () => {
                 </div>
             )}
 
-            {!isLoading && isWeatherLoading && (
+            {!isLoading && loadingWeather && (
                 <div className="text-center text-amber-500 mb-4">
                     {t('Components.Features.OutfitRequestPanel.loadingWeather')}
                 </div>
