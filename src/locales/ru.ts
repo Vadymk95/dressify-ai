@@ -117,7 +117,10 @@ export const ru = {
                         },
                         successMessage: 'Отзыв успешно отправлен!'
                     },
-                    WeatherPanel: {},
+                    WeatherPanel: {
+                        title: 'Погода',
+                        noWeather: 'Нет данных о погоде'
+                    },
                     PersonalDetailsPanel: {
                         title: 'Личные данные',
                         gender: 'Пол:',
