@@ -18,7 +18,7 @@ export const GoToHomeButton: FC<GoToHomeButtonProps> = ({
     return (
         <Button
             onClick={() => navigate(routes.whatToWear)}
-            className={`btn-${variant}-gradient text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base max-w-3/4 hyphens-auto transition-all duration-200 hover:scale-105`}
+            className={`btn-${variant}-gradient text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base max-w-3/4 hyphens-auto transition-all duration-200 hover:scale-105 ${variant === 'fourth' ? 'text-gray-700' : ''}`}
         >
             {t('General.goToHome')}
         </Button>

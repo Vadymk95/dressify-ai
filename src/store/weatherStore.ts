@@ -128,9 +128,7 @@ export const useWeatherStore = create<WeatherState>()(
                 } catch (error: any) {
                     console.error(error);
                     set({
-                        error: t(
-                            'Components.Features.WeatherPanel.errors.fetchWeatherError'
-                        ),
+                        error: t('Pages.Weather.errors.fetchWeatherError'),
                         loadingWeather: false,
                         weatherTomorrow: null,
                         weatherToday: null,
@@ -158,9 +156,7 @@ export const useWeatherStore = create<WeatherState>()(
                 } catch (error: any) {
                     console.error(error);
                     set({
-                        error: t(
-                            'Components.Features.WeatherPanel.errors.fetchCitiesError'
-                        ),
+                        error: t('Pages.Weather.errors.fetchCitiesError'),
                         loadingCities: false,
                         cities: []
                     });

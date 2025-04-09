@@ -3,6 +3,7 @@
 
 /* globals */
 @import './globals.css';
+@import './gradients.css';
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));

@@ -23,37 +23,37 @@ export const getWeatherConditions = (
 ): WeatherCondition[] => [
     {
         value: 'sunny',
-        label: t('Components.Features.WeatherPanel.conditions.sunny'),
+        label: t('Pages.Weather.conditions.sunny'),
         icon: WEATHER_ICONS.SUNNY
     },
     {
         value: 'partlyCloudy',
-        label: t('Components.Features.WeatherPanel.conditions.partlyCloudy'),
+        label: t('Pages.Weather.conditions.partlyCloudy'),
         icon: WEATHER_ICONS.PARTLY_CLOUDY
     },
     {
         value: 'cloudy',
-        label: t('Components.Features.WeatherPanel.conditions.cloudy'),
+        label: t('Pages.Weather.conditions.cloudy'),
         icon: WEATHER_ICONS.CLOUDY
     },
     {
         value: 'rain',
-        label: t('Components.Features.WeatherPanel.conditions.rain'),
+        label: t('Pages.Weather.conditions.rain'),
         icon: WEATHER_ICONS.RAIN
     },
     {
         value: 'heavyRain',
-        label: t('Components.Features.WeatherPanel.conditions.heavyRain'),
+        label: t('Pages.Weather.conditions.heavyRain'),
         icon: WEATHER_ICONS.HEAVY_RAIN
     },
     {
         value: 'snow',
-        label: t('Components.Features.WeatherPanel.conditions.snow'),
+        label: t('Pages.Weather.conditions.snow'),
         icon: WEATHER_ICONS.SNOW
     },
     {
         value: 'thunderstorm',
-        label: t('Components.Features.WeatherPanel.conditions.thunderstorm'),
+        label: t('Pages.Weather.conditions.thunderstorm'),
         icon: WEATHER_ICONS.THUNDERSTORM
     }
 ];
@@ -63,27 +63,27 @@ export const getTemperatureRanges = (
 ): TemperatureRange[] => [
     {
         value: 'hot',
-        label: t('Components.Features.WeatherPanel.temperature.hot'),
+        label: t('Pages.Weather.temperature.hot'),
         range: '> +30°C'
     },
     {
         value: 'warm',
-        label: t('Components.Features.WeatherPanel.temperature.warm'),
+        label: t('Pages.Weather.temperature.warm'),
         range: '+15°C to +30°C'
     },
     {
         value: 'moderate',
-        label: t('Components.Features.WeatherPanel.temperature.moderate'),
+        label: t('Pages.Weather.temperature.moderate'),
         range: '0°C to +15°C'
     },
     {
         value: 'cool',
-        label: t('Components.Features.WeatherPanel.temperature.cool'),
+        label: t('Pages.Weather.temperature.cool'),
         range: '-10°C to 0°C'
     },
     {
         value: 'cold',
-        label: t('Components.Features.WeatherPanel.temperature.cold'),
+        label: t('Pages.Weather.temperature.cold'),
         range: '< -10°C'
     }
 ];
