@@ -1069,8 +1069,8 @@ export const adaptOutfitForWeather = (
     );
 
     const description = {
-        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${uniqueAccessories.length > 0 ? `. Дополните образ: ${uniqueAccessories.join(', ')}` : ''}${physicalText.ru}.`,
-        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${uniqueAccessories.length > 0 ? `. Complete the look with: ${uniqueAccessories.join(', ')}` : ''}${physicalText.en}.`
+        ru: `${randomGreeting}\n${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}.${uniqueAccessories.length > 0 ? `\nДополните образ: ${uniqueAccessories.join(', ')}` : ''}${physicalText.ru}.`,
+        en: `${randomGreeting}\n${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}.${uniqueAccessories.length > 0 ? `\nComplete the look with: ${uniqueAccessories.join(', ')}` : ''}${physicalText.en}.`
     };
 
     // Удаляем дублирование погоды в базовом описании

@@ -26,8 +26,8 @@ export const heightRecommendations = {
 export const weightRecommendations = {
     thin: {
         add: {
-            ru: 'попробуй многослойные образы и объемные вещи - они добавят фактуры и визуально увеличат объем',
-            en: 'try layered looks and voluminous pieces - they will add texture and visually increase volume'
+            ru: 'выбирай одежду с вертикальными полосками и структурированные вещи - это создаст гармоничный силуэт',
+            en: 'choose clothes with vertical stripes and structured pieces - this will create a harmonious silhouette'
         }
     },
     medium: {
