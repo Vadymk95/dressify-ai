@@ -152,7 +152,7 @@ export const OutfitRequestPanel: FC = () => {
                                     </Button>
                                     <FontAwesomeIcon
                                         icon={faCircleInfo}
-                                        className="text-amber-400 hover:text-amber-300 transition-colors cursor-help text-xl"
+                                        className="text-blue-400 hover:text-blue-300 transition-colors cursor-help text-xl"
                                     />
                                 </div>
                             </TooltipTrigger>
@@ -165,8 +165,7 @@ export const OutfitRequestPanel: FC = () => {
                                 <p>
                                     {t(
                                         'Components.Features.OutfitRequestPanel.tooltip.requirements.weather'
-                                    )}{' '}
-                                    (или настройте вручную)
+                                    )}
                                 </p>
                                 <p className="mt-2">
                                     {t(

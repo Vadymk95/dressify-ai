@@ -79,6 +79,14 @@ export const en = {
                     Captcha: {
                         new: 'New example',
                         placeholder: 'Enter the answer'
+                    },
+                    ErrorBoundary: {
+                        title: 'Oops! Something went wrong',
+                        description:
+                            'An unexpected error occurred while running the application.',
+                        suggestion:
+                            'Try reloading the page or come back later.',
+                        reload: 'Reload page'
                     }
                 },
                 Features: {
@@ -376,7 +384,8 @@ export const en = {
                         tooltip: {
                             title: 'To generate an outfit you need:',
                             requirements: {
-                                weather: '• Weather (current or tomorrow)',
+                                weather:
+                                    '• Weather (current or tomorrow) (or set manually)',
                                 basicInfo: '• Basic characteristics:',
                                 gender: '  - Gender',
                                 height: '  - Height',
