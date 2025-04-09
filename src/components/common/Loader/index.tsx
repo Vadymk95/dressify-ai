@@ -12,6 +12,7 @@ export const Loader: FC = () => {
             justify-center
             bg-black/20
             bg-opacity-50
+            backdrop-blur-sm
           "
         >
             <div
