@@ -27,7 +27,6 @@ export function MobileTooltip({
                     className={cn(
                         'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
                         'w-[calc(100vw-1rem)] max-w-md',
-                        'backdrop-blur-sm',
                         'z-50',
                         className
                     )}
