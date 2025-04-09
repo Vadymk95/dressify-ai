@@ -4,8 +4,8 @@ import { OutfitGenerationParams } from '@/data/outfits/types';
 export const heightRecommendations = {
     short: {
         add: {
-            ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт. Избегай объемных вещей и многослойности',
-            en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette. Avoid voluminous items and layering'
+            ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт. Используй структурированные вещи вместо объемных',
+            en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette. Use structured pieces instead of voluminous ones'
         }
     },
     medium: {
@@ -16,8 +16,8 @@ export const heightRecommendations = {
     },
     tall: {
         add: {
-            ru: 'обрати внимание на многослойность и структурированные вещи - это поможет сбалансировать пропорции и создать гармоничный силуэт',
-            en: 'pay attention to layering and structured pieces - this will help balance your proportions and create a harmonious silhouette'
+            ru: 'обрати внимание на структурированные вещи и правильную длину - это поможет сбалансировать пропорции и создать гармоничный силуэт',
+            en: 'pay attention to structured pieces and proper length - this will help balance your proportions and create a harmonious silhouette'
         }
     }
 };
@@ -26,8 +26,8 @@ export const heightRecommendations = {
 export const weightRecommendations = {
     thin: {
         add: {
-            ru: 'выбирай одежду с вертикальными полосками и структурированные вещи - это создаст гармоничный силуэт',
-            en: 'choose clothes with vertical stripes and structured pieces - this will create a harmonious silhouette'
+            ru: 'выбирай структурированные вещи и одежду с четкими линиями - это создаст гармоничный силуэт',
+            en: 'choose structured pieces and clothes with clear lines - this will create a harmonious silhouette'
         }
     },
     medium: {

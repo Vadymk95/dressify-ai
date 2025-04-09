@@ -1,12 +1,13 @@
 import { OutfitRequest } from '@/data/outfits/types';
 
-import { Language } from '@/data/outfits/types';
 import { weatherDescriptions } from '@/data/outfits/constants/weatherDescriptions';
+import { Language } from '@/data/outfits/types';
 
 export const getWeatherInfo = (
     weather: OutfitRequest['weather']
 ): Record<Language, string> | null => {
-    const weatherData = weather.current || weather.manual;
+    // Приоритет: текущая погода -> мануальные данные -> прогноз на завтра
+    const weatherData = weather.current || weather.manual || weather.tomorrow;
 
     if (!weatherData) {
         return null;
@@ -19,8 +20,17 @@ export const getWeatherInfo = (
         weatherDescriptions[weatherData.description]?.['en'] ||
         weatherData.description;
 
+    // Добавляем информацию о том, что это прогноз на завтра
+    const tomorrowPrefix =
+        weather.tomorrow && !weather.current && !weather.manual
+            ? (lang: Language) =>
+                  lang === 'ru'
+                      ? 'Прогноз на завтра: '
+                      : "Tomorrow's forecast: "
+            : () => '';
+
     return {
-        ru: `Погода: ${temp}°C, ${weatherData.description}`,
-        en: `Weather: ${temp}°C, ${description}`
+        ru: `${tomorrowPrefix('ru')}Погода: ${temp}°C, ${weatherData.description}`,
+        en: `${tomorrowPrefix('en')}Weather: ${temp}°C, ${description}`
     };
 };

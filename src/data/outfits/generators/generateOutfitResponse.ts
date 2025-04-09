@@ -15,7 +15,11 @@ export const generateOutfitResponse = (request: OutfitRequest) => {
     }
 
     // Адаптируем образ под погодные условия и физические характеристики
-    const weatherData = request.weather.current || request.weather.manual;
+    // Приоритет: текущая погода -> мануальные данные -> прогноз на завтра
+    const weatherData =
+        request.weather.current ||
+        request.weather.manual ||
+        request.weather.tomorrow;
     const adaptedOutfit = weatherData
         ? adaptOutfitForWeather(outfit, weatherData, request.lang, {
               height: request.characteristics.height,

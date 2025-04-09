@@ -3,12 +3,12 @@ export const adaptationRules = {
     height: {
         short: {
             add: {
-                ru: 'вертикальные линии, монохромные сочетания',
-                en: 'vertical lines, monochrome combinations'
+                ru: 'вертикальные линии, структурированные вещи',
+                en: 'vertical lines, structured pieces'
             },
             remove: {
-                ru: 'горизонтальные полосы',
-                en: 'horizontal stripes'
+                ru: 'объемные вещи, горизонтальные полосы',
+                en: 'voluminous pieces, horizontal stripes'
             }
         },
         medium: {
@@ -17,20 +17,26 @@ export const adaptationRules = {
         },
         tall: {
             add: {
-                ru: 'балансировка пропорций',
-                en: 'proportion balancing'
+                ru: 'структурированные вещи, правильная длина',
+                en: 'structured pieces, proper length'
             },
-            remove: null
+            remove: {
+                ru: 'укороченные вещи',
+                en: 'cropped pieces'
+            }
         }
     },
 
     weight: {
         thin: {
             add: {
-                ru: 'многослойность, объемные вещи',
-                en: 'layering, voluminous pieces'
+                ru: 'структурированные вещи, четкие линии',
+                en: 'structured pieces, clear lines'
             },
-            remove: null
+            remove: {
+                ru: 'мешковатые вещи',
+                en: 'baggy pieces'
+            }
         },
         medium: {
             add: null,
@@ -42,8 +48,8 @@ export const adaptationRules = {
                 en: 'vertical lines, structured pieces'
             },
             remove: {
-                ru: 'горизонтальные полосы, объемные вещи',
-                en: 'horizontal stripes, voluminous pieces'
+                ru: 'объемные вещи, горизонтальные полосы',
+                en: 'voluminous pieces, horizontal stripes'
             }
         }
     },
@@ -64,16 +70,16 @@ export const adaptationRules = {
         middle: {
             range: { min: 26, max: 40 },
             add: {
-                ru: 'сбалансированный стиль',
-                en: 'balanced style'
+                ru: 'сбалансированный стиль, современные элементы',
+                en: 'balanced style, modern elements'
             },
             remove: null
         },
         mature: {
             range: { min: 41, max: 60 },
             add: {
-                ru: 'классические элементы, качественные ткани',
-                en: 'classic elements, quality fabrics'
+                ru: 'классические элементы, современный крой',
+                en: 'classic elements, modern cut'
             },
             remove: {
                 ru: 'слишком молодежные детали',
@@ -83,12 +89,12 @@ export const adaptationRules = {
         senior: {
             range: { min: 61, max: 120 },
             add: {
-                ru: 'комфортные вещи, удобная обувь, практичные аксессуары',
-                en: 'comfortable pieces, comfortable shoes, practical accessories'
+                ru: 'комфортные вещи, современный стиль',
+                en: 'comfortable pieces, modern style'
             },
             remove: {
-                ru: 'молодежные элементы, неудобная обувь, сложные застежки',
-                en: 'youthful elements, uncomfortable shoes, complex fasteners'
+                ru: 'неудобные элементы, сложные застежки',
+                en: 'uncomfortable elements, complex fasteners'
             }
         }
     },
