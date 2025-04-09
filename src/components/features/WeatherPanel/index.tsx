@@ -29,28 +29,28 @@ export const WeatherPanel: FC = () => {
         <section className="w-full h-full">
             <Link
                 to={routes.weather}
-                className="group h-full p-4 flex flex-col items-center main-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-4 main-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
-                <div className="flex items-center gap-2 mb-2">
-                    <Sun className="w-6 h-6 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
-                    <span className="text-amber-50 font-medium group-hover:text-amber-100 transition-colors duration-300">
+                <div className="flex flex-col items-center gap-2">
+                    <Sun className="w-12 h-12 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
+                    <span className="text-amber-50 text-base font-medium group-hover:text-amber-100 transition-colors duration-300">
                         {t('Components.Features.WeatherPanel.title')}
                     </span>
                 </div>
                 {weather ? (
-                    <div className="flex flex-col items-center">
+                    <div className="flex items-center gap-1">
                         <span className="text-amber-50/90 text-sm font-medium">
-                            {getWeatherType()}
+                            {getWeatherType()}:
                         </span>
-                        <span className="text-amber-50/80 text-sm mt-1">
+                        <span className="text-amber-50/80 text-sm">
                             {weather.description}
                         </span>
-                        <span className="text-amber-50/70 text-xs mt-1">
+                        <span className="text-amber-50/70 text-sm">
                             {weather.temp}°C
                         </span>
                     </div>
                 ) : (
-                    <span className="text-amber-50/60 text-sm mt-1">
+                    <span className="text-amber-50/60 text-sm">
                         {t('Components.Features.WeatherPanel.noWeather')}
                     </span>
                 )}

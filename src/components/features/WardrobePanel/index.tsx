@@ -81,7 +81,7 @@ export const WardrobePanel: FC = () => {
             {loading && <Loader />}
             {isFreePlan && (
                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="bg-gray-100 text-sm text-amber-500 italic rounded-md text-center p-4 shadow-lg">
+                    <div className="bg-gray-100 text-xs text-amber-500 italic rounded-md text-center p-4 shadow-lg">
                         {t(
                             'Components.Features.WardrobePanel.wardrobeNotAvailable'
                         )}
@@ -90,11 +90,11 @@ export const WardrobePanel: FC = () => {
             )}
             <Link
                 to={routes.wardrobe}
-                className="group h-full p-4 flex flex-col items-center fourth-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-4 fourth-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
-                <div className="flex items-center gap-2 mb-2">
-                    <Shirt className="w-6 h-6 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
-                    <h2 className="text-amber-50 font-medium group-hover:text-amber-100 transition-colors duration-300">
+                <div className="flex flex-col items-center gap-2">
+                    <Shirt className="w-12 h-12 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
+                    <h2 className="text-amber-50 text-base font-medium group-hover:text-amber-100 transition-colors duration-300">
                         {t('Components.Features.WardrobePanel.title')}
                     </h2>
                 </div>

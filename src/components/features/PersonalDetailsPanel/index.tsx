@@ -12,11 +12,11 @@ export const PersonalDetailsPanel: FC = () => {
         <section className="w-full h-full">
             <Link
                 to={routes.personalDetails}
-                className="group h-full p-4 flex flex-col items-center secondary-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-4 secondary-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
-                <div className="flex items-center gap-2 mb-2">
-                    <User className="w-6 h-6 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
-                    <span className="text-amber-50 font-medium group-hover:text-amber-100 transition-colors duration-300">
+                <div className="flex flex-col items-center gap-2">
+                    <User className="w-12 h-12 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
+                    <span className="text-amber-50 text-base font-medium group-hover:text-amber-100 transition-colors duration-300">
                         {t('Components.Features.PersonalDetailsPanel.title')}
                     </span>
                 </div>
