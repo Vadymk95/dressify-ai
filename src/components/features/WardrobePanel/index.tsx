@@ -77,8 +77,8 @@ export const WardrobePanel: FC = () => {
     };
 
     return (
-        <div
-            className={`w-full max-w-[200px] mx-auto relative ${isFreePlan ? 'pointer-events-none' : ''}`}
+        <section
+            className={`w-full mx-auto relative ${isFreePlan ? 'pointer-events-none' : ''}`}
         >
             {loading && <Loader />}
             {isFreePlan && (
@@ -149,6 +149,6 @@ export const WardrobePanel: FC = () => {
                     </div>
                 </div>
             </Link>
-        </div>
+        </section>
     );
 };

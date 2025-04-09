@@ -18,11 +18,11 @@ const WhatToWear: FC = () => {
             <PerfectOutlook />
             <EmailVerificationPanel />
 
-            <h1 className="text-3xl text-center text-amber-50 font-semibold mt-10 third-gradient py-12 px-4 rounded-xl">
+            <h1 className="text-2xl md:text-3xl text-center font-semibold mt-10 md:mt-20 md:mb-10">
                 {t('Pages.WhatToWear.title')}
             </h1>
 
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <WeatherPanel />
                 <PersonalDetailsPanel />
                 <WardrobePanel />

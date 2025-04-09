@@ -11,10 +11,10 @@ export const EventPanel: FC = () => {
     const { selectedEventType } = useEventStore();
 
     return (
-        <div className="w-full max-w-[200px] mx-auto">
+        <section className="w-full h-full">
             <Link
                 to={routes.event}
-                className="group p-4 flex flex-col items-center third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-4 flex flex-col items-center third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
                 <div className="flex items-center gap-2 mb-2">
                     <Calendar className="w-6 h-6 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
@@ -35,6 +35,6 @@ export const EventPanel: FC = () => {
                     )}
                 </div>
             </Link>
-        </div>
+        </section>
     );
 };
