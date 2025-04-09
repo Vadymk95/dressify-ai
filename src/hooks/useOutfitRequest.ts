@@ -1,11 +1,14 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
+import { generateOutfitResponse } from '@/data/outfits/generators/generateOutfitResponse';
+import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
 import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 import { OutfitRequestData } from '@/types/outfitRequestData';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const useOutfitRequest = () => {
     const { t } = useTranslation();
@@ -21,8 +24,6 @@ export const useOutfitRequest = () => {
         useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
-    const standardHardcodedResponse =
-        'Стандартный образ: черные брюки, белая рубашка, классические туфли';
 
     // Функция для обновления лимитов
     const resetLimits = useCallback(() => {
@@ -79,6 +80,64 @@ export const useOutfitRequest = () => {
             return () => clearTimeout(timer);
         }
     }, [error]);
+
+    // Обновляем ответ при изменении языка
+    useEffect(() => {
+        if (
+            standardResponse &&
+            profile?.lang &&
+            profile?.characteristics?.gender &&
+            profile?.characteristics?.age &&
+            profile?.characteristics?.height &&
+            profile?.characteristics?.heightUnit &&
+            profile?.characteristics?.weight &&
+            profile?.characteristics?.weightUnit &&
+            (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
+        ) {
+            const requestData = {
+                lang: profile.lang as Language,
+                event: {
+                    type: selectedEventType as BaseOutfit['event'],
+                    name: t(
+                        `Components.Features.EventPanel.types.${selectedEventType}`
+                    )
+                },
+                characteristics: {
+                    gender: profile.characteristics.gender as 'male' | 'female',
+                    age: profile.characteristics.age,
+                    height: profile.characteristics.height,
+                    heightUnit: profile.characteristics.heightUnit,
+                    weight: profile.characteristics.weight,
+                    weightUnit: profile.characteristics.weightUnit
+                },
+                weather: {
+                    current: isManualMode
+                        ? undefined
+                        : (weatherToday as WeatherData),
+                    tomorrow: isManualMode
+                        ? undefined
+                        : (weatherTomorrow as WeatherData),
+                    manual: isManualMode
+                        ? (weatherManual as WeatherData)
+                        : undefined
+                }
+            };
+
+            console.log('Generating outfit with data:', requestData);
+
+            const response = generateOutfitResponse(requestData);
+            if (response.outfit) {
+                setStandardResponse(response.outfit.description);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        profile?.lang,
+        weatherToday,
+        weatherTomorrow,
+        weatherManual,
+        isManualMode
+    ]);
 
     const checkRequestLimit = () => {
         if (!profile) return false;
@@ -144,6 +203,42 @@ export const useOutfitRequest = () => {
     };
 
     const checkRequiredFields = () => {
+        // Проверяем наличие погоды
+        const hasWeather = isManualMode
+            ? !!weatherManual
+            : !!weatherToday || !!weatherTomorrow;
+
+        if (!hasWeather) {
+            setError(
+                t('Components.Features.OutfitRequestPanel.errors.noWeather')
+            );
+            return false;
+        }
+
+        // Проверяем базовые характеристики
+        const characteristics = profile?.characteristics;
+        if (
+            !characteristics?.gender ||
+            !characteristics?.height ||
+            !characteristics?.weight ||
+            !characteristics?.age
+        ) {
+            setError(
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.missingBasicInfo'
+                )
+            );
+            return false;
+        }
+
+        // Проверяем тип события
+        const validEventTypes: BaseOutfit['event'][] = [
+            'casualFriends',
+            'workOffice',
+            'dateNight',
+            'shopping'
+        ];
+
         if (!selectedEventType) {
             setError(
                 t('Components.Features.OutfitRequestPanel.errors.noEventType')
@@ -151,9 +246,13 @@ export const useOutfitRequest = () => {
             return false;
         }
 
-        if (!profile?.characteristics?.gender) {
+        if (
+            !validEventTypes.includes(selectedEventType as BaseOutfit['event'])
+        ) {
             setError(
-                t('Components.Features.OutfitRequestPanel.errors.noGender')
+                t(
+                    'Components.Features.OutfitRequestPanel.errors.invalidEventType'
+                )
             );
             return false;
         }
@@ -196,6 +295,7 @@ export const useOutfitRequest = () => {
 
     const generateStandardOutfit = async () => {
         setError(null);
+        setStandardResponse(null); // Очищаем предыдущий ответ
 
         // Проверяем обязательные поля
         if (!checkRequiredFields()) {
@@ -215,11 +315,98 @@ export const useOutfitRequest = () => {
         setIsLoading(true);
 
         try {
-            // Здесь будет логика для стандартных образов
-            console.log('Generating standard outfit...');
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Имитация задержки
-            setStandardResponse(standardHardcodedResponse);
-            return standardHardcodedResponse;
+            if (!selectedEventType || !profile?.characteristics) {
+                setError(
+                    t(
+                        'Components.Features.OutfitRequestPanel.errors.missingData'
+                    )
+                );
+                return;
+            }
+
+            // Проверяем, что тип события соответствует допустимым значениям
+            const validEventTypes: BaseOutfit['event'][] = [
+                'casualFriends',
+                'workOffice',
+                'dateNight',
+                'shopping'
+            ];
+            if (
+                !validEventTypes.includes(
+                    selectedEventType as BaseOutfit['event']
+                )
+            ) {
+                setError(
+                    t(
+                        'Components.Features.OutfitRequestPanel.errors.invalidEventType'
+                    )
+                );
+                return;
+            }
+
+            // Проверяем, что пол соответствует допустимым значениям
+            const validGenders: ('male' | 'female')[] = ['male', 'female'];
+            const gender = profile.characteristics.gender as 'male' | 'female';
+            if (!validGenders.includes(gender)) {
+                setError(
+                    t(
+                        'Components.Features.OutfitRequestPanel.errors.invalidGender'
+                    )
+                );
+                return;
+            }
+
+            const requestData = {
+                lang: profile.lang as Language,
+                event: {
+                    type: selectedEventType as BaseOutfit['event'],
+                    name: t(
+                        `Components.Features.EventPanel.types.${selectedEventType}`
+                    )
+                },
+                characteristics: {
+                    gender: gender,
+                    age: profile.characteristics.age || 25,
+                    height: profile.characteristics.height || 175,
+                    heightUnit: profile.characteristics.heightUnit || 'cm',
+                    weight: profile.characteristics.weight || 70,
+                    weightUnit: profile.characteristics.weightUnit || 'kg'
+                },
+                weather: {
+                    current: isManualMode
+                        ? undefined
+                        : (weatherToday as WeatherData),
+                    tomorrow: isManualMode
+                        ? undefined
+                        : (weatherTomorrow as WeatherData),
+                    manual: isManualMode
+                        ? (weatherManual as WeatherData)
+                        : undefined
+                }
+            };
+
+            console.log('REQUEST DATA', requestData);
+
+            const response = generateOutfitResponse(requestData);
+
+            if (response.error) {
+                setError(response.error);
+                setStandardResponse(null);
+                return;
+            }
+
+            if (!response.outfit) {
+                setError(
+                    t(
+                        'Components.Features.OutfitRequestPanel.errors.noOutfitFound'
+                    )
+                );
+                setStandardResponse(null);
+                return;
+            }
+
+            setStandardResponse(response.outfit.description);
+            return response.outfit.description;
         } catch (error) {
             setError(
                 error instanceof Error
@@ -255,6 +442,7 @@ export const useOutfitRequest = () => {
         }
 
         const requestData: OutfitRequestData = {
+            lang: profile.lang as Language,
             event: {
                 type: selectedEventType,
                 name: t(
@@ -277,10 +465,12 @@ export const useOutfitRequest = () => {
                     age: profile.characteristics.age
                 }),
                 ...(profile.characteristics.height && {
-                    height: profile.characteristics.height
+                    height: profile.characteristics.height,
+                    heightUnit: profile.characteristics.heightUnit
                 }),
                 ...(profile.characteristics.weight && {
-                    weight: profile.characteristics.weight
+                    weight: profile.characteristics.weight,
+                    weightUnit: profile.characteristics.weightUnit
                 }),
                 ...(profile.characteristics.skinTone && {
                     skinTone: profile.characteristics.skinTone

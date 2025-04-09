@@ -79,6 +79,14 @@ export const en = {
                     Captcha: {
                         new: 'New example',
                         placeholder: 'Enter the answer'
+                    },
+                    ErrorBoundary: {
+                        title: 'Oops! Something went wrong',
+                        description:
+                            'An unexpected error occurred while running the application.',
+                        suggestion:
+                            'Try reloading the page or come back later.',
+                        reload: 'Reload page'
                     }
                 },
                 Features: {
@@ -332,35 +340,62 @@ export const en = {
                         }
                     },
                     OutfitRequestPanel: {
-                        title: 'Create Outfit',
+                        title: 'Outfit Generator',
                         description:
-                            'Click the button to get outfit recommendations',
-                        generating: 'Creating outfit...',
-                        generateAi: 'Create Personal Outfit',
-                        generateMoreAi: 'Create Another Personal Outfit',
-                        generateStandard: 'Create Standard Outfit',
-                        generateMoreStandard: 'Create Another Standard Outfit',
+                            'Choose the type of outfit you want to generate',
+                        generating: 'Generating...',
+                        generateAi: 'Generate AI Outfit',
+                        generateMoreAi: 'Generate Another',
+                        generateStandard: 'Standard Outfit',
+                        generateMoreStandard: 'Another Outfit',
                         clear: 'Clear',
                         freePlanNote:
-                            'Personal outfit creation is only available for premium users',
-                        remainingRequests:
-                            'Personal outfits remaining: {{count}}',
-                        nextRequestsAt:
-                            'Next outfits will be available at {{time}}',
-                        errors: {
-                            generic:
-                                'An error occurred while generating the outfit',
-                            noEventType: 'Please select an event type',
-                            noGender: 'Please specify your gender',
-                            noLocation: 'Please specify your location',
-                            freePlanLimit: 'Available only for paid plans',
-                            requestLimitReached:
-                                'Request limit reached for today',
-                            emailNotVerified:
-                                'Email verification required for standard outfit generation'
-                        },
+                            'AI outfit generation is available only for premium users',
+                        remainingRequests: 'Remaining requests: {{count}}',
+                        nextRequestsAt: 'Next requests available at {{time}}',
+                        loadingProfile: 'Loading profile...',
+                        loadingWeather: 'Loading weather...',
                         verifyEmailNote:
-                            'Please verify your email address to generate standard outfits'
+                            'Please verify your email to use this feature',
+                        errors: {
+                            freePlanLimit:
+                                'This feature is available only for premium users',
+                            requestLimitReached: 'Daily request limit reached',
+                            noEventType: 'Please select an event type',
+                            noGender:
+                                'Please select male or female gender in profile settings',
+                            emailNotVerified:
+                                'Please verify your email to use this feature',
+                            missingData:
+                                'Please fill in the required profile data',
+                            invalidEventType:
+                                'Please select one of the available events: casual with friends, office work, date night, or shopping',
+                            invalidGender:
+                                'Please select male or female gender',
+                            noLocation:
+                                'Please specify location or use manual weather mode',
+                            noOutfitFound: 'Could not find a suitable outfit',
+                            noWeather:
+                                'Please select weather (current or tomorrow)',
+                            missingBasicInfo:
+                                'Please fill in basic characteristics (gender, height, weight, age)',
+                            generic: 'An error occurred. Please try again later'
+                        },
+                        tooltip: {
+                            title: 'To generate an outfit you need:',
+                            requirements: {
+                                weather:
+                                    '• Weather (current or tomorrow) (or set manually)',
+                                basicInfo: '• Basic characteristics:',
+                                gender: '  - Gender',
+                                height: '  - Height',
+                                weight: '  - Weight',
+                                age: '  - Age',
+                                event: '• One of these events:',
+                                eventTypes:
+                                    '  - Casual with friends\n  - Office work\n  - Date night\n  - Shopping'
+                            }
+                        }
                     }
                 },
                 Layout: {
@@ -519,26 +554,28 @@ export const en = {
                     plans: {
                         free: {
                             title: 'Basic',
-                            price: '$0 / month',
+                            price: '$ 0 / month',
                             feature1: 'Standard outfit generation',
                             feature2: 'Basic characteristics',
                             feature3: 'No wardrobe',
+                            feature4: 'Limited to 2 genders (male/female)',
+                            feature5: '4 basic event types',
                             cta: 'Free'
                         },
                         standard: {
                             title: 'Standard',
-                            price: '$3 / month',
+                            price: '$ 3 / month',
                             feature1: 'Standard outfits + AI assistant',
                             feature2: 'Up to 2 outfits per day',
                             feature3: 'Extended characteristics',
                             feature4: 'Up to 2 items per wardrobe category',
-                            feature5: 'Limited wardrobe categories',
+                            feature5: 'All event types and 3 gender options',
                             cta: 'Choose Plan',
                             currentPlan: 'Current Plan'
                         },
                         pro: {
                             title: 'Pro',
-                            price: '$5 / month',
+                            price: '$ 5 / month',
                             feature1: 'All Standard features',
                             feature2: 'Up to 5 outfits per day',
                             feature3: 'All characteristics available',

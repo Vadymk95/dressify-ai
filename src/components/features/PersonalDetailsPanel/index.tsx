@@ -110,21 +110,23 @@ export const PersonalDetailsPanel: FC = () => {
                             )}
                         </Label>
                     </div>
-                    <div className="flex items-center space-x-3">
-                        <RadioGroupItem
-                            variant="green"
-                            value="other"
-                            id="other"
-                        />
-                        <Label
-                            htmlFor="other"
-                            className="text-base cursor-pointer hover:text-amber-200 transition-colors"
-                        >
-                            {t(
-                                'Components.Features.PersonalDetailsPanel.genderOptions.other'
-                            )}
-                        </Label>
-                    </div>
+                    {!isFreePlan && (
+                        <div className="flex items-center space-x-3">
+                            <RadioGroupItem
+                                variant="green"
+                                value="other"
+                                id="other"
+                            />
+                            <Label
+                                htmlFor="other"
+                                className="text-base cursor-pointer hover:text-amber-200 transition-colors"
+                            >
+                                {t(
+                                    'Components.Features.PersonalDetailsPanel.genderOptions.other'
+                                )}
+                            </Label>
+                        </div>
+                    )}
                 </RadioGroup>
             </div>
 

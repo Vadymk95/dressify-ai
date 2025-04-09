@@ -1,14 +1,34 @@
-import { Combobox } from '@/components/ui/combobox';
-import { events, EventType } from '@/constants/events';
-import { useEventStore } from '@/store/eventStore';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Combobox } from '@/components/ui/combobox';
+import { EVENT_TYPES, EventType } from '@/constants/events';
+import { useEventStore } from '@/store/eventStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const EventPanel: FC = () => {
     const { t } = useTranslation();
     const { selectedEventType, setSelectedEventType } = useEventStore();
+    const { profile } = useUserProfileStore();
 
-    const eventTypes = Object.entries(events.types).map(([value]) => ({
+    const availableEvents =
+        profile?.plan === 'free' ? EVENT_TYPES.FREE : EVENT_TYPES.PREMIUM;
+
+    useEffect(() => {
+        if (
+            selectedEventType &&
+            !Object.keys(availableEvents).includes(selectedEventType)
+        ) {
+            setSelectedEventType(null);
+        }
+    }, [
+        profile?.plan,
+        selectedEventType,
+        availableEvents,
+        setSelectedEventType
+    ]);
+
+    const eventTypes = Object.entries(availableEvents).map(([value]) => ({
         value,
         label: t(`Components.Features.EventPanel.types.${value}`)
     }));

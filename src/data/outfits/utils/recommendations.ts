@@ -1,0 +1,84 @@
+import { OutfitGenerationParams } from '@/data/outfits/types';
+
+// Переформулированные рекомендации для роста
+export const heightRecommendations = {
+    short: {
+        add: {
+            ru: 'выбирай одежду с вертикальными полосками и однотонные вещи - это визуально вытянет силуэт. Используй структурированные вещи вместо объемных',
+            en: 'choose clothes with vertical stripes and monochrome pieces - this will visually elongate your silhouette. Use structured pieces instead of voluminous ones'
+        }
+    },
+    medium: {
+        add: {
+            ru: 'сбалансируй пропорции с помощью правильно подобранной длины и структуры одежды',
+            en: 'balance proportions with properly chosen clothing length and structure'
+        }
+    },
+    tall: {
+        add: {
+            ru: 'обрати внимание на структурированные вещи и правильную длину - это поможет сбалансировать пропорции и создать гармоничный силуэт',
+            en: 'pay attention to structured pieces and proper length - this will help balance your proportions and create a harmonious silhouette'
+        }
+    }
+};
+
+// Переформулированные рекомендации для веса
+export const weightRecommendations = {
+    thin: {
+        add: {
+            ru: 'выбирай структурированные вещи и одежду с четкими линиями - это создаст гармоничный силуэт',
+            en: 'choose structured pieces and clothes with clear lines - this will create a harmonious silhouette'
+        }
+    },
+    medium: {
+        add: {
+            ru: 'сбалансируй силуэт с помощью правильно подобранных пропорций и структуры одежды',
+            en: 'balance your silhouette with properly chosen proportions and clothing structure'
+        }
+    },
+    heavy: {
+        add: {
+            ru: 'выбирай одежду с вертикальными линиями, структурированные вещи и избегай объемных элементов - это создаст стройный силуэт',
+            en: 'choose clothes with vertical lines, structured pieces and avoid voluminous elements - this will create a slimming silhouette'
+        }
+    }
+};
+
+export function generateRecommendations(
+    params: OutfitGenerationParams,
+    language: 'ru' | 'en'
+): string {
+    const recommendations: string[] = [];
+
+    // Добавляем рекомендации по цветам
+    if (params.colors === 'spring') {
+        recommendations.push(
+            language === 'ru'
+                ? 'Используйте пастельные тона'
+                : 'Use pastel tones'
+        );
+    } else {
+        recommendations.push(
+            language === 'ru'
+                ? 'Выбирайте насыщенные цвета'
+                : 'Choose rich colors'
+        );
+    }
+
+    // Добавляем рекомендации по стилю
+    if (params.style === 'casual') {
+        recommendations.push(
+            language === 'ru'
+                ? 'Отдавайте предпочтение расслабленным силуэтам'
+                : 'Prefer relaxed silhouettes'
+        );
+    } else {
+        recommendations.push(
+            language === 'ru'
+                ? 'Выбирайте структурированные вещи'
+                : 'Choose structured pieces'
+        );
+    }
+
+    return recommendations.join('. ');
+}
