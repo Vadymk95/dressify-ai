@@ -4,16 +4,19 @@ import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute, PublicRoute, WithSuspense } from '@/hocs';
 import {
     ContactUs,
+    Event,
     FailedPayment,
     Home,
     Login,
     NotFound,
+    PersonalDetails,
     Pricing,
     PrivacyPolicy,
     Register,
     SuccessPayment,
     TermsOfUse,
     Wardrobe,
+    Weather,
     WhatToWear
 } from '@/pages';
 import { routes } from '@/router/routes';
@@ -52,10 +55,31 @@ export const AppRouter: FC = () => {
             />
 
             <Route
+                path={routes.weather}
+                element={
+                    <PrivateRoute>{WithSuspense(<Weather />)}</PrivateRoute>
+                }
+            />
+
+            <Route
+                path={routes.personalDetails}
+                element={
+                    <PrivateRoute>
+                        {WithSuspense(<PersonalDetails />)}
+                    </PrivateRoute>
+                }
+            />
+
+            <Route
                 path={routes.wardrobe}
                 element={
                     <PrivateRoute>{WithSuspense(<Wardrobe />)}</PrivateRoute>
                 }
+            />
+
+            <Route
+                path={routes.event}
+                element={<PrivateRoute>{WithSuspense(<Event />)}</PrivateRoute>}
             />
 
             <Route

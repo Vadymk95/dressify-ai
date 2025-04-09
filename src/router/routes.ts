@@ -6,7 +6,10 @@ export const routes = {
 
     // private routes
     whatToWear: '/what-to-wear',
+    weather: '/weather',
+    personalDetails: '/personal-details',
     wardrobe: '/wardrobe',
+    event: '/event',
     successPayment: '/payment/success',
     failedPayment: '/payment/failed',
 
