@@ -190,9 +190,9 @@ const Weather: FC = () => {
         <div className="w-full flex-1 mx-auto p-4 main-gradient">
             <div className="w-full flex-1 max-w-4xl mx-auto flex flex-col items-center">
                 <div className="text-center mb-4">
-                    <h2 className="text-2xl font-semibold mb-2 text-amber-50">
+                    <h1 className="text-3xl font-semibold mb-2 text-amber-50">
                         {t('Pages.Weather.title')}
-                    </h2>
+                    </h1>
                     <div className="text-amber-50/80">
                         <p className="text-lg font-medium">
                             {t('Pages.Weather.dateFormat.today')}:
@@ -232,7 +232,7 @@ const Weather: FC = () => {
                             {getCityDisplayName()}
                         </h2>
                         <div className="w-full bg-gray-100 p-6 rounded-lg mb-6">
-                            <div className="grid grid-cols-1 gap-4 w-full">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                                 <div className="w-full">
                                     <Combobox
                                         className="cursor-pointer p-4"
@@ -287,9 +287,9 @@ const Weather: FC = () => {
                     </TabsContent>
 
                     <TabsContent value="manual">
-                        <div className="w-full bg-gray-100 p-6 rounded-lg flex flex-col gap-4">
+                        <div className="w-full bg-gray-100 p-4 md:p-6 rounded-lg flex flex-col gap-6">
                             <div>
-                                <h3 className="text-lg font-medium mb-2">
+                                <h3 className="text-lg font-medium mb-4">
                                     {t('Pages.Weather.manual.conditions')}
                                 </h3>
                                 <RadioGroup
@@ -297,12 +297,12 @@ const Weather: FC = () => {
                                     onValueChange={(value) =>
                                         handleManualWeatherSet(value, '')
                                     }
-                                    className="grid grid-cols-1 sm:grid-cols-2 gap-2"
+                                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
                                 >
                                     {weatherConditions.map((condition) => (
                                         <div
                                             key={condition.value}
-                                            className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer"
                                         >
                                             <RadioGroupItem
                                                 value={condition.value}
@@ -311,7 +311,7 @@ const Weather: FC = () => {
                                             />
                                             <Label
                                                 htmlFor={condition.value}
-                                                className="cursor-pointer text-base flex-1"
+                                                className="cursor-pointer text-base flex-1 font-medium"
                                             >
                                                 {condition.label}
                                             </Label>
@@ -321,7 +321,7 @@ const Weather: FC = () => {
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-medium mb-2">
+                                <h3 className="text-lg font-medium mb-4">
                                     {t('Pages.Weather.manual.temperature')}
                                 </h3>
                                 <RadioGroup
@@ -329,12 +329,12 @@ const Weather: FC = () => {
                                     onValueChange={(value) =>
                                         handleManualWeatherSet('', value)
                                     }
-                                    className="grid grid-cols-1 gap-2"
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"
                                 >
                                     {temperatureRanges.map((range) => (
                                         <div
                                             key={range.value}
-                                            className="flex items-center space-x-3 p-2 hover:bg-white/50 rounded-lg transition-all duration-200"
+                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer"
                                         >
                                             <RadioGroupItem
                                                 value={range.value}
@@ -345,10 +345,10 @@ const Weather: FC = () => {
                                                 htmlFor={range.value}
                                                 className="cursor-pointer text-base flex-1"
                                             >
-                                                <span className="block">
+                                                <span className="block font-medium">
                                                     {range.label}
                                                 </span>
-                                                <span className="text-sm text-gray-500 block mt-1">
+                                                <span className="text-sm text-gray-600 block mt-1">
                                                     {range.range}
                                                 </span>
                                             </Label>
