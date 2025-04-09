@@ -91,7 +91,8 @@ export const useOutfitRequest = () => {
             profile?.characteristics?.height &&
             profile?.characteristics?.heightUnit &&
             profile?.characteristics?.weight &&
-            profile?.characteristics?.weightUnit
+            profile?.characteristics?.weightUnit &&
+            (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
         ) {
             const requestData = {
                 lang: profile.lang as Language,
@@ -113,11 +114,16 @@ export const useOutfitRequest = () => {
                     current: isManualMode
                         ? undefined
                         : (weatherToday as WeatherData),
+                    tomorrow: isManualMode
+                        ? undefined
+                        : (weatherTomorrow as WeatherData),
                     manual: isManualMode
                         ? (weatherManual as WeatherData)
                         : undefined
                 }
             };
+
+            console.log('Generating outfit with data:', requestData);
 
             const response = generateOutfitResponse(requestData);
             if (response.outfit) {
@@ -125,7 +131,13 @@ export const useOutfitRequest = () => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [profile?.lang]);
+    }, [
+        profile?.lang,
+        weatherToday,
+        weatherTomorrow,
+        weatherManual,
+        isManualMode
+    ]);
 
     const checkRequestLimit = () => {
         if (!profile) return false;

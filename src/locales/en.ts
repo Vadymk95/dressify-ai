@@ -332,35 +332,40 @@ export const en = {
                         }
                     },
                     OutfitRequestPanel: {
-                        title: 'Create Outfit',
+                        title: 'Outfit Generator',
                         description:
-                            'Click the button to get outfit recommendations',
-                        generating: 'Creating outfit...',
-                        generateAi: 'Create Personal Outfit',
-                        generateMoreAi: 'Create Another Personal Outfit',
-                        generateStandard: 'Create Standard Outfit',
-                        generateMoreStandard: 'Create Another Standard Outfit',
+                            'Choose the type of outfit you want to generate',
+                        generating: 'Generating...',
+                        generateAi: 'Generate AI Outfit',
+                        generateMoreAi: 'Generate Another',
+                        generateStandard: 'Standard Outfit',
+                        generateMoreStandard: 'Another Outfit',
                         clear: 'Clear',
-                        freePlanNote:
-                            'Personal outfit creation is only available for premium users',
-                        remainingRequests:
-                            'Personal outfits remaining: {{count}}',
-                        nextRequestsAt:
-                            'Next outfits will be available at {{time}}',
-                        errors: {
-                            generic:
-                                'An error occurred while generating the outfit',
-                            noEventType: 'Please select an event type',
-                            noGender: 'Please specify your gender',
-                            noLocation: 'Please specify your location',
-                            freePlanLimit: 'Available only for paid plans',
-                            requestLimitReached:
-                                'Request limit reached for today',
-                            emailNotVerified:
-                                'Email verification required for standard outfit generation'
-                        },
+                        freePlanNote: 'Available only for premium users',
+                        remainingRequests: 'Remaining requests: {{count}}',
+                        nextRequestsAt: 'Next requests available at {{time}}',
+                        loadingProfile: 'Loading profile...',
+                        loadingWeather: 'Loading weather...',
                         verifyEmailNote:
-                            'Please verify your email address to generate standard outfits'
+                            'Please verify your email to use this feature',
+                        errors: {
+                            freePlanLimit:
+                                'This feature is available only for premium users',
+                            requestLimitReached: 'Daily request limit reached',
+                            noEventType: 'Please select an event type',
+                            noGender:
+                                'Please specify your gender in profile settings',
+                            emailNotVerified:
+                                'Please verify your email to use this feature',
+                            missingData:
+                                'Please fill in the required profile data',
+                            invalidEventType: 'Invalid event type',
+                            invalidGender: 'Invalid gender specified',
+                            noLocation:
+                                'Please specify location or use manual weather mode',
+                            noOutfitFound: 'Could not find a suitable outfit',
+                            generic: 'An error occurred. Please try again later'
+                        }
                     }
                 },
                 Layout: {

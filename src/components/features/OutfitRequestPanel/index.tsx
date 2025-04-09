@@ -1,12 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
+import { useUserProfileStore } from '@/store/userProfileStore';
+import { useWeatherStore } from '@/store/weatherStore';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TypeAnimation } from 'react-type-animation';
 
 export const OutfitRequestPanel: FC = () => {
     const { t } = useTranslation();
+    const { weatherToday, weatherTomorrow, weatherManual, isManualMode } =
+        useWeatherStore();
+    const { profile } = useUserProfileStore();
     const {
         isLoading,
         showText,
@@ -22,6 +27,10 @@ export const OutfitRequestPanel: FC = () => {
     } = useOutfitRequest();
     const { clearResponses } = useOutfitResponseStore();
 
+    // Проверяем, загружена ли погода в зависимости от режима
+    const isWeatherLoading = isManualMode
+        ? !weatherManual
+        : !weatherToday && !weatherTomorrow; // Если хотя бы одна погода есть, значит данные загружены
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold text-center mb-2">
@@ -148,6 +157,18 @@ export const OutfitRequestPanel: FC = () => {
             {isLoading && (
                 <div className="flex justify-center mb-4">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400"></div>
+                </div>
+            )}
+
+            {!isLoading && !profile?.characteristics?.gender && (
+                <div className="text-center text-amber-500 mb-4">
+                    {t('Components.Features.OutfitRequestPanel.loadingProfile')}
+                </div>
+            )}
+
+            {!isLoading && isWeatherLoading && (
+                <div className="text-center text-amber-500 mb-4">
+                    {t('Components.Features.OutfitRequestPanel.loadingWeather')}
                 </div>
             )}
 
