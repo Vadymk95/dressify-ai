@@ -134,37 +134,8 @@ export const en = {
                             'Wardrobe is only available for paid plans. Please choose a suitable plan.'
                     },
                     EventPanel: {
-                        title: 'Choose Event',
-                        description:
-                            'Select the type of event to help us pick the perfect outfit',
-                        selectEvent: 'Select event type',
-                        noEventFound: 'No events found',
-                        types: {
-                            businessMeeting: 'Business Meeting',
-                            interview: 'Interview',
-                            wedding: 'Wedding',
-                            dateNight: 'Date Night',
-                            restaurant: 'Restaurant',
-                            theater: 'Theater',
-                            clubbing: 'Clubbing/Party',
-                            graduation: 'Graduation Ceremony',
-                            conference: 'Conference',
-                            casualWalk: 'City Walk',
-                            shopping: 'Shopping',
-                            concert: 'Concert',
-                            exhibition: 'Exhibition/Museum',
-                            birthday: 'Birthday',
-                            cocktailParty: 'Cocktail Party',
-                            beachDay: 'Beach Day',
-                            sportEvent: 'Sports Event',
-                            casualFriends: 'Meeting Friends',
-                            workOffice: 'Office Day',
-                            familyGathering: 'Family Gathering',
-                            onlineMeeting: 'Online Meeting',
-                            webinar: 'Webinar',
-                            onlineInterview: 'Online Interview',
-                            videoConference: 'Video Conference'
-                        }
+                        title: 'Events',
+                        description: 'Choose your event type'
                     },
                     OutfitRequestPanel: {
                         title: 'Outfit Generator',
@@ -645,6 +616,39 @@ export const en = {
                     },
                     saveSuccess: 'Changes saved successfully',
                     noChanges: 'No changes to save'
+                },
+                Event: {
+                    title: 'Choose Event',
+                    description:
+                        'Select the type of event to help us pick the perfect outfit',
+                    selectEvent: 'Select event type',
+                    noEventFound: 'No events found',
+                    types: {
+                        businessMeeting: 'Business Meeting',
+                        interview: 'Interview',
+                        wedding: 'Wedding',
+                        dateNight: 'Date Night',
+                        restaurant: 'Restaurant',
+                        theater: 'Theater',
+                        clubbing: 'Clubbing/Party',
+                        graduation: 'Graduation Ceremony',
+                        conference: 'Conference',
+                        casualWalk: 'City Walk',
+                        shopping: 'Shopping',
+                        concert: 'Concert',
+                        exhibition: 'Exhibition/Museum',
+                        birthday: 'Birthday',
+                        cocktailParty: 'Cocktail Party',
+                        beachDay: 'Beach Day',
+                        sportEvent: 'Sports Event',
+                        casualFriends: 'Meeting Friends',
+                        workOffice: 'Office Day',
+                        familyGathering: 'Family Gathering',
+                        onlineMeeting: 'Online Meeting',
+                        webinar: 'Webinar',
+                        onlineInterview: 'Online Interview',
+                        videoConference: 'Video Conference'
+                    }
                 }
             },
             General: {

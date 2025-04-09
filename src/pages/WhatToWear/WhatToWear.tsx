@@ -22,17 +22,11 @@ const WhatToWear: FC = () => {
                 {t('Pages.WhatToWear.title')}
             </h1>
 
-            <WeatherPanel />
-            <PersonalDetailsPanel />
-
-            <div className="flex flex-col md:flex-row gap-5">
-                <section className="flex-1 p-4 main-gradient-reverse shadow-md rounded-xl flex flex-col">
-                    <WardrobePanel />
-                </section>
-
-                <section className="flex-1 third-gradient p-4 rounded-lg shadow-md flex flex-col">
-                    <EventPanel />
-                </section>
+            <div className="flex flex-col md:flex-row gap-4">
+                <WeatherPanel />
+                <PersonalDetailsPanel />
+                <WardrobePanel />
+                <EventPanel />
             </div>
 
             <section className="p-4 bg-amber-50 rounded-xl shadow-md text-center">

@@ -135,37 +135,8 @@ export const ru = {
                             'Гардероб доступен только для платных тарифов. Пожалуйста, выберите подходящий план.'
                     },
                     EventPanel: {
-                        title: 'Выберите событие',
-                        description:
-                            'Выберите тип мероприятия, чтобы мы могли подобрать подходящий наряд',
-                        selectEvent: 'Выберите тип события',
-                        noEventFound: 'События не найдены',
-                        types: {
-                            businessMeeting: 'Деловая встреча',
-                            interview: 'Собеседование',
-                            wedding: 'Свадьба',
-                            dateNight: 'Свидание',
-                            restaurant: 'Ресторан',
-                            theater: 'Театр',
-                            clubbing: 'Клуб/Вечеринка',
-                            graduation: 'Выпускной/Вручение диплома',
-                            conference: 'Конференция',
-                            casualWalk: 'Прогулка по городу',
-                            shopping: 'Шоппинг',
-                            concert: 'Концерт',
-                            exhibition: 'Выставка/Музей',
-                            birthday: 'День рождения',
-                            cocktailParty: 'Коктейльная вечеринка',
-                            beachDay: 'Пляжный отдых',
-                            sportEvent: 'Спортивное мероприятие',
-                            casualFriends: 'Встреча с друзьями',
-                            workOffice: 'Офисный день',
-                            familyGathering: 'Семейное торжество',
-                            onlineMeeting: 'Онлайн-встреча',
-                            webinar: 'Вебинар',
-                            onlineInterview: 'Онлайн-собеседование',
-                            videoConference: 'Видеоконференция'
-                        }
+                        title: 'События',
+                        description: 'Выберите тип события'
                     },
                     OutfitRequestPanel: {
                         title: 'Подбор образа',
@@ -649,6 +620,39 @@ export const ru = {
                     },
                     saveSuccess: 'Изменения успешно сохранены',
                     noChanges: 'Нет изменений для сохранения'
+                },
+                Event: {
+                    title: 'Выберите событие',
+                    description:
+                        'Выберите тип мероприятия, чтобы мы могли подобрать подходящий наряд',
+                    selectEvent: 'Выберите тип события',
+                    noEventFound: 'События не найдены',
+                    types: {
+                        businessMeeting: 'Деловая встреча',
+                        interview: 'Собеседование',
+                        wedding: 'Свадьба',
+                        dateNight: 'Свидание',
+                        restaurant: 'Ресторан',
+                        theater: 'Театр',
+                        clubbing: 'Клуб/Вечеринка',
+                        graduation: 'Выпускной/Вручение диплома',
+                        conference: 'Конференция',
+                        casualWalk: 'Прогулка по городу',
+                        shopping: 'Шоппинг',
+                        concert: 'Концерт',
+                        exhibition: 'Выставка/Музей',
+                        birthday: 'День рождения',
+                        cocktailParty: 'Коктейльная вечеринка',
+                        beachDay: 'Пляжный отдых',
+                        sportEvent: 'Спортивное мероприятие',
+                        casualFriends: 'Встреча с друзьями',
+                        workOffice: 'Офисный день',
+                        familyGathering: 'Семейное торжество',
+                        onlineMeeting: 'Онлайн-встреча',
+                        webinar: 'Вебинар',
+                        onlineInterview: 'Онлайн-собеседование',
+                        videoConference: 'Видеоконференция'
+                    }
                 }
             },
             General: {
