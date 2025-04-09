@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Combobox } from '@/components/ui/combobox';
@@ -13,6 +13,20 @@ export const EventPanel: FC = () => {
 
     const availableEvents =
         profile?.plan === 'free' ? EVENT_TYPES.FREE : EVENT_TYPES.PREMIUM;
+
+    useEffect(() => {
+        if (
+            selectedEventType &&
+            !Object.keys(availableEvents).includes(selectedEventType)
+        ) {
+            setSelectedEventType(null);
+        }
+    }, [
+        profile?.plan,
+        selectedEventType,
+        availableEvents,
+        setSelectedEventType
+    ]);
 
     const eventTypes = Object.entries(availableEvents).map(([value]) => ({
         value,
