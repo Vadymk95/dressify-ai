@@ -8,12 +8,14 @@ import {
     Home,
     Login,
     NotFound,
+    PersonalDetails,
     Pricing,
     PrivacyPolicy,
     Register,
     SuccessPayment,
     TermsOfUse,
     Wardrobe,
+    Weather,
     WhatToWear
 } from '@/pages';
 import { routes } from '@/router/routes';
@@ -48,6 +50,22 @@ export const AppRouter: FC = () => {
                 path={routes.whatToWear}
                 element={
                     <PrivateRoute>{WithSuspense(<WhatToWear />)}</PrivateRoute>
+                }
+            />
+
+            <Route
+                path={routes.weather}
+                element={
+                    <PrivateRoute>{WithSuspense(<Weather />)}</PrivateRoute>
+                }
+            />
+
+            <Route
+                path={routes.personalDetails}
+                element={
+                    <PrivateRoute>
+                        {WithSuspense(<PersonalDetails />)}
+                    </PrivateRoute>
                 }
             />
 

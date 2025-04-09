@@ -1,13 +1,13 @@
-import { Calendar } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GoToHomeButton } from '@/components/common/GoToHomeButton';
 import { Combobox } from '@/components/ui/combobox';
-import { EVENT_TYPES } from '@/constants/events';
-import { EventType, useEventStore } from '@/store/eventStore';
+import { EVENT_TYPES, EventType } from '@/constants/events';
+import { useEventStore } from '@/store/eventStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 
-export const EventPanel: FC = () => {
+const Event: FC = () => {
     const { t } = useTranslation();
     const { selectedEventType, setSelectedEventType } = useEventStore();
     const { profile } = useUserProfileStore();
@@ -39,14 +39,14 @@ export const EventPanel: FC = () => {
     };
 
     return (
-        <section className="w-full h-full">
-            <div className="group h-full p-6 flex flex-col items-center justify-center gap-4 third-gradient shadow-md rounded-xl hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu">
-                <div className="flex flex-col items-center gap-2">
-                    <Calendar className="w-12 h-12 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
-                    <h2 className="text-amber-50 text-base font-medium group-hover:text-amber-100 transition-colors duration-300">
-                        {t('Pages.Event.title')}
-                    </h2>
-                </div>
+        <div className="w-full flex-1 mx-auto p-4 third-gradient">
+            <div className="w-full flex-1 max-w-4xl mx-auto flex flex-col items-center">
+                <h1 className="text-3xl font-bold text-amber-50 text-center mb-2">
+                    {t('Pages.Event.title')}
+                </h1>
+                <p className="text-amber-100/80 text-center mb-4">
+                    {t('Pages.Event.description')}
+                </p>
 
                 <div className="w-full">
                     <Combobox
@@ -59,6 +59,12 @@ export const EventPanel: FC = () => {
                     />
                 </div>
             </div>
-        </section>
+
+            <div className="flex justify-center my-4 w-full">
+                <GoToHomeButton variant="secondary" />
+            </div>
+        </div>
     );
 };
+
+export default Event;

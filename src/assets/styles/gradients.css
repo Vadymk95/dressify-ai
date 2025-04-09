@@ -1,0 +1,96 @@
+.main-gradient {
+    @apply bg-gradient-to-r from-red-400 to-orange-400;
+}
+
+.main-gradient-reverse {
+    @apply bg-gradient-to-r from-orange-400 to-red-400;
+}
+
+.secondary-gradient {
+    @apply bg-gradient-to-r from-green-400 to-teal-400;
+}
+
+.secondary-gradient-reverse {
+    @apply bg-gradient-to-r from-teal-400 to-green-400;
+}
+
+.third-gradient {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400;
+}
+
+.third-gradient-reverse {
+    @apply bg-gradient-to-r from-purple-400 to-blue-400;
+}
+
+.fourth-gradient {
+    @apply bg-gradient-to-r from-amber-400 to-yellow-400;
+}
+
+.fourth-gradient-reverse {
+    @apply bg-gradient-to-r from-yellow-400 to-amber-400;
+}
+
+/* Градиенты для кнопок */
+.btn-main-gradient {
+    @apply bg-gradient-to-r from-red-400 to-orange-400;
+}
+
+.btn-main-gradient:hover {
+    @apply from-red-500 to-orange-500;
+}
+
+.btn-main-gradient-reverse {
+    @apply bg-gradient-to-r from-orange-400 to-red-400;
+}
+
+.btn-main-gradient-reverse:hover {
+    @apply from-orange-500 to-red-500;
+}
+
+.btn-secondary-gradient {
+    @apply bg-gradient-to-r from-green-400 to-teal-400;
+}
+
+.btn-secondary-gradient:hover {
+    @apply from-green-500 to-teal-500;
+}
+
+.btn-secondary-gradient-reverse {
+    @apply bg-gradient-to-r from-teal-400 to-green-400;
+}
+
+.btn-secondary-gradient-reverse:hover {
+    @apply from-teal-500 to-green-500;
+}
+
+.btn-third-gradient {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400;
+}
+
+.btn-third-gradient:hover {
+    @apply from-blue-500 to-purple-500;
+}
+
+.btn-third-gradient-reverse {
+    @apply bg-gradient-to-r from-purple-400 to-blue-400;
+}
+
+.btn-third-gradient-reverse:hover {
+    @apply from-purple-500 to-blue-500;
+}
+
+.btn-fourth-gradient {
+    @apply bg-gradient-to-r from-amber-400 to-yellow-400;
+}
+
+.btn-fourth-gradient:hover {
+    @apply from-amber-500 to-yellow-500;
+}
+
+.btn-fourth-gradient-reverse {
+    @apply bg-gradient-to-r from-yellow-400 to-amber-400;
+}
+
+.btn-fourth-gradient-reverse:hover {
+    @apply from-yellow-500 to-amber-500;
+}

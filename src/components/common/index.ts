@@ -3,6 +3,7 @@ export { Captcha } from './Captcha';
 export { CookieBanner } from './CookieBanner';
 export { EmailVerificationPanel } from './EmailVerificationPanel';
 export { ErrorBoundary } from './ErrorBoundary';
+export { GoToHomeButton } from './GoToHomeButton';
 export { Loader } from './Loader';
 export { Logo } from './Logo';
 export { PerfectOutlook } from './PerfectOutlook';

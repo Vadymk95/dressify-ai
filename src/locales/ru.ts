@@ -119,186 +119,11 @@ export const ru = {
                     },
                     WeatherPanel: {
                         title: 'Погода',
-                        selectYourLocation: 'Выберите ваше местоположение',
-                        selectCountry: 'Выберите страну',
-                        selectCity: 'Выберите город',
-                        noCountryFound: 'Страна не найдена',
-                        noCityFound: 'Город не найден',
-                        fetchWeather: 'Узнать погоду',
-                        fetchTomorrow: 'Погода на завтра',
-                        tabs: {
-                            location: 'По местоположению',
-                            manual: 'Вручную'
-                        },
-                        manual: {
-                            conditions: 'Погодные условия',
-                            temperature: 'Температура'
-                        },
-                        accordions: {
-                            location: 'Местоположение',
-                            title: 'Настройки погоды',
-                            conditions: 'Погодные условия',
-                            temperature: 'Температура'
-                        },
-                        conditions: {
-                            sunny: 'Солнечно',
-                            partlyCloudy: 'Переменная облачность',
-                            cloudy: 'Облачно',
-                            rain: 'Дождь',
-                            heavyRain: 'Ливень',
-                            snow: 'Снег',
-                            thunderstorm: 'Гроза'
-                        },
-                        temperature: {
-                            hot: 'Жарко',
-                            warm: 'Тепло',
-                            moderate: 'Умеренно',
-                            cool: 'Прохладно',
-                            cold: 'Холодно'
-                        },
-                        daysOfWeek: {
-                            monday: 'Понедельник',
-                            tuesday: 'Вторник',
-                            wednesday: 'Среда',
-                            thursday: 'Четверг',
-                            friday: 'Пятница',
-                            saturday: 'Суббота',
-                            sunday: 'Воскресенье'
-                        },
-                        dateFormat: {
-                            today: 'Сегодня',
-                            tomorrow: 'Завтра'
-                        },
-                        errors: {
-                            fetchWeatherError: 'Ошибка при получении погоды',
-                            fetchCitiesError:
-                                'Ошибка при получении списка городов'
-                        }
+                        noWeather: 'Нет данных о погоде'
                     },
                     PersonalDetailsPanel: {
                         title: 'Личные данные',
-                        gender: 'Пол:',
-                        genderOptions: {
-                            male: 'Мужской',
-                            female: 'Женский',
-                            other: 'Другой'
-                        },
-                        optionalNote:
-                            'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
-                        additionalInfo: 'Дополнительная информация',
-                        freePlanNote:
-                            'Некоторые поля доступны только для пользователей с премиум подпиской. Обновите свой план, чтобы получить доступ ко всем функциям.',
-                        characteristics: {
-                            height: 'Рост',
-                            heightPlaceholder: 'Введите рост',
-                            weight: 'Вес',
-                            weightPlaceholder: 'Введите вес',
-                            bodyType: 'Тип фигуры',
-                            age: 'Возраст',
-                            agePlaceholder: 'Введите возраст',
-                            skinTone: 'Цвет кожи',
-                            hairColor: 'Цвет волос',
-                            eyeColor: 'Цвет глаз',
-                            preferredColors: 'Предпочитаемые цвета',
-                            stylePreference: 'Предпочитаемый стиль',
-                            units: {
-                                cm: 'см',
-                                kg: 'кг',
-                                years: 'лет',
-                                lb: 'фунт',
-                                ft: 'фут',
-                                in: 'дюйм'
-                            },
-                            bodyTypes: {
-                                // Common body types
-                                slim: 'Стройный',
-                                athletic: 'Атлетический',
-                                average: 'Средний',
-                                curvy: 'Фигуристый',
-                                muscular: 'Мускулистый',
-                                // Female body types
-                                hourglass: 'Песочные часы',
-                                pear: 'Груша',
-                                apple: 'Яблоко',
-                                rectangle: 'Прямоугольник',
-                                inverted_triangle: 'Перевёрнутый треугольник',
-                                // Male body types
-                                trapezoid: 'Трапеция',
-                                triangle: 'Треугольник',
-                                oval: 'Овал'
-                            },
-                            skinTones: {
-                                fair: 'Очень светлый',
-                                light: 'Светлый',
-                                medium: 'Средний',
-                                olive: 'Оливковый',
-                                brown: 'Смуглый',
-                                dark: 'Тёмный'
-                            },
-                            hairColors: {
-                                black: 'Чёрный',
-                                brown: 'Коричневый',
-                                blonde: 'Светлый',
-                                red: 'Рыжий',
-                                gray: 'Седой',
-                                white: 'Белый',
-                                other: 'Другой'
-                            },
-                            eyeColors: {
-                                brown: 'Карий',
-                                blue: 'Голубой',
-                                green: 'Зелёный',
-                                hazel: 'Ореховый',
-                                gray: 'Серый',
-                                other: 'Другой'
-                            },
-                            colors: {
-                                black: 'Чёрный',
-                                white: 'Белый',
-                                gray: 'Серый',
-                                red: 'Красный',
-                                blue: 'Синий',
-                                green: 'Зелёный',
-                                yellow: 'Жёлтый',
-                                purple: 'Фиолетовый',
-                                pink: 'Розовый',
-                                orange: 'Оранжевый',
-                                brown: 'Коричневый',
-                                beige: 'Бежевый'
-                            },
-                            styles: {
-                                casual: 'Повседневный',
-                                formal: 'Формальный',
-                                business: 'Деловой',
-                                sporty: 'Спортивный',
-                                romantic: 'Романтический',
-                                creative: 'Креативный',
-                                minimalist: 'Минималистичный',
-                                vintage: 'Винтажный',
-                                streetwear: 'Уличный'
-                            }
-                        },
-                        search: 'Поиск...',
-                        noResults: 'Ничего не найдено',
-                        save: 'Сохранить изменения',
-                        validation: {
-                            height: 'Рост должен быть от 100 до 250 см',
-                            weight: 'Вес должен быть от 30 до 250 кг',
-                            age: 'Возраст должен быть от 13 до 120 лет'
-                        },
-                        errors: {
-                            userNotAuthorized: 'Пользователь не авторизован',
-                            unknownError: 'Произошла неизвестная ошибка',
-                            networkError:
-                                'Ошибка сети. Пожалуйста, проверьте подключение',
-                            saveFailed: 'Не удалось сохранить изменения',
-                            cookieRequired:
-                                'Требуется разрешение на сохранение настроек',
-                            cookieRequiredDesc:
-                                'Нажмите "Настроить" в баннере внизу страницы и включите функциональные куки'
-                        },
-                        saveSuccess: 'Изменения успешно сохранены',
-                        noChanges: 'Нет изменений для сохранения'
+                        description: 'Настройте ваши личные данные'
                     },
                     WardrobePanel: {
                         title: 'Ваш гардероб',
@@ -309,39 +134,7 @@ export const ru = {
                         wardrobeNotAvailable:
                             'Гардероб доступен только для платных тарифов. Пожалуйста, выберите подходящий план.'
                     },
-                    EventPanel: {
-                        title: 'Выберите событие',
-                        description:
-                            'Выберите тип мероприятия, чтобы мы могли подобрать подходящий наряд',
-                        selectEvent: 'Выберите тип события',
-                        noEventFound: 'События не найдены',
-                        types: {
-                            businessMeeting: 'Деловая встреча',
-                            interview: 'Собеседование',
-                            wedding: 'Свадьба',
-                            dateNight: 'Свидание',
-                            restaurant: 'Ресторан',
-                            theater: 'Театр',
-                            clubbing: 'Клуб/Вечеринка',
-                            graduation: 'Выпускной/Вручение диплома',
-                            conference: 'Конференция',
-                            casualWalk: 'Прогулка по городу',
-                            shopping: 'Шоппинг',
-                            concert: 'Концерт',
-                            exhibition: 'Выставка/Музей',
-                            birthday: 'День рождения',
-                            cocktailParty: 'Коктейльная вечеринка',
-                            beachDay: 'Пляжный отдых',
-                            sportEvent: 'Спортивное мероприятие',
-                            casualFriends: 'Встреча с друзьями',
-                            workOffice: 'Офисный день',
-                            familyGathering: 'Семейное торжество',
-                            onlineMeeting: 'Онлайн-встреча',
-                            webinar: 'Вебинар',
-                            onlineInterview: 'Онлайн-собеседование',
-                            videoConference: 'Видеоконференция'
-                        }
-                    },
+                    EventPanel: {},
                     OutfitRequestPanel: {
                         title: 'Подбор образа',
                         description:
@@ -590,7 +383,9 @@ export const ru = {
                     note: 'В будущем планируется добавление полугодового тарифа. Цены могут быть пересмотрены на основе собранных отзывов.'
                 },
                 WhatToWear: {
-                    title: 'Давай подберём твой идеальный образ!'
+                    title: 'Давай подберём твой идеальный образ!',
+                    subtitle:
+                        'Заполни информацию ниже, и мы поможем тебе создать безупречный образ для любого случая'
                 },
                 Wardrobe: {
                     title: 'Мой гардероб',
@@ -641,6 +436,222 @@ export const ru = {
                     title: 'Платеж не выполнен',
                     description: 'Пожалуйста, попробуйте ещё раз.',
                     goToHome: 'Перейти на главную'
+                },
+                Weather: {
+                    title: 'Погода',
+                    selectYourLocation: 'Выберите ваше местоположение',
+                    selectCountry: 'Выберите страну',
+                    selectCity: 'Выберите город',
+                    noCountryFound: 'Страна не найдена',
+                    noCityFound: 'Город не найден',
+                    fetchWeather: 'Узнать погоду',
+                    fetchTomorrow: 'Погода на завтра',
+                    whatToWear: '',
+                    tabs: {
+                        location: 'По местоположению',
+                        manual: 'Вручную'
+                    },
+                    manual: {
+                        conditions: 'Погодные условия',
+                        temperature: 'Температура'
+                    },
+                    accordions: {
+                        location: 'Местоположение',
+                        title: 'Настройки погоды',
+                        conditions: 'Погодные условия',
+                        temperature: 'Температура'
+                    },
+                    conditions: {
+                        sunny: 'Солнечно',
+                        partlyCloudy: 'Переменная облачность',
+                        cloudy: 'Облачно',
+                        rain: 'Дождь',
+                        heavyRain: 'Ливень',
+                        snow: 'Снег',
+                        thunderstorm: 'Гроза'
+                    },
+                    temperature: {
+                        hot: 'Жарко',
+                        warm: 'Тепло',
+                        moderate: 'Умеренно',
+                        cool: 'Прохладно',
+                        cold: 'Холодно'
+                    },
+                    daysOfWeek: {
+                        monday: 'Понедельник',
+                        tuesday: 'Вторник',
+                        wednesday: 'Среда',
+                        thursday: 'Четверг',
+                        friday: 'Пятница',
+                        saturday: 'Суббота',
+                        sunday: 'Воскресенье'
+                    },
+                    dateFormat: {
+                        today: 'Сегодня',
+                        tomorrow: 'Завтра'
+                    },
+                    errors: {
+                        fetchWeatherError: 'Ошибка при получении погоды',
+                        fetchCitiesError: 'Ошибка при получении списка городов'
+                    }
+                },
+                PersonalDetails: {
+                    title: 'Личные данные',
+                    gender: 'Пол:',
+                    genderOptions: {
+                        male: 'Мужской',
+                        female: 'Женский',
+                        other: 'Другой'
+                    },
+                    optionalNote:
+                        'Дополнительная информация необязательна, но она помогает нам делать более точные рекомендации образов',
+                    additionalInfo: 'Дополнительная информация',
+                    freePlanNote:
+                        'Некоторые поля доступны только для пользователей с премиум подпиской. Обновите свой план, чтобы получить доступ ко всем функциям.',
+                    characteristics: {
+                        height: 'Рост',
+                        heightPlaceholder: 'Введите рост',
+                        weight: 'Вес',
+                        weightPlaceholder: 'Введите вес',
+                        bodyType: 'Тип фигуры',
+                        age: 'Возраст',
+                        agePlaceholder: 'Введите возраст',
+                        skinTone: 'Цвет кожи',
+                        hairColor: 'Цвет волос',
+                        eyeColor: 'Цвет глаз',
+                        preferredColors: 'Предпочитаемые цвета',
+                        stylePreference: 'Предпочитаемый стиль',
+                        units: {
+                            cm: 'см',
+                            kg: 'кг',
+                            years: 'лет',
+                            lb: 'фунт',
+                            ft: 'фут',
+                            in: 'дюйм'
+                        },
+                        bodyTypes: {
+                            // Common body types
+                            slim: 'Стройный',
+                            athletic: 'Атлетический',
+                            average: 'Средний',
+                            curvy: 'Фигуристый',
+                            muscular: 'Мускулистый',
+                            // Female body types
+                            hourglass: 'Песочные часы',
+                            pear: 'Груша',
+                            apple: 'Яблоко',
+                            rectangle: 'Прямоугольник',
+                            inverted_triangle: 'Перевёрнутый треугольник',
+                            // Male body types
+                            trapezoid: 'Трапеция',
+                            triangle: 'Треугольник',
+                            oval: 'Овал'
+                        },
+                        skinTones: {
+                            fair: 'Очень светлый',
+                            light: 'Светлый',
+                            medium: 'Средний',
+                            olive: 'Оливковый',
+                            brown: 'Смуглый',
+                            dark: 'Тёмный'
+                        },
+                        hairColors: {
+                            black: 'Чёрный',
+                            brown: 'Коричневый',
+                            blonde: 'Светлый',
+                            red: 'Рыжий',
+                            gray: 'Седой',
+                            white: 'Белый',
+                            other: 'Другой'
+                        },
+                        eyeColors: {
+                            brown: 'Карий',
+                            blue: 'Голубой',
+                            green: 'Зелёный',
+                            hazel: 'Ореховый',
+                            gray: 'Серый',
+                            other: 'Другой'
+                        },
+                        colors: {
+                            black: 'Чёрный',
+                            white: 'Белый',
+                            gray: 'Серый',
+                            red: 'Красный',
+                            blue: 'Синий',
+                            green: 'Зелёный',
+                            yellow: 'Жёлтый',
+                            purple: 'Фиолетовый',
+                            pink: 'Розовый',
+                            orange: 'Оранжевый',
+                            brown: 'Коричневый',
+                            beige: 'Бежевый'
+                        },
+                        styles: {
+                            casual: 'Повседневный',
+                            formal: 'Формальный',
+                            business: 'Деловой',
+                            sporty: 'Спортивный',
+                            romantic: 'Романтический',
+                            creative: 'Креативный',
+                            minimalist: 'Минималистичный',
+                            vintage: 'Винтажный',
+                            streetwear: 'Уличный'
+                        }
+                    },
+                    search: 'Поиск...',
+                    noResults: 'Ничего не найдено',
+                    save: 'Сохранить изменения',
+                    validation: {
+                        height: 'Рост должен быть от 100 до 250 см',
+                        weight: 'Вес должен быть от 30 до 250 кг',
+                        age: 'Возраст должен быть от 13 до 120 лет'
+                    },
+                    errors: {
+                        userNotAuthorized: 'Пользователь не авторизован',
+                        unknownError: 'Произошла неизвестная ошибка',
+                        networkError:
+                            'Ошибка сети. Пожалуйста, проверьте подключение',
+                        saveFailed: 'Не удалось сохранить изменения',
+                        cookieRequired:
+                            'Требуется разрешение на сохранение настроек',
+                        cookieRequiredDesc:
+                            'Нажмите "Настроить" в баннере внизу страницы и включите функциональные куки'
+                    },
+                    saveSuccess: 'Изменения успешно сохранены',
+                    noChanges: 'Нет изменений для сохранения'
+                },
+                Event: {
+                    title: 'Выберите событие',
+                    description:
+                        'Выберите тип мероприятия, чтобы мы могли подобрать подходящий наряд',
+                    selectEvent: 'Выберите тип события',
+                    noEventFound: 'События не найдены',
+                    types: {
+                        businessMeeting: 'Деловая встреча',
+                        interview: 'Собеседование',
+                        wedding: 'Свадьба',
+                        dateNight: 'Свидание',
+                        restaurant: 'Ресторан',
+                        theater: 'Театр',
+                        clubbing: 'Клуб/Вечеринка',
+                        graduation: 'Выпускной/Вручение диплома',
+                        conference: 'Конференция',
+                        casualWalk: 'Прогулка по городу',
+                        shopping: 'Шоппинг',
+                        concert: 'Концерт',
+                        exhibition: 'Выставка/Музей',
+                        birthday: 'День рождения',
+                        cocktailParty: 'Коктейльная вечеринка',
+                        beachDay: 'Пляжный отдых',
+                        sportEvent: 'Спортивное мероприятие',
+                        casualFriends: 'Встреча с друзьями',
+                        workOffice: 'Офисный день',
+                        familyGathering: 'Семейное торжество',
+                        onlineMeeting: 'Онлайн-встреча',
+                        webinar: 'Вебинар',
+                        onlineInterview: 'Онлайн-собеседование',
+                        videoConference: 'Видеоконференция'
+                    }
                 }
             },
             General: {
@@ -649,7 +660,8 @@ export const ru = {
                 sending: 'Отправка...',
                 save: 'Сохранить',
                 cancel: 'Отмена',
-                leave: 'Уйти'
+                leave: 'Уйти',
+                goToHome: 'Перейти на главную'
             },
             ...ru_codes
         }

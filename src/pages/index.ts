@@ -10,3 +10,6 @@ export { SuccessPayment } from './SuccessPayment';
 export { TermsOfUse } from './TermsOfUse';
 export { Wardrobe } from './Wardrobe';
 export { WhatToWear } from './WhatToWear';
+export { PersonalDetails } from './PersonalDetails';
+export { Event } from './Event';
+export { Weather } from './Weather';

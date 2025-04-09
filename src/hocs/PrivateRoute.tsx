@@ -18,8 +18,10 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     if (!initialized) return <Loader />;
     if (!user) return <Navigate to={routes.login} />;
 
-    // Проверяем, пытается ли пользователь с бесплатным планом получить доступ к гардеробу
-    if (profile?.plan === 'free' && location.pathname === routes.wardrobe) {
+    const isFreePlan = profile?.plan === 'free';
+    const { wardrobe } = routes;
+
+    if (isFreePlan && wardrobe === location.pathname) {
         return <Navigate to={routes.pricing} />;
     }
 

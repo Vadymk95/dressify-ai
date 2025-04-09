@@ -14,30 +14,31 @@ const WhatToWear: FC = () => {
     const { t } = useTranslation();
 
     return (
-        <div className="w-full max-w-4xl mx-auto px-6 flex flex-col gap-5">
+        <div className="w-full max-w-4xl mx-auto px-6 flex flex-col gap-10">
             <PerfectOutlook />
             <EmailVerificationPanel />
+            <div>
+                <h1 className="text-3xl md:text-4xl text-center mb-2 font-bold mt-14 text-amber-800">
+                    {t('Pages.WhatToWear.title')}
+                </h1>
+                <p className="text-center text-amber-700/80 text-lg max-w-2xl mx-auto">
+                    {t('Pages.WhatToWear.subtitle')}
+                </p>
+            </div>
 
-            <h1 className="text-3xl text-center text-amber-50 font-semibold mt-10 third-gradient py-12 px-4 rounded-xl">
-                {t('Pages.WhatToWear.title')}
-            </h1>
-
-            <section>
-                <WeatherPanel />
-            </section>
-
-            <section className="p-4 secondary-gradient shadow-md rounded-xl">
-                <PersonalDetailsPanel />
-            </section>
-
-            <div className="flex flex-col md:flex-row gap-5">
-                <section className="flex-1 p-4 main-gradient-reverse shadow-md rounded-xl flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="h-[200px]">
+                    <WeatherPanel />
+                </div>
+                <div className="h-[200px]">
+                    <PersonalDetailsPanel />
+                </div>
+                <div className="h-[200px]">
                     <WardrobePanel />
-                </section>
-
-                <section className="flex-1 third-gradient p-4 rounded-lg shadow-md flex flex-col">
+                </div>
+                <div className="h-[200px]">
                     <EventPanel />
-                </section>
+                </div>
             </div>
 
             <section className="p-4 bg-amber-50 rounded-xl shadow-md text-center">

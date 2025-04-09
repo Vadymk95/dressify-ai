@@ -6,6 +6,8 @@ export const routes = {
 
     // private routes
     whatToWear: '/what-to-wear',
+    weather: '/weather',
+    personalDetails: '/personal-details',
     wardrobe: '/wardrobe',
     successPayment: '/payment/success',
     failedPayment: '/payment/failed',
