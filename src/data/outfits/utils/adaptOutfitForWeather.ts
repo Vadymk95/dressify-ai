@@ -49,6 +49,11 @@ export const adaptOutfitForWeather = (
     );
     const ageCategory = determineAgeCategory(characteristics.age);
 
+    // Особые случаи для очень низкого роста
+    const isVeryShort = characteristics.height < 140;
+    // Особые случаи для пожилого возраста
+    const isElderly = characteristics.age >= 70;
+
     // Определяем тип погоды
     const isRainy =
         weather.description.toLowerCase().includes('дождь') ||
@@ -68,7 +73,7 @@ export const adaptOutfitForWeather = (
         weather.description.toLowerCase().includes('clear');
 
     const isHot = temp >= 25;
-    const isCold = temp <= 5;
+    const isCold = temp <= 10; // Изменено с 5 на 10 для более теплой одежды
     const isFoggy =
         weather.description.toLowerCase().includes('туман') ||
         weather.description.toLowerCase().includes('fog');
@@ -90,42 +95,62 @@ export const adaptOutfitForWeather = (
         en: [] as string[]
     };
 
-    // Добавляем рекомендации по росту
-    if (
-        heightCategory &&
-        heightCategory !== 'medium' &&
-        heightRecommendations[heightCategory]
-    ) {
+    // Особые рекомендации для очень низкого роста
+    if (isVeryShort) {
         physicalRecommendations.ru.push(
-            heightRecommendations[heightCategory].add.ru
+            'выбирай одежду с вертикальными линиями и однотонные вещи - это визуально вытянет силуэт. Избегай объемных и многослойных вещей'
         );
         physicalRecommendations.en.push(
-            heightRecommendations[heightCategory].add.en
+            'choose clothes with vertical lines and monochrome pieces - this will visually elongate your silhouette. Avoid voluminous and layered pieces'
         );
     }
 
-    // Добавляем рекомендации по весу
-    if (
-        weightCategory &&
-        weightCategory !== 'medium' &&
-        weightRecommendations[weightCategory]
-    ) {
+    // Особые рекомендации для пожилого возраста
+    if (isElderly) {
         physicalRecommendations.ru.push(
-            weightRecommendations[weightCategory].add.ru
+            'отдавай предпочтение комфортной и удобной одежде классического кроя'
         );
         physicalRecommendations.en.push(
-            weightRecommendations[weightCategory].add.en
+            'prefer comfortable and easy-to-wear clothes with classic cut'
         );
     }
 
-    // Добавляем рекомендации по возрасту
-    if (ageCategory && adaptationRules.age[ageCategory].add) {
-        physicalRecommendations.ru.push(
-            adaptationRules.age[ageCategory].add!.ru
-        );
-        physicalRecommendations.en.push(
-            adaptationRules.age[ageCategory].add!.en
-        );
+    // Добавляем стандартные рекомендации только если нет особых случаев
+    if (!isVeryShort && !isElderly) {
+        if (
+            heightCategory &&
+            heightCategory !== 'medium' &&
+            heightRecommendations[heightCategory]
+        ) {
+            physicalRecommendations.ru.push(
+                heightRecommendations[heightCategory].add.ru
+            );
+            physicalRecommendations.en.push(
+                heightRecommendations[heightCategory].add.en
+            );
+        }
+
+        if (
+            weightCategory &&
+            weightCategory !== 'medium' &&
+            weightRecommendations[weightCategory]
+        ) {
+            physicalRecommendations.ru.push(
+                weightRecommendations[weightCategory].add.ru
+            );
+            physicalRecommendations.en.push(
+                weightRecommendations[weightCategory].add.en
+            );
+        }
+
+        if (ageCategory && adaptationRules.age[ageCategory].add) {
+            physicalRecommendations.ru.push(
+                adaptationRules.age[ageCategory].add!.ru
+            );
+            physicalRecommendations.en.push(
+                adaptationRules.age[ageCategory].add!.en
+            );
+        }
     }
 
     // Базовые аксессуары в зависимости от погоды
@@ -137,6 +162,7 @@ export const adaptOutfitForWeather = (
         isSunny: boolean,
         isCold: boolean,
         isOvercast: boolean,
+        isThunderstorm: boolean,
         lang: Language,
         weight: number
     ): string[] => {
@@ -297,6 +323,7 @@ export const adaptOutfitForWeather = (
                 isSunny,
                 isCold,
                 isOvercast,
+                isThunderstorm,
                 lang,
                 characteristics.weight
             ),
@@ -1031,6 +1058,7 @@ export const adaptOutfitForWeather = (
             isSunny,
             isCold,
             isOvercast,
+            isThunderstorm,
             lang,
             characteristics.weight
         ),

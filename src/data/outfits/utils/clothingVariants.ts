@@ -4,102 +4,114 @@ export const clothingVariants = {
             tops: {
                 formal: {
                     ru: [
-                        'шерстяной свитер с пальто',
-                        'водолазка с шерстяным пальто',
-                        'джемпер с двубортным пальто',
-                        'свитер с утепленным тренчем',
-                        'водолазка с пальто'
+                        'утепленная рубашка с жилетом',
+                        'рубашка с теплым свитером',
+                        'рубашка с кардиганом',
+                        'рубашка с пиджаком на подкладке',
+                        'рубашка с теплым джемпером',
+                        'рубашка с утепленным жилетом'
                     ],
                     en: [
-                        'wool sweater with coat',
-                        'turtleneck with wool coat',
-                        'jumper with double-breasted coat',
-                        'sweater with insulated trench',
-                        'turtleneck with coat'
+                        'insulated shirt with vest',
+                        'shirt with warm sweater',
+                        'shirt with cardigan',
+                        'shirt with lined blazer',
+                        'shirt with warm jumper',
+                        'shirt with insulated vest'
                     ]
                 },
                 casual: {
                     ru: [
-                        'свитер с пуховиком',
-                        'худи с утепленной курткой',
-                        'свитшот с дутой курткой',
-                        'джемпер с зимней курткой',
-                        'толстовка с пуховиком'
+                        'футболка с теплой толстовкой',
+                        'футболка с утепленной курткой',
+                        'футболка с теплым свитером',
+                        'футболка с кардиганом',
+                        'футболка с теплым джемпером',
+                        'футболка с утепленной ветровкой'
                     ],
                     en: [
-                        'sweater with down jacket',
-                        'hoodie with padded jacket',
-                        'sweatshirt with puffer jacket',
-                        'jumper with winter jacket',
-                        'sweatshirt with down jacket'
+                        't-shirt with warm hoodie',
+                        't-shirt with insulated jacket',
+                        't-shirt with warm sweater',
+                        't-shirt with cardigan',
+                        't-shirt with warm jumper',
+                        't-shirt with insulated windbreaker'
                     ]
                 }
             },
             bottoms: {
                 formal: {
                     ru: [
-                        'утепленные прямые брюки',
-                        'утепленные классические брюки',
-                        'плотные брюки со стрелками',
-                        'шерстяные брюки',
-                        'плотные брюки чинос'
+                        'утепленные брюки',
+                        'брюки с подкладкой',
+                        'классические брюки',
+                        'брюки из плотной ткани',
+                        'брюки с утепленной подкладкой',
+                        'классические брюки с подкладкой'
                     ],
                     en: [
-                        'insulated straight pants',
-                        'insulated classic trousers',
-                        'thick creased pants',
-                        'wool trousers',
-                        'thick chinos'
+                        'insulated pants',
+                        'lined pants',
+                        'classic pants',
+                        'thick fabric pants',
+                        'pants with insulated lining',
+                        'classic pants with lining'
                     ]
                 },
                 casual: {
                     ru: [
                         'утепленные джинсы',
-                        'плотные брюки чинос',
-                        'утепленные брюки карго',
-                        'теплые джоггеры',
-                        'шерстяные прямые брюки'
+                        'джинсы с подкладкой',
+                        'брюки из плотной ткани',
+                        'классические брюки',
+                        'джинсы с утепленной подкладкой',
+                        'брюки с подкладкой'
                     ],
                     en: [
                         'insulated jeans',
-                        'thick chinos',
-                        'insulated cargo pants',
-                        'warm joggers',
-                        'wool straight pants'
+                        'lined jeans',
+                        'thick fabric pants',
+                        'classic pants',
+                        'jeans with insulated lining',
+                        'pants with lining'
                     ]
                 }
             },
             shoes: {
                 formal: {
                     ru: [
-                        'утепленные кожаные ботинки',
-                        'зимние дерби',
-                        'утепленные ботинки',
-                        'зимние ботинки на меху',
-                        'утепленные челси'
+                        'утепленные туфли',
+                        'кожаные ботинки',
+                        'классические ботинки',
+                        'туфли с подкладкой',
+                        'утепленные классические ботинки',
+                        'кожаные ботинки с подкладкой'
                     ],
                     en: [
-                        'insulated leather boots',
-                        'winter derbies',
-                        'insulated boots',
-                        'winter fur-lined boots',
-                        'insulated chelsea boots'
+                        'insulated shoes',
+                        'leather boots',
+                        'classic boots',
+                        'lined shoes',
+                        'insulated classic boots',
+                        'leather boots with lining'
                     ]
                 },
                 casual: {
                     ru: [
+                        'утепленные кроссовки',
                         'зимние ботинки',
-                        'утепленные кожаные ботинки',
-                        'водонепроницаемые зимние ботинки',
-                        'утепленные треккинговые ботинки',
-                        'высокие зимние ботинки'
+                        'кожаные ботинки',
+                        'кроссовки с подкладкой',
+                        'утепленные ботинки',
+                        'кожаные ботинки с подкладкой'
                     ],
                     en: [
+                        'insulated sneakers',
                         'winter boots',
-                        'insulated leather boots',
-                        'waterproof winter boots',
-                        'insulated hiking boots',
-                        'high winter boots'
+                        'leather boots',
+                        'lined sneakers',
+                        'insulated boots',
+                        'leather boots with lining'
                     ]
                 }
             }
@@ -108,102 +120,114 @@ export const clothingVariants = {
             tops: {
                 formal: {
                     ru: [
-                        'блузка с тренчем',
-                        'джемпер с легким пальто',
-                        'водолазка с жакетом',
+                        'утепленная блузка с жилетом',
+                        'блузка с теплым свитером',
                         'блузка с кардиганом',
-                        'свитер с блейзером'
+                        'блузка с пиджаком на подкладке',
+                        'блузка с теплым джемпером',
+                        'блузка с утепленным жилетом'
                     ],
                     en: [
-                        'blouse with trench coat',
-                        'jumper with light coat',
-                        'turtleneck with jacket',
+                        'insulated blouse with vest',
+                        'blouse with warm sweater',
                         'blouse with cardigan',
-                        'sweater with blazer'
+                        'blouse with lined blazer',
+                        'blouse with warm jumper',
+                        'blouse with insulated vest'
                     ]
                 },
                 casual: {
                     ru: [
-                        'футболка с джинсовой курткой',
-                        'лонгслив с кожаной курткой',
-                        'свитшот с ветровкой',
-                        'футболка с бомбером',
-                        'худи с легкой курткой'
+                        'футболка с теплой толстовкой',
+                        'футболка с утепленной курткой',
+                        'футболка с теплым свитером',
+                        'футболка с кардиганом',
+                        'футболка с теплым джемпером',
+                        'футболка с утепленной ветровкой'
                     ],
                     en: [
-                        't-shirt with denim jacket',
-                        'longsleeve with leather jacket',
-                        'sweatshirt with windbreaker',
-                        't-shirt with bomber',
-                        'hoodie with light jacket'
+                        't-shirt with warm hoodie',
+                        't-shirt with insulated jacket',
+                        't-shirt with warm sweater',
+                        't-shirt with cardigan',
+                        't-shirt with warm jumper',
+                        't-shirt with insulated windbreaker'
                     ]
                 }
             },
             bottoms: {
                 formal: {
                     ru: [
-                        'прямые брюки',
-                        'юбка-карандаш',
+                        'утепленные брюки',
+                        'брюки с подкладкой',
                         'классические брюки',
-                        'плиссированная юбка',
-                        'брюки со стрелками'
+                        'брюки из плотной ткани',
+                        'брюки с утепленной подкладкой',
+                        'классические брюки с подкладкой'
                     ],
                     en: [
-                        'straight pants',
-                        'pencil skirt',
-                        'classic trousers',
-                        'pleated skirt',
-                        'creased pants'
+                        'insulated pants',
+                        'lined pants',
+                        'classic pants',
+                        'thick fabric pants',
+                        'pants with insulated lining',
+                        'classic pants with lining'
                     ]
                 },
                 casual: {
                     ru: [
-                        'джинсы',
-                        'брюки чинос',
-                        'трикотажная юбка',
-                        'джинсовая юбка',
-                        'брюки карго'
+                        'утепленные джинсы',
+                        'джинсы с подкладкой',
+                        'брюки из плотной ткани',
+                        'классические брюки',
+                        'джинсы с утепленной подкладкой',
+                        'брюки с подкладкой'
                     ],
                     en: [
-                        'jeans',
-                        'chinos',
-                        'knit skirt',
-                        'denim skirt',
-                        'cargo pants'
+                        'insulated jeans',
+                        'lined jeans',
+                        'thick fabric pants',
+                        'classic pants',
+                        'jeans with insulated lining',
+                        'pants with lining'
                     ]
                 }
             },
             shoes: {
                 formal: {
                     ru: [
-                        'утепленные кожаные ботильоны',
-                        'зимние сапоги на невысоком каблуке',
-                        'зимние кожаные сапоги',
-                        'утепленные замшевые ботинки',
-                        'зимние ботинки на меху'
+                        'утепленные туфли',
+                        'кожаные ботинки',
+                        'классические ботинки',
+                        'туфли с подкладкой',
+                        'утепленные классические ботинки',
+                        'кожаные ботинки с подкладкой'
                     ],
                     en: [
-                        'insulated leather ankle boots',
-                        'winter boots with low heel',
-                        'winter leather boots',
-                        'insulated suede boots',
-                        'winter fur-lined boots'
+                        'insulated shoes',
+                        'leather boots',
+                        'classic boots',
+                        'lined shoes',
+                        'insulated classic boots',
+                        'leather boots with lining'
                     ]
                 },
                 casual: {
                     ru: [
-                        'зимние кожаные ботинки',
-                        'утепленные сапоги',
-                        'водонепроницаемые зимние ботинки',
-                        'утепленные теплые сапоги',
-                        'зимние ботинки на меху'
+                        'утепленные кроссовки',
+                        'зимние ботинки',
+                        'кожаные ботинки',
+                        'кроссовки с подкладкой',
+                        'утепленные ботинки',
+                        'кожаные ботинки с подкладкой'
                     ],
                     en: [
-                        'winter leather boots',
+                        'insulated sneakers',
+                        'winter boots',
+                        'leather boots',
+                        'lined sneakers',
                         'insulated boots',
-                        'waterproof winter boots',
-                        'insulated warm boots',
-                        'winter fur-lined boots'
+                        'leather boots with lining'
                     ]
                 }
             }

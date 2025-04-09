@@ -49,24 +49,27 @@ export interface WeatherData {
     icon: string;
 }
 
-export interface WeatherInfo {
-    current?: WeatherData;
-    manual?: WeatherData;
-    tomorrow?: WeatherData;
-}
-
 export interface OutfitRequest {
     lang: Language;
     event: {
+        type: 'casualFriends' | 'workOffice' | 'dateNight' | 'shopping';
         name: string;
-        type: 'workOffice' | 'dateNight' | 'casualFriends' | 'shopping';
     };
-    weather: WeatherInfo;
+    location?: {
+        city: string;
+        country: string;
+    };
     characteristics: {
+        gender: 'male' | 'female';
+        age: number;
         height: number;
         heightUnit: 'cm' | 'ft' | 'in';
         weight: number;
         weightUnit: 'kg' | 'lb';
-        age: number;
+    };
+    weather: {
+        current?: WeatherData;
+        manual?: WeatherData;
+        tomorrow?: WeatherData;
     };
 }
