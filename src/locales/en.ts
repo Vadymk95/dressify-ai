@@ -116,6 +116,7 @@ export const en = {
                         },
                         successMessage: 'Feedback sent successfully!'
                     },
+                    WeatherPanel: {},
                     PersonalDetailsPanel: {
                         title: 'Personal Details',
                         gender: 'Gender:',

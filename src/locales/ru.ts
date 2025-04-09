@@ -117,6 +117,7 @@ export const ru = {
                         },
                         successMessage: 'Отзыв успешно отправлен!'
                     },
+                    WeatherPanel: {},
                     PersonalDetailsPanel: {
                         title: 'Личные данные',
                         gender: 'Пол:',
