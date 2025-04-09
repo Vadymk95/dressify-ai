@@ -10,6 +10,8 @@ interface PrivateRouteProps {
     children: JSX.Element;
 }
 
+type PrivateRoutePaths = keyof typeof routes;
+
 export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     const { user, initialized } = useAuthStore();
     const { profile } = useUserProfileStore();
@@ -18,8 +20,14 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     if (!initialized) return <Loader />;
     if (!user) return <Navigate to={routes.login} />;
 
+    const isFreePlan = profile?.plan === 'free';
+    const { wardrobe, personalDetails, event, weather } = routes;
+    const isPrivateRoute = [wardrobe, personalDetails, event, weather].includes(
+        location.pathname as PrivateRoutePaths
+    );
+
     // Проверяем, пытается ли пользователь с бесплатным планом получить доступ к гардеробу
-    if (profile?.plan === 'free' && location.pathname === routes.wardrobe) {
+    if (isFreePlan && isPrivateRoute) {
         return <Navigate to={routes.pricing} />;
     }
 
