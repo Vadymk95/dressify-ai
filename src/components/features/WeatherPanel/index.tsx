@@ -26,10 +26,10 @@ export const WeatherPanel: FC = () => {
     };
 
     return (
-        <section className="w-full mx-auto">
+        <section className="w-full h-full">
             <Link
                 to={routes.weather}
-                className="group p-4 flex flex-col items-center secondary-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-4 flex flex-col items-center main-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
                 <div className="flex items-center gap-2 mb-2">
                     <Sun className="w-6 h-6 text-amber-50 group-hover:text-amber-100 transition-colors duration-300" />
