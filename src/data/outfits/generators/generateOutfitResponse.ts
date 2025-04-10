@@ -14,7 +14,6 @@ export const generateOutfitResponse = (request: OutfitRequest) => {
         };
     }
 
-    // Адаптируем образ под погодные условия и физические характеристики
     // Приоритет: текущая погода -> мануальные данные -> прогноз на завтра
     const weatherData =
         request.weather.current ||
