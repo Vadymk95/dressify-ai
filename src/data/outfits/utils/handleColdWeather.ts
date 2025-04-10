@@ -70,6 +70,167 @@ export const handleColdWeather = (
         ...clothingFilters.event[outfit.event]
     });
 
+    // Получаем все аксессуары для образа
+    const weatherAccessories = getWeatherAccessories(
+        temp,
+        isRainy,
+        isWindy,
+        isSnowy,
+        isSunny,
+        isCold,
+        isOvercast,
+        isThunderstorm,
+        isHot,
+        isFoggy,
+        gender,
+        lang,
+        characteristics.weight
+    );
+
+    const eventAccessories = getEventAccessories(outfit.event, lang);
+
+    const extraAccessories = getRandomItems(
+        eventExtraAccessories[outfit.event][lang],
+        Math.floor(Math.random() * 2) + 1
+    );
+
+    // Объединяем все аксессуары и удаляем дубликаты
+    const accessories = deduplicateAccessories([
+        ...weatherAccessories,
+        ...eventAccessories,
+        ...extraAccessories
+    ]);
+
+    // Особые правила для экстремально холодной погоды (ниже -10°C)
+    if (temp < -10) {
+        // Полностью переопределяем варианты для очень холодной погоды
+        const extremeColdTops = [
+            {
+                ru: 'пуховик с меховым воротником',
+                en: 'fur-trimmed down jacket'
+            },
+            { ru: 'дутая зимняя куртка', en: 'padded winter jacket' },
+            { ru: 'шуба с капюшоном', en: 'fur coat with hood' },
+            { ru: 'теплое зимнее пальто', en: 'warm winter coat' },
+            { ru: 'утепленная парка', en: 'insulated parka' },
+            { ru: 'зимняя куртка с мехом', en: 'winter jacket with fur' }
+        ];
+
+        const extremeColdBottoms = [
+            { ru: 'утепленные зимние брюки', en: 'insulated winter pants' },
+            {
+                ru: 'шерстяные брюки с подкладкой',
+                en: 'wool pants with lining'
+            },
+            { ru: 'зимние термобрюки', en: 'winter thermal pants' },
+            { ru: 'утепленные джинсы с флисом', en: 'fleece-lined jeans' }
+        ];
+
+        const extremeColdShoes = [
+            { ru: 'зимние утепленные ботинки', en: 'insulated winter boots' },
+            { ru: 'валенки с галошами', en: 'felt boots with galoshes' },
+            { ru: 'зимние сапоги с мехом', en: 'winter boots with fur' },
+            { ru: 'утепленные зимние ботинки', en: 'warm winter boots' }
+        ];
+
+        // Используем предопределенные варианты вместо фильтрации
+        topOptions = extremeColdTops.map((item) => item.ru);
+        bottomOptions = extremeColdBottoms.map((item) => item.ru);
+        shoesOptions = extremeColdShoes.map((item) => item.ru);
+
+        // Добавляем дополнительные аксессуары для экстремального холода
+        const extremeColdAccessories = [
+            { ru: 'термобелье', en: 'thermal underwear' },
+            { ru: 'теплый шарф', en: 'warm scarf' },
+            { ru: 'теплые перчатки', en: 'warm gloves' }
+        ];
+
+        extremeColdAccessories.forEach((acc) => {
+            if (!accessories.some((a) => a === acc.ru)) {
+                accessories.push(acc.ru);
+            }
+        });
+
+        // Выбираем случайные элементы из отфильтрованных вариантов
+        const selectedTop = getRandomItems(topOptions)[0];
+        const selectedBottom = getRandomItems(bottomOptions)[0];
+        const selectedShoes = getRandomItems(shoesOptions)[0];
+        const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
+
+        // Получаем английские варианты
+        const selectedTopEn =
+            extremeColdTops.find((item) => item.ru === selectedTop)?.en ||
+            getRandomItems(variants.tops[style].en)[0];
+        const selectedBottomEn =
+            extremeColdBottoms.find((item) => item.ru === selectedBottom)?.en ||
+            getRandomItems(variants.bottoms[style].en)[0];
+        const selectedShoesEn =
+            extremeColdShoes.find((item) => item.ru === selectedShoes)?.en ||
+            getRandomItems(variants.shoes[style].en)[0];
+
+        adaptedOutfit.baseDescription = {
+            ru: `${randomGreeting}${selectedTop}, ${selectedBottom}, ${selectedShoes} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}`,
+            en: `${randomGreeting}${selectedTopEn}, ${selectedBottomEn}, ${selectedShoesEn} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.map((acc) => extremeColdAccessories.find((a) => a.ru === acc)?.en || acc).join(', ')}` : ''}`
+        };
+
+        adaptedOutfit.coreItems = {
+            ...outfit.coreItems,
+            top: {
+                ru: selectedTop,
+                en: selectedTopEn
+            },
+            bottom: {
+                ru: selectedBottom,
+                en: selectedBottomEn
+            },
+            shoes: {
+                ru: selectedShoes,
+                en: selectedShoesEn
+            },
+            accessories: {
+                ru: deduplicateAccessories(accessories),
+                en: deduplicateAccessories(
+                    accessories.map(
+                        (acc) =>
+                            extremeColdAccessories.find((a) => a.ru === acc)
+                                ?.en || acc
+                    )
+                )
+            }
+        };
+    }
+
+    // Особые правила для пожилых людей (senior)
+    if (ageCategory === 'senior') {
+        topOptions = topOptions.filter(
+            (item) =>
+                !item.includes('молодежный') &&
+                !item.includes('трендовый') &&
+                !item.includes('спортивный')
+        );
+
+        bottomOptions = bottomOptions.filter(
+            (item) =>
+                !item.includes('молодежный') &&
+                !item.includes('трендовый') &&
+                !item.includes('спортивный')
+        );
+
+        shoesOptions = shoesOptions.filter(
+            (item) =>
+                !item.includes('кроссовки') && !item.includes('спортивные')
+        );
+
+        // Добавляем дополнительные аксессуары для пожилых людей
+        if (
+            !accessories.some(
+                (acc) => acc.includes('трость') || acc.includes('cane')
+            )
+        ) {
+            accessories.push(lang === 'ru' ? 'трость' : 'cane');
+        }
+    }
+
     // Выбираем случайные элементы из отфильтрованных вариантов
     const selectedTop =
         getRandomItems(topOptions)[0] ||
@@ -82,287 +243,53 @@ export const handleColdWeather = (
         getRandomItems(variants.shoes[style].ru)[0];
     const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
 
-    // Получаем все аксессуары для образа
-    const accessories = [
-        ...getWeatherAccessories(
-            temp,
-            isRainy,
-            isWindy,
-            isSnowy,
-            isSunny,
-            isCold,
-            isOvercast,
-            isThunderstorm,
-            isHot,
-            isFoggy,
-            gender,
-            lang,
-            characteristics.weight
-        ),
-        ...getEventAccessories(outfit.event, lang),
-        ...getRandomItems(
-            eventExtraAccessories[outfit.event][lang],
-            Math.floor(Math.random() * 2) + 1
-        )
-    ];
+    // Получаем английские варианты
+    const selectedTopEn = getRandomItems(variants.tops[style].en)[0];
+    const selectedBottomEn = getRandomItems(variants.bottoms[style].en)[0];
+    const selectedShoesEn = getRandomItems(variants.shoes[style].en)[0];
 
     adaptedOutfit.baseDescription = {
         ru: `${randomGreeting}${selectedTop}, ${selectedBottom}, ${selectedShoes} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}`,
-        en: `${randomGreeting}${getRandomItems(variants.tops[style].en)[0]}, ${getRandomItems(variants.bottoms[style].en)[0]}, ${getRandomItems(variants.shoes[style].en)[0]} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}`
+        en: `${randomGreeting}${selectedTopEn}, ${selectedBottomEn}, ${selectedShoesEn} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}`
     };
 
     adaptedOutfit.coreItems = {
         ...outfit.coreItems,
         top: {
             ru: selectedTop,
-            en: getRandomItems(variants.tops[style].en)[0]
+            en: selectedTopEn
         },
         bottom: {
             ru: selectedBottom,
-            en: getRandomItems(variants.bottoms[style].en)[0]
+            en: selectedBottomEn
         },
         shoes: {
             ru: selectedShoes,
-            en: getRandomItems(variants.shoes[style].en)[0]
+            en: selectedShoesEn
         },
         accessories: {
-            ru: accessories,
-            en: accessories.map((acc) => {
-                const translations: Record<string, string> = {
-                    зонт: 'umbrella',
-                    шапка: 'hat',
-                    перчатки: 'gloves',
-                    шарф: 'scarf',
-                    ежедневник: 'planner',
-                    визитница: 'card holder',
-                    часы: 'watch',
-                    ремень: 'belt'
-                };
-                return translations[acc] || acc;
-            })
+            ru: deduplicateAccessories(accessories),
+            en: deduplicateAccessories(
+                accessories.map((acc) => {
+                    const translations: Record<string, string> = {
+                        umbrella: 'umbrella',
+                        hat: 'hat',
+                        gloves: 'gloves',
+                        scarf: 'scarf',
+                        planner: 'planner',
+                        cardHolder: 'card holder',
+                        watch: 'watch',
+                        belt: 'belt',
+                        thermalUnderwear: 'thermal underwear',
+                        warmScarf: 'warm scarf',
+                        cane: 'cane',
+                        warmGloves: 'warm gloves'
+                    };
+                    return translations[acc] || acc;
+                })
+            )
         }
     };
-
-    // Особые правила для экстремально холодной погоды (ниже -10°C)
-    if (temp < -10) {
-        // Дополнительные фильтры для очень холодной погоды
-        topOptions = topOptions.filter(
-            (item) =>
-                item.includes('пуховик') ||
-                item.includes('дутая') ||
-                item.includes('утепленная')
-        );
-
-        bottomOptions = bottomOptions.filter(
-            (item) =>
-                item.includes('утепленные') ||
-                item.includes('шерстяные') ||
-                item.includes('теплые')
-        );
-
-        shoesOptions = shoesOptions.filter(
-            (item) =>
-                item.includes('зимние') ||
-                item.includes('утепленные') ||
-                item.includes('меху')
-        );
-
-        // Английские варианты
-        let topOptionsEn = variants.tops[style].en.filter(
-            (item) =>
-                item.includes('down') ||
-                item.includes('puffer') ||
-                item.includes('insulated') ||
-                item.includes('padded')
-        );
-
-        let bottomOptionsEn = variants.bottoms[style].en.filter(
-            (item) =>
-                item.includes('insulated') ||
-                item.includes('wool') ||
-                item.includes('warm') ||
-                item.includes('thick')
-        );
-
-        let shoesOptionsEn = variants.shoes[style].en.filter(
-            (item) =>
-                item.includes('winter') ||
-                item.includes('insulated') ||
-                item.includes('fur') ||
-                item.includes('warm')
-        );
-
-        // Добавляем дополнительные аксессуары для экстремального холода
-        if (
-            !accessories.includes('термобелье') &&
-            !accessories.includes('thermal underwear')
-        ) {
-            accessories.push(
-                lang === 'ru' ? 'термобелье' : 'thermal underwear'
-            );
-        }
-
-        if (
-            !accessories.includes('теплый шарф') &&
-            !accessories.includes('warm scarf')
-        ) {
-            const scarfIndex = accessories.findIndex(
-                (acc) => acc === 'шарф' || acc === 'scarf'
-            );
-            if (scarfIndex !== -1) {
-                accessories[scarfIndex] =
-                    lang === 'ru' ? 'теплый шарф' : 'warm scarf';
-            } else {
-                accessories.push(lang === 'ru' ? 'теплый шарф' : 'warm scarf');
-            }
-        }
-
-        // Выбираем случайные элементы из отфильтрованных вариантов
-        const selectedTop =
-            getRandomItems(topOptions)[0] ||
-            getRandomItems(variants.tops[style].ru)[0];
-        const selectedBottom =
-            getRandomItems(bottomOptions)[0] ||
-            getRandomItems(variants.bottoms[style].ru)[0];
-        const selectedShoes =
-            getRandomItems(shoesOptions)[0] ||
-            getRandomItems(variants.shoes[style].ru)[0];
-
-        const selectedTopEn =
-            getRandomItems(topOptionsEn)[0] ||
-            getRandomItems(variants.tops[style].en)[0];
-        const selectedBottomEn =
-            getRandomItems(bottomOptionsEn)[0] ||
-            getRandomItems(variants.bottoms[style].en)[0];
-        const selectedShoesEn =
-            getRandomItems(shoesOptionsEn)[0] ||
-            getRandomItems(variants.shoes[style].en)[0];
-
-        // Обновляем элементы гардероба
-        adaptedOutfit.coreItems = {
-            ...outfit.coreItems,
-            top: {
-                ru: selectedTop,
-                en: selectedTopEn
-            },
-            bottom: {
-                ru: selectedBottom,
-                en: selectedBottomEn
-            },
-            shoes: {
-                ru: selectedShoes,
-                en: selectedShoesEn
-            },
-            accessories: {
-                ru: deduplicateAccessories(
-                    accessories.filter((acc) => typeof acc === 'string')
-                ),
-                en: deduplicateAccessories(
-                    accessories.map((acc) => {
-                        const translations: Record<string, string> = {
-                            зонт: 'umbrella',
-                            шапка: 'hat',
-                            'теплая шапка': 'warm hat',
-                            перчатки: 'gloves',
-                            'теплые перчатки': 'warm gloves',
-                            шарф: 'scarf',
-                            'теплый шарф': 'warm scarf',
-                            'утепленный шарф': 'insulated scarf',
-                            'зимняя маска для лица': 'winter face mask',
-                            термобелье: 'thermal underwear',
-                            ежедневник: 'planner',
-                            визитница: 'card holder',
-                            часы: 'watch',
-                            ремень: 'belt',
-                            рюкзак: 'backpack',
-                            сумка: 'bag',
-                            кошелек: 'wallet'
-                        };
-                        return translations[acc] || acc;
-                    })
-                )
-            }
-        };
-    } else {
-        // Логика для обычной холодной погоды (от 0 до 5°C)
-        // Не такие строгие требования к одежде, как при экстремальном холоде
-
-        // Фильтры для верхней одежды при обычном холоде
-        let topOptionsEn = variants.tops[style].en.filter(
-            (item) =>
-                item.includes('coat') ||
-                item.includes('jacket') ||
-                item.includes('puffer') ||
-                item.includes('sweater') ||
-                item.includes('trench')
-        );
-
-        let bottomOptionsEn = variants.bottoms[style].en.filter(
-            (item) =>
-                item.includes('thick') ||
-                item.includes('wool') ||
-                item.includes('insulated') ||
-                item.includes('warm')
-        );
-
-        let shoesOptionsEn = variants.shoes[style].en.filter(
-            (item) =>
-                item.includes('boots') ||
-                item.includes('leather') ||
-                !item.includes('sandals')
-        );
-
-        // Выбираем случайные элементы из отфильтрованных вариантов
-        const selectedTopEn =
-            getRandomItems(topOptionsEn)[0] ||
-            getRandomItems(variants.tops[style].en)[0];
-        const selectedBottomEn =
-            getRandomItems(bottomOptionsEn)[0] ||
-            getRandomItems(variants.bottoms[style].en)[0];
-        const selectedShoesEn =
-            getRandomItems(shoesOptionsEn)[0] ||
-            getRandomItems(variants.shoes[style].en)[0];
-
-        adaptedOutfit.coreItems = {
-            ...outfit.coreItems,
-            top: {
-                ru: selectedTop,
-                en: selectedTopEn
-            },
-            bottom: {
-                ru: selectedBottom,
-                en: selectedBottomEn
-            },
-            shoes: {
-                ru: selectedShoes,
-                en: selectedShoesEn
-            },
-            accessories: {
-                ru: deduplicateAccessories(
-                    accessories.filter((acc) => typeof acc === 'string')
-                ),
-                en: deduplicateAccessories(
-                    accessories.map((acc) => {
-                        const translations: Record<string, string> = {
-                            зонт: 'umbrella',
-                            шапка: 'hat',
-                            перчатки: 'gloves',
-                            шарф: 'scarf',
-                            ежедневник: 'planner',
-                            визитница: 'card holder',
-                            часы: 'watch',
-                            ремень: 'belt',
-                            'сумка через плечо': 'crossbody bag',
-                            рюкзак: 'backpack',
-                            сумка: 'bag',
-                            кошелек: 'wallet'
-                        };
-                        return translations[acc] || acc;
-                    })
-                )
-            }
-        };
-    }
 
     return adaptedOutfit;
 };
