@@ -2,6 +2,15 @@ import { ReactNode, Suspense } from 'react';
 
 import { Loader } from '@/components/common/Loader';
 
-export const WithSuspense = (element: ReactNode) => (
-    <Suspense fallback={<Loader />}>{element}</Suspense>
+interface WithSuspenseOptions {
+    showLoader?: boolean;
+}
+
+export const WithSuspense = (
+    element: ReactNode,
+    options: WithSuspenseOptions = { showLoader: true }
+) => (
+    <Suspense fallback={options.showLoader ? <Loader /> : null}>
+        {element}
+    </Suspense>
 );

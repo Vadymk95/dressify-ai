@@ -28,7 +28,13 @@ const OutfitRequestPanelContent: FC = () => {
     } = useOutfitRequest();
 
     return (
-        <div className="w-full">
+        <div className="w-full relative min-h-[200px]">
+            {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/5 backdrop-blur-sm z-10 rounded-lg">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400"></div>
+                </div>
+            )}
+
             <h2 className="text-2xl font-bold text-center mb-2">
                 {t('Components.Features.OutfitRequestPanel.title')}
             </h2>
@@ -95,7 +101,6 @@ const OutfitRequestPanelContent: FC = () => {
                             hover:scale-105 active:scale-95
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
                             cursor-pointer
-                            ${isLoading && !standardResponse ? 'animate-pulse' : ''}
                         `}
                     >
                         {isLoading && !standardResponse
@@ -123,7 +128,6 @@ const OutfitRequestPanelContent: FC = () => {
                                 hover:scale-105 active:scale-95
                                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
                                 cursor-pointer
-                                ${isLoading && !aiResponse ? 'animate-pulse' : ''}
                             `}
                         >
                             {isLoading && !aiResponse
@@ -202,12 +206,6 @@ const OutfitRequestPanelContent: FC = () => {
                     )}
                 </div>
             </div>
-
-            {isLoading && (
-                <div className="flex justify-center mb-4">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400"></div>
-                </div>
-            )}
 
             {!isLoading && !profile?.characteristics?.gender && (
                 <div className="text-center text-amber-500 mb-4">

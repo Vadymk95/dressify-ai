@@ -7,5 +7,5 @@ const OutfitRequestPanelContent = lazy(
 );
 
 export const OutfitRequestPanel = () => {
-    return WithSuspense(<OutfitRequestPanelContent />);
+    return WithSuspense(<OutfitRequestPanelContent />, { showLoader: false });
 };

@@ -143,7 +143,10 @@ export const useOutfitRequest = () => {
             ...profile.requestLimits,
             remainingRequests: profile.requestLimits.remainingRequests - 1
         };
-        updateProfile({ ...profile, requestLimits: newLimits });
+        updateProfile(
+            { ...profile, requestLimits: newLimits },
+            { silent: true }
+        );
     };
 
     const checkRequiredFields = () => {
