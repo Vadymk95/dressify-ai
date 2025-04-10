@@ -144,9 +144,7 @@ export const useOutfitRequest = () => {
         weatherToday,
         weatherTomorrow,
         weatherManual,
-        isManualMode,
-        standardResponse,
-        selectedEventType
+        isManualMode
     ]);
 
     const checkRequestLimit = () => {
