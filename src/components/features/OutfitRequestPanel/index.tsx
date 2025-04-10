@@ -5,7 +5,6 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
-import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 
@@ -21,12 +20,12 @@ export const OutfitRequestPanel: FC = () => {
         generateStandardOutfit,
         aiResponse,
         standardResponse,
+        clearResponses,
         isFreePlan,
         remainingRequests,
         requestsResetAt,
         isEmailVerified
     } = useOutfitRequest();
-    const { clearResponses } = useOutfitResponseStore();
 
     return (
         <div className="w-full">

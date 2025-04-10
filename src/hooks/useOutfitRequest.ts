@@ -16,12 +16,14 @@ export const useOutfitRequest = () => {
         useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [standardResponse, setStandardResponse] = useState<string | null>(
+        null
+    );
     const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { selectedEventType } = useEventStore();
     const { profile, updateProfile } = useUserProfileStore();
-    const { aiResponse, standardResponse, setAiResponse, setStandardResponse } =
-        useOutfitResponseStore();
+    const { aiResponse, setAiResponse } = useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
 
@@ -80,71 +82,6 @@ export const useOutfitRequest = () => {
             return () => clearTimeout(timer);
         }
     }, [error]);
-
-    // Обновляем ответ при изменении языка
-    useEffect(() => {
-        const updateResponse = async () => {
-            if (
-                standardResponse &&
-                profile?.lang &&
-                profile?.characteristics?.gender &&
-                profile?.characteristics?.age &&
-                profile?.characteristics?.height &&
-                profile?.characteristics?.heightUnit &&
-                profile?.characteristics?.weight &&
-                profile?.characteristics?.weightUnit &&
-                (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
-            ) {
-                const requestData = {
-                    lang: profile.lang as Language,
-                    event: {
-                        type: selectedEventType as BaseOutfit['event'],
-                        name: t(`Pages.Event.types.${selectedEventType}`)
-                    },
-                    characteristics: {
-                        gender: profile.characteristics.gender as Gender,
-                        age: profile.characteristics.age,
-                        height: profile.characteristics.height,
-                        heightUnit: profile.characteristics.heightUnit,
-                        weight: profile.characteristics.weight,
-                        weightUnit: profile.characteristics.weightUnit
-                    },
-                    weather: {
-                        current: isManualMode
-                            ? undefined
-                            : (weatherToday as WeatherData),
-                        tomorrow: isManualMode
-                            ? undefined
-                            : (weatherTomorrow as WeatherData),
-                        manual: isManualMode
-                            ? (weatherManual as WeatherData)
-                            : undefined
-                    }
-                };
-
-                try {
-                    const { generateOutfitResponse } = await import(
-                        '@/data/outfits/generators/generateOutfitResponse'
-                    );
-                    const response = generateOutfitResponse(requestData);
-                    if (response.outfit) {
-                        setStandardResponse(response.outfit.description);
-                    }
-                } catch (error) {
-                    console.error('Error updating response:', error);
-                }
-            }
-        };
-
-        updateResponse();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        profile?.lang,
-        weatherToday,
-        weatherTomorrow,
-        weatherManual,
-        isManualMode
-    ]);
 
     const checkRequestLimit = () => {
         if (!profile) return false;
@@ -318,7 +255,6 @@ export const useOutfitRequest = () => {
         setIsLoading(true);
 
         try {
-            // Динамически импортируем generateOutfitResponse только когда нужно
             const { generateOutfitResponse } = await import(
                 '@/data/outfits/generators/generateOutfitResponse'
             );
@@ -548,6 +484,11 @@ export const useOutfitRequest = () => {
         return hardcodedResponse;
     };
 
+    const clearResponses = useCallback(() => {
+        setAiResponse(null);
+        setStandardResponse(null);
+    }, [setAiResponse]);
+
     return {
         isLoading,
         showText: !!(aiResponse || standardResponse),
@@ -556,6 +497,7 @@ export const useOutfitRequest = () => {
         generateStandardOutfit,
         aiResponse,
         standardResponse,
+        clearResponses,
         isFreePlan: profile?.plan === 'free',
         remainingRequests: profile?.requestLimits?.remainingRequests ?? 0,
         requestsResetAt: profile?.requestLimits?.requestsResetAt,

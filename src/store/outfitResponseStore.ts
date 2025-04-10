@@ -3,26 +3,22 @@ import { persist } from 'zustand/middleware';
 
 interface OutfitResponseStore {
     aiResponse: string | null;
-    standardResponse: string | null;
     setAiResponse: (response: string | null) => void;
-    setStandardResponse: (response: string | null) => void;
-    clearResponses: () => void;
+    clearAiResponse: () => void;
 }
 
+// Создаем общий стор с персистентным хранением для aiResponse
 export const useOutfitResponseStore = create<OutfitResponseStore>()(
     persist(
         (set) => ({
             aiResponse: null,
-            standardResponse: null,
-            setAiResponse: (response) =>
-                set({ aiResponse: response, standardResponse: null }),
-            setStandardResponse: (response) =>
-                set({ standardResponse: response, aiResponse: null }),
-            clearResponses: () =>
-                set({ aiResponse: null, standardResponse: null })
+            setAiResponse: (response: string | null) =>
+                set({ aiResponse: response }),
+            clearAiResponse: () => set({ aiResponse: null })
         }),
         {
-            name: 'outfit-response-storage'
+            name: 'outfit-response-storage',
+            partialize: (state) => ({ aiResponse: state.aiResponse })
         }
     )
 );
