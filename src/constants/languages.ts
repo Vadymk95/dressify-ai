@@ -1,14 +1,10 @@
-// Итоговый список:
-//     en (английский)
-//     ru (русский)
-//     uk (украинский)
-//     fr (французский)
-//     es (испанский)
-//     de (немецкий)
-//     pt (португальский)
-//     it (итальянский)
-
 export const languages = [
-    { code: 'en', label: 'Eng' },
-    { code: 'ru', label: 'Рус' }
+    { code: 'en', label: 'English' },
+    { code: 'ru', label: 'Русский' },
+    { code: 'uk', label: 'Українська' },
+    { code: 'fr', label: 'Français' },
+    { code: 'es', label: 'Español' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'pt', label: 'Português' },
+    { code: 'it', label: 'Italiano' }
 ];

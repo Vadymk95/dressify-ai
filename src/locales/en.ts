@@ -660,7 +660,8 @@ export const en = {
                 save: 'Save',
                 cancel: 'Cancel',
                 leave: 'Leave',
-                goToHome: 'Go to Home'
+                goToHome: 'Go to Home',
+                tooltip: 'Tooltip'
             },
             ...en_codes
         }

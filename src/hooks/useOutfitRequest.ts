@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
-import { generateOutfitResponse } from '@/data/outfits/generators/generateOutfitResponse';
 import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
 import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
+import { EventType, Gender } from '@/types/common';
 import { OutfitRequestData } from '@/types/outfitRequestData';
 
 export const useOutfitRequest = () => {
@@ -16,12 +16,14 @@ export const useOutfitRequest = () => {
         useWeatherStore();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [standardResponse, setStandardResponse] = useState<string | null>(
+        null
+    );
     const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { selectedEventType } = useEventStore();
     const { profile, updateProfile } = useUserProfileStore();
-    const { aiResponse, standardResponse, setAiResponse, setStandardResponse } =
-        useOutfitResponseStore();
+    const { aiResponse, setAiResponse } = useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
 
@@ -80,64 +82,6 @@ export const useOutfitRequest = () => {
             return () => clearTimeout(timer);
         }
     }, [error]);
-
-    // Обновляем ответ при изменении языка
-    useEffect(() => {
-        if (
-            standardResponse &&
-            profile?.lang &&
-            profile?.characteristics?.gender &&
-            profile?.characteristics?.age &&
-            profile?.characteristics?.height &&
-            profile?.characteristics?.heightUnit &&
-            profile?.characteristics?.weight &&
-            profile?.characteristics?.weightUnit &&
-            (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
-        ) {
-            const requestData = {
-                lang: profile.lang as Language,
-                event: {
-                    type: selectedEventType as BaseOutfit['event'],
-                    name: t(
-                        `Components.Features.EventPanel.types.${selectedEventType}`
-                    )
-                },
-                characteristics: {
-                    gender: profile.characteristics.gender as 'male' | 'female',
-                    age: profile.characteristics.age,
-                    height: profile.characteristics.height,
-                    heightUnit: profile.characteristics.heightUnit,
-                    weight: profile.characteristics.weight,
-                    weightUnit: profile.characteristics.weightUnit
-                },
-                weather: {
-                    current: isManualMode
-                        ? undefined
-                        : (weatherToday as WeatherData),
-                    tomorrow: isManualMode
-                        ? undefined
-                        : (weatherTomorrow as WeatherData),
-                    manual: isManualMode
-                        ? (weatherManual as WeatherData)
-                        : undefined
-                }
-            };
-
-            console.log('Generating outfit with data:', requestData);
-
-            const response = generateOutfitResponse(requestData);
-            if (response.outfit) {
-                setStandardResponse(response.outfit.description);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        profile?.lang,
-        weatherToday,
-        weatherTomorrow,
-        weatherManual,
-        isManualMode
-    ]);
 
     const checkRequestLimit = () => {
         if (!profile) return false;
@@ -199,7 +143,10 @@ export const useOutfitRequest = () => {
             ...profile.requestLimits,
             remainingRequests: profile.requestLimits.remainingRequests - 1
         };
-        updateProfile({ ...profile, requestLimits: newLimits });
+        updateProfile(
+            { ...profile, requestLimits: newLimits },
+            { silent: true }
+        );
     };
 
     const checkRequiredFields = () => {
@@ -232,7 +179,7 @@ export const useOutfitRequest = () => {
         }
 
         // Проверяем тип события
-        const validEventTypes: BaseOutfit['event'][] = [
+        const supportedEventTypes: EventType[] = [
             'casualFriends',
             'workOffice',
             'dateNight',
@@ -246,9 +193,7 @@ export const useOutfitRequest = () => {
             return false;
         }
 
-        if (
-            !validEventTypes.includes(selectedEventType as BaseOutfit['event'])
-        ) {
+        if (!supportedEventTypes.includes(selectedEventType as EventType)) {
             setError(
                 t(
                     'Components.Features.OutfitRequestPanel.errors.invalidEventType'
@@ -295,14 +240,12 @@ export const useOutfitRequest = () => {
 
     const generateStandardOutfit = async () => {
         setError(null);
-        setStandardResponse(null); // Очищаем предыдущий ответ
+        setStandardResponse(null);
 
-        // Проверяем обязательные поля
         if (!checkRequiredFields()) {
             return;
         }
 
-        // Проверяем верификацию email
         if (!profile?.emailVerified) {
             setError(
                 t(
@@ -315,6 +258,10 @@ export const useOutfitRequest = () => {
         setIsLoading(true);
 
         try {
+            const { generateOutfitResponse } = await import(
+                '@/data/outfits/generators/generateOutfitResponse'
+            );
+
             if (!selectedEventType || !profile?.characteristics) {
                 setError(
                     t(
@@ -325,17 +272,13 @@ export const useOutfitRequest = () => {
             }
 
             // Проверяем, что тип события соответствует допустимым значениям
-            const validEventTypes: BaseOutfit['event'][] = [
+            const validEventTypes: EventType[] = [
                 'casualFriends',
                 'workOffice',
                 'dateNight',
                 'shopping'
             ];
-            if (
-                !validEventTypes.includes(
-                    selectedEventType as BaseOutfit['event']
-                )
-            ) {
+            if (!validEventTypes.includes(selectedEventType as EventType)) {
                 setError(
                     t(
                         'Components.Features.OutfitRequestPanel.errors.invalidEventType'
@@ -360,9 +303,7 @@ export const useOutfitRequest = () => {
                 lang: profile.lang as Language,
                 event: {
                     type: selectedEventType as BaseOutfit['event'],
-                    name: t(
-                        `Components.Features.EventPanel.types.${selectedEventType}`
-                    )
+                    name: t(`Pages.Event.types.${selectedEventType}`)
                 },
                 characteristics: {
                     gender: gender,
@@ -444,10 +385,8 @@ export const useOutfitRequest = () => {
         const requestData: OutfitRequestData = {
             lang: profile.lang as Language,
             event: {
-                type: selectedEventType,
-                name: t(
-                    `Components.Features.EventPanel.types.${selectedEventType}`
-                )
+                type: selectedEventType as EventType,
+                name: t(`Pages.Event.types.${selectedEventType}`)
             },
             location:
                 isManualMode || !profile?.location
@@ -457,7 +396,7 @@ export const useOutfitRequest = () => {
                           country: profile.location.country
                       },
             characteristics: {
-                gender: profile.characteristics.gender,
+                gender: profile.characteristics.gender as Gender,
                 ...(profile.characteristics.stylePreference?.length && {
                     stylePreference: profile.characteristics.stylePreference
                 }),
@@ -548,6 +487,11 @@ export const useOutfitRequest = () => {
         return hardcodedResponse;
     };
 
+    const clearResponses = useCallback(() => {
+        setAiResponse(null);
+        setStandardResponse(null);
+    }, [setAiResponse]);
+
     return {
         isLoading,
         showText: !!(aiResponse || standardResponse),
@@ -556,6 +500,7 @@ export const useOutfitRequest = () => {
         generateStandardOutfit,
         aiResponse,
         standardResponse,
+        clearResponses,
         isFreePlan: profile?.plan === 'free',
         remainingRequests: profile?.requestLimits?.remainingRequests ?? 0,
         requestsResetAt: profile?.requestLimits?.requestsResetAt,

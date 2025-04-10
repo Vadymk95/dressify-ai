@@ -8,8 +8,8 @@ export const eventExtraAccessories = {
         en: ['planner', 'card holder', 'briefcase', 'watch', 'belt']
     },
     casualFriends: {
-        ru: ['часы', 'шарф', 'перчатки', 'сумка через плечо'],
-        en: ['watch', 'scarf', 'gloves', 'crossbody bag']
+        ru: ['часы', 'сумка через плечо', 'браслет', 'ремень'],
+        en: ['watch', 'crossbody bag', 'bracelet', 'belt']
     },
     shopping: {
         ru: ['рюкзак', 'сумка', 'кошелек', 'часы'],

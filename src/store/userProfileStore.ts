@@ -20,7 +20,10 @@ export interface UserProfileStore {
     updateLocation: (country: string, city: string) => Promise<void>;
     clearLocation: () => Promise<void>;
     updateWardrobe: (wardrobe: Wardrobe) => Promise<void>;
-    updateProfile: (profile: UserProfile) => Promise<void>;
+    updateProfile: (
+        profile: UserProfile,
+        options?: { silent?: boolean }
+    ) => Promise<void>;
 }
 
 export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
@@ -301,9 +304,14 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
         }
     },
 
-    updateProfile: async (profile: UserProfile) => {
+    updateProfile: async (
+        profile: UserProfile,
+        options = { silent: false }
+    ) => {
         try {
-            set({ loading: true, error: null });
+            if (!options.silent) {
+                set({ loading: true, error: null });
+            }
 
             const currentUser = auth.currentUser;
             if (!currentUser) throw new Error('User not logged in');
@@ -314,7 +322,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             });
 
             // Обновляем локальное состояние
-            set({ profile, loading: false });
+            set({ profile, loading: options.silent ? false : false });
         } catch (error) {
             console.error('Error updating profile:', error);
             set({ error: 'Failed to update profile', loading: false });

@@ -10,17 +10,25 @@ export const App: FC = () => {
         useUserProfileStore();
 
     useEffect(() => {
-        checkAuth();
-    }, [checkAuth]);
-
-    useEffect(() => {
-        if (user) {
-            fetchUserProfile(user.uid);
-            checkSubscriptionExpiry();
-        } else {
-            clearProfile();
-        }
-    }, [user, fetchUserProfile, clearProfile, checkSubscriptionExpiry]);
+        const initializeApp = async () => {
+            await checkAuth();
+            if (user) {
+                await Promise.all([
+                    fetchUserProfile(user.uid),
+                    checkSubscriptionExpiry()
+                ]);
+            } else {
+                clearProfile();
+            }
+        };
+        initializeApp();
+    }, [
+        checkAuth,
+        user,
+        fetchUserProfile,
+        clearProfile,
+        checkSubscriptionExpiry
+    ]);
 
     return <RootLayout />;
 };
