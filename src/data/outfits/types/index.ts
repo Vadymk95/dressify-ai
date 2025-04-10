@@ -41,6 +41,9 @@ export interface BaseOutfit {
     };
     baseDescription: Record<Language, string>;
     description?: Record<Language, string>;
+    temperature: number;
+    weather: string[];
+    weight: number;
 }
 
 export interface WeatherData {
@@ -82,3 +85,7 @@ export interface Characteristics {
     weightUnit: 'kg' | 'lb';
     age: number;
 }
+
+export type HeightCategory = 'short' | 'medium' | 'tall';
+export type WeightCategory = 'thin' | 'medium' | 'heavy';
+export type AgeCategory = 'young' | 'middle' | 'mature' | 'senior';

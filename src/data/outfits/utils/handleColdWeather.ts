@@ -37,7 +37,14 @@ export const handleColdWeather = (
     const adaptedOutfit = { ...outfit };
     const isMale = outfit.gender === 'male';
     const gender = isMale ? 'male' : 'female';
-    const style: 'formal' | 'casual' = determineStyle(outfit.event);
+    const style = determineStyle(
+        outfit.event,
+        ageCategory || 'middle',
+        temp,
+        isRainy,
+        isSnowy,
+        isWindy
+    );
 
     const variants = clothingVariants.cold[gender] as {
         tops: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
@@ -70,7 +77,10 @@ export const handleColdWeather = (
         ...clothingFilters.event[outfit.event]
     });
 
-    // Получаем все аксессуары для образа
+    // Получаем аксессуары для события
+    const eventAccessories = getEventAccessories(outfit.event, lang);
+
+    // Получаем аксессуары для погоды
     const weatherAccessories = getWeatherAccessories(
         temp,
         isRainy,
@@ -86,8 +96,6 @@ export const handleColdWeather = (
         lang,
         characteristics.weight
     );
-
-    const eventAccessories = getEventAccessories(outfit.event, lang);
 
     const extraAccessories = getRandomItems(
         eventExtraAccessories[outfit.event][lang],

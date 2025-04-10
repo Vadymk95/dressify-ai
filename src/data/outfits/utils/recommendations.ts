@@ -183,3 +183,121 @@ export const getPhysacalRecommendations = (
 
     return physicalText;
 };
+
+interface Recommendations {
+    ru: string;
+    en: string;
+}
+
+export const getWeatherRecommendations = (
+    temp: number,
+    isRainy: boolean,
+    isWindy: boolean,
+    isSnowy: boolean
+): Recommendations => {
+    let recommendations = {
+        ru: '',
+        en: ''
+    };
+
+    if (isRainy) {
+        recommendations.ru =
+            'возьмите водоотталкивающую верхнюю одежду и непромокаемую обувь';
+        recommendations.en =
+            'take water-resistant outerwear and waterproof shoes';
+    }
+
+    if (temp <= 15 && temp > 5) {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru +=
+            'выбирайте многослойные комбинации для комфорта в течение дня';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en +=
+            'choose layered combinations for comfort throughout the day';
+    }
+
+    if (isWindy) {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru += 'отдайте предпочтение плотно прилегающей одежде';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en += 'prefer close-fitting clothes';
+    }
+
+    if (isSnowy) {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru +=
+            'используйте теплые и водонепроницаемые материалы';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en += 'use warm and waterproof materials';
+    }
+
+    return recommendations;
+};
+
+export const getPhysicalRecommendations = (
+    weightCategory: 'thin' | 'medium' | 'heavy',
+    heightCategory: 'short' | 'medium' | 'tall',
+    ageCategory: 'young' | 'middle' | 'mature' | 'senior'
+): Recommendations => {
+    let recommendations = {
+        ru: '',
+        en: ''
+    };
+
+    // Рекомендации по весу
+    if (weightCategory === 'heavy') {
+        recommendations.ru =
+            'выбирай одежду с вертикальными линиями, структурированные вещи и избегай объемных элементов - это создаст стройный силуэт';
+        recommendations.en =
+            'choose clothes with vertical lines, structured items and avoid voluminous elements - this will create a slim silhouette';
+    } else if (weightCategory === 'thin') {
+        recommendations.ru =
+            'многослойность и фактурные ткани добавят объема силуэту';
+        recommendations.en =
+            'layering and textured fabrics will add volume to the silhouette';
+    }
+
+    // Рекомендации по росту
+    if (heightCategory === 'short') {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru +=
+            'выбирай вещи с вертикальными линиями и монохромные комплекты для визуального удлинения силуэта';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en +=
+            'choose items with vertical lines and monochrome outfits to visually elongate the silhouette';
+    } else if (heightCategory === 'tall') {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru +=
+            'можно экспериментировать с многослойностью и контрастными сочетаниями';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en +=
+            'feel free to experiment with layering and contrasting combinations';
+    }
+
+    // Рекомендации по возрасту
+    if (ageCategory === 'young') {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru += 'сбалансированный стиль, современные элементы';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en += 'balanced style, modern elements';
+    } else if (ageCategory === 'mature' || ageCategory === 'senior') {
+        recommendations.ru += recommendations.ru ? ', ' : '';
+        recommendations.ru +=
+            'отдавайте предпочтение классическим силуэтам и качественным материалам';
+        recommendations.en += recommendations.en ? ', ' : '';
+        recommendations.en +=
+            'prefer classic silhouettes and quality materials';
+    }
+
+    return recommendations;
+};
+
+export const combineRecommendations = (
+    weatherRecs: Recommendations,
+    physicalRecs: Recommendations
+): Recommendations => {
+    return {
+        ru: [weatherRecs.ru, physicalRecs.ru].filter(Boolean).join(', '),
+        en: [weatherRecs.en, physicalRecs.en].filter(Boolean).join(', ')
+    };
+};

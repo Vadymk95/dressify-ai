@@ -1,49 +1,77 @@
 import { colorSchemes } from '@/data/outfits/constants/colorSchemes';
-import { eventExtraAccessories } from '@/data/outfits/constants/eventExtraAccessories';
 import { BaseOutfit, Language } from '@/data/outfits/types';
 import { deduplicateAccessories } from '@/data/outfits/utils/accessoryUtils';
 import { determineStyle } from '@/data/outfits/utils/categoryDeterminers';
 import { clothingVariants } from '@/data/outfits/utils/clothingVariants';
 import { getRandomItems } from '@/data/outfits/utils/helpers';
+import {
+    getEventAccessories,
+    getWeatherAccessories
+} from '../constants/accessories';
+import {
+    combineRecommendations,
+    getPhysicalRecommendations,
+    getWeatherRecommendations
+} from './recommendations';
 
 type HeightCategory = 'short' | 'medium' | 'tall';
 type WeightCategory = 'thin' | 'medium' | 'heavy';
 type AgeCategory = 'young' | 'middle' | 'mature' | 'senior';
 
-export const handleCoolWeather = (
+export function handleCoolWeather(
     outfit: BaseOutfit,
     lang: Language,
     randomGreeting: string,
     isRainy: boolean,
     isWindy: boolean,
-    heightCategory: HeightCategory | null,
-    weightCategory: WeightCategory | null,
-    ageCategory: AgeCategory | null
-): BaseOutfit => {
+    heightCategory: HeightCategory,
+    weightCategory: WeightCategory,
+    ageCategory: AgeCategory,
+    weather: string[],
+    temp: number = 10
+): BaseOutfit {
     const adaptedOutfit = { ...outfit };
     const isMale = outfit.gender === 'male';
     const gender = isMale ? 'male' : 'female';
-    const style: 'formal' | 'casual' = determineStyle(outfit.event);
+    const style = determineStyle(
+        outfit.event,
+        ageCategory,
+        temp,
+        isRainy,
+        weather.includes('snow'),
+        isWindy
+    );
     const variants = clothingVariants.cool[gender] as {
         tops: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
         bottoms: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
         shoes: Record<'formal' | 'casual', { ru: string[]; en: string[] }>;
     };
 
-    // Базовые аксессуары для прохладной погоды
-    let accessories = ['шапка', 'перчатки'];
-    if (isRainy) {
-        accessories.push('зонт');
-    } else if (isWindy) {
-        accessories.push('шапка');
-    }
+    // Получаем аксессуары для события
+    const eventAccessories = getEventAccessories(outfit.event, lang);
 
-    // Добавляем 2-3 случайных аксессуара для события
-    const extraAccessories = getRandomItems(
-        eventExtraAccessories[outfit.event][lang],
-        Math.floor(Math.random() * 2) + 2
+    // Получаем аксессуары для погоды
+    const weatherAccessories = getWeatherAccessories(
+        temp,
+        isRainy,
+        isWindy,
+        weather.includes('snow'),
+        weather.includes('sunny'),
+        weather.includes('cold'),
+        weather.includes('overcast'),
+        weather.includes('thunderstorm'),
+        weather.includes('hot'),
+        weather.includes('foggy'),
+        outfit.gender,
+        lang,
+        outfit.weight || 70
     );
-    accessories.push(...extraAccessories);
+
+    // Объединяем и дедуплицируем аксессуары
+    const allAccessories = deduplicateAccessories([
+        ...eventAccessories,
+        ...weatherAccessories
+    ]);
 
     // Выбираем одежду в зависимости от категорий
     let topOptions = variants.tops[style].ru;
@@ -91,18 +119,12 @@ export const handleCoolWeather = (
                     item.includes('coat') ||
                     item.includes('куртка') ||
                     item.includes('jacket')) &&
-                !item.includes('объемный') &&
-                !item.includes('voluminous') &&
-                !item.includes('многослойный') &&
-                !item.includes('layered')
+                !item.includes('объемный')
         );
         bottomOptions = bottomOptions.filter(
             (item) =>
                 (item.includes('брюки') || item.includes('pants')) &&
-                !item.includes('карго') &&
-                !item.includes('cargo') &&
-                !item.includes('объемные') &&
-                !item.includes('voluminous')
+                !item.includes('карго')
         );
         shoesOptions = shoesOptions.filter(
             (item) =>
@@ -205,9 +227,9 @@ export const handleCoolWeather = (
             en: getRandomItems(variants.shoes[style].en)[0]
         },
         accessories: {
-            ru: deduplicateAccessories(accessories),
+            ru: deduplicateAccessories(allAccessories),
             en: deduplicateAccessories(
-                accessories.map((acc) => {
+                allAccessories.map((acc) => {
                     const translations: Record<string, string> = {
                         зонт: 'umbrella',
                         шапка: 'hat',
@@ -224,12 +246,35 @@ export const handleCoolWeather = (
         }
     };
 
-    // Добавляем цветовую схему в описание
+    // Добавляем цветовую схему и погодные рекомендации в описание
     const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
+
+    // Получаем рекомендации
+    const weatherRecs = getWeatherRecommendations(
+        temp,
+        isRainy,
+        isWindy,
+        weather.includes('snow')
+    );
+    const physicalRecs = getPhysicalRecommendations(
+        weightCategory,
+        heightCategory,
+        ageCategory
+    );
+    const recommendations = combineRecommendations(weatherRecs, physicalRecs);
+
+    // Добавляем рекомендации в описание
+    const recommendationsText = recommendations.ru
+        ? ` Рекомендации: ${recommendations.ru}`
+        : '';
+    const recommendationsTextEn = recommendations.en
+        ? ` Recommendations: ${recommendations.en}`
+        : '';
+
     adaptedOutfit.baseDescription = {
-        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${accessories.length > 0 ? `. Дополните образ: ${accessories.join(', ')}` : ''}`,
-        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${accessories.length > 0 ? `. Complete the look with: ${accessories.join(', ')}` : ''}`
+        ru: `${randomGreeting}${adaptedOutfit.coreItems.top.ru}, ${adaptedOutfit.coreItems.bottom.ru}, ${adaptedOutfit.coreItems.shoes.ru} ${selectedColorScheme}${allAccessories.length > 0 ? `. Дополните образ: ${allAccessories.join(', ')}` : ''}${recommendationsText}.`,
+        en: `${randomGreeting}${adaptedOutfit.coreItems.top.en}, ${adaptedOutfit.coreItems.bottom.en}, ${adaptedOutfit.coreItems.shoes.en} ${getRandomItems(colorSchemes[style].en)[0]}${allAccessories.length > 0 ? `. Complete the look with: ${allAccessories.join(', ')}` : ''}${recommendationsTextEn}.`
     };
 
     return adaptedOutfit;
-};
+}

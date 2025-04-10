@@ -98,7 +98,9 @@ export const adaptOutfitForWeather = (
             isWindy,
             heightCategory,
             weightCategory,
-            ageCategory
+            ageCategory,
+            weather.description.toLowerCase().split(' '),
+            temp
         );
     } else if (temp >= 25) {
         // Жаркая погода
@@ -322,7 +324,14 @@ export const adaptOutfitForWeather = (
     );
 
     // Добавляем цветовую схему в описание
-    const style = determineStyle(outfit.event);
+    const style = determineStyle(
+        outfit.event,
+        ageCategory,
+        temp,
+        isRainy,
+        isSnowy,
+        isWindy
+    );
     const selectedColorScheme = getRandomItems(colorSchemes[style].ru)[0];
 
     // Получаем аксессуары для образа
