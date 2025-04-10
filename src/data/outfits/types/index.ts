@@ -41,9 +41,11 @@ export interface BaseOutfit {
     };
     baseDescription: Record<Language, string>;
     description?: Record<Language, string>;
-    temperature: number;
-    weather: string[];
-    weight: number;
+    temperature?: number;
+    weather?: string[];
+    weight?: number;
+    height?: number;
+    age?: number;
 }
 
 export interface WeatherData {
