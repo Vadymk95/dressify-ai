@@ -1,11 +1,10 @@
-import { Language } from '@/data/outfits/types';
-import { Weather } from '@/store/weatherStore';
 import { HeightUnit, WeightUnit } from '@/types/user';
+import { EventType, Gender, Language, WeatherData } from './common';
 
 export interface OutfitRequestData {
     lang: Language;
     event: {
-        type: string;
+        type: EventType;
         name: string;
     };
     location: {
@@ -13,23 +12,28 @@ export interface OutfitRequestData {
         country: string;
     } | null;
     characteristics: {
-        gender: string;
+        gender: Gender;
         stylePreference?: string[];
         age?: number;
         height?: number;
         heightUnit?: HeightUnit;
         weight?: number;
         weightUnit?: WeightUnit;
+        skinTone?: string;
+        hairColor?: string;
+        eyeColor?: string;
+        bodyType?: string;
+        preferredColors?: string[];
     };
     wardrobe?: {
-        categories: {
+        categories: Array<{
             name: string;
             items: string[];
-        }[];
+        }>;
     };
     weather: {
-        current: Weather | null;
-        tomorrow: Weather | null;
-        manual: Weather | null;
+        current: WeatherData | null;
+        tomorrow: WeatherData | null;
+        manual: WeatherData | null;
     };
 }

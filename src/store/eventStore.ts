@@ -1,26 +1,24 @@
+import { EventType as SupportedEventType } from '@/types/common';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type EventType =
+    | SupportedEventType
     | 'businessMeeting'
     | 'interview'
     | 'wedding'
-    | 'dateNight'
     | 'restaurant'
     | 'theater'
     | 'clubbing'
     | 'graduation'
     | 'conference'
     | 'casualWalk'
-    | 'shopping'
     | 'concert'
     | 'exhibition'
     | 'birthday'
     | 'cocktailParty'
     | 'beachDay'
     | 'sportEvent'
-    | 'casualFriends'
-    | 'workOffice'
     | 'familyGathering'
     | 'onlineMeeting'
     | 'webinar'

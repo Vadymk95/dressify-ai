@@ -7,6 +7,7 @@ import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
+import { EventType, Gender } from '@/types/common';
 import { OutfitRequestData } from '@/types/outfitRequestData';
 
 export const useOutfitRequest = () => {
@@ -101,9 +102,7 @@ export const useOutfitRequest = () => {
                         name: t(`Pages.Event.types.${selectedEventType}`)
                     },
                     characteristics: {
-                        gender: profile.characteristics.gender as
-                            | 'male'
-                            | 'female',
+                        gender: profile.characteristics.gender as Gender,
                         age: profile.characteristics.age,
                         height: profile.characteristics.height,
                         heightUnit: profile.characteristics.heightUnit,
@@ -240,7 +239,7 @@ export const useOutfitRequest = () => {
         }
 
         // Проверяем тип события
-        const validEventTypes: BaseOutfit['event'][] = [
+        const supportedEventTypes: EventType[] = [
             'casualFriends',
             'workOffice',
             'dateNight',
@@ -254,9 +253,7 @@ export const useOutfitRequest = () => {
             return false;
         }
 
-        if (
-            !validEventTypes.includes(selectedEventType as BaseOutfit['event'])
-        ) {
+        if (!supportedEventTypes.includes(selectedEventType as EventType)) {
             setError(
                 t(
                     'Components.Features.OutfitRequestPanel.errors.invalidEventType'
@@ -336,17 +333,13 @@ export const useOutfitRequest = () => {
             }
 
             // Проверяем, что тип события соответствует допустимым значениям
-            const validEventTypes: BaseOutfit['event'][] = [
+            const validEventTypes: EventType[] = [
                 'casualFriends',
                 'workOffice',
                 'dateNight',
                 'shopping'
             ];
-            if (
-                !validEventTypes.includes(
-                    selectedEventType as BaseOutfit['event']
-                )
-            ) {
+            if (!validEventTypes.includes(selectedEventType as EventType)) {
                 setError(
                     t(
                         'Components.Features.OutfitRequestPanel.errors.invalidEventType'
@@ -453,7 +446,7 @@ export const useOutfitRequest = () => {
         const requestData: OutfitRequestData = {
             lang: profile.lang as Language,
             event: {
-                type: selectedEventType,
+                type: selectedEventType as EventType,
                 name: t(`Pages.Event.types.${selectedEventType}`)
             },
             location:
@@ -464,7 +457,7 @@ export const useOutfitRequest = () => {
                           country: profile.location.country
                       },
             characteristics: {
-                gender: profile.characteristics.gender,
+                gender: profile.characteristics.gender as Gender,
                 ...(profile.characteristics.stylePreference?.length && {
                     stylePreference: profile.characteristics.stylePreference
                 }),
