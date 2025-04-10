@@ -98,9 +98,7 @@ export const useOutfitRequest = () => {
                 lang: profile.lang as Language,
                 event: {
                     type: selectedEventType as BaseOutfit['event'],
-                    name: t(
-                        `Components.Features.EventPanel.types.${selectedEventType}`
-                    )
+                    name: t(`Pages.Event.types.${selectedEventType}`)
                 },
                 characteristics: {
                     gender: profile.characteristics.gender as 'male' | 'female',
@@ -360,9 +358,7 @@ export const useOutfitRequest = () => {
                 lang: profile.lang as Language,
                 event: {
                     type: selectedEventType as BaseOutfit['event'],
-                    name: t(
-                        `Components.Features.EventPanel.types.${selectedEventType}`
-                    )
+                    name: t(`Pages.Event.types.${selectedEventType}`)
                 },
                 characteristics: {
                     gender: gender,
@@ -445,9 +441,7 @@ export const useOutfitRequest = () => {
             lang: profile.lang as Language,
             event: {
                 type: selectedEventType,
-                name: t(
-                    `Components.Features.EventPanel.types.${selectedEventType}`
-                )
+                name: t(`Pages.Event.types.${selectedEventType}`)
             },
             location:
                 isManualMode || !profile?.location
