@@ -74,3 +74,11 @@ export interface OutfitRequest {
         tomorrow?: WeatherData;
     };
 }
+
+export interface Characteristics {
+    height: number;
+    heightUnit: 'cm' | 'ft' | 'in';
+    weight: number;
+    weightUnit: 'kg' | 'lb';
+    age: number;
+}

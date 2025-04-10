@@ -1,9 +1,13 @@
 import { colorSchemes } from '@/data/outfits/constants/colorSchemes';
 import { eventExtraAccessories } from '@/data/outfits/constants/eventExtraAccessories';
 import { greetings } from '@/data/outfits/constants/greetings';
-import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
+import {
+    BaseOutfit,
+    Characteristics,
+    Language,
+    WeatherData
+} from '@/data/outfits/types';
 import { deduplicateAccessories } from '@/data/outfits/utils/accessoryUtils';
-import { adaptationRules } from '@/data/outfits/utils/adaptationRules';
 import {
     determineAgeCategory,
     determineHeightCategory,
@@ -13,241 +17,46 @@ import {
 import { clothingFilters } from '@/data/outfits/utils/clothingFilters';
 import { clothingVariants } from '@/data/outfits/utils/clothingVariants';
 import { filterClothing, getRandomItems } from '@/data/outfits/utils/helpers';
+import { getPhysicalAdaptations } from '@/data/outfits/utils/physicalAdaptations';
+import { getPhysacalRecommendations } from '@/data/outfits/utils/recommendations';
 import {
-    heightRecommendations,
-    weightRecommendations
-} from '@/data/outfits/utils/recommendations';
-import { getEventAccessories } from '@/data/outfits/utils/weatherAccessories';
+    getEventAccessories,
+    getWeatherAccessories
+} from '@/data/outfits/utils/weatherAccessories';
 
 export const adaptOutfitForWeather = (
     outfit: BaseOutfit,
     weather: WeatherData,
     lang: Language,
-    characteristics: {
-        height: number;
-        heightUnit: 'cm' | 'ft' | 'in';
-        weight: number;
-        weightUnit: 'kg' | 'lb';
-        age: number;
-    }
+    characteristics: Characteristics
 ): BaseOutfit => {
     const temp = weather.temp;
     const adaptedOutfit = { ...outfit };
     const isMale = outfit.gender === 'male';
-
-    // Определяем категории физических характеристик
-    const heightCategory = determineHeightCategory({
-        value: characteristics.height,
-        unit: characteristics.heightUnit
-    });
-    const weightCategory = determineWeightCategory(
-        {
-            value: characteristics.weight,
-            unit: characteristics.weightUnit
-        },
-        outfit.gender
-    );
     const ageCategory = determineAgeCategory(characteristics.age);
-
-    // Особые случаи для очень низкого роста
-    const isVeryShort = characteristics.height < 140;
-    // Особые случаи для пожилого возраста
-    const isElderly = characteristics.age >= 70;
-
-    // Определяем тип погоды
-    const isRainy =
-        weather.description.toLowerCase().includes('дождь') ||
-        weather.description.toLowerCase().includes('ливень') ||
-        weather.description.toLowerCase().includes('rain');
-    const isSnowy =
-        weather.description.toLowerCase().includes('снег') ||
-        weather.description.toLowerCase().includes('snow');
-    const isWindy =
-        weather.description.toLowerCase().includes('ветер') ||
-        weather.description.toLowerCase().includes('wind');
-
-    const isSunny =
-        weather.description.toLowerCase().includes('солнечно') ||
-        weather.description.toLowerCase().includes('ясно') ||
-        weather.description.toLowerCase().includes('sunny') ||
-        weather.description.toLowerCase().includes('clear');
-
-    const isHot = temp >= 25;
-    const isCold = temp <= 10; // Изменено с 5 на 10 для более теплой одежды
-    const isFoggy =
-        weather.description.toLowerCase().includes('туман') ||
-        weather.description.toLowerCase().includes('fog');
-    const isThunderstorm =
-        weather.description.toLowerCase().includes('гроза') ||
-        weather.description.toLowerCase().includes('thunderstorm');
-    const isOvercast =
-        weather.description.toLowerCase().includes('пасмурно') ||
-        weather.description.toLowerCase().includes('облачно') ||
-        weather.description.toLowerCase().includes('overcast') ||
-        weather.description.toLowerCase().includes('cloudy');
+    const {
+        isRainy,
+        isSnowy,
+        isWindy,
+        isSunny,
+        isHot,
+        isCold,
+        isFoggy,
+        isThunderstorm,
+        isOvercast,
+        isVeryShort,
+        isElderly
+    } = getPhysicalAdaptations(
+        weather.description,
+        temp,
+        characteristics.height,
+        characteristics.age
+    );
 
     const randomGreeting =
         greetings[lang][Math.floor(Math.random() * greetings[lang].length)];
 
-    // Базовые рекомендации по физическим характеристикам
-    let physicalRecommendations = {
-        ru: [] as string[],
-        en: [] as string[]
-    };
-
-    // Особые рекомендации для очень низкого роста
-    if (isVeryShort) {
-        physicalRecommendations.ru.push(
-            'выбирай одежду с вертикальными линиями и однотонные вещи - это визуально вытянет силуэт. Избегай объемных и многослойных вещей'
-        );
-        physicalRecommendations.en.push(
-            'choose clothes with vertical lines and monochrome pieces - this will visually elongate your silhouette. Avoid voluminous and layered pieces'
-        );
-    }
-
-    // Особые рекомендации для пожилого возраста
-    if (isElderly) {
-        physicalRecommendations.ru.push(
-            'отдавай предпочтение комфортной и удобной одежде классического кроя'
-        );
-        physicalRecommendations.en.push(
-            'prefer comfortable and easy-to-wear clothes with classic cut'
-        );
-    }
-
-    // Добавляем стандартные рекомендации только если нет особых случаев
-    if (!isVeryShort && !isElderly) {
-        if (
-            heightCategory &&
-            heightCategory !== 'medium' &&
-            heightRecommendations[heightCategory]
-        ) {
-            physicalRecommendations.ru.push(
-                heightRecommendations[heightCategory].add.ru
-            );
-            physicalRecommendations.en.push(
-                heightRecommendations[heightCategory].add.en
-            );
-        }
-
-        if (
-            weightCategory &&
-            weightCategory !== 'medium' &&
-            weightRecommendations[weightCategory]
-        ) {
-            physicalRecommendations.ru.push(
-                weightRecommendations[weightCategory].add.ru
-            );
-            physicalRecommendations.en.push(
-                weightRecommendations[weightCategory].add.en
-            );
-        }
-
-        if (ageCategory && adaptationRules.age[ageCategory].add) {
-            physicalRecommendations.ru.push(
-                adaptationRules.age[ageCategory].add!.ru
-            );
-            physicalRecommendations.en.push(
-                adaptationRules.age[ageCategory].add!.en
-            );
-        }
-    }
-
     // Базовые аксессуары в зависимости от погоды
-    const getWeatherAccessories = (
-        temp: number,
-        isRainy: boolean,
-        isWindy: boolean,
-        isSnowy: boolean,
-        isSunny: boolean,
-        isCold: boolean,
-        isOvercast: boolean,
-        isThunderstorm: boolean,
-        lang: Language,
-        weight: number
-    ): string[] => {
-        const accessories = [];
-
-        // Определяем весовую категорию
-        const weightCategory = determineWeightCategory(
-            {
-                value: weight,
-                unit: 'kg'
-            },
-            'male' // Используем 'male' как значение по умолчанию, так как это не влияет на аксессуары
-        );
-
-        if (isSnowy) {
-            accessories.push(
-                lang === 'ru' ? 'шапка' : 'hat',
-                lang === 'ru' ? 'перчатки' : 'gloves'
-            );
-        }
-
-        if (isRainy || isThunderstorm) {
-            accessories.push(lang === 'ru' ? 'зонт' : 'umbrella');
-        }
-
-        // Добавляем шарф только если холодно (ниже 15°C)
-        if (isCold && temp < 15) {
-            accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
-            if (!isSunny) {
-                accessories.push(lang === 'ru' ? 'шапка' : 'hat');
-            }
-        }
-
-        // Солнечная погода
-        if (isSunny && temp > 10) {
-            accessories.push(
-                lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses'
-            );
-            if (temp > 20) {
-                accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
-            }
-        }
-
-        // Пасмурная погода
-        if (isOvercast && temp <= 15) {
-            accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
-        }
-
-        // Ветреная погода
-        if (isWindy && temp <= 15) {
-            if (!accessories.includes(lang === 'ru' ? 'шапка' : 'hat')) {
-                accessories.push(lang === 'ru' ? 'шапка' : 'hat');
-            }
-        }
-
-        // Жаркая погода
-        if (isHot) {
-            accessories.push(
-                lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses',
-                lang === 'ru' ? 'головной убор' : 'hat'
-            );
-        }
-
-        // Туманная погода
-        if (isFoggy) {
-            accessories.push(
-                lang === 'ru'
-                    ? 'светоотражающие элементы'
-                    : 'reflective elements'
-            );
-        }
-
-        // Адаптация аксессуаров под вес
-        if (weightCategory === 'thin') {
-            // Для худых людей добавляем аксессуары, которые визуально увеличат объем
-            accessories.push(
-                lang === 'ru' ? 'сумка через плечо' : 'crossbody bag'
-            );
-        } else if (weightCategory === 'heavy') {
-            // Для полных людей выбираем более строгие аксессуары
-            accessories.push(lang === 'ru' ? 'часы' : 'watch');
-        }
-
-        return [...new Set(accessories)]; // Убираем дубликаты
-    };
 
     if (temp <= 5) {
         // Холодная погода (ниже +5)
@@ -274,7 +83,6 @@ export const adaptOutfitForWeather = (
             },
             outfit.gender
         );
-        const ageCategory = determineAgeCategory(characteristics.age);
 
         // Применяем фильтры к вариантам одежды
         let topOptions = filterClothing(variants.tops[style].ru, {
@@ -324,6 +132,9 @@ export const adaptOutfitForWeather = (
                 isCold,
                 isOvercast,
                 isThunderstorm,
+                isHot,
+                isFoggy,
+                gender,
                 lang,
                 characteristics.weight
             ),
@@ -618,7 +429,6 @@ export const adaptOutfitForWeather = (
             },
             outfit.gender
         );
-        const ageCategory = determineAgeCategory(characteristics.age);
 
         // Базовые аксессуары для прохладной погоды
         let accessories = ['шапка', 'перчатки'];
@@ -1033,16 +843,13 @@ export const adaptOutfitForWeather = (
         weatherConditions.en.push('cloudy');
     }
 
-    const physicalText = {
-        ru:
-            physicalRecommendations.ru.length > 0
-                ? `. Рекомендации: ${physicalRecommendations.ru.join('. ')}`
-                : '',
-        en:
-            physicalRecommendations.en.length > 0
-                ? `. Tips: ${physicalRecommendations.en.join('. ')}`
-                : ''
-    };
+    const physicalText = getPhysacalRecommendations(
+        isVeryShort,
+        isElderly,
+        outfit.gender,
+        characteristics,
+        ageCategory
+    );
 
     // Добавляем цветовую схему в описание
     const style = determineStyle(outfit.event);
@@ -1059,6 +866,9 @@ export const adaptOutfitForWeather = (
             isCold,
             isOvercast,
             isThunderstorm,
+            isHot,
+            isFoggy,
+            outfit.gender,
             lang,
             characteristics.weight
         ),

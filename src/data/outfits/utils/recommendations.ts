@@ -1,4 +1,9 @@
-import { OutfitGenerationParams } from '@/data/outfits/types';
+import { Characteristics, OutfitGenerationParams } from '@/data/outfits/types';
+import { adaptationRules } from '@/data/outfits/utils/adaptationRules';
+import {
+    determineHeightCategory,
+    determineWeightCategory
+} from '@/data/outfits/utils/categoryDeterminers';
 
 // Переформулированные рекомендации для роста
 export const heightRecommendations = {
@@ -82,3 +87,99 @@ export function generateRecommendations(
 
     return recommendations.join('. ');
 }
+
+export const getPhysacalRecommendations = (
+    isVeryShort: boolean,
+    isElderly: boolean,
+    gender: 'male' | 'female',
+    characteristics: Characteristics,
+    ageCategory: keyof typeof adaptationRules.age | null
+) => {
+    const heightCategory = determineHeightCategory({
+        value: characteristics.height,
+        unit: characteristics.heightUnit
+    });
+    const weightCategory = determineWeightCategory(
+        {
+            value: characteristics.weight,
+            unit: characteristics.weightUnit
+        },
+        gender
+    );
+    // Базовые рекомендации по физическим характеристикам
+    let physicalRecommendations = {
+        ru: [] as string[],
+        en: [] as string[]
+    };
+
+    // Особые рекомендации для очень низкого роста
+    if (isVeryShort) {
+        physicalRecommendations.ru.push(
+            'выбирай одежду с вертикальными линиями и однотонные вещи - это визуально вытянет силуэт. Избегай объемных и многослойных вещей'
+        );
+        physicalRecommendations.en.push(
+            'choose clothes with vertical lines and monochrome pieces - this will visually elongate your silhouette. Avoid voluminous and layered pieces'
+        );
+    }
+
+    // Особые рекомендации для пожилого возраста
+    if (isElderly) {
+        physicalRecommendations.ru.push(
+            'отдавай предпочтение комфортной и удобной одежде классического кроя'
+        );
+        physicalRecommendations.en.push(
+            'prefer comfortable and easy-to-wear clothes with classic cut'
+        );
+    }
+
+    // Добавляем стандартные рекомендации только если нет особых случаев
+    if (!isVeryShort && !isElderly) {
+        if (
+            heightCategory &&
+            heightCategory !== 'medium' &&
+            heightRecommendations[heightCategory]
+        ) {
+            physicalRecommendations.ru.push(
+                heightRecommendations[heightCategory].add.ru
+            );
+            physicalRecommendations.en.push(
+                heightRecommendations[heightCategory].add.en
+            );
+        }
+
+        if (
+            weightCategory &&
+            weightCategory !== 'medium' &&
+            weightRecommendations[weightCategory]
+        ) {
+            physicalRecommendations.ru.push(
+                weightRecommendations[weightCategory].add.ru
+            );
+            physicalRecommendations.en.push(
+                weightRecommendations[weightCategory].add.en
+            );
+        }
+
+        if (ageCategory && adaptationRules.age[ageCategory].add) {
+            physicalRecommendations.ru.push(
+                adaptationRules.age[ageCategory].add!.ru
+            );
+            physicalRecommendations.en.push(
+                adaptationRules.age[ageCategory].add!.en
+            );
+        }
+    }
+
+    const physicalText = {
+        ru:
+            physicalRecommendations.ru.length > 0
+                ? `. Рекомендации: ${physicalRecommendations.ru.join('. ')}`
+                : '',
+        en:
+            physicalRecommendations.en.length > 0
+                ? `. Tips: ${physicalRecommendations.en.join('. ')}`
+                : ''
+    };
+
+    return physicalText;
+};

@@ -48,6 +48,9 @@ export const getWeatherAccessories = (
     isCold: boolean,
     isOvercast: boolean,
     isThunderstorm: boolean,
+    isHot: boolean,
+    isFoggy: boolean,
+    gender: 'male' | 'female',
     lang: Language,
     weight: number
 ): string[] => {
@@ -59,7 +62,7 @@ export const getWeatherAccessories = (
             value: weight,
             unit: 'kg'
         },
-        'male' // Используем 'male' как значение по умолчанию, так как это не влияет на аксессуары
+        gender
     );
 
     if (isSnowy) {
@@ -73,21 +76,25 @@ export const getWeatherAccessories = (
         accessories.push(lang === 'ru' ? 'зонт' : 'umbrella');
     }
 
-    // Добавляем шарф и перчатки только если очень холодно (ниже 5°C)
-    if (isCold && temp < 5) {
-        accessories.push(
-            lang === 'ru' ? 'шарф' : 'scarf',
-            lang === 'ru' ? 'перчатки' : 'gloves'
-        );
-        if (!isSunny) {
-            accessories.push(lang === 'ru' ? 'шапка' : 'hat');
-        }
-    } else if (isCold && temp < 10) {
-        // При температуре от 5 до 10°C добавляем только шарф
+    // Добавляем шарф только если холодно (ниже 15°C)
+    if (isCold && temp < 15) {
         accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
         if (!isSunny) {
             accessories.push(lang === 'ru' ? 'шапка' : 'hat');
         }
+    }
+
+    // Солнечная погода
+    if (isSunny && temp > 10) {
+        accessories.push(lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses');
+        if (temp > 20) {
+            accessories.push(lang === 'ru' ? 'головной убор' : 'hat');
+        }
+    }
+
+    // Пасмурная погода
+    if (isOvercast && temp <= 15) {
+        accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
     }
 
     // Ветреная погода
@@ -97,9 +104,19 @@ export const getWeatherAccessories = (
         }
     }
 
-    // Пасмурная погода
-    if (isOvercast && temp <= 15) {
-        accessories.push(lang === 'ru' ? 'шарф' : 'scarf');
+    // Жаркая погода
+    if (isHot) {
+        accessories.push(
+            lang === 'ru' ? 'солнцезащитные очки' : 'sunglasses',
+            lang === 'ru' ? 'головной убор' : 'hat'
+        );
+    }
+
+    // Туманная погода
+    if (isFoggy) {
+        accessories.push(
+            lang === 'ru' ? 'светоотражающие элементы' : 'reflective elements'
+        );
     }
 
     // Адаптация аксессуаров под вес
