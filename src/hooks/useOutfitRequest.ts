@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DAILY_REQUEST_LIMITS } from '@/constants/plans';
-import { generateOutfitResponse } from '@/data/outfits/generators/generateOutfitResponse';
 import { BaseOutfit, Language, WeatherData } from '@/data/outfits/types';
 import { useEventStore } from '@/store/eventStore';
 import { useOutfitResponseStore } from '@/store/outfitResponseStore';
@@ -83,58 +82,71 @@ export const useOutfitRequest = () => {
 
     // Обновляем ответ при изменении языка
     useEffect(() => {
-        if (
-            standardResponse &&
-            profile?.lang &&
-            profile?.characteristics?.gender &&
-            profile?.characteristics?.age &&
-            profile?.characteristics?.height &&
-            profile?.characteristics?.heightUnit &&
-            profile?.characteristics?.weight &&
-            profile?.characteristics?.weightUnit &&
-            (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
-        ) {
-            const requestData = {
-                lang: profile.lang as Language,
-                event: {
-                    type: selectedEventType as BaseOutfit['event'],
-                    name: t(`Pages.Event.types.${selectedEventType}`)
-                },
-                characteristics: {
-                    gender: profile.characteristics.gender as 'male' | 'female',
-                    age: profile.characteristics.age,
-                    height: profile.characteristics.height,
-                    heightUnit: profile.characteristics.heightUnit,
-                    weight: profile.characteristics.weight,
-                    weightUnit: profile.characteristics.weightUnit
-                },
-                weather: {
-                    current: isManualMode
-                        ? undefined
-                        : (weatherToday as WeatherData),
-                    tomorrow: isManualMode
-                        ? undefined
-                        : (weatherTomorrow as WeatherData),
-                    manual: isManualMode
-                        ? (weatherManual as WeatherData)
-                        : undefined
+        const updateResponse = async () => {
+            if (
+                standardResponse &&
+                profile?.lang &&
+                profile?.characteristics?.gender &&
+                profile?.characteristics?.age &&
+                profile?.characteristics?.height &&
+                profile?.characteristics?.heightUnit &&
+                profile?.characteristics?.weight &&
+                profile?.characteristics?.weightUnit &&
+                (isManualMode ? weatherManual : weatherToday || weatherTomorrow)
+            ) {
+                const requestData = {
+                    lang: profile.lang as Language,
+                    event: {
+                        type: selectedEventType as BaseOutfit['event'],
+                        name: t(`Pages.Event.types.${selectedEventType}`)
+                    },
+                    characteristics: {
+                        gender: profile.characteristics.gender as
+                            | 'male'
+                            | 'female',
+                        age: profile.characteristics.age,
+                        height: profile.characteristics.height,
+                        heightUnit: profile.characteristics.heightUnit,
+                        weight: profile.characteristics.weight,
+                        weightUnit: profile.characteristics.weightUnit
+                    },
+                    weather: {
+                        current: isManualMode
+                            ? undefined
+                            : (weatherToday as WeatherData),
+                        tomorrow: isManualMode
+                            ? undefined
+                            : (weatherTomorrow as WeatherData),
+                        manual: isManualMode
+                            ? (weatherManual as WeatherData)
+                            : undefined
+                    }
+                };
+
+                try {
+                    const { generateOutfitResponse } = await import(
+                        '@/data/outfits/generators/generateOutfitResponse'
+                    );
+                    const response = generateOutfitResponse(requestData);
+                    if (response.outfit) {
+                        setStandardResponse(response.outfit.description);
+                    }
+                } catch (error) {
+                    console.error('Error updating response:', error);
                 }
-            };
-
-            console.log('Generating outfit with data:', requestData);
-
-            const response = generateOutfitResponse(requestData);
-            if (response.outfit) {
-                setStandardResponse(response.outfit.description);
             }
-        }
+        };
+
+        updateResponse();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         profile?.lang,
         weatherToday,
         weatherTomorrow,
         weatherManual,
-        isManualMode
+        isManualMode,
+        standardResponse,
+        selectedEventType
     ]);
 
     const checkRequestLimit = () => {
@@ -293,14 +305,12 @@ export const useOutfitRequest = () => {
 
     const generateStandardOutfit = async () => {
         setError(null);
-        setStandardResponse(null); // Очищаем предыдущий ответ
+        setStandardResponse(null);
 
-        // Проверяем обязательные поля
         if (!checkRequiredFields()) {
             return;
         }
 
-        // Проверяем верификацию email
         if (!profile?.emailVerified) {
             setError(
                 t(
@@ -313,6 +323,11 @@ export const useOutfitRequest = () => {
         setIsLoading(true);
 
         try {
+            // Динамически импортируем generateOutfitResponse только когда нужно
+            const { generateOutfitResponse } = await import(
+                '@/data/outfits/generators/generateOutfitResponse'
+            );
+
             if (!selectedEventType || !profile?.characteristics) {
                 setError(
                     t(
