@@ -126,24 +126,17 @@ export const usePersonalDetailsForm = () => {
     const handleSaveCharacteristics = async () => {
         try {
             if (!hasChanges()) {
-                toast.info(
-                    t('Components.Features.PersonalDetailsPanel.noChanges')
-                );
+                toast.info(t('Pages.PersonalDetails.noChanges'));
                 return;
             }
 
             if (!consent?.functional) {
-                toast.error(
-                    t(
-                        'Components.Features.PersonalDetailsPanel.errors.cookieRequired'
+                toast.error(t('Pages.PersonalDetails.errors.cookieRequired'), {
+                    description: t(
+                        'Pages.PersonalDetails.errors.cookieRequiredDesc'
                     ),
-                    {
-                        description: t(
-                            'Components.Features.PersonalDetailsPanel.errors.cookieRequiredDesc'
-                        ),
-                        icon: <AlertCircle className="h-5 w-5 text-red-500" />
-                    }
-                );
+                    icon: <AlertCircle className="h-5 w-5 text-red-500" />
+                });
                 return;
             }
 
@@ -170,21 +163,15 @@ export const usePersonalDetailsForm = () => {
             setInitialSelectedColors(selectedColors);
             setInitialSelectedStyles(selectedStyles);
 
-            toast.success(
-                t('Components.Features.PersonalDetailsPanel.saveSuccess'),
-                {
-                    icon: <Check className="h-5 w-5 text-green-500" />
-                }
-            );
+            toast.success(t('Pages.PersonalDetails.saveSuccess'), {
+                icon: <Check className="h-5 w-5 text-green-500" />
+            });
         } catch (error) {
-            toast.error(
-                t('Components.Features.PersonalDetailsPanel.errors.saveFailed'),
-                {
-                    description:
-                        error instanceof Error ? error.message : String(error),
-                    icon: <AlertCircle className="h-5 w-5 text-red-500" />
-                }
-            );
+            toast.error(t('Pages.PersonalDetails.errors.saveFailed'), {
+                description:
+                    error instanceof Error ? error.message : String(error),
+                icon: <AlertCircle className="h-5 w-5 text-red-500" />
+            });
         }
     };
 
