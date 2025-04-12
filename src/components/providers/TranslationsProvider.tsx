@@ -10,7 +10,8 @@ export const TranslationsProvider: FC<PropsWithChildren> = ({ children }) => {
     useEffect(() => {
         const checkTranslations = async () => {
             try {
-                await i18n.loadNamespaces('translation');
+                // Ждем, пока i18next будет готов
+                await i18n.loadNamespaces(['translation']);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Failed to load translations:', error);
@@ -18,7 +19,15 @@ export const TranslationsProvider: FC<PropsWithChildren> = ({ children }) => {
             }
         };
 
-        checkTranslations();
+        if (i18n.isInitialized) {
+            checkTranslations();
+        } else {
+            i18n.on('initialized', checkTranslations);
+        }
+
+        return () => {
+            i18n.off('initialized', checkTranslations);
+        };
     }, [i18n]);
 
     if (isLoading) {
