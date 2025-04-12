@@ -29,26 +29,43 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    react: ['react', 'react-dom', 'react-router-dom'],
-                    firebase: [
-                        'firebase/app',
-                        'firebase/auth',
-                        'firebase/firestore',
-                        'firebase/storage'
-                    ]
-                }
+                    'firebase-app': ['firebase/app'],
+                    'firebase-auth': ['firebase/auth'],
+                    'firebase-firestore': ['firebase/firestore'],
+                    'firebase-storage': ['firebase/storage'],
+                    'react-core': ['react', 'react-dom'],
+                    'react-router': ['react-router-dom']
+                },
+                entryFileNames: 'assets/[name].[hash].js',
+                chunkFileNames: 'assets/[name].[hash].js',
+                assetFileNames: 'assets/[name].[hash].[ext]'
             }
         },
         terserOptions: {
             format: {
                 comments: false
+            },
+            compress: {
+                drop_console: true,
+                drop_debugger: true
             }
         },
-        outDir: 'dist'
+        outDir: 'dist',
+        chunkSizeWarningLimit: 1000,
+        sourcemap: process.env.NODE_ENV === 'production' ? false : true
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src')
         }
+    },
+    optimizeDeps: {
+        include: ['react', 'react-dom', 'react-router-dom'],
+        exclude: [
+            'firebase/app',
+            'firebase/auth',
+            'firebase/firestore',
+            'firebase/storage'
+        ]
     }
 });
