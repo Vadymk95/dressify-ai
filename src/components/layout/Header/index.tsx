@@ -3,7 +3,8 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { AuthNavigation, Logo } from '@/components/common';
+import { AuthNavigation } from '@/components/common/AuthNavigation';
+import { Logo } from '@/components/common/Logo';
 import { LanguageSelect } from '@/components/features/LanguageSelect';
 import { routes } from '@/router/routes';
 

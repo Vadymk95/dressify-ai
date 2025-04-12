@@ -1,7 +1,8 @@
-import { Input } from '@/components/ui/input';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../ui/button';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface CaptchaProps {
     onVerify: (isValid: boolean) => void;

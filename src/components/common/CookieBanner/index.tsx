@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -8,8 +11,6 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { useCookieConsentStore } from '@/store/cookieConsentStore.js';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const CookieBanner = () => {
     const { t } = useTranslation();
@@ -126,7 +127,7 @@ export const CookieBanner = () => {
                             </div>
                             <Switch
                                 checked={settings.functional}
-                                onCheckedChange={(checked) =>
+                                onCheckedChange={(checked: boolean) =>
                                     setSettings((prev) => ({
                                         ...prev,
                                         functional: checked
@@ -149,7 +150,7 @@ export const CookieBanner = () => {
                             </div>
                             <Switch
                                 checked={settings.analytics}
-                                onCheckedChange={(checked) =>
+                                onCheckedChange={(checked: boolean) =>
                                     setSettings((prev) => ({
                                         ...prev,
                                         analytics: checked
@@ -172,7 +173,7 @@ export const CookieBanner = () => {
                             </div>
                             <Switch
                                 checked={settings.marketing}
-                                onCheckedChange={(checked) =>
+                                onCheckedChange={(checked: boolean) =>
                                     setSettings((prev) => ({
                                         ...prev,
                                         marketing: checked
