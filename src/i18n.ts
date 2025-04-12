@@ -23,13 +23,7 @@ const initializeTranslations = async (lang: string) => {
 
     try {
         const resources = await loadLocaleData(langCode);
-        i18n.addResourceBundle(
-            lang,
-            'translation',
-            resources[lang].translation,
-            true,
-            true
-        );
+        i18n.addResourceBundle(langCode, 'translation', resources, true, true);
     } catch (error) {
         console.error(`Failed to load translations for ${langCode}`, error);
         if (langCode !== 'en') {
@@ -38,7 +32,7 @@ const initializeTranslations = async (lang: string) => {
                 i18n.addResourceBundle(
                     'en',
                     'translation',
-                    enResources.en.translation,
+                    enResources.translation,
                     true,
                     true
                 );
