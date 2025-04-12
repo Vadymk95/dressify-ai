@@ -23,9 +23,7 @@ export const LanguageSelect: FC = () => {
 
         setIsChanging(true);
         try {
-            // Сначала загружаем новый язык
             const module = await import(`@/locales/${value}.ts`);
-            // Добавляем ресурсы перед сменой языка
             i18n.addResourceBundle(
                 value,
                 'translation',
@@ -34,7 +32,6 @@ export const LanguageSelect: FC = () => {
                 true
             );
 
-            // Теперь меняем язык
             await i18n.changeLanguage(value);
             setLanguage(value);
 
@@ -48,12 +45,27 @@ export const LanguageSelect: FC = () => {
         }
     };
 
+    // Инициализация языка при первой загрузке
     useEffect(() => {
-        if (profile && profile.lang && profile.lang !== language) {
-            handleChange(profile.lang);
-        }
+        const initializeLanguage = async () => {
+            if (isChanging) return;
+
+            // Приоритет языка:
+            // 1. Язык из профиля (если пользователь авторизован)
+            // 2. Язык из localStorage (если был сохранен ранее)
+            // 3. Системный язык
+            if (profile?.lang && profile.lang !== language) {
+                await handleChange(profile.lang);
+            } else if (!profile && language !== i18n.language) {
+                // Если пользователь не авторизован, используем язык из store
+                // (который уже должен быть определен из системного языка)
+                await handleChange(language);
+            }
+        };
+
+        initializeLanguage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [profile, language]);
+    }, [profile]);
 
     return (
         <Select
