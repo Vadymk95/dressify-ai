@@ -1,5 +1,5 @@
-import { changeLanguage } from 'i18next';
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Select,
@@ -16,13 +16,26 @@ export const LanguageSelect: FC = () => {
     const { updateLanguage, profile } = useUserProfileStore();
     const { language, setLanguage } = useLanguageStore();
     const [isChanging, setIsChanging] = useState(false);
+    const { i18n } = useTranslation();
 
     const handleChange = async (value: string) => {
         if (isChanging) return;
 
         setIsChanging(true);
         try {
-            await changeLanguage(value);
+            // Сначала загружаем новый язык
+            const module = await import(`@/locales/${value}.ts`);
+            // Добавляем ресурсы перед сменой языка
+            i18n.addResourceBundle(
+                value,
+                'translation',
+                module[value][value].translation,
+                true,
+                true
+            );
+
+            // Теперь меняем язык
+            await i18n.changeLanguage(value);
             setLanguage(value);
 
             if (profile) {
