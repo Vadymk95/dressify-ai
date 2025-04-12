@@ -1,16 +1,28 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import { resources } from './locales';
+
+import { languages } from '@/constants/languages';
+import { resources } from '@/locales/index';
+
+const supportedLanguages = languages.map((lang) => lang.code);
+
+const getLanguageCode = (fullCode: string): string => {
+    const mainCode = (fullCode || 'en').split('-')[0].toLowerCase();
+    return supportedLanguages.includes(mainCode) ? mainCode : 'en';
+};
 
 const loadLocaleData = async (language: string) => {
-    const module = await import(`./locales/${language}.ts`);
-    return module[language];
+    const langCode = getLanguageCode(language);
+    const module = await import(`./locales/${langCode}.ts`);
+    return module[langCode];
 };
 
 const initializeTranslations = async (lang: string) => {
+    const langCode = getLanguageCode(lang);
+
     try {
-        const resources = await loadLocaleData(lang);
+        const resources = await loadLocaleData(langCode);
         i18n.addResourceBundle(
             lang,
             'translation',
@@ -19,8 +31,8 @@ const initializeTranslations = async (lang: string) => {
             true
         );
     } catch (error) {
-        console.error(`Failed to load translations for ${lang}`, error);
-        if (lang !== 'en') {
+        console.error(`Failed to load translations for ${langCode}`, error);
+        if (langCode !== 'en') {
             try {
                 const enResources = await loadLocaleData('en');
                 i18n.addResourceBundle(

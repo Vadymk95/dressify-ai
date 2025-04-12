@@ -39,6 +39,7 @@ export const LanguageSelect: FC = () => {
         if (profile && profile.lang && profile.lang !== language) {
             handleChange(profile.lang);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile, language]);
 
     return (
