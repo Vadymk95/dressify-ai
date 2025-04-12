@@ -1,3 +1,4 @@
+import { Info } from 'lucide-react';
 import { FC, ReactNode, useEffect, useState } from 'react';
 
 import { MobileTooltip } from '@/components/ui/mobile-tooltip';
@@ -7,9 +8,6 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from '@/components/ui/tooltip';
-
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface InfoTooltipProps {
     content: ReactNode;
@@ -31,9 +29,9 @@ export const InfoTooltip: FC<InfoTooltipProps> = ({ content, className }) => {
     }, []);
 
     const trigger = (
-        <FontAwesomeIcon
-            icon={faCircleInfo}
+        <Info
             className="text-blue-400 hover:text-blue-300 transition-colors cursor-help text-xl"
+            size={20}
         />
     );
 

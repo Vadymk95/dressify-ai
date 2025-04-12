@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -5,9 +6,6 @@ import { Link } from 'react-router-dom';
 import { Feedback } from '@/components/features/Feedback';
 import { email } from '@/constants/emails';
 import { useUserProfileStore } from '@/store/userProfileStore';
-
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ContactUs: FC = () => {
     const { t } = useTranslation();
@@ -34,11 +32,7 @@ const ContactUs: FC = () => {
                         className="underline flex items-center"
                         to={`mailto:${email}`}
                     >
-                        <FontAwesomeIcon
-                            className="mr-3"
-                            size="xl"
-                            icon={faEnvelope}
-                        />
+                        <Mail className="mr-3" size={20} />
                         <span>{email}</span>
                     </Link>
                 </div>

@@ -1,23 +1,25 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { PrivateRoute, PublicRoute, WithSuspense } from '@/hocs';
-import {
-    ContactUs,
-    FailedPayment,
-    Home,
-    Login,
-    NotFound,
-    PersonalDetails,
-    Pricing,
-    PrivacyPolicy,
-    Register,
-    SuccessPayment,
-    TermsOfUse,
-    Wardrobe,
-    Weather,
-    WhatToWear
-} from '@/pages';
+import { PrivateRoute } from '@/hocs/PrivateRoute';
+import { PublicRoute } from '@/hocs/PublicRoute';
+import { WithSuspense } from '@/hocs/WithSuspense';
+
+import { ContactUs } from '@/pages/ContactUs';
+import { FailedPayment } from '@/pages/FailedPayment';
+import { Home } from '@/pages/Home';
+import { Login } from '@/pages/Login';
+import { NotFound } from '@/pages/NotFound';
+import { PersonalDetails } from '@/pages/PersonalDetails';
+import { Pricing } from '@/pages/Pricing';
+import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
+import { Register } from '@/pages/Register';
+import { SuccessPayment } from '@/pages/SuccessPayment';
+import { TermsOfUse } from '@/pages/TermsOfUse';
+import { Wardrobe } from '@/pages/Wardrobe';
+import { Weather } from '@/pages/Weather';
+import { WhatToWear } from '@/pages/WhatToWear';
+
 import { routes } from '@/router/routes';
 
 export const AppRouter: FC = () => {

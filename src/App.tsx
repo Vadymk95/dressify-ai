@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 
-import { RootLayout } from '@/components/layout';
+import { RootLayout } from '@/components/layout/RootLayout';
 import { useAuthStore } from '@/store/authStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
 

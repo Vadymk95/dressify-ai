@@ -1,3 +1,4 @@
+import { Home, LogIn, LogOut, UserPlus } from 'lucide-react';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -5,14 +6,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { routes } from '@/router/routes';
 import { useAuthStore } from '@/store/authStore';
 import { useUserProfileStore } from '@/store/userProfileStore';
-
-import {
-    faDoorOpen,
-    faHouse,
-    faRightToBracket,
-    faUserPlus
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const AuthNavigation: FC = () => {
     const { t } = useTranslation();
@@ -49,9 +42,9 @@ export const AuthNavigation: FC = () => {
                                 to={routes.whatToWear}
                             >
                                 <div className="md:hidden flex items-center">
-                                    <FontAwesomeIcon
+                                    <Home
                                         className="text-2xl text-orange-400 hover:text-orange-600"
-                                        icon={faHouse}
+                                        size={24}
                                     />
                                 </div>
                                 <span className="hidden md:inline">
@@ -66,9 +59,9 @@ export const AuthNavigation: FC = () => {
                                 to={routes.home}
                             >
                                 <div className="md:hidden flex items-center">
-                                    <FontAwesomeIcon
+                                    <LogOut
                                         className="text-2xl text-orange-400 hover:text-orange-600"
-                                        icon={faDoorOpen}
+                                        size={24}
                                     />
                                 </div>
                                 <span className="hidden md:inline">
@@ -88,9 +81,9 @@ export const AuthNavigation: FC = () => {
                                     to={routes.login}
                                 >
                                     <div className="md:hidden flex items-center">
-                                        <FontAwesomeIcon
+                                        <LogIn
                                             className="text-2xl text-orange-400 hover:text-orange-600"
-                                            icon={faRightToBracket}
+                                            size={24}
                                         />
                                     </div>
                                     <span className="hidden md:inline">
@@ -108,9 +101,9 @@ export const AuthNavigation: FC = () => {
                                     to={routes.register}
                                 >
                                     <div className="md:hidden flex items-center">
-                                        <FontAwesomeIcon
+                                        <UserPlus
                                             className="text-2xl text-orange-400 hover:text-orange-600"
-                                            icon={faUserPlus}
+                                            size={24}
                                         />
                                     </div>
                                     <span className="hidden md:inline">

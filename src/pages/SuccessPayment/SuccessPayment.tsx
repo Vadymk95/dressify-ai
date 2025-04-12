@@ -1,12 +1,10 @@
+import { CheckCircle2 } from 'lucide-react';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { routes } from '@/router/routes';
-
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const SuccessPayment: FC = () => {
     const { t } = useTranslation();
@@ -15,12 +13,8 @@ const SuccessPayment: FC = () => {
     return (
         <div className="flex flex-col items-center justify-center flex-1 min-h-[calc(100vh-4rem)] p-6">
             <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center border border-amber-100">
-                <div className="text-green-500 mb-6">
-                    <FontAwesomeIcon
-                        icon={faCircleCheck}
-                        size="4x"
-                        className="animate-bounce"
-                    />
+                <div className="text-green-500 mb-6 flex justify-center items-center">
+                    <CheckCircle2 size={64} className="animate-bounce" />
                 </div>
 
                 <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
