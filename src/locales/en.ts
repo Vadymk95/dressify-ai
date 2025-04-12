@@ -219,7 +219,7 @@ export const en = {
                         title1: '⚡️ Fast and easy',
                         description1:
                             'Stop wasting time in the morning choosing clothes.',
-                        title2: '👗 Personal advices',
+                        title2: '👗 Personal advice',
                         description2:
                             'Individual recommendations for your wardrobe and weather.',
                         title3: '🤖 AI-technologies',
