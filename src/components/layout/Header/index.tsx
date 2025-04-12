@@ -1,3 +1,4 @@
+import { Tags } from 'lucide-react';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -5,9 +6,6 @@ import { Link } from 'react-router-dom';
 import { AuthNavigation, Logo } from '@/components/common';
 import { LanguageSelect } from '@/components/features/LanguageSelect';
 import { routes } from '@/router/routes';
-
-import { faTags } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Header: FC = () => {
     const { t } = useTranslation();
@@ -24,9 +22,9 @@ export const Header: FC = () => {
                         to={routes.pricing}
                     >
                         <div className="md:hidden flex items-center">
-                            <FontAwesomeIcon
+                            <Tags
                                 className="text-2xl text-orange-400 hover:text-orange-600"
-                                icon={faTags}
+                                size={24}
                             />
                         </div>
                         <span className="hidden md:inline text-sm md:text-lg">

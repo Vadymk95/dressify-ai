@@ -1,5 +1,4 @@
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AlertCircle } from 'lucide-react';
 import React, { Component, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,16 +10,12 @@ interface ErrorBoundaryState {
     hasError: boolean;
 }
 
-// Создаем отдельный компонент для отображения ошибки
 const ErrorDisplay = () => {
     const { t } = useTranslation();
 
     return (
         <div className="flex flex-col items-center justify-center h-screen p-4 space-y-4">
-            <FontAwesomeIcon
-                icon={faCircleExclamation}
-                className="text-red-500 text-5xl mb-2"
-            />
+            <AlertCircle className="text-red-500 text-5xl mb-2" size={48} />
             <h1 className="text-2xl font-bold text-center">
                 {t('Components.Common.ErrorBoundary.title')}
             </h1>

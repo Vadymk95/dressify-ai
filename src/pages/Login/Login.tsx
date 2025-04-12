@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,9 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { routes } from '@/router/routes';
 import { useAuthStore } from '@/store/authStore';
-
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type LoginForm = {
     email: string;
@@ -97,9 +95,11 @@ const Login: FC = () => {
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2"
                                 onClick={() => setShowPassword((prev) => !prev)}
                             >
-                                <FontAwesomeIcon
-                                    icon={showPassword ? faEye : faEyeSlash}
-                                />
+                                {showPassword ? (
+                                    <Eye size={20} />
+                                ) : (
+                                    <EyeOff size={20} />
+                                )}
                             </button>
                         </div>
                         {errors.password && (

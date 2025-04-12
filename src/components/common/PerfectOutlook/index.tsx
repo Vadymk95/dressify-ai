@@ -1,3 +1,7 @@
+import { Check } from 'lucide-react';
+import { FC, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -8,10 +12,6 @@ import {
     DialogTitle
 } from '@/components/ui/dialog';
 import { usePerfectOutlookStore } from '@/store/perfectOutlookStore';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const PerfectOutlook: FC = () => {
     const { t } = useTranslation();
@@ -61,13 +61,9 @@ export const PerfectOutlook: FC = () => {
                         ))}
                     </ol>
 
-                    <div className="mt-4 flex items-center justify-center gap-4 secondary-gradient p-4 rounded-xl">
+                    <div className="mt-4 flex items-center justify-center gap-4 secondary-gradient px-2 md:px-1 py-4 rounded-xl">
                         <div className="w-12 aspect-square bg-green-500 rounded-full flex items-center justify-center shrink-0">
-                            <FontAwesomeIcon
-                                className="h-6 w-6"
-                                icon={faCheck}
-                                color="#fef3c7"
-                            />
+                            <Check className="h-6 w-6 text-amber-50" />
                         </div>
                         <p className="text-amber-50 font-bold md:text-2xl">
                             {t('Components.Common.PerfectOutlook.yourOutfit')}
