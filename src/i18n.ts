@@ -1,26 +1,26 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+import { resources } from './locales';
 
 const loadLocaleData = async (language: string) => {
     const module = await import(`./locales/${language}.ts`);
     return module[language];
 };
 
-const initializeTranslations = async () => {
-    const currentLang = i18n.language || 'en';
+const initializeTranslations = async (lang: string) => {
     try {
-        const resources = await loadLocaleData(currentLang);
+        const resources = await loadLocaleData(lang);
         i18n.addResourceBundle(
-            currentLang,
+            lang,
             'translation',
-            resources[currentLang].translation,
+            resources[lang].translation,
             true,
             true
         );
     } catch (error) {
-        console.error(`Failed to load translations for ${currentLang}`, error);
-        if (currentLang !== 'en') {
+        console.error(`Failed to load translations for ${lang}`, error);
+        if (lang !== 'en') {
             try {
                 const enResources = await loadLocaleData('en');
                 i18n.addResourceBundle(
@@ -37,32 +37,35 @@ const initializeTranslations = async () => {
     }
 };
 
-i18n.use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        fallbackLng: 'en',
-        interpolation: {
-            escapeValue: false
-        }
-    })
-    .then(() => {
-        initializeTranslations();
-    });
+// Инициализация i18n
+const initI18n = async () => {
+    const defaultLang = 'en';
 
+    await i18n
+        .use(LanguageDetector)
+        .use(initReactI18next)
+        .init({
+            resources,
+            fallbackLng: defaultLang,
+            interpolation: {
+                escapeValue: false
+            },
+            react: {
+                useSuspense: false
+            }
+        });
+
+    // Загружаем начальные переводы
+    await initializeTranslations(i18n.language || defaultLang);
+};
+
+// Обработчик изменения языка
 i18n.on('languageChanged', async (lng) => {
     if (!lng) return;
-    try {
-        const resources = await loadLocaleData(lng);
-        i18n.addResourceBundle(
-            lng,
-            'translation',
-            resources[lng].translation,
-            true,
-            true
-        );
-    } catch (error) {
-        console.error(`Failed to load translations for ${lng}`, error);
-    }
+    await initializeTranslations(lng);
 });
+
+// Запускаем инициализацию
+initI18n().catch(console.error);
 
 export default i18n;

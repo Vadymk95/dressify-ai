@@ -1,5 +1,5 @@
 import { changeLanguage } from 'i18next';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
     Select,
@@ -15,25 +15,38 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 export const LanguageSelect: FC = () => {
     const { updateLanguage, profile } = useUserProfileStore();
     const { language, setLanguage } = useLanguageStore();
+    const [isChanging, setIsChanging] = useState(false);
 
     const handleChange = async (value: string) => {
-        setLanguage(value);
-        changeLanguage(value);
+        if (isChanging) return;
 
-        if (profile) {
-            await updateLanguage(value);
+        setIsChanging(true);
+        try {
+            await changeLanguage(value);
+            setLanguage(value);
+
+            if (profile) {
+                await updateLanguage(value);
+            }
+        } catch (error) {
+            console.error('Failed to change language:', error);
+        } finally {
+            setIsChanging(false);
         }
     };
 
     useEffect(() => {
         if (profile && profile.lang && profile.lang !== language) {
-            setLanguage(profile.lang);
-            changeLanguage(profile.lang);
+            handleChange(profile.lang);
         }
-    }, [profile, language, setLanguage]);
+    }, [profile, language]);
 
     return (
-        <Select value={language} onValueChange={handleChange}>
+        <Select
+            value={language}
+            onValueChange={handleChange}
+            disabled={isChanging}
+        >
             <SelectTrigger className="cursor-pointer text-xs md:text-sm p-1 md:p-2">
                 <SelectValue>
                     {languages.find((lang) => lang.code === language)?.label}
