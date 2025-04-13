@@ -118,7 +118,16 @@ export const useWardrobe = () => {
             (category, index) => {
                 const initialCategory =
                     initialWardrobeRef.current?.categories[index];
-                return category.items.length !== initialCategory?.items.length;
+
+                if (category.items.length !== initialCategory?.items.length) {
+                    return true;
+                }
+
+                // Проверяем содержимое элементов
+                return category.items.some((item, itemIndex) => {
+                    const initialItem = initialCategory?.items[itemIndex];
+                    return item.name !== initialItem?.name;
+                });
             }
         );
 
@@ -147,31 +156,42 @@ export const useWardrobe = () => {
                 }
             }
 
-            setLocalWardrobe((prev) => ({
-                ...prev,
-                categories: prev.categories.map((category) =>
-                    category.id === categoryId
-                        ? {
-                              ...category,
-                              items: [
-                                  ...category.items,
-                                  {
-                                      id: crypto.randomUUID(),
-                                      name: newItemName,
-                                      isNew: true
-                                  }
-                              ]
-                          }
-                        : category
-                )
-            }));
+            setLocalWardrobe((prev) => {
+                const updatedWardrobe = {
+                    ...prev,
+                    categories: prev.categories.map((category) =>
+                        category.id === categoryId
+                            ? {
+                                  ...category,
+                                  items: [
+                                      ...category.items,
+                                      {
+                                          id: crypto.randomUUID(),
+                                          name: newItemName,
+                                          isNew: true
+                                      }
+                                  ]
+                              }
+                            : category
+                    )
+                };
+
+                setHasChanges(checkForChanges(updatedWardrobe));
+
+                return updatedWardrobe;
+            });
 
             setNewItemInputs((prev) => ({
                 ...prev,
                 [categoryId]: ''
             }));
         },
-        [isStandardPlan, newItemInputs, localWardrobe.categories]
+        [
+            isStandardPlan,
+            newItemInputs,
+            localWardrobe.categories,
+            checkForChanges
+        ]
     );
 
     const handleRemoveItem = useCallback(

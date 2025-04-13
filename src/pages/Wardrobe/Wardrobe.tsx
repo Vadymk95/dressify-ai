@@ -1,10 +1,11 @@
 import { ArrowLeft, Plus, Save, X } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { GoToHomeButton } from '@/components/common/GoToHomeButton';
 import { Loader } from '@/components/common/Loader';
+import { WardrobeCheckbox } from '@/components/features/WardrobeCheckbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,13 +17,22 @@ import {
     DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { auth } from '@/firebase/firebaseConfig';
 import { useWardrobe } from '@/hooks/useWardrobe';
 import { routes } from '@/router/routes';
+import { useUserProfileStore } from '@/store/userProfileStore';
+import { Wardrobe } from '@/types/user';
 
 const WardrobePage: FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSaveModal, setShowSaveModal] = useState(false);
+    const { profile, updateWardrobe, subscribeToUserProfile } =
+        useUserProfileStore();
+    const [wardrobeError, setWardrobeError] = useState<string | null>(null);
+    const [previousItemsCount, setPreviousItemsCount] = useState(0);
+
     const {
         sortedCategories,
         categoryStates,
@@ -40,6 +50,37 @@ const WardrobePage: FC = () => {
         getErrorMessage
     } = useWardrobe();
 
+    const totalItems = sortedCategories.reduce(
+        (sum, category) => sum + category.items.length,
+        0
+    );
+
+    useEffect(() => {
+        if (profile?.wardrobe) {
+            setPreviousItemsCount(
+                profile.wardrobe.categories.reduce(
+                    (sum, category) => sum + category.items.length,
+                    0
+                )
+            );
+        }
+    }, [profile?.wardrobe]);
+
+    useEffect(() => {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            const unsubscribe = subscribeToUserProfile(currentUser.uid);
+            return () => unsubscribe();
+        }
+    }, [subscribeToUserProfile]);
+
+    useEffect(() => {
+        if (wardrobeError) {
+            const timer = setTimeout(() => setWardrobeError(null), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [wardrobeError]);
+
     const handleBack = () => {
         if (hasChanges) {
             setShowConfirmModal(true);
@@ -53,12 +94,115 @@ const WardrobePage: FC = () => {
         navigate(-1);
     };
 
+    const handleSaveClick = async () => {
+        if (previousItemsCount > 0 && totalItems === 0) {
+            if (profile?.wardrobe) {
+                const updatedWardrobe: Wardrobe = {
+                    ...profile.wardrobe,
+                    useWardrobeForOutfits: false
+                };
+                await updateWardrobe(updatedWardrobe);
+            }
+            const success = await handleSave();
+            if (success) {
+                navigate(routes.whatToWear);
+            }
+        } else {
+            setShowSaveModal(true);
+        }
+    };
+
     const handleSaveAndNavigate = async () => {
         const success = await handleSave();
         if (success) {
+            setShowSaveModal(false);
             navigate(routes.whatToWear);
         }
     };
+
+    const renderSaveButton = () => (
+        <div className="flex items-center">
+            {isSaving ? (
+                <>
+                    <Loader />
+                    <span className="ml-2">{t('Pages.Wardrobe.saving')}</span>
+                </>
+            ) : (
+                <>
+                    <Save className="h-4 w-4 mr-2" />
+                    <span>{t('Pages.Wardrobe.saveChanges')}</span>
+                </>
+            )}
+        </div>
+    );
+
+    const renderConfirmModal = () => (
+        <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        {t('Pages.Wardrobe.unsavedChangesTitle')}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {t('Pages.Wardrobe.unsavedChangesDescription')}
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setShowConfirmModal(false)}
+                        className="cursor-pointer"
+                    >
+                        {t('General.cancel')}
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleConfirmLeave}
+                        className="cursor-pointer"
+                    >
+                        {t('General.leave')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+
+    const renderSaveModal = () => (
+        <Dialog open={showSaveModal} onOpenChange={setShowSaveModal}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{t('Pages.Wardrobe.saveChanges')}</DialogTitle>
+                    <DialogDescription>
+                        {t('Pages.Wardrobe.saveChangesDescription')}
+                    </DialogDescription>
+                </DialogHeader>
+                {totalItems > 0 && (
+                    <div className="py-4">
+                        <WardrobeCheckbox
+                            totalItems={totalItems}
+                            preventPropagation
+                            variant="dark"
+                        />
+                    </div>
+                )}
+                <DialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setShowSaveModal(false)}
+                        className="cursor-pointer"
+                    >
+                        {t('General.cancel')}
+                    </Button>
+                    <Button
+                        onClick={handleSaveAndNavigate}
+                        className="cursor-pointer bg-red-500 hover:bg-red-600 text-white"
+                    >
+                        {t('General.save')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 
     return (
         <div className="w-full flex-1 mx-auto p-4 fourth-gradient">
@@ -78,9 +222,11 @@ const WardrobePage: FC = () => {
                     </h1>
                 </div>
 
-                {(error || localError) && (
+                {(error || localError || wardrobeError) && (
                     <div className="mb-6 p-3 bg-red-100 text-red-800 rounded-md text-center">
-                        {getErrorMessage(localError || error || '')}
+                        {getErrorMessage(
+                            wardrobeError || localError || error || ''
+                        )}
                     </div>
                 )}
 
@@ -216,7 +362,7 @@ const WardrobePage: FC = () => {
 
                 <div className="mt-8 flex justify-center">
                     <Button
-                        onClick={handleSaveAndNavigate}
+                        onClick={handleSaveClick}
                         disabled={isSaving || !hasChanges}
                         className={`${
                             hasChanges
@@ -224,57 +370,16 @@ const WardrobePage: FC = () => {
                                 : 'bg-gray-400 hover:bg-gray-500'
                         } text-white px-6 py-2 cursor-pointer`}
                     >
-                        {isSaving ? (
-                            <div className="flex items-center">
-                                <Loader />
-                                <span className="ml-2">
-                                    {t('Pages.Wardrobe.saving')}
-                                </span>
-                            </div>
-                        ) : (
-                            <div className="flex items-center">
-                                <Save className="h-4 w-4 mr-2" />
-                                <span>{t('Pages.Wardrobe.saveChanges')}</span>
-                            </div>
-                        )}
+                        {renderSaveButton()}
                     </Button>
                 </div>
 
-                <Dialog
-                    open={showConfirmModal}
-                    onOpenChange={setShowConfirmModal}
-                >
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>
-                                {t('Pages.Wardrobe.unsavedChangesTitle')}
-                            </DialogTitle>
-                            <DialogDescription>
-                                {t('Pages.Wardrobe.unsavedChangesDescription')}
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button
-                                variant="outline"
-                                onClick={() => setShowConfirmModal(false)}
-                                className="cursor-pointer"
-                            >
-                                {t('General.cancel')}
-                            </Button>
-                            <Button
-                                variant="destructive"
-                                onClick={handleConfirmLeave}
-                                className="cursor-pointer"
-                            >
-                                {t('General.leave')}
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            </div>
+                {renderConfirmModal()}
+                {renderSaveModal()}
 
-            <div className="flex justify-center mt-8 mb-4 w-full">
-                <GoToHomeButton variant="third" />
+                <div className="flex justify-center mt-8 mb-4 w-full">
+                    <GoToHomeButton variant="third" />
+                </div>
             </div>
         </div>
     );

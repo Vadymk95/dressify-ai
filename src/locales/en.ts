@@ -128,8 +128,6 @@ export const en = {
                         title: 'Your Wardrobe',
                         openWardrobe: 'Open Wardrobe',
                         itemCount: 'Total Items: {{count}}',
-                        useWardrobeForOutfits:
-                            'Use wardrobe for outfit selection',
                         wardrobeNotAvailable:
                             'Wardrobe is only available for paid plans. Please choose a suitable plan.'
                     },
@@ -194,6 +192,9 @@ export const en = {
                                     '  - Casual with friends\n  - Office work\n  - Date night\n  - Shopping'
                             }
                         }
+                    },
+                    WardrobeCheckbox: {
+                        label: 'Use your wardrobe for outfit selection'
                     }
                 },
                 Layout: {
@@ -389,7 +390,9 @@ export const en = {
                 WhatToWear: {
                     title: "Let's find your perfect outfit!",
                     subtitle:
-                        'Fill in the information below, and we will help you create the perfect look for any occasion'
+                        'Fill in the information below, and we will help you create the perfect look for any occasion',
+                    minimalisticView: 'Minimalistic view',
+                    detailedView: 'Detailed view'
                 },
                 Wardrobe: {
                     title: 'My Wardrobe',
@@ -405,6 +408,8 @@ export const en = {
                     unsavedChangesTitle: 'Unsaved Changes',
                     unsavedChangesDescription:
                         'You have unsaved changes. Are you sure you want to leave without saving?',
+                    saveChangesDescription:
+                        'Do you want to use wardrobe for outfit selection?',
                     errors: {
                         maxLength: 'Item name should not exceed 50 characters',
                         unknownError: 'An unknown error occurred',
