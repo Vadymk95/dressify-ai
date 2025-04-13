@@ -7,9 +7,11 @@ import { AuthNavigation } from '@/components/common/AuthNavigation';
 import { Logo } from '@/components/common/Logo';
 import { LanguageSelect } from '@/components/features/LanguageSelect';
 import { routes } from '@/router/routes';
+import { useAuthStore } from '@/store/authStore';
 
 export const Header: FC = () => {
     const { t } = useTranslation();
+    const { user } = useAuthStore();
 
     return (
         <header className="sticky top-0 z-50 shadow-md py-4 px-4 md:px-8 main-bg">
@@ -18,6 +20,7 @@ export const Header: FC = () => {
 
                 <div className="flex items-center gap-6 md:gap-4">
                     <AuthNavigation />
+
                     <Link
                         className="hover:underline hover:text-orange-400"
                         to={routes.pricing}
@@ -32,7 +35,8 @@ export const Header: FC = () => {
                             {t('Components.Layout.Header.pricing')}
                         </span>
                     </Link>
-                    <LanguageSelect />
+
+                    {!user && <LanguageSelect />}
                 </div>
             </div>
         </header>

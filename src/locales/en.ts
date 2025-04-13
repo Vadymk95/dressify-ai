@@ -204,7 +204,8 @@ export const en = {
                         privacy: 'Privacy Policy',
                         terms: 'Terms of Use',
                         contact: 'Contact Us',
-                        copyright: 'All rights reserved.'
+                        copyright: 'All rights reserved.',
+                        lang: 'Language:'
                     }
                 }
             },
