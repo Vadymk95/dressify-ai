@@ -34,6 +34,9 @@ export const useWardrobe = () => {
 
     // Инициализация локального гардероба при загрузке данных
     useEffect(() => {
+        // Если уже есть локальные изменения, не обновляем состояние
+        if (hasChanges) return;
+
         if (profile?.wardrobe) {
             // Проверяем, что у всех категорий есть необходимые поля
             const updatedCategories = DEFAULT_CATEGORIES.map(
@@ -47,15 +50,9 @@ export const useWardrobe = () => {
                 }
             );
 
-            const hasItems = updatedCategories.some(
-                (category) => category.items.length > 0
-            );
-
             const updatedWardrobe = {
                 categories: updatedCategories,
-                useWardrobeForOutfits: hasItems
-                    ? true
-                    : profile.wardrobe.useWardrobeForOutfits
+                useWardrobeForOutfits: profile.wardrobe.useWardrobeForOutfits
             };
 
             setLocalWardrobe(updatedWardrobe);
@@ -72,7 +69,19 @@ export const useWardrobe = () => {
             setLocalWardrobe(defaultWardrobe);
             initialWardrobeRef.current = defaultWardrobe;
         }
-    }, [profile]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [profile?.wardrobe?.categories, hasChanges]);
+
+    // Отдельный эффект для синхронизации useWardrobeForOutfits
+    useEffect(() => {
+        const useWardrobeForOutfits = profile?.wardrobe?.useWardrobeForOutfits;
+        if (useWardrobeForOutfits !== undefined && !hasChanges) {
+            setLocalWardrobe((prev) => ({
+                ...prev,
+                useWardrobeForOutfits
+            }));
+        }
+    }, [profile?.wardrobe?.useWardrobeForOutfits, hasChanges]);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -118,7 +127,16 @@ export const useWardrobe = () => {
             (category, index) => {
                 const initialCategory =
                     initialWardrobeRef.current?.categories[index];
-                return category.items.length !== initialCategory?.items.length;
+
+                if (category.items.length !== initialCategory?.items.length) {
+                    return true;
+                }
+
+                // Проверяем содержимое элементов
+                return category.items.some((item, itemIndex) => {
+                    const initialItem = initialCategory?.items[itemIndex];
+                    return item.name !== initialItem?.name;
+                });
             }
         );
 
@@ -147,31 +165,42 @@ export const useWardrobe = () => {
                 }
             }
 
-            setLocalWardrobe((prev) => ({
-                ...prev,
-                categories: prev.categories.map((category) =>
-                    category.id === categoryId
-                        ? {
-                              ...category,
-                              items: [
-                                  ...category.items,
-                                  {
-                                      id: crypto.randomUUID(),
-                                      name: newItemName,
-                                      isNew: true
-                                  }
-                              ]
-                          }
-                        : category
-                )
-            }));
+            setLocalWardrobe((prev) => {
+                const updatedWardrobe = {
+                    ...prev,
+                    categories: prev.categories.map((category) =>
+                        category.id === categoryId
+                            ? {
+                                  ...category,
+                                  items: [
+                                      ...category.items,
+                                      {
+                                          id: crypto.randomUUID(),
+                                          name: newItemName,
+                                          isNew: true
+                                      }
+                                  ]
+                              }
+                            : category
+                    )
+                };
+
+                setHasChanges(checkForChanges(updatedWardrobe));
+
+                return updatedWardrobe;
+            });
 
             setNewItemInputs((prev) => ({
                 ...prev,
                 [categoryId]: ''
             }));
         },
-        [isStandardPlan, newItemInputs, localWardrobe.categories]
+        [
+            isStandardPlan,
+            newItemInputs,
+            localWardrobe.categories,
+            checkForChanges
+        ]
     );
 
     const handleRemoveItem = useCallback(
@@ -205,8 +234,39 @@ export const useWardrobe = () => {
     const handleSave = async () => {
         try {
             setIsSaving(true);
-            await updateWardrobe({
+
+            // Проверяем, есть ли элементы в локальном гардеробе
+            const hasItems = localWardrobe.categories.some(
+                (category) => category.items.length > 0
+            );
+
+            // Проверяем, был ли гардероб пустым в сторе
+            const wasStoreEmpty = profile?.wardrobe?.categories.every(
+                (category) => category.items.length === 0
+            );
+
+            // Используем значение из стора, если оно есть
+            const currentUseWardrobeForOutfits =
+                profile?.wardrobe?.useWardrobeForOutfits;
+
+            // Определяем новое значение useWardrobeForOutfits
+            let newUseWardrobeForOutfits: boolean;
+
+            if (!hasItems) {
+                // Если нет элементов, всегда false
+                newUseWardrobeForOutfits = false;
+            } else if (wasStoreEmpty) {
+                // Если гардероб был пустым и мы добавляем элементы
+                newUseWardrobeForOutfits = true;
+            } else {
+                // В остальных случаях используем текущее значение из стора
+                newUseWardrobeForOutfits =
+                    currentUseWardrobeForOutfits ?? false;
+            }
+
+            const updatedWardrobe = {
                 ...localWardrobe,
+                useWardrobeForOutfits: newUseWardrobeForOutfits,
                 categories: localWardrobe.categories.map((category) => ({
                     ...category,
                     items: category.items.map((item) => ({
@@ -214,13 +274,16 @@ export const useWardrobe = () => {
                         name: item.name
                     }))
                 }))
-            });
+            };
+
+            await updateWardrobe(updatedWardrobe);
             setHasChanges(false);
             setLocalError(null);
 
             // Убираем флаг isNew после сохранения
             setLocalWardrobe((prev) => ({
                 ...prev,
+                useWardrobeForOutfits: newUseWardrobeForOutfits,
                 categories: prev.categories.map((category) => ({
                     ...category,
                     items: category.items.map((item) => ({
@@ -294,6 +357,7 @@ export const useWardrobe = () => {
         handleAddItem,
         handleRemoveItem,
         handleSave,
-        getErrorMessage
+        getErrorMessage,
+        setLocalWardrobe
     };
 };

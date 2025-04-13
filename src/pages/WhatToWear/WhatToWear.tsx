@@ -2,13 +2,10 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EmailVerificationPanel } from '@/components/common/EmailVerificationPanel';
+import { PanelsContainer } from '@/components/common/PanelsContainer';
 import { PerfectOutlook } from '@/components/common/PerfectOutlook';
-import { EventPanel } from '@/components/features/EventPanel';
 import { Feedback } from '@/components/features/Feedback';
 import { OutfitRequestPanel } from '@/components/features/OutfitRequestPanel';
-import { PersonalDetailsPanel } from '@/components/features/PersonalDetailsPanel';
-import { WardrobePanel } from '@/components/features/WardrobePanel';
-import { WeatherPanel } from '@/components/features/WeatherPanel';
 
 const WhatToWear: FC = () => {
     const { t } = useTranslation();
@@ -26,20 +23,7 @@ const WhatToWear: FC = () => {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div className="h-[200px]">
-                    <WeatherPanel />
-                </div>
-                <div className="h-[200px]">
-                    <PersonalDetailsPanel />
-                </div>
-                <div className="h-[200px]">
-                    <WardrobePanel />
-                </div>
-                <div className="h-[200px]">
-                    <EventPanel />
-                </div>
-            </div>
+            <PanelsContainer />
 
             <section className="p-4 bg-amber-50 rounded-xl shadow-md text-center">
                 <OutfitRequestPanel />

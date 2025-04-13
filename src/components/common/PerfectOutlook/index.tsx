@@ -11,12 +11,12 @@ import {
     DialogHeader,
     DialogTitle
 } from '@/components/ui/dialog';
-import { usePerfectOutlookStore } from '@/store/perfectOutlookStore';
+import { useUIStore } from '@/store/uiStore';
 
 export const PerfectOutlook: FC = () => {
     const { t } = useTranslation();
     const { isModalOpen, dontShowAgain, setIsModalOpen, setDontShowAgain } =
-        usePerfectOutlookStore();
+        useUIStore();
 
     useEffect(() => {
         if (!dontShowAgain) {

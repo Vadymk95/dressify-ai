@@ -65,7 +65,7 @@ const Register: FC = () => {
     return (
         <>
             {loading && <Loader />}
-            <div className="max-w-md mx-auto py-12 px-6">
+            <div className="max-w-lg mx-auto py-12 px-6 w-full">
                 <h2 className="text-2xl font-semibold text-center mb-6">
                     {t('Pages.Register.title')}
                 </h2>
