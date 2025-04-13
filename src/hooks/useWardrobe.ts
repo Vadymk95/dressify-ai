@@ -34,6 +34,9 @@ export const useWardrobe = () => {
 
     // Инициализация локального гардероба при загрузке данных
     useEffect(() => {
+        // Если уже есть локальные изменения, не обновляем состояние
+        if (hasChanges) return;
+
         if (profile?.wardrobe) {
             // Проверяем, что у всех категорий есть необходимые поля
             const updatedCategories = DEFAULT_CATEGORIES.map(
@@ -66,7 +69,19 @@ export const useWardrobe = () => {
             setLocalWardrobe(defaultWardrobe);
             initialWardrobeRef.current = defaultWardrobe;
         }
-    }, [profile]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [profile?.wardrobe?.categories, hasChanges]);
+
+    // Отдельный эффект для синхронизации useWardrobeForOutfits
+    useEffect(() => {
+        const useWardrobeForOutfits = profile?.wardrobe?.useWardrobeForOutfits;
+        if (useWardrobeForOutfits !== undefined && !hasChanges) {
+            setLocalWardrobe((prev) => ({
+                ...prev,
+                useWardrobeForOutfits
+            }));
+        }
+    }, [profile?.wardrobe?.useWardrobeForOutfits, hasChanges]);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -230,15 +245,26 @@ export const useWardrobe = () => {
                 (category) => category.items.length === 0
             );
 
-            // Если гардероб был пустым и мы добавляем элементы, устанавливаем useWardrobeForOutfits в true
-            const newUseWardrobeForOutfits =
-                wasStoreEmpty && hasItems
-                    ? true
-                    : hasItems
-                      ? localWardrobe.useWardrobeForOutfits
-                      : false;
+            // Используем значение из стора, если оно есть
+            const currentUseWardrobeForOutfits =
+                profile?.wardrobe?.useWardrobeForOutfits;
 
-            await updateWardrobe({
+            // Определяем новое значение useWardrobeForOutfits
+            let newUseWardrobeForOutfits: boolean;
+
+            if (!hasItems) {
+                // Если нет элементов, всегда false
+                newUseWardrobeForOutfits = false;
+            } else if (wasStoreEmpty) {
+                // Если гардероб был пустым и мы добавляем элементы
+                newUseWardrobeForOutfits = true;
+            } else {
+                // В остальных случаях используем текущее значение из стора
+                newUseWardrobeForOutfits =
+                    currentUseWardrobeForOutfits ?? false;
+            }
+
+            const updatedWardrobe = {
                 ...localWardrobe,
                 useWardrobeForOutfits: newUseWardrobeForOutfits,
                 categories: localWardrobe.categories.map((category) => ({
@@ -248,7 +274,9 @@ export const useWardrobe = () => {
                         name: item.name
                     }))
                 }))
-            });
+            };
+
+            await updateWardrobe(updatedWardrobe);
             setHasChanges(false);
             setLocalError(null);
 

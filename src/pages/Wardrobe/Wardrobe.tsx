@@ -89,14 +89,6 @@ const WardrobePage: FC = () => {
             return;
         }
 
-        console.log('handleSaveClick:', {
-            hadItemsInStore: profile?.wardrobe?.categories.some(
-                (category) => category.items.length > 0
-            ),
-            totalItems,
-            profileWardrobe: profile?.wardrobe
-        });
-
         const hadItemsInStore = profile?.wardrobe?.categories.some(
             (category) => category.items.length > 0
         );
@@ -105,12 +97,6 @@ const WardrobePage: FC = () => {
             (hadItemsInStore && totalItems === 0) ||
             (!hadItemsInStore && totalItems > 0)
         ) {
-            console.log('Updating wardrobe:', {
-                hadItemsInStore,
-                totalItems,
-                newUseWardrobeForOutfits: totalItems > 0
-            });
-
             if (profile?.wardrobe) {
                 const updatedWardrobe: Wardrobe = {
                     ...profile.wardrobe,
@@ -129,7 +115,6 @@ const WardrobePage: FC = () => {
             return;
         }
 
-        console.log('Showing modal instead');
         setShowSaveModal(true);
     };
 
