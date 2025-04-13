@@ -47,15 +47,9 @@ export const useWardrobe = () => {
                 }
             );
 
-            const hasItems = updatedCategories.some(
-                (category) => category.items.length > 0
-            );
-
             const updatedWardrobe = {
                 categories: updatedCategories,
-                useWardrobeForOutfits: hasItems
-                    ? true
-                    : profile.wardrobe.useWardrobeForOutfits
+                useWardrobeForOutfits: profile.wardrobe.useWardrobeForOutfits
             };
 
             setLocalWardrobe(updatedWardrobe);
@@ -225,8 +219,28 @@ export const useWardrobe = () => {
     const handleSave = async () => {
         try {
             setIsSaving(true);
+
+            // Проверяем, есть ли элементы в локальном гардеробе
+            const hasItems = localWardrobe.categories.some(
+                (category) => category.items.length > 0
+            );
+
+            // Проверяем, был ли гардероб пустым в сторе
+            const wasStoreEmpty = profile?.wardrobe?.categories.every(
+                (category) => category.items.length === 0
+            );
+
+            // Если гардероб был пустым и мы добавляем элементы, устанавливаем useWardrobeForOutfits в true
+            const newUseWardrobeForOutfits =
+                wasStoreEmpty && hasItems
+                    ? true
+                    : hasItems
+                      ? localWardrobe.useWardrobeForOutfits
+                      : false;
+
             await updateWardrobe({
                 ...localWardrobe,
+                useWardrobeForOutfits: newUseWardrobeForOutfits,
                 categories: localWardrobe.categories.map((category) => ({
                     ...category,
                     items: category.items.map((item) => ({
@@ -241,6 +255,7 @@ export const useWardrobe = () => {
             // Убираем флаг isNew после сохранения
             setLocalWardrobe((prev) => ({
                 ...prev,
+                useWardrobeForOutfits: newUseWardrobeForOutfits,
                 categories: prev.categories.map((category) => ({
                     ...category,
                     items: category.items.map((item) => ({
@@ -314,6 +329,7 @@ export const useWardrobe = () => {
         handleAddItem,
         handleRemoveItem,
         handleSave,
-        getErrorMessage
+        getErrorMessage,
+        setLocalWardrobe
     };
 };

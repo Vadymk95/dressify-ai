@@ -31,7 +31,6 @@ const WardrobePage: FC = () => {
     const { profile, updateWardrobe, subscribeToUserProfile } =
         useUserProfileStore();
     const [wardrobeError, setWardrobeError] = useState<string | null>(null);
-    const [previousItemsCount, setPreviousItemsCount] = useState(0);
 
     const {
         sortedCategories,
@@ -47,24 +46,14 @@ const WardrobePage: FC = () => {
         handleAddItem,
         handleRemoveItem,
         handleSave,
-        getErrorMessage
+        getErrorMessage,
+        setLocalWardrobe
     } = useWardrobe();
 
     const totalItems = sortedCategories.reduce(
         (sum, category) => sum + category.items.length,
         0
     );
-
-    useEffect(() => {
-        if (profile?.wardrobe) {
-            setPreviousItemsCount(
-                profile.wardrobe.categories.reduce(
-                    (sum, category) => sum + category.items.length,
-                    0
-                )
-            );
-        }
-    }, [profile?.wardrobe]);
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -95,21 +84,53 @@ const WardrobePage: FC = () => {
     };
 
     const handleSaveClick = async () => {
-        if (previousItemsCount > 0 && totalItems === 0) {
+        if (!hasChanges) {
+            navigate(routes.whatToWear);
+            return;
+        }
+
+        console.log('handleSaveClick:', {
+            hadItemsInStore: profile?.wardrobe?.categories.some(
+                (category) => category.items.length > 0
+            ),
+            totalItems,
+            profileWardrobe: profile?.wardrobe
+        });
+
+        const hadItemsInStore = profile?.wardrobe?.categories.some(
+            (category) => category.items.length > 0
+        );
+
+        if (
+            (hadItemsInStore && totalItems === 0) ||
+            (!hadItemsInStore && totalItems > 0)
+        ) {
+            console.log('Updating wardrobe:', {
+                hadItemsInStore,
+                totalItems,
+                newUseWardrobeForOutfits: totalItems > 0
+            });
+
             if (profile?.wardrobe) {
                 const updatedWardrobe: Wardrobe = {
                     ...profile.wardrobe,
-                    useWardrobeForOutfits: false
+                    useWardrobeForOutfits: totalItems > 0
                 };
                 await updateWardrobe(updatedWardrobe);
             }
+            setLocalWardrobe((prev) => ({
+                ...prev,
+                useWardrobeForOutfits: totalItems > 0
+            }));
             const success = await handleSave();
             if (success) {
                 navigate(routes.whatToWear);
             }
-        } else {
-            setShowSaveModal(true);
+            return;
         }
+
+        console.log('Showing modal instead');
+        setShowSaveModal(true);
     };
 
     const handleSaveAndNavigate = async () => {
@@ -176,11 +197,9 @@ const WardrobePage: FC = () => {
                         {t('Pages.Wardrobe.saveChangesDescription')}
                     </DialogDescription>
                 </DialogHeader>
-                {totalItems > 0 && (
-                    <div className="py-4">
-                        <WardrobeCheckbox preventPropagation variant="dark" />
-                    </div>
-                )}
+                <div className="py-4">
+                    <WardrobeCheckbox preventPropagation variant="dark" />
+                </div>
                 <DialogFooter>
                     <Button
                         variant="outline"
