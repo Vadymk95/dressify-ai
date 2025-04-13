@@ -8,7 +8,7 @@ import { WeatherPanel } from '@/components/features/WeatherPanel';
 import { Switch } from '@/components/ui/switch';
 import { useUIStore } from '@/store/uiStore';
 
-export const PanelContainer: FC = () => {
+export const PanelsContainer: FC = () => {
     const { t } = useTranslation();
     const { isMinimalistic, setIsMinimalistic } = useUIStore();
     const isMinimalisticView = isMinimalistic ? 'h-auto' : 'h-[200px]';

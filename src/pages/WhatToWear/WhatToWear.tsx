@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EmailVerificationPanel } from '@/components/common/EmailVerificationPanel';
-import { PanelContainer } from '@/components/common/PanelContainer';
+import { PanelsContainer } from '@/components/common/PanelsContainer';
 import { PerfectOutlook } from '@/components/common/PerfectOutlook';
 import { Feedback } from '@/components/features/Feedback';
 import { OutfitRequestPanel } from '@/components/features/OutfitRequestPanel';
@@ -23,7 +23,7 @@ const WhatToWear: FC = () => {
                 </p>
             </div>
 
-            <PanelContainer />
+            <PanelsContainer />
 
             <section className="p-4 bg-amber-50 rounded-xl shadow-md text-center">
                 <OutfitRequestPanel />
