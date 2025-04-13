@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -7,14 +7,12 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 import { Wardrobe } from '@/types/user';
 
 interface WardrobeCheckboxProps {
-    disabled?: boolean;
     preventPropagation?: boolean;
     totalItems?: number;
     variant?: 'light' | 'dark';
 }
 
-export const WardrobeCheckbox: FC<WardrobeCheckboxProps> = ({
-    disabled = false,
+export const WardrobeCheckbox: React.FC<WardrobeCheckboxProps> = ({
     preventPropagation = false,
     totalItems,
     variant = 'light'
@@ -22,7 +20,7 @@ export const WardrobeCheckbox: FC<WardrobeCheckboxProps> = ({
     const { t } = useTranslation();
     const { profile, updateWardrobe } = useUserProfileStore();
 
-    const isChecked = profile?.wardrobe?.useWardrobeForOutfits || false;
+    const isFreePlan = profile?.plan === 'free';
     const items =
         totalItems ??
         profile?.wardrobe?.categories.reduce(
@@ -31,8 +29,11 @@ export const WardrobeCheckbox: FC<WardrobeCheckboxProps> = ({
         ) ??
         0;
 
+    const isChecked =
+        items > 0 ? profile?.wardrobe?.useWardrobeForOutfits || false : false;
+
     const handleToggle = async (checked: boolean) => {
-        if (!profile?.wardrobe || disabled || items === 0) return;
+        if (!profile?.wardrobe || isFreePlan || items === 0) return;
 
         const updatedWardrobe: Wardrobe = {
             ...profile.wardrobe,
@@ -52,21 +53,27 @@ export const WardrobeCheckbox: FC<WardrobeCheckboxProps> = ({
         <div className="flex items-center gap-2" onClick={handleClick}>
             <Checkbox
                 id="use-wardrobe"
-                checked={items > 0 && isChecked}
+                checked={isChecked}
                 onCheckedChange={handleToggle}
-                disabled={disabled || items === 0}
+                disabled={isFreePlan || items === 0}
                 className={`${
-                    disabled || items === 0
+                    isFreePlan || items === 0
                         ? 'border-amber-300/50 data-[state=checked]:bg-amber-600/50 data-[state=checked]:border-amber-600/50'
                         : 'border-amber-300 data-[state=checked]:bg-amber-600 data-[state=checked]:border-amber-600'
                 } data-[state=unchecked]:bg-transparent focus:ring-amber-500 focus:ring-offset-0`}
             />
             <Label
                 htmlFor="use-wardrobe"
-                className={`${variant === 'dark' ? 'text-muted-foreground' : 'text-amber-50'} text-sm cursor-pointer ${disabled || items === 0 ? 'text-amber-50/50' : ''}`}
+                className={`${
+                    variant === 'dark'
+                        ? 'text-muted-foreground'
+                        : 'text-amber-50'
+                } text-sm cursor-pointer ${
+                    isFreePlan || items === 0 ? 'text-amber-50/50' : ''
+                }`}
                 onClick={(e) => {
                     e.preventDefault();
-                    if (!disabled && items > 0) {
+                    if (!isFreePlan && items > 0) {
                         handleToggle(!isChecked);
                     }
                 }}

@@ -123,7 +123,6 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
                                 }}
                             >
                                 <WardrobeCheckbox
-                                    disabled={isFreePlan}
                                     totalItems={totalItems}
                                     preventPropagation
                                 />
