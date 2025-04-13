@@ -44,9 +44,9 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
     }, [localError]);
 
     const getErrorMessage = (errorKey: string) => {
-        const translation = t(`errors.${errorKey}`);
-        return translation === `errors.${errorKey}`
-            ? t('errors.unknownError')
+        const translation = t(`Pages.Wardrobe.errors.${errorKey}`);
+        return translation === `Pages.Wardrobe.errors.${errorKey}`
+            ? t('Pages.Wardrobe.errors.unknownError')
             : translation;
     };
 

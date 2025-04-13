@@ -498,7 +498,8 @@ export const ru = {
                     },
                     errors: {
                         fetchWeatherError: 'Ошибка при получении погоды',
-                        fetchCitiesError: 'Ошибка при получении списка городов'
+                        fetchCitiesError: 'Ошибка при получении списка городов',
+                        unknownError: 'Произошла неизвестная ошибка'
                     }
                 },
                 PersonalDetails: {
@@ -668,7 +669,10 @@ export const ru = {
                 cancel: 'Отмена',
                 leave: 'Уйти',
                 goToHome: 'Перейти на главную',
-                tooltip: 'Подсказка'
+                tooltip: 'Подсказка',
+                errors: {
+                    unknownError: 'Произошла неизвестная ошибка'
+                }
             },
             ...ru_codes
         }

@@ -498,7 +498,8 @@ export const en = {
                     },
                     errors: {
                         fetchWeatherError: 'Error fetching weather',
-                        fetchCitiesError: 'Error fetching cities'
+                        fetchCitiesError: 'Error fetching cities',
+                        unknownError: 'An unknown error occurred'
                     }
                 },
                 PersonalDetails: {
@@ -667,7 +668,10 @@ export const en = {
                 cancel: 'Cancel',
                 leave: 'Leave',
                 goToHome: 'Go to Home',
-                tooltip: 'Tooltip'
+                tooltip: 'Tooltip',
+                errors: {
+                    unknownError: 'An unknown error occurred'
+                }
             },
             ...en_codes
         }
