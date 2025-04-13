@@ -178,11 +178,7 @@ const WardrobePage: FC = () => {
                 </DialogHeader>
                 {totalItems > 0 && (
                     <div className="py-4">
-                        <WardrobeCheckbox
-                            totalItems={totalItems}
-                            preventPropagation
-                            variant="dark"
-                        />
+                        <WardrobeCheckbox preventPropagation variant="dark" />
                     </div>
                 )}
                 <DialogFooter>

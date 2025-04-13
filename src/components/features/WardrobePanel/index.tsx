@@ -122,10 +122,7 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
                                     e.stopPropagation();
                                 }}
                             >
-                                <WardrobeCheckbox
-                                    totalItems={totalItems}
-                                    preventPropagation
-                                />
+                                <WardrobeCheckbox preventPropagation />
                             </div>
                         </div>
                     </>
