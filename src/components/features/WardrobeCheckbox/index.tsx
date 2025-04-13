@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useUserProfileStore } from '@/store/userProfileStore';
+import { toast } from 'sonner';
 
 interface WardrobeCheckboxProps {
     preventPropagation?: boolean;
@@ -15,7 +16,7 @@ export const WardrobeCheckbox: React.FC<WardrobeCheckboxProps> = ({
     variant = 'light'
 }) => {
     const { t } = useTranslation();
-    const { profile, updateWardrobe } = useUserProfileStore();
+    const { profile, updateWardrobe, error } = useUserProfileStore();
 
     const isFreePlan = profile?.plan === 'free';
     const totalItems =
@@ -32,7 +33,10 @@ export const WardrobeCheckbox: React.FC<WardrobeCheckboxProps> = ({
                 ...profile.wardrobe,
                 useWardrobeForOutfits: !profile.wardrobe.useWardrobeForOutfits
             };
-            await updateWardrobe(updatedWardrobe);
+            await updateWardrobe(updatedWardrobe, { silent: true });
+            if (error) {
+                toast.error(t('Pages.Wardrobe.errors.unknownError'));
+            }
         }
     };
 

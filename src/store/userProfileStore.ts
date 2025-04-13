@@ -19,7 +19,10 @@ export interface UserProfileStore {
     updateEmailVerified: () => Promise<boolean>;
     updateLocation: (country: string, city: string) => Promise<void>;
     clearLocation: () => Promise<void>;
-    updateWardrobe: (wardrobe: Wardrobe) => Promise<void>;
+    updateWardrobe: (
+        wardrobe: Wardrobe,
+        options?: { silent?: boolean }
+    ) => Promise<void>;
     updateProfile: (
         profile: UserProfile,
         options?: { silent?: boolean }
@@ -277,8 +280,10 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
     },
 
     // Новый метод для обновления гардероба пользователя
-    updateWardrobe: async (wardrobe: Wardrobe) => {
-        set({ loading: true, error: null });
+    updateWardrobe: async (wardrobe: Wardrobe, options = { silent: false }) => {
+        if (!options.silent) {
+            set({ loading: true, error: null });
+        }
         try {
             const currentUser = auth.currentUser;
             if (!currentUser) throw new Error('User not logged in');
@@ -293,7 +298,8 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             if (currentProfile) {
                 set({
                     profile: { ...currentProfile, wardrobe },
-                    loading: false
+                    loading: false,
+                    error: null
                 });
             } else {
                 set({ loading: false });
