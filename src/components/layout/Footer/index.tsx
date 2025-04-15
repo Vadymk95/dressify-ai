@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 
+import { DeleteAccountButton } from '@/components/common/DeleteAccountButton';
 import { Logo } from '@/components/common/Logo';
 import { LanguageSelect } from '@/components/features/LanguageSelect';
 import { routes } from '@/router/routes';
@@ -52,6 +53,8 @@ export const Footer: FC = () => {
                         <p>{t('Components.Layout.Footer.lang')}</p>
                         {user && <LanguageSelect />}
                     </div>
+
+                    {user && <DeleteAccountButton />}
                 </div>
             </div>
 
