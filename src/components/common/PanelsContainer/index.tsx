@@ -18,7 +18,7 @@ export const PanelsContainer: FC = () => {
     };
 
     return (
-        <section className="flex flex-col gap-2 w-full mx-auto">
+        <div className="flex flex-col gap-2 w-full mx-auto">
             <div className="flex justify-end items-center gap-2">
                 <span className="text-amber-700 text-sm">
                     {isMinimalistic
@@ -47,6 +47,6 @@ export const PanelsContainer: FC = () => {
                     <EventPanel isMinimalistic={isMinimalistic} />
                 </div>
             </div>
-        </section>
+        </div>
     );
 };
