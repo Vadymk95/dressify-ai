@@ -195,6 +195,33 @@ export const en = {
                     },
                     WardrobeCheckbox: {
                         label: 'Use your wardrobe for outfit selection'
+                    },
+                    DeleteAccountPanel: {
+                        title: 'Delete Account',
+                        description:
+                            'This action cannot be undone. All your data will be permanently deleted.',
+                        email: 'Email',
+                        password: 'Password',
+                        confirmPassword: 'Confirm Password',
+                        deleteButton: 'Delete Account',
+                        cancelButton: 'Cancel',
+                        errors: {
+                            emailRequired: 'Email is required',
+                            invalidEmailFormat:
+                                'Please enter a valid email address',
+                            emailMismatch:
+                                'Email does not match your current account email',
+                            passwordRequired: 'Password is required',
+                            passwordRequirements:
+                                'Password must be at least 8 characters long and contain at least one letter and one number',
+                            confirmPasswordRequired:
+                                'Please confirm your password',
+                            passwordsMismatch: 'Passwords do not match',
+                            invalidCredentials: 'Invalid email or password',
+                            genericError:
+                                'An error occurred while deleting your account'
+                        },
+                        success: 'Account successfully deleted'
                     }
                 },
                 Layout: {
@@ -296,20 +323,18 @@ export const en = {
                         "Have questions or feedback? Please send an email to this address, and we'll get back to you shortly."
                 },
                 Login: {
-                    title: 'Sign In',
+                    title: 'Login',
                     email: 'Email',
                     password: 'Password',
-                    register: 'Sign Up',
+                    button: 'Login',
                     noAccount: "Don't have an account?",
+                    register: 'Register',
                     errors: {
-                        emailRequired: 'Email is required',
-                        invalidEmail: 'Invalid email address',
-                        passwordRequired: 'Password is required',
-                        passwordMinLength:
-                            'Password must be at least 8 characters',
                         invalidCredentials: 'Invalid email or password',
-                        genericError:
-                            'An error occurred. Please try again later.'
+                        genericError: 'An error occurred while logging in',
+                        requiresRecentLogin:
+                            'For security reasons, please log out and log in again before deleting your account',
+                        userMismatch: 'You can only delete your own account'
                     }
                 },
                 Register: {

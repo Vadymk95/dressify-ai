@@ -194,6 +194,32 @@ export const ru = {
                     },
                     WardrobeCheckbox: {
                         label: 'Использовать гардероб для подбора образов'
+                    },
+                    DeleteAccountPanel: {
+                        title: 'Удалить аккаунт',
+                        description:
+                            'Это действие нельзя отменить. Все ваши данные будут безвозвратно удалены.',
+                        email: 'Email',
+                        password: 'Пароль',
+                        confirmPassword: 'Подтвердите пароль',
+                        deleteButton: 'Удалить аккаунт',
+                        cancelButton: 'Отмена',
+                        errors: {
+                            emailRequired: 'Введите email',
+                            invalidEmailFormat:
+                                'Введите корректный email адрес',
+                            emailMismatch:
+                                'Email не совпадает с email вашего аккаунта',
+                            passwordRequired: 'Введите пароль',
+                            passwordRequirements:
+                                'Пароль должен содержать минимум 8 символов, включая хотя бы одну букву и одну цифру',
+                            confirmPasswordRequired: 'Подтвердите пароль',
+                            passwordsMismatch: 'Пароли не совпадают',
+                            invalidCredentials: 'Неверный email или пароль',
+                            genericError:
+                                'Произошла ошибка при удалении аккаунта'
+                        },
+                        success: 'Аккаунт успешно удален'
                     }
                 },
                 Layout: {
@@ -295,19 +321,18 @@ export const ru = {
                         'Есть вопросы или предложения? Пришлите сообщение на этот Email, и мы вскоре вам ответим.'
                 },
                 Login: {
-                    title: 'Войти',
+                    title: 'Вход',
                     email: 'Email',
                     password: 'Пароль',
-                    register: 'Зарегистрироваться',
+                    button: 'Войти',
                     noAccount: 'Нет аккаунта?',
+                    register: 'Зарегистрироваться',
                     errors: {
-                        emailRequired: 'Укажите электронную почту',
-                        invalidEmail: 'Некорректный формат электронной почты',
-                        passwordRequired: 'Введите пароль',
-                        passwordMinLength:
-                            'Пароль должен быть не менее 8 символов',
-                        invalidCredentials: 'Неверный логин или пароль',
-                        genericError: 'Произошла ошибка. Попробуйте позже.'
+                        invalidCredentials: 'Неверный email или пароль',
+                        genericError: 'Произошла ошибка при входе',
+                        requiresRecentLogin:
+                            'В целях безопасности, пожалуйста, выйдите из аккаунта и войдите снова, прежде чем удалять аккаунт',
+                        userMismatch: 'Вы можете удалить только свой аккаунт'
                     }
                 },
                 Register: {

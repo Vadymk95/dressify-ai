@@ -2,12 +2,13 @@ import { auth, db } from '@/firebase/firebaseConfig';
 import {
     User,
     createUserWithEmailAndPassword,
+    deleteUser,
     onAuthStateChanged,
     sendEmailVerification,
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { t } from 'i18next';
 import { create } from 'zustand';
 
@@ -23,6 +24,7 @@ interface AuthState {
     logout: () => Promise<void>;
     checkAuth: () => void;
     clearError: () => void;
+    deleteUser: (email: string, password: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -119,5 +121,59 @@ export const useAuthStore = create<AuthState>((set) => ({
         onAuthStateChanged(auth, (user) => set({ user, initialized: true })),
 
     // Функция для сброса ошибки
-    clearError: () => set({ error: null })
+    clearError: () => set({ error: null }),
+
+    deleteUser: async (email, password) => {
+        set({ loading: true, error: null });
+        try {
+            // Получаем текущего пользователя
+            const currentUser = auth.currentUser;
+            if (!currentUser || currentUser.email !== email) {
+                throw { code: 'auth/user-mismatch' };
+            }
+
+            // Сначала аутентифицируем пользователя
+            const { user } = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            // Дополнительная проверка на совпадение uid
+            if (user.uid !== currentUser.uid) {
+                throw { code: 'auth/user-mismatch' };
+            }
+
+            try {
+                // Сначала пытаемся удалить из Firestore, пока есть права доступа
+                await deleteDoc(doc(db, 'users', user.uid));
+            } catch (firestoreError) {
+                console.error('Error deleting from Firestore:', firestoreError);
+                // Продолжаем выполнение даже если не удалось удалить из Firestore
+            }
+
+            // Затем удаляем пользователя из Authentication
+            await deleteUser(user);
+
+            set({ user: null, loading: false });
+        } catch (error: any) {
+            let errorMessage = '';
+            switch (error.code) {
+                case 'auth/invalid-credential':
+                    errorMessage = t('Pages.Login.errors.invalidCredentials');
+                    break;
+                case 'auth/requires-recent-login':
+                    errorMessage = t('Pages.Login.errors.requiresRecentLogin');
+                    break;
+                case 'auth/user-mismatch':
+                    errorMessage = t('Pages.Login.errors.userMismatch');
+                    break;
+                default:
+                    errorMessage = t('Pages.Register.errors.genericError');
+                    break;
+            }
+            set({ error: errorMessage, loading: false });
+            throw error;
+        }
+    }
 }));
