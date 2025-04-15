@@ -658,7 +658,7 @@ export const PersonalDetails: FC = () => {
                 </div>
             </div>
             <div className="flex justify-center mb-4 mt-8 w-full">
-                <GoToHomeButton variant="main" />
+                <GoToHomeButton variant="first" />
             </div>
         </div>
     );
