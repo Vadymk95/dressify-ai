@@ -17,6 +17,7 @@ const WhatToWear: FC = () => {
         <div className="w-full max-w-4xl mx-auto px-6 flex flex-col gap-10">
             <PerfectOutlook />
             <EmailVerificationPanel />
+
             {!isMinimalistic && (
                 <div>
                     <h1 className="text-3xl md:text-4xl text-center mb-2 font-bold mt-14 text-amber-800">
