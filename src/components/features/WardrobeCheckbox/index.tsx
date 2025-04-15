@@ -66,7 +66,7 @@ export const WardrobeCheckbox: React.FC<WardrobeCheckboxProps> = ({
                     variant === 'dark'
                         ? 'text-muted-foreground'
                         : 'text-amber-50'
-                } text-sm cursor-pointer ${
+                } text-xs md:text-sm cursor-pointer ${
                     isFreePlan ? 'text-amber-50/50' : ''
                 }`}
                 onClick={(e) => {

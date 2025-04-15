@@ -22,11 +22,6 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
     const [localError, setLocalError] = useState<string | null>(null);
 
     const isFreePlan = profile?.plan === 'free';
-    const totalItems =
-        profile?.wardrobe?.categories.reduce(
-            (sum, category) => sum + category.items.length,
-            0
-        ) || 0;
 
     useEffect(() => {
         const currentUser = auth.currentUser;
@@ -71,7 +66,7 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
             )}
             <Link
                 to={routes.wardrobe}
-                className="group h-full p-6 flex flex-col items-center justify-center gap-4 fourth-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-2 md:gap-4 fourth-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
                 <div className="flex flex-col items-center gap-2">
                     <Shirt
@@ -87,11 +82,13 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
                 </div>
                 {!isMinimalistic && (
                     <>
-                        <span className="text-amber-50/60 text-sm">
-                            {t(
-                                'Components.Features.WardrobePanel.openWardrobe'
-                            )}
-                        </span>
+                        {!error && (
+                            <span className="text-amber-50/60 text-sm">
+                                {t(
+                                    'Components.Features.WardrobePanel.openWardrobe'
+                                )}
+                            </span>
+                        )}
 
                         {(error || localError) && (
                             <div className="mb-2 p-2 bg-red-100 text-red-800 rounded-md text-center text-xs">
@@ -99,31 +96,14 @@ export const WardrobePanel: FC<WardrobePanelProps> = ({
                             </div>
                         )}
 
-                        <div className="flex flex-col items-center gap-2 w-full">
-                            <p
-                                className={`text-center text-sm ${
-                                    isFreePlan
-                                        ? 'text-amber-50/50'
-                                        : 'text-amber-50/80'
-                                }`}
-                            >
-                                {t(
-                                    'Components.Features.WardrobePanel.itemCount',
-                                    {
-                                        count: totalItems
-                                    }
-                                )}
-                            </p>
-
-                            <div
-                                className="flex items-center justify-center gap-2 w-full"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                }}
-                            >
-                                <WardrobeCheckbox preventPropagation />
-                            </div>
+                        <div
+                            className="flex items-center justify-center gap-2 w-full"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }}
+                        >
+                            <WardrobeCheckbox preventPropagation />
                         </div>
                     </>
                 )}

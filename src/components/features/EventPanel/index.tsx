@@ -53,7 +53,7 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
         <section className="w-full h-full">
             <div
                 onClick={handlePanelClick}
-                className="group h-full p-6 flex flex-col items-center justify-center gap-4 third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-2 md:gap-4 third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
                 <div className="flex flex-col items-center gap-2">
                     <Calendar
