@@ -85,7 +85,6 @@ const WardrobePage: FC = () => {
 
     const handleSaveClick = async () => {
         if (!hasChanges) {
-            navigate(routes.whatToWear);
             return;
         }
 
@@ -108,10 +107,8 @@ const WardrobePage: FC = () => {
                 ...prev,
                 useWardrobeForOutfits: totalItems > 0
             }));
-            const success = await handleSave();
-            if (success) {
-                navigate(routes.whatToWear);
-            }
+
+            await handleSave();
             return;
         }
 
@@ -122,7 +119,6 @@ const WardrobePage: FC = () => {
         const success = await handleSave();
         if (success) {
             setShowSaveModal(false);
-            navigate(routes.whatToWear);
         }
     };
 
