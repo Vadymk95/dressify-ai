@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { routes } from '@/router/routes';
 
 type GoToHomeButtonProps = {
-    variant?: 'main' | 'secondary' | 'third' | 'fourth';
+    variant?: 'first' | 'secondary' | 'third' | 'fourth';
 };
 
 export const GoToHomeButton: FC<GoToHomeButtonProps> = ({
-    variant = 'main'
+    variant = 'first'
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();

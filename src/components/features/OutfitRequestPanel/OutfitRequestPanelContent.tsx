@@ -40,7 +40,7 @@ const OutfitRequestPanelContent: FC = () => {
                 {t('Components.Features.OutfitRequestPanel.description')}
             </p>
 
-            <div className="flex flex-col items-center gap-4 mb-6">
+            <div className="flex flex-col items-center gap-4">
                 {error && (
                     <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2 rounded-lg text-sm">
                         {error}
@@ -212,7 +212,7 @@ const OutfitRequestPanelContent: FC = () => {
             )}
 
             {showText && (
-                <div className="bg-gradient-to-br from-amber-950/40 to-orange-900/40 backdrop-blur-sm p-8 rounded-2xl shadow-xl text-amber-50 break-words max-w-full overflow-hidden border border-amber-500/20">
+                <div className="bg-gradient-to-br from-amber-950/40 to-orange-900/40 backdrop-blur-sm p-8 mt-6 rounded-2xl shadow-xl text-amber-50 break-words max-w-full overflow-hidden border border-amber-500/20">
                     <div className="prose prose-invert max-w-none whitespace-pre-wrap prose-p:text-amber-50/90">
                         <TypeAnimation
                             key={standardResponse || aiResponse}

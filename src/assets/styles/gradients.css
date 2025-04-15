@@ -1,8 +1,8 @@
-.main-gradient {
+.first-gradient {
     @apply bg-gradient-to-r from-red-400 to-orange-400;
 }
 
-.main-gradient-reverse {
+.first-gradient-reverse {
     @apply bg-gradient-to-r from-orange-400 to-red-400;
 }
 
@@ -31,19 +31,19 @@
 }
 
 /* Градиенты для кнопок */
-.btn-main-gradient {
+.btn-first-gradient {
     @apply bg-gradient-to-r from-red-400 to-orange-400;
 }
 
-.btn-main-gradient:hover {
+.btn-first-gradient:hover {
     @apply from-red-500 to-orange-500;
 }
 
-.btn-main-gradient-reverse {
+.btn-first-gradient-reverse {
     @apply bg-gradient-to-r from-orange-400 to-red-400;
 }
 
-.btn-main-gradient-reverse:hover {
+.btn-first-gradient-reverse:hover {
     @apply from-orange-500 to-red-500;
 }
 

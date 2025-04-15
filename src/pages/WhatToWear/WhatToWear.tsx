@@ -37,9 +37,11 @@ const WhatToWear: FC = () => {
                 <OutfitRequestPanel />
             </section>
 
-            <section>
-                <Feedback />
-            </section>
+            {!isMinimalistic && (
+                <section>
+                    <Feedback />
+                </section>
+            )}
 
             <section>
                 <DeleteAccountPanel />
