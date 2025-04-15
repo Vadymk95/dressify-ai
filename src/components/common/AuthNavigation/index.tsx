@@ -1,4 +1,4 @@
-import { Home, LogIn, LogOut, UserPlus } from 'lucide-react';
+import { Home, LogIn, LogOut, Tags, UserPlus } from 'lucide-react';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -49,6 +49,22 @@ export const AuthNavigation: FC = () => {
                                 </div>
                                 <span className="hidden md:inline">
                                     {t('Components.Common.AuthNavigation.home')}
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                className="hover:underline hover:text-orange-400"
+                                to={routes.pricing}
+                            >
+                                <div className="md:hidden flex items-center">
+                                    <Tags
+                                        className="text-2xl text-orange-400 hover:text-orange-600"
+                                        size={24}
+                                    />
+                                </div>
+                                <span className="hidden md:inline text-sm md:text-lg">
+                                    {t('Components.Layout.Header.pricing')}
                                 </span>
                             </Link>
                         </li>

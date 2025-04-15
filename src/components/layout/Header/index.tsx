@@ -21,20 +21,22 @@ export const Header: FC = () => {
                 <div className="flex items-center gap-6 md:gap-4">
                     <AuthNavigation />
 
-                    <Link
-                        className="hover:underline hover:text-orange-400"
-                        to={routes.pricing}
-                    >
-                        <div className="md:hidden flex items-center">
-                            <Tags
-                                className="text-2xl text-orange-400 hover:text-orange-600"
-                                size={24}
-                            />
-                        </div>
-                        <span className="hidden md:inline text-sm md:text-lg">
-                            {t('Components.Layout.Header.pricing')}
-                        </span>
-                    </Link>
+                    {!user && (
+                        <Link
+                            className="hover:underline hover:text-orange-400"
+                            to={routes.pricing}
+                        >
+                            <div className="md:hidden flex items-center">
+                                <Tags
+                                    className="text-2xl text-orange-400 hover:text-orange-600"
+                                    size={24}
+                                />
+                            </div>
+                            <span className="hidden md:inline text-sm md:text-lg">
+                                {t('Components.Layout.Header.pricing')}
+                            </span>
+                        </Link>
+                    )}
 
                     {!user && <LanguageSelect />}
                 </div>
