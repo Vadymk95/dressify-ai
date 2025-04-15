@@ -195,6 +195,27 @@ export const en = {
                     },
                     WardrobeCheckbox: {
                         label: 'Use your wardrobe for outfit selection'
+                    },
+                    DeleteAccountPanel: {
+                        title: 'Delete Account',
+                        description:
+                            'This action cannot be undone. All your data will be permanently deleted.',
+                        email: 'Email',
+                        password: 'Password',
+                        confirmPassword: 'Confirm Password',
+                        deleteButton: 'Delete Account',
+                        cancelButton: 'Cancel',
+                        errors: {
+                            emailRequired: 'Email is required',
+                            passwordRequired: 'Password is required',
+                            confirmPasswordRequired:
+                                'Please confirm your password',
+                            passwordsMismatch: 'Passwords do not match',
+                            invalidCredentials: 'Invalid email or password',
+                            genericError:
+                                'An error occurred while deleting your account. Please try again later.'
+                        },
+                        success: 'Account successfully deleted'
                     }
                 },
                 Layout: {

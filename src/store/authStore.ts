@@ -2,12 +2,13 @@ import { auth, db } from '@/firebase/firebaseConfig';
 import {
     User,
     createUserWithEmailAndPassword,
+    deleteUser,
     onAuthStateChanged,
     sendEmailVerification,
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { t } from 'i18next';
 import { create } from 'zustand';
 
@@ -23,6 +24,7 @@ interface AuthState {
     logout: () => Promise<void>;
     checkAuth: () => void;
     clearError: () => void;
+    deleteUser: (email: string, password: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -119,5 +121,28 @@ export const useAuthStore = create<AuthState>((set) => ({
         onAuthStateChanged(auth, (user) => set({ user, initialized: true })),
 
     // Функция для сброса ошибки
-    clearError: () => set({ error: null })
+    clearError: () => set({ error: null }),
+
+    deleteUser: async (email, password) => {
+        set({ loading: true, error: null });
+        try {
+            // Сначала аутентифицируем пользователя
+            const { user } = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            // Удаляем пользователя из Firestore
+            await deleteDoc(doc(db, 'users', user.uid));
+
+            // Удаляем пользователя из Authentication
+            await deleteUser(user);
+
+            set({ user: null, loading: false });
+        } catch (error: any) {
+            set({ error: error.message, loading: false });
+            throw error;
+        }
+    }
 }));

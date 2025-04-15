@@ -194,6 +194,26 @@ export const ru = {
                     },
                     WardrobeCheckbox: {
                         label: 'Использовать гардероб для подбора образов'
+                    },
+                    DeleteAccountPanel: {
+                        title: 'Удалить аккаунт',
+                        description:
+                            'Это действие нельзя отменить. Все ваши данные будут безвозвратно удалены.',
+                        email: 'Email',
+                        password: 'Пароль',
+                        confirmPassword: 'Подтвердите пароль',
+                        deleteButton: 'Удалить аккаунт',
+                        cancelButton: 'Отмена',
+                        errors: {
+                            emailRequired: 'Укажите электронную почту',
+                            passwordRequired: 'Введите пароль',
+                            confirmPasswordRequired: 'Подтвердите пароль',
+                            passwordsMismatch: 'Пароли не совпадают',
+                            invalidCredentials: 'Неверный email или пароль',
+                            genericError:
+                                'Произошла ошибка при удалении аккаунта. Пожалуйста, попробуйте позже.'
+                        },
+                        success: 'Аккаунт успешно удален'
                     }
                 },
                 Layout: {

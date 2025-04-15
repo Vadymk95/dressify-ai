@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { EmailVerificationPanel } from '@/components/common/EmailVerificationPanel';
 import { PanelsContainer } from '@/components/common/PanelsContainer';
 import { PerfectOutlook } from '@/components/common/PerfectOutlook';
+import { DeleteAccountPanel } from '@/components/features/DeleteAccountPanel';
 import { Feedback } from '@/components/features/Feedback';
 import { OutfitRequestPanel } from '@/components/features/OutfitRequestPanel';
 
@@ -31,6 +32,10 @@ const WhatToWear: FC = () => {
 
             <section>
                 <Feedback />
+            </section>
+
+            <section>
+                <DeleteAccountPanel />
             </section>
         </div>
     );
