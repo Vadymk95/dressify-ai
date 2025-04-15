@@ -76,7 +76,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     </Button>
                 </PopoverTrigger>
                 {/* z-index less than header(z-50) */}
-                <PopoverContent className="p-0 z-[49]">
+                <PopoverContent className="p-0 z-[60]">
                     <Command>
                         <CommandInput
                             placeholder={placeholder}
