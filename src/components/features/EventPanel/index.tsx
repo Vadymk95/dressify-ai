@@ -50,10 +50,10 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
     };
 
     return (
-        <section className="w-full h-full">
+        <section className="w-full h-full relative">
             <div
                 onClick={handlePanelClick}
-                className="group h-full p-6 flex flex-col items-center justify-center gap-4 third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
+                className="group h-full p-6 flex flex-col items-center justify-center gap-2 md:gap-4 third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
             >
                 <div className="flex flex-col items-center gap-2">
                     <Calendar
@@ -68,12 +68,26 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
                     )}
                 </div>
 
-                <div
-                    className={`w-full ${isMinimalistic ? 'absolute inset-0 opacity-0 pointer-events-none' : ''}`}
-                >
+                {!isMinimalistic && (
+                    <div className="w-full">
+                        <Combobox
+                            ref={comboboxRef}
+                            className="cursor-pointer md:p-4 p-6"
+                            options={eventTypes}
+                            value={selectedEventType || ''}
+                            onValueChange={handleValueChange}
+                            placeholder={t('Pages.Event.selectEvent')}
+                            emptyMessage={t('Pages.Event.noEventFound')}
+                        />
+                    </div>
+                )}
+            </div>
+
+            {isMinimalistic && (
+                <div className="absolute inset-0 opacity-0 pointer-events-none">
                     <Combobox
                         ref={comboboxRef}
-                        className="cursor-pointer md:p-4 p-6"
+                        className="cursor-pointer md:p-4 p-6 z-[60]"
                         options={eventTypes}
                         value={selectedEventType || ''}
                         onValueChange={handleValueChange}
@@ -81,7 +95,7 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
                         emptyMessage={t('Pages.Event.noEventFound')}
                     />
                 </div>
-            </div>
+            )}
         </section>
     );
 };

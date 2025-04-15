@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { GoToHomeButton } from '@/components/common/GoToHomeButton';
 import { Loader } from '@/components/common/Loader';
+import { ScrollToTopButton } from '@/components/common/ScrollToTopButton';
 import { WardrobeCheckbox } from '@/components/features/WardrobeCheckbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -85,7 +86,6 @@ const WardrobePage: FC = () => {
 
     const handleSaveClick = async () => {
         if (!hasChanges) {
-            navigate(routes.whatToWear);
             return;
         }
 
@@ -108,10 +108,8 @@ const WardrobePage: FC = () => {
                 ...prev,
                 useWardrobeForOutfits: totalItems > 0
             }));
-            const success = await handleSave();
-            if (success) {
-                navigate(routes.whatToWear);
-            }
+
+            await handleSave();
             return;
         }
 
@@ -122,7 +120,6 @@ const WardrobePage: FC = () => {
         const success = await handleSave();
         if (success) {
             setShowSaveModal(false);
-            navigate(routes.whatToWear);
         }
     };
 
@@ -381,6 +378,7 @@ const WardrobePage: FC = () => {
                     <GoToHomeButton variant="third" />
                 </div>
             </div>
+            <ScrollToTopButton />
         </div>
     );
 };
