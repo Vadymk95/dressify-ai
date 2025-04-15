@@ -321,19 +321,18 @@ export const ru = {
                         'Есть вопросы или предложения? Пришлите сообщение на этот Email, и мы вскоре вам ответим.'
                 },
                 Login: {
-                    title: 'Войти',
+                    title: 'Вход',
                     email: 'Email',
                     password: 'Пароль',
-                    register: 'Зарегистрироваться',
+                    button: 'Войти',
                     noAccount: 'Нет аккаунта?',
+                    register: 'Зарегистрироваться',
                     errors: {
-                        emailRequired: 'Укажите электронную почту',
-                        invalidEmail: 'Некорректный формат электронной почты',
-                        passwordRequired: 'Введите пароль',
-                        passwordMinLength:
-                            'Пароль должен быть не менее 8 символов',
-                        invalidCredentials: 'Неверный логин или пароль',
-                        genericError: 'Произошла ошибка. Попробуйте позже.'
+                        invalidCredentials: 'Неверный email или пароль',
+                        genericError: 'Произошла ошибка при входе',
+                        requiresRecentLogin:
+                            'В целях безопасности, пожалуйста, выйдите из аккаунта и войдите снова, прежде чем удалять аккаунт',
+                        userMismatch: 'Вы можете удалить только свой аккаунт'
                     }
                 },
                 Register: {

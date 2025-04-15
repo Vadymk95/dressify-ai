@@ -323,20 +323,18 @@ export const en = {
                         "Have questions or feedback? Please send an email to this address, and we'll get back to you shortly."
                 },
                 Login: {
-                    title: 'Sign In',
+                    title: 'Login',
                     email: 'Email',
                     password: 'Password',
-                    register: 'Sign Up',
+                    button: 'Login',
                     noAccount: "Don't have an account?",
+                    register: 'Register',
                     errors: {
-                        emailRequired: 'Email is required',
-                        invalidEmail: 'Invalid email address',
-                        passwordRequired: 'Password is required',
-                        passwordMinLength:
-                            'Password must be at least 8 characters',
                         invalidCredentials: 'Invalid email or password',
-                        genericError:
-                            'An error occurred. Please try again later.'
+                        genericError: 'An error occurred while logging in',
+                        requiresRecentLogin:
+                            'For security reasons, please log out and log in again before deleting your account',
+                        userMismatch: 'You can only delete your own account'
                     }
                 },
                 Register: {

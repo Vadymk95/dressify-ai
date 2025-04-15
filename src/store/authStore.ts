@@ -126,6 +126,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     deleteUser: async (email, password) => {
         set({ loading: true, error: null });
         try {
+            // Получаем текущего пользователя
+            const currentUser = auth.currentUser;
+            if (!currentUser || currentUser.email !== email) {
+                throw { code: 'auth/user-mismatch' };
+            }
+
             // Сначала аутентифицируем пользователя
             const { user } = await signInWithEmailAndPassword(
                 auth,
@@ -133,15 +139,40 @@ export const useAuthStore = create<AuthState>((set) => ({
                 password
             );
 
-            // Удаляем пользователя из Firestore
-            await deleteDoc(doc(db, 'users', user.uid));
+            // Дополнительная проверка на совпадение uid
+            if (user.uid !== currentUser.uid) {
+                throw { code: 'auth/user-mismatch' };
+            }
 
-            // Удаляем пользователя из Authentication
+            try {
+                // Сначала пытаемся удалить из Firestore, пока есть права доступа
+                await deleteDoc(doc(db, 'users', user.uid));
+            } catch (firestoreError) {
+                console.error('Error deleting from Firestore:', firestoreError);
+                // Продолжаем выполнение даже если не удалось удалить из Firestore
+            }
+
+            // Затем удаляем пользователя из Authentication
             await deleteUser(user);
 
             set({ user: null, loading: false });
         } catch (error: any) {
-            set({ error: error.message, loading: false });
+            let errorMessage = '';
+            switch (error.code) {
+                case 'auth/invalid-credential':
+                    errorMessage = t('Pages.Login.errors.invalidCredentials');
+                    break;
+                case 'auth/requires-recent-login':
+                    errorMessage = t('Pages.Login.errors.requiresRecentLogin');
+                    break;
+                case 'auth/user-mismatch':
+                    errorMessage = t('Pages.Login.errors.userMismatch');
+                    break;
+                default:
+                    errorMessage = t('Pages.Register.errors.genericError');
+                    break;
+            }
+            set({ error: errorMessage, loading: false });
             throw error;
         }
     }

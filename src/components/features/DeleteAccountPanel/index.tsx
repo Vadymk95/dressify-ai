@@ -87,6 +87,8 @@ export const DeleteAccountPanel: FC = () => {
         } catch (error: any) {
             if (error.code === 'auth/invalid-credential') {
                 setError(t('Pages.Login.errors.invalidCredentials'));
+            } else if (error.code === 'auth/requires-recent-login') {
+                setError(t('Pages.Login.errors.requiresRecentLogin'));
             } else {
                 setError(t('Pages.Register.errors.genericError'));
             }

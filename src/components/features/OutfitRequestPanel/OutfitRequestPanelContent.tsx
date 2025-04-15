@@ -5,13 +5,11 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
-import { useUserProfileStore } from '@/store/userProfileStore';
 import { useWeatherStore } from '@/store/weatherStore';
 
 const OutfitRequestPanelContent: FC = () => {
     const { t } = useTranslation();
     const { loadingWeather } = useWeatherStore();
-    const { profile } = useUserProfileStore();
     const {
         isLoading,
         showText,
@@ -206,12 +204,6 @@ const OutfitRequestPanelContent: FC = () => {
                     )}
                 </div>
             </div>
-
-            {!isLoading && !profile?.characteristics?.gender && (
-                <div className="text-center text-amber-500 mb-4">
-                    {t('Components.Features.OutfitRequestPanel.loadingProfile')}
-                </div>
-            )}
 
             {!isLoading && loadingWeather && (
                 <div className="text-center text-amber-500 mb-4">
