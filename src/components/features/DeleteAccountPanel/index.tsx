@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from 'lucide-react';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +24,8 @@ export const DeleteAccountPanel: FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,36 +36,45 @@ export const DeleteAccountPanel: FC = () => {
         setError(null);
 
         if (!email) {
+            setError(t('Pages.Register.errors.emailRequired'));
+            return;
+        }
+
+        // Проверка формата email (такой же как в регистрации)
+        const emailRegex = /^\S+@\S+\.\S+$/;
+        if (!emailRegex.test(email)) {
+            setError(t('Pages.Register.errors.invalidEmail'));
+            return;
+        }
+
+        // Проверка совпадения email с текущим email пользователя
+        const currentUser = useAuthStore.getState().user;
+        if (currentUser?.email !== email) {
             setError(
-                t('Components.Features.DeleteAccountPanel.errors.emailRequired')
+                t('Components.Features.DeleteAccountPanel.errors.emailMismatch')
             );
             return;
         }
 
         if (!password) {
-            setError(
-                t(
-                    'Components.Features.DeleteAccountPanel.errors.passwordRequired'
-                )
-            );
+            setError(t('Pages.Register.errors.passwordRequired'));
+            return;
+        }
+
+        // Проверка сложности пароля (такой же как в регистрации)
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            setError(t('Pages.Register.errors.passwordPattern'));
             return;
         }
 
         if (!confirmPassword) {
-            setError(
-                t(
-                    'Components.Features.DeleteAccountPanel.errors.confirmPasswordRequired'
-                )
-            );
+            setError(t('Pages.Register.errors.passwordRequired'));
             return;
         }
 
         if (password !== confirmPassword) {
-            setError(
-                t(
-                    'Components.Features.DeleteAccountPanel.errors.passwordsMismatch'
-                )
-            );
+            setError(t('Pages.Register.errors.passwordsMismatch'));
             return;
         }
 
@@ -74,17 +86,9 @@ export const DeleteAccountPanel: FC = () => {
             navigate(routes.home);
         } catch (error: any) {
             if (error.code === 'auth/invalid-credential') {
-                setError(
-                    t(
-                        'Components.Features.DeleteAccountPanel.errors.invalidCredentials'
-                    )
-                );
+                setError(t('Pages.Login.errors.invalidCredentials'));
             } else {
-                setError(
-                    t(
-                        'Components.Features.DeleteAccountPanel.errors.genericError'
-                    )
-                );
+                setError(t('Pages.Register.errors.genericError'));
             }
         } finally {
             setIsLoading(false);
@@ -131,22 +135,52 @@ export const DeleteAccountPanel: FC = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <Input
-                            type="password"
-                            placeholder={t(
-                                'Components.Features.DeleteAccountPanel.password'
-                            )}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Input
-                            type="password"
-                            placeholder={t(
-                                'Components.Features.DeleteAccountPanel.confirmPassword'
-                            )}
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <Input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder={t(
+                                    'Components.Features.DeleteAccountPanel.password'
+                                )}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <EyeOff size={20} />
+                                ) : (
+                                    <Eye size={20} />
+                                )}
+                            </button>
+                        </div>
+                        <div className="relative">
+                            <Input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                placeholder={t(
+                                    'Components.Features.DeleteAccountPanel.confirmPassword'
+                                )}
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                }
+                            >
+                                {showConfirmPassword ? (
+                                    <EyeOff size={20} />
+                                ) : (
+                                    <Eye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     {error && (

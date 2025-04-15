@@ -205,13 +205,19 @@ export const ru = {
                         deleteButton: 'Удалить аккаунт',
                         cancelButton: 'Отмена',
                         errors: {
-                            emailRequired: 'Укажите электронную почту',
+                            emailRequired: 'Введите email',
+                            invalidEmailFormat:
+                                'Введите корректный email адрес',
+                            emailMismatch:
+                                'Email не совпадает с email вашего аккаунта',
                             passwordRequired: 'Введите пароль',
+                            passwordRequirements:
+                                'Пароль должен содержать минимум 8 символов, включая хотя бы одну букву и одну цифру',
                             confirmPasswordRequired: 'Подтвердите пароль',
                             passwordsMismatch: 'Пароли не совпадают',
                             invalidCredentials: 'Неверный email или пароль',
                             genericError:
-                                'Произошла ошибка при удалении аккаунта. Пожалуйста, попробуйте позже.'
+                                'Произошла ошибка при удалении аккаунта'
                         },
                         success: 'Аккаунт успешно удален'
                     }

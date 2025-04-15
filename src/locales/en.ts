@@ -207,13 +207,19 @@ export const en = {
                         cancelButton: 'Cancel',
                         errors: {
                             emailRequired: 'Email is required',
+                            invalidEmailFormat:
+                                'Please enter a valid email address',
+                            emailMismatch:
+                                'Email does not match your current account email',
                             passwordRequired: 'Password is required',
+                            passwordRequirements:
+                                'Password must be at least 8 characters long and contain at least one letter and one number',
                             confirmPasswordRequired:
                                 'Please confirm your password',
                             passwordsMismatch: 'Passwords do not match',
                             invalidCredentials: 'Invalid email or password',
                             genericError:
-                                'An error occurred while deleting your account. Please try again later.'
+                                'An error occurred while deleting your account'
                         },
                         success: 'Account successfully deleted'
                     }
