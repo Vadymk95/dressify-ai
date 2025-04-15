@@ -50,7 +50,7 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
     };
 
     return (
-        <section className="w-full h-full relative">
+        <section className="w-full h-full relative overflow-hidden">
             <div
                 onClick={handlePanelClick}
                 className="group h-full p-6 flex flex-col items-center justify-center gap-2 md:gap-4 third-gradient shadow-md rounded-xl cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out transform-gpu"
@@ -84,7 +84,7 @@ export const EventPanel: FC<EventPanelProps> = ({ isMinimalistic = false }) => {
             </div>
 
             {isMinimalistic && (
-                <div className="absolute inset-0 opacity-0 pointer-events-none">
+                <div className="absolute top-0 left-0 w-full opacity-0 pointer-events-none">
                     <Combobox
                         ref={comboboxRef}
                         className="cursor-pointer md:p-4 p-6 z-[60]"

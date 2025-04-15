@@ -99,7 +99,7 @@ export const DeleteAccountPanel: FC = () => {
 
     return (
         <div className="w-full">
-            <div className="p-6 third-gradient shadow-md rounded-xl">
+            <div className="p-6 fourth-gradient shadow-md rounded-xl">
                 <h2 className="text-amber-50 text-base font-medium mb-2">
                     {t('Components.Features.DeleteAccountPanel.title')}
                 </h2>
