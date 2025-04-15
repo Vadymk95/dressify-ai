@@ -51,7 +51,7 @@ export const PerfectOutlook: FC = () => {
                                 key={step.id}
                                 className="flex md:flex-col items-center md:text-center gap-4 flex-1 basis-0 justify-start group bg-gray-200/90 backdrop-blur-sm rounded-2xl px-2 md:px-1 py-4 hover:bg-white/60 transition-all duration-200 border border-amber-100/20"
                             >
-                                <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full main-gradient-reverse text-amber-50 font-bold shadow-lg transform transition-transform group-hover:scale-110">
+                                <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full first-gradient-reverse text-amber-50 font-bold shadow-lg transform transition-transform group-hover:scale-110">
                                     {index + 1}
                                 </div>
                                 <span className="text-amber-900 font-medium min-h-[56px] flex items-center justify-center text-left md:text-center max-w-xs">

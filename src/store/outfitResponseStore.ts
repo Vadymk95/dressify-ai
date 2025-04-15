@@ -7,7 +7,6 @@ interface OutfitResponseStore {
     clearAiResponse: () => void;
 }
 
-// Создаем общий стор с персистентным хранением для aiResponse
 export const useOutfitResponseStore = create<OutfitResponseStore>()(
     persist(
         (set) => ({

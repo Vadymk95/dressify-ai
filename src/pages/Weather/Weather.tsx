@@ -187,7 +187,7 @@ const Weather: FC = () => {
     };
 
     return (
-        <div className="w-full flex-1 mx-auto p-4 main-gradient">
+        <div className="w-full flex-1 mx-auto p-4 first-gradient">
             <div className="w-full flex-1 max-w-4xl mx-auto flex flex-col items-center">
                 <div className="text-center mb-4">
                     <h1 className="text-3xl font-semibold mb-2 text-amber-50">

@@ -19,10 +19,11 @@ interface AuthState {
     loading: boolean;
     error: string | null;
     initialized: boolean;
+    unsubscribe: (() => void) | null;
     register: (email: string, password: string) => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
-    checkAuth: () => void;
+    checkAuth: () => Promise<void>;
     clearError: () => void;
     deleteUser: (email: string, password: string) => Promise<void>;
 }
@@ -32,6 +33,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     loading: false,
     error: null,
     initialized: false,
+    unsubscribe: null,
 
     // Регистрация пользователя
     register: async (email, password) => {
@@ -117,8 +119,30 @@ export const useAuthStore = create<AuthState>((set) => ({
     },
 
     // Отслеживание изменений статуса авторизации
-    checkAuth: () =>
-        onAuthStateChanged(auth, (user) => set({ user, initialized: true })),
+    checkAuth: async () => {
+        // Отменяем предыдущую подписку, если она существует
+        const currentUnsubscribe = useAuthStore.getState().unsubscribe;
+        if (currentUnsubscribe) {
+            currentUnsubscribe();
+        }
+
+        return new Promise<void>((resolve) => {
+            const unsubscribe = onAuthStateChanged(
+                auth,
+                (user) => {
+                    set({ user, initialized: true });
+                    resolve();
+                },
+                (error) => {
+                    console.error('Auth state change error:', error);
+                    set({ initialized: true });
+                    resolve();
+                }
+            );
+
+            set({ unsubscribe });
+        });
+    },
 
     // Функция для сброса ошибки
     clearError: () => set({ error: null }),

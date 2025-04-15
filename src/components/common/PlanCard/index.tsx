@@ -40,7 +40,7 @@ export const PlanCard: FC<PlanCardProps> = ({
         >
             {/* Если есть ribbonText, показываем ленту */}
             {ribbonText && (
-                <div className="absolute top-2 right-10 main-gradient text-amber-50 text-xs px-3 py-1 transform translate-x-8 shadow rounded-3xl">
+                <div className="absolute top-2 right-10 first-gradient text-amber-50 text-xs px-3 py-1 transform translate-x-8 shadow rounded-3xl">
                     🔥 {ribbonText}
                 </div>
             )}
