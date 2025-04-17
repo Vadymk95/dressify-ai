@@ -1,17 +1,35 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 export const Loader: FC = () => {
+    const cleanupRef = useRef<(() => void) | null>(null);
+
     useEffect(() => {
+        // Сохраняем функцию очистки
+        cleanupRef.current = () => {
+            document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
+            document.body.classList.remove('h-screen');
+            document.body.classList.remove('w-screen');
+        };
+
         document.body.classList.add('overflow-hidden');
         document.documentElement.classList.add('overflow-hidden');
         document.body.classList.add('h-screen');
         document.body.classList.add('w-screen');
 
         return () => {
-            document.body.classList.remove('overflow-hidden');
-            document.documentElement.classList.remove('overflow-hidden');
-            document.body.classList.remove('h-screen');
-            document.body.classList.remove('w-screen');
+            if (cleanupRef.current) {
+                cleanupRef.current();
+            }
+        };
+    }, []);
+
+    // Добавляем обработчик для очистки при размонтировании
+    useEffect(() => {
+        return () => {
+            if (cleanupRef.current) {
+                cleanupRef.current();
+            }
         };
     }, []);
 

@@ -219,20 +219,21 @@ export const useOutfitRequest = () => {
 
     const generateAiOutfit = async () => {
         setError(null);
-
-        // Проверяем обязательные поля
-        if (!checkRequiredFields()) {
-            return;
-        }
-
-        // Проверяем лимит запросов
-        if (!checkRequestLimit()) {
-            return;
-        }
-
         setIsLoading(true);
 
         try {
+            // Проверяем обязательные поля
+            if (!checkRequiredFields()) {
+                setIsLoading(false);
+                return;
+            }
+
+            // Проверяем лимит запросов
+            if (!checkRequestLimit()) {
+                setIsLoading(false);
+                return;
+            }
+
             const response = await mockRequest();
             console.log('AI Response received:', response);
             setAiResponse(response);
@@ -253,23 +254,24 @@ export const useOutfitRequest = () => {
     const generateStandardOutfit = async () => {
         setError(null);
         setStandardResponse(null);
-
-        if (!checkRequiredFields()) {
-            return;
-        }
-
-        if (!profile?.emailVerified) {
-            setError(
-                t(
-                    'Components.Features.OutfitRequestPanel.errors.emailNotVerified'
-                )
-            );
-            return;
-        }
-
         setIsLoading(true);
 
         try {
+            if (!checkRequiredFields()) {
+                setIsLoading(false);
+                return;
+            }
+
+            if (!profile?.emailVerified) {
+                setError(
+                    t(
+                        'Components.Features.OutfitRequestPanel.errors.emailNotVerified'
+                    )
+                );
+                setIsLoading(false);
+                return;
+            }
+
             const { generateOutfitResponse } = await import(
                 '@/data/outfits/generators/generateOutfitResponse'
             );
@@ -280,6 +282,7 @@ export const useOutfitRequest = () => {
                         'Components.Features.OutfitRequestPanel.errors.missingData'
                     )
                 );
+                setIsLoading(false);
                 return;
             }
 
@@ -296,6 +299,7 @@ export const useOutfitRequest = () => {
                         'Components.Features.OutfitRequestPanel.errors.invalidEventType'
                     )
                 );
+                setIsLoading(false);
                 return;
             }
 
@@ -308,6 +312,7 @@ export const useOutfitRequest = () => {
                         'Components.Features.OutfitRequestPanel.errors.invalidGender'
                     )
                 );
+                setIsLoading(false);
                 return;
             }
 
@@ -345,6 +350,7 @@ export const useOutfitRequest = () => {
             if (response.error) {
                 setError(response.error);
                 setStandardResponse(null);
+                setIsLoading(false);
                 return;
             }
 
@@ -355,6 +361,7 @@ export const useOutfitRequest = () => {
                     )
                 );
                 setStandardResponse(null);
+                setIsLoading(false);
                 return;
             }
 
