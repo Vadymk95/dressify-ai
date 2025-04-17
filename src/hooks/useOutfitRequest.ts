@@ -48,7 +48,8 @@ export const useOutfitRequest = () => {
     const scheduleNextReset = useCallback(() => {
         const now = new Date();
         const tomorrow = new Date(now);
-        tomorrow.setHours(24, 0, 0, 0);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
         const timeUntilMidnight = tomorrow.getTime() - now.getTime();
 
         if (resetTimeoutRef.current) {
@@ -57,13 +58,24 @@ export const useOutfitRequest = () => {
 
         resetTimeoutRef.current = setTimeout(() => {
             resetLimits();
-            scheduleNextReset(); // Планируем следующий сброс
+            // Планируем следующий сброс сразу после текущего
+            scheduleNextReset();
         }, timeUntilMidnight);
     }, [resetLimits]);
 
     // Устанавливаем таймер при монтировании и изменении профиля
     useEffect(() => {
         if (profile && profile.plan !== 'free') {
+            // Проверяем, нужно ли обновить лимиты прямо сейчас
+            if (profile.requestLimits?.requestsResetAt) {
+                const resetTime = new Date(
+                    profile.requestLimits.requestsResetAt
+                );
+                const now = new Date();
+                if (now >= resetTime) {
+                    resetLimits();
+                }
+            }
             scheduleNextReset();
         }
         return () => {
@@ -71,7 +83,7 @@ export const useOutfitRequest = () => {
                 clearTimeout(resetTimeoutRef.current);
             }
         };
-    }, [profile, scheduleNextReset]);
+    }, [profile, scheduleNextReset, resetLimits]);
 
     // Автоматически очищаем ошибку через 5 секунд
     useEffect(() => {

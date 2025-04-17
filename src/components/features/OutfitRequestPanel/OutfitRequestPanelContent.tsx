@@ -90,7 +90,9 @@ const OutfitRequestPanelContent: FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                         onClick={generateAiOutfit}
-                        disabled={isLoading || isFreePlan}
+                        disabled={
+                            isLoading || isFreePlan || remainingRequests <= 0
+                        }
                         className={`
                             w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
                             shadow-lg transform transition-all duration-200
