@@ -41,7 +41,7 @@ export const useOutfitRequest = () => {
             setRequestsResetAt(profile.requestLimits?.requestsResetAt ?? null);
             setIsEmailVerified(profile.emailVerified ?? false);
         }
-    }, [profile?.plan, profile?.requestLimits, profile?.emailVerified]);
+    }, [profile]);
 
     // Функция для обновления лимитов
     const resetLimits = useCallback(() => {
@@ -114,7 +114,8 @@ export const useOutfitRequest = () => {
                 clearTimeout(resetTimeoutRef.current);
             }
         };
-    }, [profile?.uid]); // Меняем зависимость на profile?.uid чтобы эффект срабатывал только при смене пользователя
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [profile?.uid]);
 
     // Автоматически очищаем ошибку через 5 секунд
     useEffect(() => {

@@ -6,12 +6,8 @@ import { useUserProfileStore } from '@/store/userProfileStore';
 
 export const App: FC = () => {
     const { checkAuth, user } = useAuthStore();
-    const {
-        fetchUserProfile,
-        subscribeToUserProfile,
-        clearProfile,
-        checkSubscriptionExpiry
-    } = useUserProfileStore();
+    const { fetchUserProfile, clearProfile, checkSubscriptionExpiry } =
+        useUserProfileStore();
 
     useEffect(() => {
         const initializeApp = async () => {
@@ -21,9 +17,6 @@ export const App: FC = () => {
                     fetchUserProfile(user.uid),
                     checkSubscriptionExpiry()
                 ]);
-                // Подписываемся на обновления профиля
-                const unsubscribe = subscribeToUserProfile(user.uid);
-                return () => unsubscribe();
             } else {
                 clearProfile();
             }
@@ -33,7 +26,6 @@ export const App: FC = () => {
         checkAuth,
         user,
         fetchUserProfile,
-        subscribeToUserProfile,
         clearProfile,
         checkSubscriptionExpiry
     ]);

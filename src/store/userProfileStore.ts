@@ -42,30 +42,18 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                const currentProfile = get().profile;
 
                 const profile: UserProfile = {
-                    ...(currentProfile || {}),
                     uid: docSnap.id,
                     email: data.email,
                     emailVerified: data.emailVerified || false,
                     plan: data.plan,
                     lang: data.lang,
                     createdAt: data.createdAt?.toDate() || null,
-                    requestLimits:
-                        data.requestLimits ||
-                        currentProfile?.requestLimits ||
-                        null,
-                    characteristics:
-                        data.characteristics ||
-                        currentProfile?.characteristics ||
-                        null,
-                    location: data.location || currentProfile?.location || null,
-                    wardrobe: data.wardrobe || currentProfile?.wardrobe || null,
-                    subscriptionExpiry:
-                        data.subscriptionExpiry ||
-                        currentProfile?.subscriptionExpiry ||
-                        null
+
+                    requestLimits: data.requestLimits || null,
+
+                    ...data
                 };
 
                 set({ profile, loading: false });
@@ -82,36 +70,7 @@ export const useUserProfileStore = create<UserProfileStore>((set, get) => ({
     subscribeToUserProfile: (uid: string) => {
         const unsubscribe = onSnapshot(doc(db, 'users', uid), (docSnap) => {
             if (docSnap.exists()) {
-                const data = docSnap.data();
-                // Сохраняем текущий профиль
-                const currentProfile = get().profile;
-
-                // Объединяем данные, сохраняя существующие значения
-                const updatedProfile: UserProfile = {
-                    ...(currentProfile || {}),
-                    uid: docSnap.id,
-                    email: data.email,
-                    emailVerified: data.emailVerified || false,
-                    plan: data.plan,
-                    lang: data.lang,
-                    createdAt: data.createdAt?.toDate() || null,
-                    requestLimits:
-                        data.requestLimits ||
-                        currentProfile?.requestLimits ||
-                        null,
-                    characteristics:
-                        data.characteristics ||
-                        currentProfile?.characteristics ||
-                        null,
-                    location: data.location || currentProfile?.location || null,
-                    wardrobe: data.wardrobe || currentProfile?.wardrobe || null,
-                    subscriptionExpiry:
-                        data.subscriptionExpiry ||
-                        currentProfile?.subscriptionExpiry ||
-                        null
-                };
-
-                set({ profile: updatedProfile });
+                set({ profile: docSnap.data() as UserProfile });
             }
         });
         return unsubscribe;
