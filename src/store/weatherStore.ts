@@ -59,6 +59,18 @@ export const useWeatherStore = create<WeatherState>()(
             setLocation: (country, city) => set({ country, city }),
             fetchWeather: async (language, isTomorrow = false) => {
                 set({ loadingWeather: true, error: null });
+
+                const timeoutId = setTimeout(() => {
+                    set({
+                        loadingWeather: false,
+                        error: t('Pages.Weather.errors.timeoutError'),
+                        weatherTomorrow: null,
+                        weatherToday: null,
+                        weatherManual: null,
+                        lastUpdated: null
+                    });
+                }, 10000);
+
                 try {
                     const city =
                         useUserProfileStore.getState().profile?.location
@@ -68,6 +80,7 @@ export const useWeatherStore = create<WeatherState>()(
                             ?.country || '';
 
                     if (!city || !country) {
+                        clearTimeout(timeoutId);
                         set({
                             loadingWeather: false,
                             weatherTomorrow: null,
@@ -89,7 +102,15 @@ export const useWeatherStore = create<WeatherState>()(
                     const response = await fetch(
                         `${WEATHER_BASE_URL}/${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=${language}`
                     );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`
+                        );
+                    }
+
                     const data = await response.json();
+                    clearTimeout(timeoutId);
 
                     const now = Date.now();
                     if (!isTomorrow) {
@@ -125,7 +146,8 @@ export const useWeatherStore = create<WeatherState>()(
                             isManualMode: false
                         });
                     }
-                } catch (error: any) {
+                } catch (error) {
+                    clearTimeout(timeoutId);
                     console.error(error);
                     set({
                         error: t('Pages.Weather.errors.fetchWeatherError'),

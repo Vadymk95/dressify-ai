@@ -127,13 +127,21 @@ export const useAuthStore = create<AuthState>((set) => ({
         }
 
         return new Promise<void>((resolve) => {
+            // Добавляем таймаут для инициализации
+            const timeoutId = setTimeout(() => {
+                set({ initialized: true });
+                resolve();
+            }, 5000); // 5 секунд таймаут
+
             const unsubscribe = onAuthStateChanged(
                 auth,
                 (user) => {
+                    clearTimeout(timeoutId);
                     set({ user, initialized: true });
                     resolve();
                 },
                 (error) => {
+                    clearTimeout(timeoutId);
                     console.error('Auth state change error:', error);
                     set({ initialized: true });
                     resolve();
