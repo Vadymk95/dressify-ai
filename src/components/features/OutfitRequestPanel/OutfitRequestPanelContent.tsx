@@ -6,11 +6,9 @@ import { ExtendedLoader } from '@/components/common/Loader/ExtendedLoader';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
-import { useWeatherStore } from '@/store/weatherStore';
 
 const OutfitRequestPanelContent: FC = () => {
     const { t } = useTranslation();
-    const { loadingWeather } = useWeatherStore();
     const {
         isLoading,
         showText,
@@ -27,7 +25,7 @@ const OutfitRequestPanelContent: FC = () => {
     } = useOutfitRequest();
 
     const [isTyping, setIsTyping] = useState(false);
-    const isAnyLoading = isLoading || loadingWeather;
+    const isAnyLoading = isLoading;
     const isButtonsDisabled = isLoading || isTyping;
 
     // Обработчик для кнопки очистки/остановки
@@ -231,12 +229,6 @@ const OutfitRequestPanelContent: FC = () => {
                     </Button>
                 </div>
             </div>
-
-            {!isAnyLoading && loadingWeather && (
-                <div className="text-center text-amber-500 mb-4">
-                    {t('Components.Features.OutfitRequestPanel.loadingWeather')}
-                </div>
-            )}
 
             {showText && (
                 <div className="bg-gradient-to-br from-amber-950/40 to-orange-900/40 backdrop-blur-sm p-8 mt-6 rounded-2xl shadow-xl text-amber-50 break-words max-w-full overflow-hidden border border-amber-500/20">
