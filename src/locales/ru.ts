@@ -696,6 +696,7 @@ export const ru = {
                 leave: 'Уйти',
                 goToHome: 'Перейти на главную',
                 tooltip: 'Подсказка',
+                loading: 'Загрузка...',
                 errors: {
                     unknownError: 'Произошла неизвестная ошибка'
                 }

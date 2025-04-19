@@ -695,6 +695,7 @@ export const en = {
                 leave: 'Leave',
                 goToHome: 'Go to Home',
                 tooltip: 'Tooltip',
+                loading: 'Loading...',
                 errors: {
                     unknownError: 'An unknown error occurred'
                 }

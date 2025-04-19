@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { GoToHomeButton } from '@/components/common/GoToHomeButton';
+import { MiniLoader } from '@/components/common/Loader/MiniLoader';
 import { WeatherWidget } from '@/components/common/WeatherWidget';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
@@ -35,7 +36,8 @@ const Weather: FC = () => {
         setManualWeather,
         weatherManual,
         activeTab,
-        setActiveTab
+        setActiveTab,
+        loadingWeather
     } = useWeatherStore();
     const countries = useCountryOptions();
 
@@ -268,20 +270,28 @@ const Weather: FC = () => {
                         <div className="flex flex-col md:flex-row gap-3 mb-4 justify-center md:justify-between">
                             <Button
                                 onClick={() => handleFetchWeather()}
-                                disabled={!country || !city}
+                                disabled={!country || !city || loadingWeather}
                                 variant="outline"
-                                className="btn-third-gradient text-amber-50 hover:text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base"
+                                className="btn-third-gradient text-amber-50 hover:text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base relative"
                             >
-                                {t('Pages.Weather.fetchWeather')}
+                                {loadingWeather ? (
+                                    <MiniLoader />
+                                ) : (
+                                    t('Pages.Weather.fetchWeather')
+                                )}
                             </Button>
 
                             <Button
                                 onClick={() => handleFetchWeather(true)}
-                                disabled={!country || !city}
+                                disabled={!country || !city || loadingWeather}
                                 variant="outline"
-                                className="cursor-pointer shadow-sm py-6 px-12 text-base"
+                                className="cursor-pointer shadow-sm py-6 px-12 text-base relative"
                             >
-                                {t('Pages.Weather.fetchTomorrow')}
+                                {loadingWeather ? (
+                                    <MiniLoader />
+                                ) : (
+                                    t('Pages.Weather.fetchTomorrow')
+                                )}
                             </Button>
                         </div>
                     </TabsContent>
@@ -302,7 +312,7 @@ const Weather: FC = () => {
                                     {weatherConditions.map((condition) => (
                                         <div
                                             key={condition.value}
-                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer"
+                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer relative"
                                         >
                                             <RadioGroupItem
                                                 value={condition.value}
@@ -311,10 +321,11 @@ const Weather: FC = () => {
                                             />
                                             <Label
                                                 htmlFor={condition.value}
-                                                className="cursor-pointer text-base flex-1 font-medium"
-                                            >
+                                                className="cursor-pointer text-base flex-1 font-medium absolute inset-0"
+                                            />
+                                            <span className="ml-8">
                                                 {condition.label}
-                                            </Label>
+                                            </span>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -334,7 +345,7 @@ const Weather: FC = () => {
                                     {temperatureRanges.map((range) => (
                                         <div
                                             key={range.value}
-                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer"
+                                            className="flex items-center space-x-3 p-3 hover:bg-white/60 hover:shadow-md rounded-lg transition-all duration-200 bg-white/30 cursor-pointer relative"
                                         >
                                             <RadioGroupItem
                                                 value={range.value}
@@ -343,15 +354,16 @@ const Weather: FC = () => {
                                             />
                                             <Label
                                                 htmlFor={range.value}
-                                                className="cursor-pointer text-base flex-1"
-                                            >
+                                                className="cursor-pointer text-base flex-1 absolute inset-0"
+                                            />
+                                            <div className="ml-8">
                                                 <span className="block font-medium">
                                                     {range.label}
                                                 </span>
                                                 <span className="text-sm text-gray-600 block mt-1">
                                                     {range.range}
                                                 </span>
-                                            </Label>
+                                            </div>
                                         </div>
                                     ))}
                                 </RadioGroup>
