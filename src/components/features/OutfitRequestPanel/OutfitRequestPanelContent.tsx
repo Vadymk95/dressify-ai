@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TypeAnimation } from 'react-type-animation';
 
+import { ExtendedLoader } from '@/components/common/Loader/ExtendedLoader';
 import { Button } from '@/components/ui/button';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { useOutfitRequest } from '@/hooks/useOutfitRequest';
@@ -52,11 +53,7 @@ const OutfitRequestPanelContent: FC = () => {
 
     return (
         <div className="w-full relative min-h-[200px]">
-            {isAnyLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white/5 backdrop-blur-sm z-10 rounded-lg">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400"></div>
-                </div>
-            )}
+            {isAnyLoading && <ExtendedLoader variant="overlay" size="lg" />}
 
             <h2 className="text-2xl font-bold text-center mb-2">
                 {t('Components.Features.OutfitRequestPanel.title')}

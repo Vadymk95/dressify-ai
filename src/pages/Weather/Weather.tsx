@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { GoToHomeButton } from '@/components/common/GoToHomeButton';
-import { MiniLoader } from '@/components/common/Loader/MiniLoader';
+import { ExtendedLoader } from '@/components/common/Loader/ExtendedLoader';
 import { WeatherWidget } from '@/components/common/WeatherWidget';
 import { Button } from '@/components/ui/button';
 import { Combobox } from '@/components/ui/combobox';
@@ -275,7 +275,7 @@ const Weather: FC = () => {
                                 className="btn-third-gradient text-amber-50 hover:text-amber-50 cursor-pointer shadow-sm py-6 px-12 text-base relative"
                             >
                                 {loadingWeather ? (
-                                    <MiniLoader />
+                                    <ExtendedLoader size="sm" />
                                 ) : (
                                     t('Pages.Weather.fetchWeather')
                                 )}
@@ -288,7 +288,7 @@ const Weather: FC = () => {
                                 className="cursor-pointer shadow-sm py-6 px-12 text-base relative"
                             >
                                 {loadingWeather ? (
-                                    <MiniLoader />
+                                    <ExtendedLoader size="sm" />
                                 ) : (
                                     t('Pages.Weather.fetchTomorrow')
                                 )}
