@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TypeAnimation } from 'react-type-animation';
 
@@ -25,9 +25,34 @@ const OutfitRequestPanelContent: FC = () => {
         isEmailVerified
     } = useOutfitRequest();
 
+    const [isTyping, setIsTyping] = useState(false);
+    const isAnyLoading = isLoading || loadingWeather;
+    const isButtonsDisabled = isLoading || isTyping;
+
+    // Обработчик для кнопки очистки/остановки
+    const handleClearOrStop = () => {
+        setIsTyping(false);
+        clearResponses();
+    };
+
+    useEffect(() => {
+        if (standardResponse || aiResponse) {
+            setIsTyping(true);
+
+            const text = standardResponse || aiResponse || '';
+            const typingDuration = text.length * (75 / 1000);
+
+            const timer = setTimeout(() => {
+                setIsTyping(false);
+            }, typingDuration * 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [standardResponse, aiResponse]);
+
     return (
         <div className="w-full relative min-h-[200px]">
-            {isLoading && (
+            {isAnyLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/5 backdrop-blur-sm z-10 rounded-lg">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400"></div>
                 </div>
@@ -91,7 +116,9 @@ const OutfitRequestPanelContent: FC = () => {
                     <Button
                         onClick={generateAiOutfit}
                         disabled={
-                            isLoading || isFreePlan || remainingRequests <= 0
+                            isButtonsDisabled ||
+                            isFreePlan ||
+                            remainingRequests <= 0
                         }
                         className={`
                             w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
@@ -119,7 +146,7 @@ const OutfitRequestPanelContent: FC = () => {
                     <div className="flex items-center gap-2">
                         <Button
                             onClick={generateStandardOutfit}
-                            disabled={isLoading || !isEmailVerified}
+                            disabled={isButtonsDisabled || !isEmailVerified}
                             className={`
                                 w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl text-white font-semibold
                                 shadow-lg transform transition-all duration-200
@@ -195,19 +222,20 @@ const OutfitRequestPanelContent: FC = () => {
                         />
                     </div>
 
-                    {showText && (
-                        <Button
-                            onClick={clearResponses}
-                            variant="outline"
-                            className="w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl font-semibold cursor-pointer"
-                        >
-                            {t('Components.Features.OutfitRequestPanel.clear')}
-                        </Button>
-                    )}
+                    {/* Кнопка очистки/остановки всегда видима */}
+                    <Button
+                        onClick={handleClearOrStop}
+                        variant="outline"
+                        className="w-full sm:w-auto px-4 sm:px-8 py-3 rounded-xl font-semibold cursor-pointer hover:bg-red-50"
+                    >
+                        {isLoading || isTyping
+                            ? t('Components.Features.OutfitRequestPanel.stop')
+                            : t('Components.Features.OutfitRequestPanel.clear')}
+                    </Button>
                 </div>
             </div>
 
-            {!isLoading && loadingWeather && (
+            {!isAnyLoading && loadingWeather && (
                 <div className="text-center text-amber-500 mb-4">
                     {t('Components.Features.OutfitRequestPanel.loadingWeather')}
                 </div>

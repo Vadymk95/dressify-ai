@@ -21,11 +21,27 @@ export const useOutfitRequest = () => {
     );
     const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    // Добавляем локальное состояние для значений из профиля
+    const [isFreePlan, setIsFreePlan] = useState(false);
+    const [remainingRequests, setRemainingRequests] = useState(0);
+    const [requestsResetAt, setRequestsResetAt] = useState<string | null>(null);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+
     const { selectedEventType } = useEventStore();
     const { profile, updateProfile } = useUserProfileStore();
     const { aiResponse, setAiResponse } = useOutfitResponseStore();
 
     const hardcodedResponse = 'Lorem ipsum...'; // ваш текст
+
+    // Обновляем локальное состояние только когда профиль меняется
+    useEffect(() => {
+        if (profile) {
+            setIsFreePlan(profile.plan === 'free');
+            setRemainingRequests(profile.requestLimits?.remainingRequests ?? 0);
+            setRequestsResetAt(profile.requestLimits?.requestsResetAt ?? null);
+            setIsEmailVerified(profile.emailVerified ?? false);
+        }
+    }, [profile?.plan, profile?.requestLimits, profile?.emailVerified]);
 
     // Функция для обновления лимитов
     const resetLimits = useCallback(() => {
@@ -75,6 +91,21 @@ export const useOutfitRequest = () => {
                 if (now >= resetTime) {
                     resetLimits();
                 }
+            } else if (!profile.requestLimits) {
+                // Если лимитов нет вообще, инициализируем их
+                const now = new Date();
+                const nextResetDate = new Date(now);
+                nextResetDate.setDate(nextResetDate.getDate() + 1);
+                nextResetDate.setHours(0, 0, 0, 0);
+
+                const newLimits = {
+                    remainingRequests: DAILY_REQUEST_LIMITS[profile.plan],
+                    requestsResetAt: nextResetDate.toISOString()
+                };
+                updateProfile(
+                    { ...profile, requestLimits: newLimits },
+                    { silent: true }
+                );
             }
             scheduleNextReset();
         }
@@ -83,7 +114,7 @@ export const useOutfitRequest = () => {
                 clearTimeout(resetTimeoutRef.current);
             }
         };
-    }, [profile, scheduleNextReset, resetLimits]);
+    }, [profile?.uid]); // Меняем зависимость на profile?.uid чтобы эффект срабатывал только при смене пользователя
 
     // Автоматически очищаем ошибку через 5 секунд
     useEffect(() => {
@@ -108,35 +139,8 @@ export const useOutfitRequest = () => {
             return false;
         }
 
-        // Проверяем, нужно ли обновить лимиты
-        if (requestLimits?.requestsResetAt) {
-            const resetTime = new Date(requestLimits.requestsResetAt);
-            const now = new Date();
-
-            if (now >= resetTime) {
-                // Время сброса наступило, обновляем лимиты
-                resetLimits();
-                return true;
-            }
-        }
-
-        // Если нет лимитов, инициализируем их
-        if (!requestLimits) {
-            const now = new Date();
-            const nextResetDate = new Date(now);
-            nextResetDate.setDate(nextResetDate.getDate() + 1);
-            nextResetDate.setHours(0, 0, 0, 0);
-
-            const newLimits = {
-                remainingRequests: DAILY_REQUEST_LIMITS[plan],
-                requestsResetAt: nextResetDate.toISOString()
-            };
-            updateProfile({ ...profile, requestLimits: newLimits });
-            return true;
-        }
-
         // Проверяем оставшиеся запросы
-        if (requestLimits.remainingRequests <= 0) {
+        if (!requestLimits || requestLimits.remainingRequests <= 0) {
             setError(
                 t(
                     'Components.Features.OutfitRequestPanel.errors.requestLimitReached'
@@ -520,9 +524,9 @@ export const useOutfitRequest = () => {
         aiResponse,
         standardResponse,
         clearResponses,
-        isFreePlan: profile?.plan === 'free',
-        remainingRequests: profile?.requestLimits?.remainingRequests ?? 0,
-        requestsResetAt: profile?.requestLimits?.requestsResetAt,
-        isEmailVerified: profile?.emailVerified ?? false
+        isFreePlan,
+        remainingRequests,
+        requestsResetAt,
+        isEmailVerified
     };
 };

@@ -143,6 +143,7 @@ export const ru = {
                         generateStandard: 'Стандартный образ',
                         generateMoreStandard: 'Еще один образ',
                         clear: 'Очистить',
+                        stop: 'Стоп',
                         freePlanNote:
                             'Генерация AI образов доступна только для премиум пользователей',
                         remainingRequests: 'Осталось запросов: {{count}}',
